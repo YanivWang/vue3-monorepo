@@ -3,6 +3,10 @@
 # ─────────────────────────────────────────────────────────────
 FROM node:20-alpine AS builder
 
+# 构建模式：production（默认）| staging | development
+# CI 通过 --build-arg BUILD_MODE=staging 传入
+ARG BUILD_MODE=production
+
 # 启用 corepack 以使用 pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -16,7 +20,8 @@ RUN pnpm install --frozen-lockfile
 # 复制源码并构建
 COPY . .
 
-RUN pnpm run build
+# 根据 BUILD_MODE 加载对应 .env 文件（vite --mode 参数）
+RUN pnpm run build --mode ${BUILD_MODE}
 
 # ─────────────────────────────────────────────────────────────
 #  Stage 2: Serve

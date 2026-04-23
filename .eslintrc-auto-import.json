@@ -195,6 +195,7 @@
     "useFullscreen": true,
     "useGamepad": true,
     "useGeolocation": true,
+    "useI18n": true,
     "useId": true,
     "useIdle": true,
     "useImage": true,
@@ -307,7 +308,6 @@
     "watchThrottled": true,
     "watchTriggerable": true,
     "watchWithFilter": true,
-    "whenever": true,
-    "useI18n": true
+    "whenever": true
   }
 }

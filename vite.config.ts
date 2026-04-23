@@ -91,8 +91,8 @@ export default defineConfig(async ({ mode }) => {
 
     build: {
       target: 'es2015',
-      // 生产环境关闭 sourcemap（安全）；如需排查问题可单独开启
-      sourcemap: false,
+      // 生产环境关闭 sourcemap；staging 环境可通过 VITE_SOURCEMAP=true 开启
+      sourcemap: env.VITE_SOURCEMAP === 'true',
       reportCompressedSize: false,
       chunkSizeWarningLimit: 2000,
       rollupOptions: {

@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: Vue3 Enterprise Template API
+  description: 后端接口文档（OpenAPI 3.0）
+  version: 1.0.0
+
+servers:
+  - url: https://api.your-domain.com
+    description: 生产环境
+  - url: https://api-staging.your-domain.com
+    description: Staging 环境
+  - url: http://localhost:3000
+    description: 本地开发
+
+tags:
+  - name: auth
+    description: 认证相关
+  - name: user
+    description: 用户管理
+  - name: menu
+    description: 菜单管理
+
+paths:
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: 用户登录
+      operationId: authLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginParams'
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResult'
+
+  /auth/logout:
+    post:
+      tags: [auth]
+      summary: 用户登出
+      operationId: authLogout
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 登出成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /auth/refresh:
+    post:
+      tags: [auth]
+      summary: 刷新 Token
+      operationId: authRefresh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: Token 刷新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResult'
+
+  /user/info:
+    get:
+      tags: [user]
+      summary: 获取当前用户信息
+      operationId: getUserInfo
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserInfo'
+
+  /user/list:
+    get:
+      tags: [user]
+      summary: 获取用户列表
+      operationId: getUserList
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: keyword
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PaginationResult'
+
+  /menu/list:
+    get:
+      tags: [menu]
+      summary: 获取当前用户菜单
+      operationId: getMenuList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MenuItem'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: success
+        data:
+          description: 业务数据，类型因接口而异
+
+    LoginParams:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          format: password
+          example: '123456'
+
+    LoginResult:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+            refreshToken:
+              type: string
+            expiresIn:
+              type: integer
+              description: Token 有效期（秒）
+
+    UserInfo:
+      type: object
+      required: [id, username, roles]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        nickname:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+
+    PaginationResult:
+      type: object
+      properties:
+        list:
+          type: array
+          items: {}
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        parentId:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        path:
+          type: string
+        component:
+          type: string
+        redirect:
+          type: string
+        icon:
+          type: string
+        title:
+          type: string
+        sort:
+          type: integer
+        hidden:
+          type: boolean
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'

@@ -22,11 +22,11 @@ async function bootstrap(): Promise<void> {
   // 2. 全局指令（依赖 Pinia）
   registerDirectives(app)
 
-  // 3. 注册全局插件（Element Plus 图标、vue-i18n 等）
-  setupPlugins(app)
-
-  // 4. 注册路由
+  // 3. 注册路由（须在 setupPlugins 前，Sentry 需要 router 实例）
   app.use(router)
+
+  // 4. 注册全局插件（Element Plus、vue-i18n、Sentry 等）
+  setupPlugins(app, router)
 
   // 5. 等待路由准备完成后挂载，避免首屏路由守卫未执行
   await router.isReady()

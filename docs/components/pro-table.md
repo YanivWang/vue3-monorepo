@@ -127,6 +127,10 @@ async function getUserList(params: Record<string, unknown>): Promise<PaginationR
 | `handleSearch(params)` | 带参数搜索并重置到第一页 |
 | `handleReset()`        | 清空搜索条件并重新拉取   |
 
+## 在线示例
+
+运行 `pnpm dev` 后访问 `/examples/crud`，可查看 ProTable 与搜索栏、新增/编辑弹窗、删除确认的完整组合。
+
 ## 源码位置
 
 `src/components/ProTable/index.vue`

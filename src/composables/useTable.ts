@@ -1,4 +1,5 @@
 import { ref, reactive } from 'vue'
+import type { Ref } from 'vue'
 import type { PaginationParams, PaginationResult } from '@/types/global'
 
 interface UseTableOptions<T, P extends Record<string, unknown> = Record<string, unknown>> {
@@ -22,7 +23,7 @@ export function useTable<T, P extends Record<string, unknown> = Record<string, u
   const { fetchFn, immediate = true, defaultPageSize = 10, defaultParams = {} } = options
 
   const loading = ref(false)
-  const tableData = ref<T[]>([]) as { value: T[] }
+  const tableData = ref<T[]>([]) as Ref<T[]>
   const total = ref(0)
   const pagination = reactive<PaginationParams>({
     page: 1,

@@ -20,6 +20,14 @@ interface ImportMetaEnv {
   readonly VITE_ANALYZE: string
   /** Web Vitals 上报接口地址（空字符串则不上报） */
   readonly VITE_VITALS_ENDPOINT: string
+  /** 为 true 时开启 Source Map（staging 环境调试用） */
+  readonly VITE_SOURCEMAP: string
+  /** Sentry DSN，留空则跳过 Sentry 初始化 */
+  readonly VITE_SENTRY_DSN: string
+  /** Sentry 环境标识（production | staging | development） */
+  readonly VITE_SENTRY_ENV: string
+  /** 应用版本号，对应 Sentry Release */
+  readonly VITE_APP_VERSION: string
 }
 
 interface ImportMeta {

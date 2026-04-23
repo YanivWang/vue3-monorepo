@@ -31,6 +31,8 @@ export default defineConfig({
             { text: '架构说明', link: '/guide/architecture' },
             { text: '权限体系', link: '/guide/permission' },
             { text: '主题与暗黑模式', link: '/guide/theme' },
+            { text: 'Design Token', link: '/guide/design-tokens' },
+            { text: '分支策略', link: '/guide/branch-strategy' },
             { text: '部署', link: '/guide/deploy' }
           ]
         }
@@ -41,6 +43,7 @@ export default defineConfig({
           items: [
             { text: 'PageContainer 页面容器', link: '/components/page-container' },
             { text: 'ProTable 高级表格', link: '/components/pro-table' },
+            { text: 'Skeleton 骨架屏', link: '/components/skeleton' },
             { text: 'SvgIcon 图标', link: '/components/svg-icon' },
             { text: 'ErrorBoundary 错误边界', link: '/components/error-boundary' }
           ]

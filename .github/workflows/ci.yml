@@ -21,9 +21,25 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run lint
-      - run: pnpm run lint:style
-      - run: pnpm run type-check
-      - run: pnpm run test:run
-      - run: pnpm run build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ── 安全扫描：检测 high/critical 级漏洞，发现则 CI 失败 ──
+      - name: Security audit
+        run: pnpm audit --audit-level=high
+        continue-on-error: false
+
+      - name: Lint (ESLint)
+        run: pnpm run lint
+
+      - name: Lint (Stylelint)
+        run: pnpm run lint:style
+
+      - name: Type check
+        run: pnpm run type-check
+
+      - name: Unit tests
+        run: pnpm run test:run
+
+      - name: Build
+        run: pnpm run build
