@@ -24,6 +24,9 @@ function getRating(name: string, value: number): 'good' | 'needs-improvement' | 
  * 将指标上报到分析服务
  * 生产环境替换为实际的上报逻辑（如 navigator.sendBeacon / fetch）
  */
+/** 上报端点，通过 VITE_VITALS_ENDPOINT 环境变量配置（不填则仅控制台输出） */
+const REPORT_ENDPOINT = (import.meta.env as Record<string, string>).VITE_VITALS_ENDPOINT ?? ''
+
 function sendToAnalytics(metric: Metric): void {
   const rating = getRating(metric.name, metric.value)
 
@@ -33,15 +36,32 @@ function sendToAnalytics(metric: Metric): void {
     return
   }
 
-  // 生产环境示例（取消注释并替换端点）：
-  // navigator.sendBeacon('/api/performance', JSON.stringify({
-  //   name: metric.name,
-  //   value: metric.value,
-  //   rating,
-  //   id: metric.id,
-  //   navigationType: metric.navigationType,
-  //   url: location.href
-  // }))
+  if (!REPORT_ENDPOINT) return
+
+  const payload = JSON.stringify({
+    name: metric.name,
+    value: metric.value,
+    rating,
+    id: metric.id,
+    delta: metric.delta,
+    navigationType: metric.navigationType,
+    url: location.href,
+    timestamp: Date.now()
+  })
+
+  // sendBeacon 在页面关闭时仍可发出；降级为 fetch keepalive
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(REPORT_ENDPOINT, payload)
+  } else {
+    fetch(REPORT_ENDPOINT, {
+      method: 'POST',
+      body: payload,
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true
+    }).catch(() => {
+      /* 静默，不影响用户体验 */
+    })
+  }
 }
 
 /**

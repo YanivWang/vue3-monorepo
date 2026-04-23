@@ -18,6 +18,8 @@ interface ImportMetaEnv {
   readonly VITE_REFRESH_PATH: string
   /** 为 true 时 build 后自动打开 dist/stats.html 分析包体积 */
   readonly VITE_ANALYZE: string
+  /** Web Vitals 上报接口地址（空字符串则不上报） */
+  readonly VITE_VITALS_ENDPOINT: string
 }
 
 interface ImportMeta {

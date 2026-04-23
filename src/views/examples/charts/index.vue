@@ -1,0 +1,187 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useECharts } from '@/composables/useECharts'
+
+// ── 折线图 ────────────────────────────────────────────────────
+const { chartRef: lineRef, setOption: setLineOption } = useECharts()
+
+onMounted(() => {
+  setLineOption({
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['访问量', '注册量'] },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']
+    },
+    yAxis: { type: 'value' },
+    series: [
+      {
+        name: '访问量',
+        type: 'line',
+        smooth: true,
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        areaStyle: { opacity: 0.1 },
+        markPoint: {
+          data: [
+            { type: 'max', name: '最大值' },
+            { type: 'min', name: '最小值' }
+          ]
+        }
+      },
+      {
+        name: '注册量',
+        type: 'line',
+        smooth: true,
+        data: [120, 282, 191, 134, 290, 330, 310],
+        areaStyle: { opacity: 0.1 }
+      }
+    ]
+  })
+})
+
+// ── 柱状图 ────────────────────────────────────────────────────
+const { chartRef: barRef, setOption: setBarOption } = useECharts()
+
+onMounted(() => {
+  setBarOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: {},
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    },
+    yAxis: { type: 'value' },
+    series: [
+      { name: '直接访问', type: 'bar', data: [320, 332, 301, 334, 390, 330, 320], barMaxWidth: 40 },
+      { name: '邮件营销', type: 'bar', data: [120, 132, 101, 134, 90, 230, 210], barMaxWidth: 40 },
+      { name: '联盟广告', type: 'bar', data: [220, 182, 191, 234, 290, 330, 310], barMaxWidth: 40 }
+    ]
+  })
+})
+
+// ── 饼图 ──────────────────────────────────────────────────────
+const { chartRef: pieRef, setOption: setPieOption } = useECharts()
+
+onMounted(() => {
+  setPieOption({
+    tooltip: { trigger: 'item', formatter: '{a} <br/>{b}: {c} ({d}%)' },
+    legend: { orient: 'vertical', left: 'left' },
+    series: [
+      {
+        name: '流量来源',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        itemStyle: { borderRadius: 6, borderColor: 'transparent', borderWidth: 2 },
+        label: { show: false, position: 'center' },
+        emphasis: {
+          label: { show: true, fontSize: 14, fontWeight: 'bold' }
+        },
+        data: [
+          { value: 1048, name: '搜索引擎' },
+          { value: 735, name: '直接访问' },
+          { value: 580, name: '邮件营销' },
+          { value: 484, name: '联盟广告' },
+          { value: 300, name: '视频广告' }
+        ]
+      }
+    ]
+  })
+})
+
+// ── 雷达图 ────────────────────────────────────────────────────
+const { chartRef: radarRef, setOption: setRadarOption } = useECharts()
+
+onMounted(() => {
+  setRadarOption({
+    tooltip: {},
+    legend: { data: ['预算分配', '实际支出'] },
+    radar: {
+      indicator: [
+        { name: '销售', max: 6500 },
+        { name: '管理', max: 16000 },
+        { name: '技术', max: 30000 },
+        { name: '客服', max: 38000 },
+        { name: '研发', max: 52000 },
+        { name: '市场', max: 25000 }
+      ]
+    },
+    series: [
+      {
+        name: '预算 vs 实际',
+        type: 'radar',
+        data: [
+          { value: [4200, 3000, 20000, 35000, 50000, 18000], name: '预算分配' },
+          { value: [5000, 14000, 28000, 26000, 42000, 21000], name: '实际支出' }
+        ]
+      }
+    ]
+  })
+})
+</script>
+
+<template>
+  <PageContainer title="图表示例" subtitle="基于 ECharts 按需引入，支持暗黑模式自动切换">
+    <el-row :gutter="16">
+      <!-- 折线图 -->
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="never" class="chart-card">
+          <template #header>
+            <span>折线图 — 访问趋势</span>
+          </template>
+          <div ref="lineRef" class="chart" />
+        </el-card>
+      </el-col>
+
+      <!-- 柱状图 -->
+      <el-col :xs="24" :lg="12">
+        <el-card shadow="never" class="chart-card">
+          <template #header>
+            <span>柱状图 — 周流量分布</span>
+          </template>
+          <div ref="barRef" class="chart" />
+        </el-card>
+      </el-col>
+
+      <!-- 环形饼图 -->
+      <el-col :xs="24" :lg="12" class="mt-md">
+        <el-card shadow="never" class="chart-card">
+          <template #header>
+            <span>饼图 — 流量来源</span>
+          </template>
+          <div ref="pieRef" class="chart" />
+        </el-card>
+      </el-col>
+
+      <!-- 雷达图 -->
+      <el-col :xs="24" :lg="12" class="mt-md">
+        <el-card shadow="never" class="chart-card">
+          <template #header>
+            <span>雷达图 — 部门预算对比</span>
+          </template>
+          <div ref="radarRef" class="chart" />
+        </el-card>
+      </el-col>
+    </el-row>
+  </PageContainer>
+</template>
+
+<style lang="scss" scoped>
+.chart-card {
+  :deep(.el-card__header) {
+    padding: $spacing-md;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color-light);
+  }
+}
+
+.chart {
+  width: 100%;
+  height: 300px;
+}
+</style>
