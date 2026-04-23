@@ -10,10 +10,14 @@ interface ImportMetaEnv {
   readonly VITE_API_PREFIX: string
   readonly VITE_TOKEN_KEY: string
   readonly VITE_REFRESH_TOKEN_KEY: string
-  /** 业务层成功码，与响应体 `code` 字段一致，默认 200；部分后端为 0 时设为 0 */
+  /** 业务层成功码，与响应体 `code` 字段一致，默认 200；部分后端用 0 时设为 0 */
   readonly VITE_API_SUCCESS_CODE: string
-  /** 为 true 时走 src/mock 内建数据，不请求真实 HTTP */
+  /** 为 true 时由 vite-plugin-mock 在 devServer 层拦截 API 请求 */
   readonly VITE_USE_MOCK: string
+  /** Token 刷新接口路径（相对于 baseURL），默认 /auth/refresh */
+  readonly VITE_REFRESH_PATH: string
+  /** 为 true 时 build 后自动打开 dist/stats.html 分析包体积 */
+  readonly VITE_ANALYZE: string
 }
 
 interface ImportMeta {

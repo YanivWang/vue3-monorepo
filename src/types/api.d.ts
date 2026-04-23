@@ -43,3 +43,34 @@ export interface UpdatePasswordParams {
   newPassword: string
   confirmPassword: string
 }
+
+/** 后端下发的菜单路由节点 */
+export interface MenuRoute {
+  /** 菜单 ID */
+  id: number
+  /** 父级 ID，顶层为 0 */
+  parentId: number
+  /** 路由名称（唯一，对应 RouteRecordRaw.name） */
+  name: string
+  /** 路由路径 */
+  path: string
+  /** 组件路径（相对 src/views/，不含 .vue），如 "home/index" */
+  component?: string
+  /** 重定向路径 */
+  redirect?: string
+  /** 路由元信息 */
+  meta: {
+    title: string
+    icon?: string
+    hidden?: boolean
+    keepAlive?: boolean
+    requiresAuth?: boolean
+    permissions?: string[]
+    roles?: string[]
+    breadcrumb?: string
+    affix?: boolean
+    alwaysShow?: boolean
+  }
+  /** 子菜单 */
+  children?: MenuRoute[]
+}

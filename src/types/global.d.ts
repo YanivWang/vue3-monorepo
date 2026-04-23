@@ -38,20 +38,3 @@ export interface TreeNode<T = Record<string, unknown>> {
   data?: T
 }
 
-/** 路由元信息扩展类型 */
-declare module 'vue-router' {
-  interface RouteMeta {
-    /** 页面标题 */
-    title?: string
-    /** 页面图标 */
-    icon?: string
-    /** 是否需要登录才能访问 */
-    requiresAuth?: boolean
-    /** 是否在菜单中隐藏 */
-    hidden?: boolean
-    /** 页面缓存 keep-alive */
-    keepAlive?: boolean
-    /** 面包屑中显示的名称 */
-    breadcrumb?: string
-  }
-}

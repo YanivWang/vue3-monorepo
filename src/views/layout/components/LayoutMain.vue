@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useTabsStore } from '@/stores/modules/tabs'
 
-const route = useRoute()
+const tabsStore = useTabsStore()
 
-// keep-alive 缓存名称列表
-const keepAliveNames = computed<string[]>(() => {
-  return [route.name as string].filter(name => name && route.meta.keepAlive)
-})
+/** 从 tabs 中收集需要缓存的路由名称 */
+const keepAliveNames = computed<string[]>(() => tabsStore.tabs.filter(t => t.keepAlive && t.name).map(t => t.name))
 </script>
 
 <template>
   <el-main class="layout-main">
-    <router-view v-slot="{ Component, route: currentRoute }">
+    <router-view v-slot="{ Component, route }">
       <transition name="page" mode="out-in">
         <keep-alive :include="keepAliveNames">
-          <component :is="Component" :key="currentRoute.fullPath" />
+          <component :is="Component" :key="route.fullPath" />
         </keep-alive>
       </transition>
     </router-view>
@@ -26,7 +24,6 @@ const keepAliveNames = computed<string[]>(() => {
 .layout-main {
   flex: 1;
   padding: $spacing-lg;
-  margin-top: $header-height;
   overflow: hidden auto;
   background-color: $bg-page;
 }

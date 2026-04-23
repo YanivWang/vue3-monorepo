@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { lsGet, lsSet } from '@/utils/storage'
+import { ThemeMode as ThemeModeEnum, Language, StorageKey } from '@/enums'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 type LanguageType = 'zh-CN' | 'en-US'
 
-const SIDEBAR_KEY = 'sidebar_collapsed'
-const THEME_KEY = 'theme_mode'
-const LANG_KEY = 'language'
+const SIDEBAR_KEY = StorageKey.SIDEBAR
+const THEME_KEY = StorageKey.THEME
+const LANG_KEY = StorageKey.LANGUAGE
 
 /**
  * 应用全局状态 Store
@@ -15,8 +16,8 @@ const LANG_KEY = 'language'
 export const useAppStore = defineStore('app', () => {
   // ── State ────────────────────────────────────────────────────────────────
   const sidebarCollapsed = ref<boolean>(lsGet<boolean>(SIDEBAR_KEY) ?? false)
-  const themeMode = ref<ThemeMode>(lsGet<ThemeMode>(THEME_KEY) ?? 'light')
-  const language = ref<LanguageType>(lsGet<LanguageType>(LANG_KEY) ?? 'zh-CN')
+  const themeMode = ref<ThemeMode>(lsGet<ThemeMode>(THEME_KEY) ?? ThemeModeEnum.LIGHT)
+  const language = ref<LanguageType>(lsGet<LanguageType>(LANG_KEY) ?? Language.ZH_CN)
   const pageLoading = ref<boolean>(false)
 
   // ── Getters ──────────────────────────────────────────────────────────────
@@ -50,10 +51,14 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
-  /** 切换语言 */
+  /** 切换语言（同步更新 vue-i18n locale） */
   function setLanguage(lang: LanguageType): void {
     language.value = lang
     lsSet(LANG_KEY, lang)
+    // 延迟导入避免循环依赖（locales 依赖 storage，storage 不依赖 store）
+    import('@/locales').then(({ i18n }) => {
+      i18n.global.locale.value = lang as typeof i18n.global.locale.value
+    })
   }
 
   /** 设置全局页面加载状态 */

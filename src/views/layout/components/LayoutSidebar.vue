@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { HomeFilled } from '@element-plus/icons-vue'
+import { usePermissionStore } from '@/stores/modules/permission'
+import SidebarItem from './SidebarItem.vue'
 
 interface Props {
   collapsed: boolean
@@ -9,8 +10,11 @@ interface Props {
 
 const props = defineProps<Props>()
 const route = useRoute()
+const permissionStore = usePermissionStore()
 
 const activeMenu = computed(() => route.path)
+const menus = computed(() => permissionStore.menus.filter(m => !m.meta?.hidden))
+const appTitle = import.meta.env.VITE_APP_TITLE || 'Enterprise'
 </script>
 
 <template>
@@ -19,11 +23,11 @@ const activeMenu = computed(() => route.path)
     <div class="sidebar-logo">
       <img src="/favicon.svg" alt="logo" class="sidebar-logo__img" />
       <transition name="fade">
-        <span v-if="!props.collapsed" class="sidebar-logo__title"> Enterprise </span>
+        <span v-if="!props.collapsed" class="sidebar-logo__title">{{ appTitle }}</span>
       </transition>
     </div>
 
-    <!-- 菜单 -->
+    <!-- 由 permissionStore.menus 动态渲染，不再手写菜单项 -->
     <el-menu
       :default-active="activeMenu"
       :collapse="props.collapsed"
@@ -34,10 +38,9 @@ const activeMenu = computed(() => route.path)
       text-color="#c0cad8"
       active-text-color="#ffffff"
     >
-      <el-menu-item index="/home">
-        <el-icon><HomeFilled /></el-icon>
-        <template #title>首页</template>
-      </el-menu-item>
+      <template v-for="menu in menus" :key="menu.id">
+        <SidebarItem :menu="menu" :is-collapsed="props.collapsed" />
+      </template>
     </el-menu>
   </el-aside>
 </template>

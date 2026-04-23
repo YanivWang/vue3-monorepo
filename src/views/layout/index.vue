@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useAppStore } from '@/stores/modules/app'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutSidebar from './components/LayoutSidebar.vue'
+import LayoutTabs from './components/LayoutTabs.vue'
 import LayoutMain from './components/LayoutMain.vue'
 
 const appStore = useAppStore()
@@ -11,12 +12,15 @@ const isCollapsed = computed(() => appStore.isCollapsed)
 
 <template>
   <el-container class="layout-wrapper">
-    <!-- 侧边栏 -->
+    <!-- 侧边栏（单源驱动：菜单完全来自 permissionStore.menus） -->
     <LayoutSidebar :collapsed="isCollapsed" />
 
     <el-container class="layout-right" :class="{ 'layout-right--collapsed': isCollapsed }">
       <!-- 顶部导航 -->
       <LayoutHeader />
+
+      <!-- Tab 标签栏 -->
+      <LayoutTabs />
 
       <!-- 主内容区 -->
       <LayoutMain />

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { setupRouterGuards } from './guards'
 
-/** 静态路由（不需要权限） */
+/** 静态白名单路由（无需权限即可访问） */
 export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -93,5 +93,17 @@ const router = createRouter({
 
 // 注册路由守卫
 setupRouterGuards(router)
+
+/**
+ * 重置路由至初始静态路由状态（用于登出清理动态路由）
+ */
+export function resetRouter(): void {
+  const newRouter = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: constantRoutes
+  })
+  // 替换 matcher，等效于重置所有动态路由
+  ;(router as unknown as { matcher: unknown }).matcher = (newRouter as unknown as { matcher: unknown }).matcher
+}
 
 export default router

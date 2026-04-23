@@ -1,49 +1,68 @@
 import { defineConfig, loadEnv } from 'vite'
+import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { viteMockServe } from 'vite-plugin-mock'
+import { compression } from 'vite-plugin-compression2'
 import { resolve } from 'path'
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const isMock = env.VITE_USE_MOCK === 'true'
+  const isAnalyze = env.VITE_ANALYZE === 'true'
+
+  // rollup-plugin-visualizer 是 ESM-only，使用动态导入避免 CJS 加载错误
+  const analyzePlugins: PluginOption[] = []
+  if (isAnalyze) {
+    const { visualizer } = await import('rollup-plugin-visualizer')
+    analyzePlugins.push(visualizer({ open: true, filename: 'dist/stats.html', gzipSize: true, brotliSize: true }))
+  }
 
   return {
     plugins: [
       vue(),
 
-      // 自动导入 Vue、Vue Router、Pinia 等 API
+      // 自动导入 Vue、Vue Router、Pinia 等 API + vue-i18n
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
-        resolvers: [
-          // 自动导入 Element Plus 相关函数（ElMessage、ElMessageBox 等）
-          ElementPlusResolver()
-        ],
-        // 生成自动导入类型声明文件
+        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue-i18n'],
+        resolvers: [ElementPlusResolver()],
         dts: 'src/types/auto-imports.d.ts',
-        // 生成 .eslintrc-auto-import.json 供 ESLint 识别全局 API
-        eslintrc: {
-          enabled: true
-        }
+        eslintrc: { enabled: true }
       }),
 
       // 自动导入组件
       Components({
-        resolvers: [
-          // 自动导入 Element Plus 组件（使用预编译 CSS，避免 additionalData 注入到 EP 内部 SCSS 导致 @use 冲突）
-          ElementPlusResolver()
-        ],
-        // 组件类型声明文件
+        resolvers: [ElementPlusResolver()],
         dts: 'src/types/components.d.ts',
-        // 自定义组件目录
         dirs: ['src/components']
-      })
-    ],
+      }),
+
+      // Mock 服务（开发环境在 vite devServer 层拦截，业务代码无感知）
+      viteMockServe({
+        mockPath: 'mock',
+        enable: isMock
+      }),
+
+      // Gzip 压缩（生产构建时生成 .gz 文件）
+      compression({
+        algorithm: 'gzip',
+        exclude: [/\.(br)$/, /\.(gz)$/]
+      }),
+
+      // Brotli 压缩（比 Gzip 压缩率更高，现代浏览器首选）
+      compression({
+        algorithm: 'brotliCompress',
+        exclude: [/\.(br)$/, /\.(gz)$/]
+      }),
+
+      // 打包体积可视化（通过 VITE_ANALYZE=true vite build 触发）
+      ...analyzePlugins
+    ].filter(Boolean),
 
     resolve: {
       alias: {
-        // 路径别名 @ 指向 src 目录
         '@': resolve(__dirname, 'src')
       }
     },
@@ -51,22 +70,16 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          // 使用现代 Sass 编译器 API，消除 legacy-js-api 弃用警告
           api: 'modern-compiler',
-          // 全局注入变量文件：@use ... as * 使变量在当前文件作用域内可用
           additionalData: `@use "@/assets/styles/variables.scss" as *;`
         }
       }
     },
 
     server: {
-      // 开发服务器端口
       port: 5173,
-      // 自动打开浏览器
       open: false,
-      // 允许跨域
       cors: true,
-      // 代理配置
       proxy: {
         [env.VITE_API_PREFIX || '/api']: {
           target: env.VITE_API_BASE_URL || 'http://localhost:3000',
@@ -77,21 +90,22 @@ export default defineConfig(({ mode }) => {
     },
 
     build: {
-      // 构建目标
       target: 'es2015',
-      // 开启 gzip 压缩报告
+      // 生产环境关闭 sourcemap（安全）；如需排查问题可单独开启
+      sourcemap: false,
       reportCompressedSize: false,
-      // 消除打包大小超过 500kb 警告
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
-          // 分包策略
-          manualChunks: {
-            'vue-vendor': ['vue', 'vue-router', 'pinia'],
-            'element-plus': ['element-plus'],
-            utils: ['axios', 'dayjs', 'lodash-es', 'js-cookie']
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('element-plus')) return 'element-plus'
+              if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router')) return 'vue-vendor'
+              if (id.includes('vue-i18n')) return 'vue-i18n'
+              if (id.includes('axios') || id.includes('dayjs') || id.includes('lodash-es') || id.includes('js-cookie'))
+                return 'utils'
+            }
           },
-          // 用于从入口点创建的块的打包输出格式
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'

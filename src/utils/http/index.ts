@@ -3,13 +3,13 @@ import { AxiosHeaders } from 'axios'
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, getRefreshToken, removeToken, removeRefreshToken, setToken, setRefreshToken } from '@/utils/storage'
-import { getApiBaseURL, getApiSuccessCode } from '@/utils/http/config'
+import { getApiBaseURL, getApiSuccessCode, getRefreshPath } from '@/utils/http/config'
+import { showLoading, hideLoading } from '@/utils/http/loading'
 import type { RequestConfig, ResponseData } from './types'
 import type { LoginResult } from '@/types/api'
 
 const SUCCESS_CODE = getApiSuccessCode()
 
-/** HTTP 业务状态码（与拦截器里 HTTP 状态码区分，勿混用） */
 const enum HttpCode {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
@@ -31,13 +31,16 @@ function pushRefreshListener(fn: RefreshListener) {
 
 function notifyRefreshDone(err: Error | null, accessToken?: string) {
   const list = refreshWaiters.splice(0, refreshWaiters.length)
-  list.forEach(fn => {
-    fn(err, accessToken)
-  })
+  list.forEach(fn => fn(err, accessToken))
 }
 
 function isSuccessPayload<T>(data: unknown): data is ResponseData<T> {
   return typeof data === 'object' && data !== null && 'code' in data && 'data' in data
+}
+
+/** 指数退避延迟 */
+function retryDelay(times: number, baseDelay = 1000): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, baseDelay * Math.pow(2, times - 1)))
 }
 
 class HttpRequest {
@@ -53,10 +56,9 @@ class HttpRequest {
   /** 用原始 axios 调 refresh，避免与实例拦截器互相递归 */
   private async doRefreshRequest(): Promise<LoginResult> {
     const refreshToken = getRefreshToken()
-    if (!refreshToken) {
-      throw new Error('无刷新凭证')
-    }
-    const url = `${this.baseURL.replace(/\/$/, '')}/auth/refresh`
+    if (!refreshToken) throw new Error('无刷新凭证')
+
+    const url = `${this.baseURL.replace(/\/$/, '')}${getRefreshPath()}`
     const { data, status } = await axios.post<unknown>(
       url,
       { refreshToken },
@@ -65,9 +67,7 @@ class HttpRequest {
         timeout: 15000
       }
     )
-    if (status !== 200) {
-      throw new Error('Token 刷新失败')
-    }
+    if (status !== 200) throw new Error('Token 刷新失败')
     if (!isSuccessPayload<LoginResult>(data) || (data as ResponseData<LoginResult>).code !== SUCCESS_CODE) {
       const msg = isSuccessPayload<LoginResult>(data) ? (data as ResponseData<LoginResult>).message : 'Token 刷新失败'
       throw new Error(msg)
@@ -76,9 +76,15 @@ class HttpRequest {
   }
 
   private setupInterceptors(): void {
+    // ── 请求拦截 ──────────────────────────────────────────────────────────
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const customConfig = config as RequestConfig & InternalAxiosRequestConfig
+
+        if (customConfig.showLoading) {
+          showLoading()
+        }
+
         if (customConfig.withToken !== false) {
           const token = getToken()
           if (token) {
@@ -87,31 +93,30 @@ class HttpRequest {
             config.headers = headers
           }
         }
+
         if (config.method?.toUpperCase() === 'GET') {
-          config.params = {
-            _t: Date.now(),
-            ...config.params
-          }
+          config.params = { _t: Date.now(), ...config.params }
         }
+
         return config
       },
       (error: unknown) => Promise.reject(error)
     )
 
+    // ── 响应拦截 ──────────────────────────────────────────────────────────
     this.instance.interceptors.response.use(
       (response: AxiosResponse<unknown>) => {
         const { data, config } = response
         const customConfig = config as RequestConfig
+
+        if (customConfig.showLoading) hideLoading()
+
         if (!isSuccessPayload(data) || (data as ResponseData).code !== SUCCESS_CODE) {
-          if (isSuccessPayload(data) && customConfig.showError !== false) {
-            const msg = (data as ResponseData).message || '请求失败'
-            ElMessage.error(msg)
-          } else if (!isSuccessPayload(data) && customConfig.showError !== false) {
-            ElMessage.error('响应数据格式错误')
-          }
           const msg = isSuccessPayload(data) ? (data as ResponseData).message : '请求失败'
+          if (customConfig.showError !== false) ElMessage.error(msg || '请求失败')
           return Promise.reject(new Error(msg))
         }
+
         return response
       },
       async (error: unknown) => {
@@ -119,25 +124,30 @@ class HttpRequest {
           ElMessage.error('未知错误')
           return Promise.reject(error)
         }
+
         const { response, config: requestConfig } = error
         const customConfig = (requestConfig || {}) as RequestConfig
+
+        if (customConfig.showLoading) hideLoading()
+
+        // 网络超时
         if (error.code === 'ECONNABORTED') {
-          if (customConfig.showError !== false) {
-            ElMessage.error('请求超时，请稍后重试')
-          }
+          if (customConfig.showError !== false) ElMessage.error('请求超时，请稍后重试')
           return Promise.reject(error)
         }
+
+        // 无响应（断网）
         if (!response) {
-          if (customConfig.showError !== false) {
-            ElMessage.error('网络异常，请检查您的网络连接')
-          }
+          if (customConfig.showError !== false) ElMessage.error('网络异常，请检查您的网络连接')
           return Promise.reject(error)
         }
+
         const { status } = response
+
+        // 401 自动刷新 Token
         if (status === HttpCode.UNAUTHORIZED) {
-          if (customConfig.skipAuthRefresh) {
-            return Promise.reject(error)
-          }
+          if (customConfig.skipAuthRefresh) return Promise.reject(error)
+
           const hasRefresh = !!getRefreshToken()
           if (hasRefresh) {
             return new Promise((resolve, reject) => {
@@ -152,16 +162,12 @@ class HttpRequest {
                 cfg.headers = headers
                 this.instance.request(cfg).then(resolve).catch(reject)
               })
-              if (isRefreshing) {
-                return
-              }
+              if (isRefreshing) return
               isRefreshing = true
               this.doRefreshRequest()
                 .then(res => {
                   setToken(res.accessToken)
-                  if (res.refreshToken) {
-                    setRefreshToken(res.refreshToken)
-                  }
+                  if (res.refreshToken) setRefreshToken(res.refreshToken)
                   notifyRefreshDone(null, res.accessToken)
                 })
                 .catch((e: Error) => {
@@ -179,36 +185,32 @@ class HttpRequest {
             return Promise.reject(error)
           }
         }
-        switch (status) {
-          case HttpCode.FORBIDDEN:
-            if (customConfig.showError !== false) {
-              ElMessage.error('没有权限访问该资源')
-            }
-            break
-          case HttpCode.NOT_FOUND:
-            if (customConfig.showError !== false) {
-              ElMessage.error('请求的资源不存在')
-            }
-            break
-          case HttpCode.SERVER_ERROR:
-            if (customConfig.showError !== false) {
-              ElMessage.error('服务器内部错误，请稍后重试')
-            }
-            break
-          default:
-            if (customConfig.showError !== false) {
-              ElMessage.error((response.data as { message?: string })?.message || `请求失败（${status}）`)
-            }
+
+        // 重试逻辑（排除 401/403）
+        const retryCount = customConfig.retryCount ?? 0
+        const currentTimes = customConfig._retryTimes ?? 0
+        if (retryCount > 0 && currentTimes < retryCount && status >= HttpCode.SERVER_ERROR) {
+          customConfig._retryTimes = currentTimes + 1
+          await retryDelay(customConfig._retryTimes, customConfig.retryDelay ?? 1000)
+          return this.instance.request(customConfig as InternalAxiosRequestConfig)
         }
+
+        const msgMap: Record<number, string> = {
+          [HttpCode.FORBIDDEN]: '没有权限访问该资源',
+          [HttpCode.NOT_FOUND]: '请求的资源不存在',
+          [HttpCode.SERVER_ERROR]: '服务器内部错误，请稍后重试'
+        }
+        if (customConfig.showError !== false) {
+          ElMessage.error(msgMap[status] || (response.data as { message?: string })?.message || `请求失败（${status}）`)
+        }
+
         return Promise.reject(error)
       }
     )
   }
 
   private showLoginExpired(): void {
-    if (isAuthDialogOpen) {
-      return
-    }
+    if (isAuthDialogOpen) return
     isAuthDialogOpen = true
     ElMessageBox.confirm('登录状态已过期，请重新登录', '提示', {
       confirmButtonText: '重新登录',
