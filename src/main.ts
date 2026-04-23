@@ -3,11 +3,14 @@ import App from './App.vue'
 import router from './router'
 import { setupStore } from './stores'
 import { setupPlugins } from './plugins'
-import { registerPermission } from './directives/permission'
+import { registerDirectives } from './directives'
+import { initWebVitals } from './utils/performance'
 
 // Element Plus 预编译 CSS（须在自定义全局样式之前引入，方便覆盖）
 import 'element-plus/dist/index.css'
-// 全局样式（包含 reset、工具类等）
+// Element Plus 暗黑模式 CSS 变量（须在 dist/index.css 之后引入）
+import 'element-plus/theme-chalk/dark/css-vars.css'
+// 全局样式（包含 reset、工具类、暗黑变量覆盖等）
 import './assets/styles/index.scss'
 
 async function bootstrap(): Promise<void> {
@@ -16,8 +19,8 @@ async function bootstrap(): Promise<void> {
   // 1. 注册 Pinia（须最先，其他模块依赖它）
   setupStore(app)
 
-  // 2. 权限指令（依赖 Pinia）
-  registerPermission(app)
+  // 2. 全局指令（依赖 Pinia）
+  registerDirectives(app)
 
   // 3. 注册全局插件（Element Plus 图标、vue-i18n 等）
   setupPlugins(app)
@@ -29,6 +32,9 @@ async function bootstrap(): Promise<void> {
   await router.isReady()
 
   app.mount('#app')
+
+  // Web Vitals 性能监控（挂载后启动，避免影响首屏性能）
+  initWebVitals()
 }
 
 bootstrap()

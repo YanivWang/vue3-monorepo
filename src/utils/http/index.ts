@@ -46,11 +46,50 @@ function retryDelay(times: number, baseDelay = 1000): Promise<void> {
 class HttpRequest {
   private instance: AxiosInstance
   private baseURL: string
+  /** 进行中的请求池：key → AbortController */
+  private pendingRequests = new Map<string, AbortController>()
 
   constructor(config: RequestConfig) {
     this.baseURL = typeof config.baseURL === 'string' ? config.baseURL : getApiBaseURL()
     this.instance = axios.create({ ...config, baseURL: this.baseURL })
     this.setupInterceptors()
+  }
+
+  /** 生成请求唯一键 */
+  private getRequestKey(config: RequestConfig & InternalAxiosRequestConfig): string {
+    return config.requestKey ?? `${(config.method ?? 'get').toUpperCase()}:${config.url ?? ''}`
+  }
+
+  /** 若存在同 key 的旧请求则取消；然后将新 controller 加入池 */
+  private addPending(config: RequestConfig & InternalAxiosRequestConfig): void {
+    const key = this.getRequestKey(config)
+    if (this.pendingRequests.has(key)) {
+      this.pendingRequests.get(key)!.abort()
+      this.pendingRequests.delete(key)
+    }
+    const controller = new AbortController()
+    config.signal = controller.signal
+    this.pendingRequests.set(key, controller)
+  }
+
+  /** 请求完成（成功/失败）后从池中移除 */
+  private removePending(config: RequestConfig & InternalAxiosRequestConfig): void {
+    const key = this.getRequestKey(config)
+    this.pendingRequests.delete(key)
+  }
+
+  /** 手动取消指定 key 的请求 */
+  cancelRequest(key: string): void {
+    if (this.pendingRequests.has(key)) {
+      this.pendingRequests.get(key)!.abort()
+      this.pendingRequests.delete(key)
+    }
+  }
+
+  /** 取消所有进行中的请求（页面跳转、退出登录等场景） */
+  cancelAllRequests(): void {
+    this.pendingRequests.forEach(controller => controller.abort())
+    this.pendingRequests.clear()
   }
 
   /** 用原始 axios 调 refresh，避免与实例拦截器互相递归 */
@@ -81,6 +120,11 @@ class HttpRequest {
       (config: InternalAxiosRequestConfig) => {
         const customConfig = config as RequestConfig & InternalAxiosRequestConfig
 
+        // 防重复提交：cancelDuplicate=true 时取消旧请求
+        if (customConfig.cancelDuplicate) {
+          this.addPending(customConfig)
+        }
+
         if (customConfig.showLoading) {
           showLoading()
         }
@@ -107,7 +151,12 @@ class HttpRequest {
     this.instance.interceptors.response.use(
       (response: AxiosResponse<unknown>) => {
         const { data, config } = response
-        const customConfig = config as RequestConfig
+        const customConfig = config as RequestConfig & InternalAxiosRequestConfig
+
+        // 请求完成，移出请求池
+        if (customConfig.cancelDuplicate) {
+          this.removePending(customConfig)
+        }
 
         if (customConfig.showLoading) hideLoading()
 
@@ -126,9 +175,19 @@ class HttpRequest {
         }
 
         const { response, config: requestConfig } = error
-        const customConfig = (requestConfig || {}) as RequestConfig
+        const customConfig = (requestConfig || {}) as RequestConfig & InternalAxiosRequestConfig
+
+        // 请求失败，移出请求池
+        if (customConfig.cancelDuplicate) {
+          this.removePending(customConfig)
+        }
 
         if (customConfig.showLoading) hideLoading()
+
+        // 请求被主动取消（cancelDuplicate 或 cancelRequest），静默处理
+        if (axios.isCancel(error) || error.name === 'CanceledError') {
+          return Promise.reject(error)
+        }
 
         // 网络超时
         if (error.code === 'ECONNABORTED') {
@@ -267,3 +326,15 @@ const http = new HttpRequest({
 export default http
 export { HttpRequest }
 export type { RequestConfig, ResponseData }
+
+/**
+ * 便捷方法：取消指定 key 的请求
+ * @example cancelRequest('GET:/api/search')
+ */
+export const cancelRequest = (key: string) => http.cancelRequest(key)
+
+/**
+ * 便捷方法：取消所有进行中的请求
+ * 适合在路由切换、退出登录时调用
+ */
+export const cancelAllRequests = () => http.cancelAllRequests()

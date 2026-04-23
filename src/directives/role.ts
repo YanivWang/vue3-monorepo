@@ -9,18 +9,17 @@ function resolveKeys(value: DirectiveBinding['value']): string[] {
 }
 
 /**
- * v-permission 指令：无权限时直接移除 DOM 节点（v-if 语义，非 display:none）
- * 用法：v-permission="'user:list'"  或  v-permission="['user:list','user:create']"（满足其一则保留）
+ * v-role 指令：无对应角色时直接移除 DOM 节点（v-if 语义）
+ * 用法：v-role="'admin'"  或  v-role="['admin','editor']"（满足其一则保留）
  */
-export const permission = {
+export const role = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const keys = resolveKeys(binding.value)
     if (keys.length === 0) return
 
     const userStore = useUserStore()
-    const ok = keys.some(k => userStore.hasPermission(k))
+    const ok = keys.some(k => userStore.hasRole(k))
     if (!ok) {
-      // 移除节点而非 display:none，避免 DOM 安全隐患
       el.parentNode?.removeChild(el)
     }
   }

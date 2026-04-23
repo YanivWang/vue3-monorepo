@@ -18,6 +18,10 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "release": "release-it",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -37,12 +41,14 @@
     "pinia": "^2.1.7",
     "vue": "^3.4.31",
     "vue-i18n": "^9.14.4",
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.3.3",
+    "web-vitals": "^5.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@eslint/js": "^9.39.4",
+    "@release-it/conventional-changelog": "^10.0.6",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.14.9",
@@ -59,6 +65,7 @@
     "lint-staged": "^16.4.0",
     "postcss-html": "^1.8.1",
     "prettier": "^3.8.3",
+    "release-it": "^20.0.0",
     "rollup-plugin-visualizer": "^7.0.1",
     "sass": "^1.77.6",
     "stylelint": "^17.9.0",
@@ -75,6 +82,7 @@
     "vite": "^5.3.3",
     "vite-plugin-compression2": "^2.5.3",
     "vite-plugin-mock": "^3.0.2",
+    "vitepress": "^1.6.4",
     "vitest": "^2.1.9",
     "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "^2.0.26"

@@ -20,6 +20,16 @@ export interface RequestConfig extends AxiosRequestConfig {
   retryDelay?: number
   /** 当前重试次数（内部使用） */
   _retryTimes?: number
+  /**
+   * 为 true 时，若存在相同 key 的进行中请求，自动取消旧请求再发新请求
+   * 适用于搜索联想、频繁切换 tab 等场景
+   */
+  cancelDuplicate?: boolean
+  /**
+   * 自定义请求唯一键，用于 cancelDuplicate 去重判断
+   * 默认值：`${method}:${url}`
+   */
+  requestKey?: string
 }
 
 /** 统一后端响应结构 */

@@ -7,6 +7,9 @@
 // CSS Reset
 @use './reset';
 
+// 暗黑模式 CSS 变量覆盖（必须在全局样式之前定义变量）
+@use './dark';
+
 // ── 布局工具类 ────────────────────────────────────────────────
 
 .full-page {
@@ -17,9 +20,9 @@
 
 .page-container {
   padding: $spacing-lg;
-  background-color: $bg-white;
+  background-color: var(--bg-card);
   border-radius: $border-radius-large;
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
 }
 
 // ── 路由 & 通用过渡动画 ────────────────────────────────────────

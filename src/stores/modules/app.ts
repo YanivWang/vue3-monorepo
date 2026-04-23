@@ -10,6 +10,10 @@ const SIDEBAR_KEY = StorageKey.SIDEBAR
 const THEME_KEY = StorageKey.THEME
 const LANG_KEY = StorageKey.LANGUAGE
 
+/** system 模式下的媒体查询监听器引用，切换主题时需先移除旧监听 */
+let systemThemeListener: ((e: MediaQueryListEvent) => void) | null = null
+let systemThemeMQ: MediaQueryList | null = null
+
 /**
  * 应用全局状态 Store
  */
@@ -38,16 +42,40 @@ export const useAppStore = defineStore('app', () => {
     lsSet(SIDEBAR_KEY, val)
   }
 
+  /** 移除 system 模式的媒体查询监听器 */
+  function _removeSystemListener(): void {
+    if (systemThemeMQ && systemThemeListener) {
+      systemThemeMQ.removeEventListener('change', systemThemeListener)
+      systemThemeListener = null
+      systemThemeMQ = null
+    }
+  }
+
   /** 切换主题 */
   function setTheme(mode: ThemeMode): void {
     themeMode.value = mode
     lsSet(THEME_KEY, mode)
 
+    // 切换时先清理旧的 system 监听
+    _removeSystemListener()
+
     const html = document.documentElement
+
     if (mode === 'dark') {
       html.classList.add('dark')
-    } else {
+    } else if (mode === 'light') {
       html.classList.remove('dark')
+    } else {
+      // system：跟随操作系统
+      const mq = window.matchMedia('(prefers-color-scheme: dark)')
+      html.classList.toggle('dark', mq.matches)
+
+      const listener = (e: MediaQueryListEvent) => {
+        html.classList.toggle('dark', e.matches)
+      }
+      mq.addEventListener('change', listener)
+      systemThemeMQ = mq
+      systemThemeListener = listener
     }
   }
 
