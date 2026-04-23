@@ -42,7 +42,7 @@ export default tseslint.config(
   {
     files: ['**/*.{ts,vue}'],
     rules: {
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': ['warn', { allow: ['log', 'warn', 'error'] }],
       'vue/multi-word-component-names': 'off',
       // noUnusedLocals / noUnusedParameters in tsconfig already handle this at compile time
       '@typescript-eslint/no-unused-vars': 'off'
