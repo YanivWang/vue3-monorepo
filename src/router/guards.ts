@@ -48,11 +48,19 @@ export function setupRouterGuards(router: Router): void {
       }
     }
 
+    const required = to.matched.flatMap(r => r.meta?.permissions ?? []).filter((p): p is string => Boolean(p))
+    if (required.length > 0) {
+      const allowed = required.some(p => userStore.hasPermission(p))
+      if (!allowed) {
+        return { path: '/403' }
+      }
+    }
+
     return true
   })
 
   // ── 全局后置钩子 ──────────────────────────────────────────────────────────
-  router.afterEach((to) => {
+  router.afterEach(to => {
     // 修改页面标题
     const appTitle = import.meta.env.VITE_APP_TITLE || 'App'
     document.title = to.meta?.title ? `${to.meta.title} - ${appTitle}` : appTitle
@@ -61,7 +69,7 @@ export function setupRouterGuards(router: Router): void {
   })
 
   // ── 路由错误处理 ──────────────────────────────────────────────────────────
-  router.onError((error) => {
+  router.onError(error => {
     NProgress.done()
     console.error('路由错误：', error)
   })

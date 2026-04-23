@@ -1,75 +1,117 @@
 import axios from 'axios'
+import { AxiosHeaders } from 'axios'
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getToken, removeToken } from '@/utils/storage'
+import { getToken, getRefreshToken, removeToken, removeRefreshToken, setToken, setRefreshToken } from '@/utils/storage'
+import { getApiBaseURL, getApiSuccessCode } from '@/utils/http/config'
 import type { RequestConfig, ResponseData } from './types'
+import type { LoginResult } from '@/types/api'
 
-/** HTTP 业务状态码 */
+const SUCCESS_CODE = getApiSuccessCode()
+
+/** HTTP 业务状态码（与拦截器里 HTTP 状态码区分，勿混用） */
 const enum HttpCode {
-  SUCCESS = 200,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
   SERVER_ERROR = 500
 }
 
-/** 防重复提示：避免多个接口同时 401 弹出多次 */
+/** 无 refresh 时 401 弹窗防重复 */
+let isAuthDialogOpen = false
+
+/** refresh 中 + 挂起请求回调 */
 let isRefreshing = false
+type RefreshListener = (err: Error | null, accessToken?: string) => void
+const refreshWaiters: RefreshListener[] = []
+
+function pushRefreshListener(fn: RefreshListener) {
+  refreshWaiters.push(fn)
+}
+
+function notifyRefreshDone(err: Error | null, accessToken?: string) {
+  const list = refreshWaiters.splice(0, refreshWaiters.length)
+  list.forEach(fn => {
+    fn(err, accessToken)
+  })
+}
+
+function isSuccessPayload<T>(data: unknown): data is ResponseData<T> {
+  return typeof data === 'object' && data !== null && 'code' in data && 'data' in data
+}
 
 class HttpRequest {
   private instance: AxiosInstance
+  private baseURL: string
 
   constructor(config: RequestConfig) {
-    this.instance = axios.create(config)
+    this.baseURL = typeof config.baseURL === 'string' ? config.baseURL : getApiBaseURL()
+    this.instance = axios.create({ ...config, baseURL: this.baseURL })
     this.setupInterceptors()
   }
 
-  /** 配置请求/响应拦截器 */
+  /** 用原始 axios 调 refresh，避免与实例拦截器互相递归 */
+  private async doRefreshRequest(): Promise<LoginResult> {
+    const refreshToken = getRefreshToken()
+    if (!refreshToken) {
+      throw new Error('无刷新凭证')
+    }
+    const url = `${this.baseURL.replace(/\/$/, '')}/auth/refresh`
+    const { data, status } = await axios.post<unknown>(
+      url,
+      { refreshToken },
+      {
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        timeout: 15000
+      }
+    )
+    if (status !== 200) {
+      throw new Error('Token 刷新失败')
+    }
+    if (!isSuccessPayload<LoginResult>(data) || (data as ResponseData<LoginResult>).code !== SUCCESS_CODE) {
+      const msg = isSuccessPayload<LoginResult>(data) ? (data as ResponseData<LoginResult>).message : 'Token 刷新失败'
+      throw new Error(msg)
+    }
+    return (data as ResponseData<LoginResult>).data
+  }
+
   private setupInterceptors(): void {
-    // ── 请求拦截器 ──────────────────────────────────────────────────────────
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const customConfig = config as RequestConfig & InternalAxiosRequestConfig
-
-        // 默认携带 token，除非显式设置 withToken: false
         if (customConfig.withToken !== false) {
           const token = getToken()
           if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`
+            const headers = AxiosHeaders.from(config.headers ?? {})
+            headers.set('Authorization', `Bearer ${token}`)
+            config.headers = headers
           }
         }
-
-        // 防止 GET 请求缓存
         if (config.method?.toUpperCase() === 'GET') {
           config.params = {
             _t: Date.now(),
             ...config.params
           }
         }
-
         return config
       },
-      (error: unknown) => {
-        return Promise.reject(error)
-      }
+      (error: unknown) => Promise.reject(error)
     )
 
-    // ── 响应拦截器 ──────────────────────────────────────────────────────────
     this.instance.interceptors.response.use(
-      (response: AxiosResponse<ResponseData>) => {
+      (response: AxiosResponse<unknown>) => {
         const { data, config } = response
         const customConfig = config as RequestConfig
-
-        // debugger
-
-        // 业务状态码非 200 视为错误
-        if (data.code !== HttpCode.SUCCESS) {
-          if (customConfig.showError !== false) {
-            ElMessage.error(data.message || '请求失败')
+        if (!isSuccessPayload(data) || (data as ResponseData).code !== SUCCESS_CODE) {
+          if (isSuccessPayload(data) && customConfig.showError !== false) {
+            const msg = (data as ResponseData).message || '请求失败'
+            ElMessage.error(msg)
+          } else if (!isSuccessPayload(data) && customConfig.showError !== false) {
+            ElMessage.error('响应数据格式错误')
           }
-          return Promise.reject(new Error(data.message || '请求失败'))
+          const msg = isSuccessPayload(data) ? (data as ResponseData).message : '请求失败'
+          return Promise.reject(new Error(msg))
         }
-
         return response
       },
       async (error: unknown) => {
@@ -77,71 +119,118 @@ class HttpRequest {
           ElMessage.error('未知错误')
           return Promise.reject(error)
         }
-
         const { response, config: requestConfig } = error
         const customConfig = (requestConfig || {}) as RequestConfig
-
-        // 网络超时
         if (error.code === 'ECONNABORTED') {
-          ElMessage.error('请求超时，请稍后重试')
+          if (customConfig.showError !== false) {
+            ElMessage.error('请求超时，请稍后重试')
+          }
           return Promise.reject(error)
         }
-
-        // 网络断开
         if (!response) {
-          ElMessage.error('网络异常，请检查您的网络连接')
+          if (customConfig.showError !== false) {
+            ElMessage.error('网络异常，请检查您的网络连接')
+          }
           return Promise.reject(error)
         }
-
         const { status } = response
-
-        switch (status) {
-          case HttpCode.UNAUTHORIZED:
-            // 防止多次弹出登录过期提示
-            if (!isRefreshing) {
-              isRefreshing = true
-              ElMessageBox.confirm('登录状态已过期，请重新登录', '提示', {
-                confirmButtonText: '重新登录',
-                cancelButtonText: '取消',
-                type: 'warning'
+        if (status === HttpCode.UNAUTHORIZED) {
+          if (customConfig.skipAuthRefresh) {
+            return Promise.reject(error)
+          }
+          const hasRefresh = !!getRefreshToken()
+          if (hasRefresh) {
+            return new Promise((resolve, reject) => {
+              pushRefreshListener((err, newAccess) => {
+                if (err || !newAccess) {
+                  reject(err || error)
+                  return
+                }
+                const cfg = { ...requestConfig } as RequestConfig & InternalAxiosRequestConfig
+                const headers = AxiosHeaders.from(cfg.headers ?? {})
+                headers.set('Authorization', `Bearer ${newAccess}`)
+                cfg.headers = headers
+                this.instance.request(cfg).then(resolve).catch(reject)
               })
-                .then(() => {
+              if (isRefreshing) {
+                return
+              }
+              isRefreshing = true
+              this.doRefreshRequest()
+                .then(res => {
+                  setToken(res.accessToken)
+                  if (res.refreshToken) {
+                    setRefreshToken(res.refreshToken)
+                  }
+                  notifyRefreshDone(null, res.accessToken)
+                })
+                .catch((e: Error) => {
                   removeToken()
-                  // 跳转至登录页，重置路由
-                  window.location.href = '/login'
+                  removeRefreshToken()
+                  notifyRefreshDone(e)
+                  this.showLoginExpired()
                 })
                 .finally(() => {
                   isRefreshing = false
                 })
+            })
+          } else {
+            this.handleNoRefresh401()
+            return Promise.reject(error)
+          }
+        }
+        switch (status) {
+          case HttpCode.FORBIDDEN:
+            if (customConfig.showError !== false) {
+              ElMessage.error('没有权限访问该资源')
             }
             break
-
-          case HttpCode.FORBIDDEN:
-            ElMessage.error('没有权限访问该资源')
-            break
-
           case HttpCode.NOT_FOUND:
-            ElMessage.error('请求的资源不存在')
+            if (customConfig.showError !== false) {
+              ElMessage.error('请求的资源不存在')
+            }
             break
-
           case HttpCode.SERVER_ERROR:
-            ElMessage.error('服务器内部错误，请稍后重试')
+            if (customConfig.showError !== false) {
+              ElMessage.error('服务器内部错误，请稍后重试')
+            }
             break
-
           default:
             if (customConfig.showError !== false) {
               ElMessage.error((response.data as { message?: string })?.message || `请求失败（${status}）`)
             }
         }
-
         return Promise.reject(error)
       }
     )
   }
 
-  /** 通用请求方法，返回剥离后的 data 字段 */
+  private showLoginExpired(): void {
+    if (isAuthDialogOpen) {
+      return
+    }
+    isAuthDialogOpen = true
+    ElMessageBox.confirm('登录状态已过期，请重新登录', '提示', {
+      confirmButtonText: '重新登录',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+      .then(() => {
+        removeToken()
+        removeRefreshToken()
+        window.location.href = '/login'
+      })
+      .finally(() => {
+        isAuthDialogOpen = false
+      })
+  }
+
+  private handleNoRefresh401(): void {
+    this.showLoginExpired()
+  }
+
   request<T = unknown>(config: RequestConfig): Promise<T> {
-    return this.instance.request<ResponseData<T>>(config).then(res => res.data.data)
+    return this.instance.request<ResponseData<T>>(config).then(res => (res.data as ResponseData<T>).data)
   }
 
   get<T = unknown>(url: string, params?: Record<string, unknown>, config?: RequestConfig): Promise<T> {
@@ -165,9 +254,8 @@ class HttpRequest {
   }
 }
 
-/** 导出默认请求实例 */
 const http = new HttpRequest({
-  baseURL: import.meta.env.VITE_API_PREFIX || '/api',
+  baseURL: getApiBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'

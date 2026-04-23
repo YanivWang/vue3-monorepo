@@ -22,7 +22,7 @@ async function handleLogout(): Promise<void> {
   await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
   await userStore.logoutAction()
   router.push('/login')
@@ -53,9 +53,7 @@ async function handleLogout(): Promise<void> {
 
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item :icon="SwitchButton" command="logout">
-              退出登录
-            </el-dropdown-item>
+            <el-dropdown-item :icon="SwitchButton" command="logout"> 退出登录 </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -65,6 +63,9 @@ async function handleLogout(): Promise<void> {
 
 <style lang="scss" scoped>
 .layout-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,27 +74,24 @@ async function handleLogout(): Promise<void> {
   background-color: $bg-white;
   border-bottom: 1px solid $border-color-light;
   box-shadow: $box-shadow-base;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
 
   &__left {
     display: flex;
-    align-items: center;
     gap: $spacing-md;
+    align-items: center;
   }
 
   &__right {
     display: flex;
-    align-items: center;
     gap: $spacing-md;
+    align-items: center;
   }
 }
 
 .sidebar-toggle {
   font-size: 20px;
-  cursor: pointer;
   color: $text-regular;
+  cursor: pointer;
   transition: $transition-fast;
 
   &:hover {
@@ -107,10 +105,10 @@ async function handleLogout(): Promise<void> {
 
 .user-info {
   display: flex;
-  align-items: center;
   gap: $spacing-sm;
-  cursor: pointer;
+  align-items: center;
   padding: $spacing-xs $spacing-sm;
+  cursor: pointer;
   border-radius: $border-radius-medium;
   transition: $transition-fast;
 
@@ -119,12 +117,12 @@ async function handleLogout(): Promise<void> {
   }
 
   &__name {
-    font-size: 14px;
-    color: $text-regular;
     max-width: 120px;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 14px;
+    color: $text-regular;
+    white-space: nowrap;
   }
 }
 </style>

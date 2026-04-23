@@ -11,8 +11,38 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       title: '登录',
       hidden: true,
-      requiresAuth: false,
-    },
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/auth/register/index.vue'),
+    meta: {
+      title: '注册',
+      hidden: true,
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('@/views/auth/forgot/index.vue'),
+    meta: {
+      title: '忘记密码',
+      hidden: true,
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/403',
+    name: 'Forbidden',
+    component: () => import('@/views/error/403.vue'),
+    meta: {
+      title: '无权限',
+      hidden: true,
+      requiresAuth: true
+    }
   },
   {
     path: '/',
@@ -21,7 +51,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     redirect: '/home',
     meta: {
       title: '主布局',
-      requiresAuth: true,
+      requiresAuth: true
     },
     children: [
       {
@@ -33,9 +63,10 @@ export const constantRoutes: RouteRecordRaw[] = [
           icon: 'HomeFilled',
           keepAlive: true,
           requiresAuth: true,
-        },
-      },
-    ],
+          permissions: ['dashboard:view']
+        }
+      }
+    ]
   },
 
   // 404 兜底路由，必须放在最后
@@ -45,9 +76,9 @@ export const constantRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/error/404.vue'),
     meta: {
       title: '404',
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 ]
 
 const router = createRouter({
@@ -57,7 +88,7 @@ const router = createRouter({
   scrollBehavior: (_to, _from, savedPosition) => {
     if (savedPosition) return savedPosition
     return { top: 0 }
-  },
+  }
 })
 
 // 注册路由守卫

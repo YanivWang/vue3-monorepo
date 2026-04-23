@@ -15,8 +15,8 @@ const LANG_KEY = 'language'
 export const useAppStore = defineStore('app', () => {
   // ── State ────────────────────────────────────────────────────────────────
   const sidebarCollapsed = ref<boolean>(lsGet<boolean>(SIDEBAR_KEY) ?? false)
-  const themeMode = ref<ThemeMode>((lsGet<ThemeMode>(THEME_KEY)) ?? 'light')
-  const language = ref<LanguageType>((lsGet<LanguageType>(LANG_KEY)) ?? 'zh-CN')
+  const themeMode = ref<ThemeMode>(lsGet<ThemeMode>(THEME_KEY) ?? 'light')
+  const language = ref<LanguageType>(lsGet<LanguageType>(LANG_KEY) ?? 'zh-CN')
   const pageLoading = ref<boolean>(false)
 
   // ── Getters ──────────────────────────────────────────────────────────────
@@ -72,6 +72,6 @@ export const useAppStore = defineStore('app', () => {
     setSidebarCollapsed,
     setTheme,
     setLanguage,
-    setPageLoading,
+    setPageLoading
   }
 })

@@ -9,7 +9,9 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  shadow: 'never',
+  title: undefined,
+  subtitle: undefined,
+  shadow: 'never'
 })
 
 defineSlots<{
@@ -52,8 +54,8 @@ defineSlots<{
 
   &__title-wrap {
     display: flex;
-    align-items: baseline;
     gap: $spacing-sm;
+    align-items: baseline;
   }
 
   &__title {
@@ -69,8 +71,8 @@ defineSlots<{
 
   &__extra {
     display: flex;
-    align-items: center;
     gap: $spacing-sm;
+    align-items: center;
   }
 }
 </style>

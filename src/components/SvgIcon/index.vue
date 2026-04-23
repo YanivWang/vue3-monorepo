@@ -12,12 +12,12 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: 16,
-  color: 'currentColor',
+  color: 'currentColor'
 })
 
 /** 判断是否为外部图片 URL */
 const isExternalUrl = computed(
-  () => props.name.startsWith('http') || props.name.startsWith('https') || props.name.startsWith('/'),
+  () => props.name.startsWith('http') || props.name.startsWith('https') || props.name.startsWith('/')
 )
 
 const symbolId = computed(() => `#icon-${props.name}`)
@@ -25,7 +25,7 @@ const symbolId = computed(() => `#icon-${props.name}`)
 const style = computed(() => ({
   width: `${props.size}px`,
   height: `${props.size}px`,
-  color: props.color,
+  color: props.color
 }))
 </script>
 
@@ -40,12 +40,7 @@ const style = computed(() => ({
   />
 
   <!-- 本地 SVG Symbol 模式（配合 vite-plugin-svg-icons 使用） -->
-  <svg
-    v-else
-    :style="style"
-    aria-hidden="true"
-    class="svg-icon"
-  >
+  <svg v-else :style="style" aria-hidden="true" class="svg-icon">
     <use :href="symbolId" />
   </svg>
 </template>
@@ -53,10 +48,10 @@ const style = computed(() => ({
 <style lang="scss" scoped>
 .svg-icon {
   display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
   vertical-align: middle;
   fill: currentColor;
-  overflow: hidden;
-  flex-shrink: 0;
 
   &--img {
     object-fit: contain;

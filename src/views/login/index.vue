@@ -16,18 +16,18 @@ const loading = ref<boolean>(false)
 
 const formData = reactive<LoginParams>({
   username: '',
-  password: '',
+  password: ''
 })
 
 const rules: FormRules<LoginParams> = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 20, message: '用户名长度 2-20 个字符', trigger: 'blur' },
+    { min: 2, max: 20, message: '用户名长度 2-20 个字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 30, message: '密码长度 6-30 个字符', trigger: 'blur' },
-  ],
+    { min: 6, max: 30, message: '密码长度 6-30 个字符', trigger: 'blur' }
+  ]
 }
 
 async function handleLogin(): Promise<void> {
@@ -90,19 +90,17 @@ async function handleLogin(): Promise<void> {
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            :loading="loading"
-            class="login-btn"
-            @click="handleLogin"
-          >
+          <el-button type="primary" :loading="loading" class="login-btn" @click="handleLogin">
             {{ loading ? '登录中...' : '登 录' }}
           </el-button>
         </el-form-item>
       </el-form>
 
-      <p class="login-card__tip">
-        演示账号：admin / 123456
+      <p class="login-card__tip">演示账号：admin / 123456</p>
+      <p class="login-card__links">
+        <router-link to="/register">注册</router-link>
+        <span class="login-card__sep">·</span>
+        <router-link to="/forgot-password">忘记密码</router-link>
       </p>
     </div>
   </div>
@@ -110,13 +108,13 @@ async function handleLogin(): Promise<void> {
 
 <style lang="scss" scoped>
 .login-page {
-  width: 100%;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .login-card {
@@ -127,8 +125,8 @@ async function handleLogin(): Promise<void> {
   box-shadow: $box-shadow-dark;
 
   &__header {
-    text-align: center;
     margin-bottom: $spacing-xl;
+    text-align: center;
   }
 
   &__logo {
@@ -138,10 +136,10 @@ async function handleLogin(): Promise<void> {
   }
 
   &__title {
+    margin-bottom: $spacing-xs;
     font-size: 24px;
     font-weight: 700;
     color: $text-primary;
-    margin-bottom: $spacing-xs;
   }
 
   &__subtitle {
@@ -150,10 +148,25 @@ async function handleLogin(): Promise<void> {
   }
 
   &__tip {
-    text-align: center;
+    margin-top: $spacing-md;
     font-size: 12px;
     color: $text-placeholder;
-    margin-top: $spacing-md;
+    text-align: center;
+  }
+
+  &__links {
+    margin-top: $spacing-sm;
+    font-size: 13px;
+    text-align: center;
+
+    a {
+      color: $primary-color;
+    }
+  }
+
+  &__sep {
+    margin: 0 8px;
+    color: $text-placeholder;
   }
 }
 

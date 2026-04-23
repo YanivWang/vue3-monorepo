@@ -5,7 +5,7 @@
 // ────────────────────────────────────────────────────────────
 
 // CSS Reset
-@use './reset.scss';
+@use './reset';
 
 // ── 布局工具类 ────────────────────────────────────────────────
 
@@ -46,13 +46,15 @@
 
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .slide-up-enter-from,
 .slide-up-leave-to {
-  transform: translateY(20px);
   opacity: 0;
+  transform: translateY(20px);
 }
 
 // ── 通用工具类 ────────────────────────────────────────────────
@@ -63,15 +65,15 @@
 
 .ellipsis {
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ellipsis-2 {
   display: -webkit-box;
+  overflow: hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .flex-center {
@@ -88,22 +90,68 @@
 
 // ── 间距工具 ──────────────────────────────────────────────────
 
-.mt-sm { margin-top: $spacing-sm; }
-.mt-md { margin-top: $spacing-md; }
-.mt-lg { margin-top: $spacing-lg; }
-.mb-sm { margin-bottom: $spacing-sm; }
-.mb-md { margin-bottom: $spacing-md; }
-.mb-lg { margin-bottom: $spacing-lg; }
-.ml-sm { margin-left: $spacing-sm; }
-.ml-md { margin-left: $spacing-md; }
-.mr-sm { margin-right: $spacing-sm; }
-.mr-md { margin-right: $spacing-md; }
+.mt-sm {
+  margin-top: $spacing-sm;
+}
+
+.mt-md {
+  margin-top: $spacing-md;
+}
+
+.mt-lg {
+  margin-top: $spacing-lg;
+}
+
+.mb-sm {
+  margin-bottom: $spacing-sm;
+}
+
+.mb-md {
+  margin-bottom: $spacing-md;
+}
+
+.mb-lg {
+  margin-bottom: $spacing-lg;
+}
+
+.ml-sm {
+  margin-left: $spacing-sm;
+}
+
+.ml-md {
+  margin-left: $spacing-md;
+}
+
+.mr-sm {
+  margin-right: $spacing-sm;
+}
+
+.mr-md {
+  margin-right: $spacing-md;
+}
 
 // ── 文字颜色工具 ──────────────────────────────────────────────
 
-.text-primary   { color: $text-primary; }
-.text-regular   { color: $text-regular; }
-.text-secondary { color: $text-secondary; }
-.text-danger    { color: $danger-color; }
-.text-success   { color: $success-color; }
-.text-warning   { color: $warning-color; }
+.text-primary {
+  color: $text-primary;
+}
+
+.text-regular {
+  color: $text-regular;
+}
+
+.text-secondary {
+  color: $text-secondary;
+}
+
+.text-danger {
+  color: $danger-color;
+}
+
+.text-success {
+  color: $success-color;
+}
+
+.text-warning {
+  color: $warning-color;
+}

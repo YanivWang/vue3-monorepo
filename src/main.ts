@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { setupStore } from './stores'
+import { registerPermission } from './directives/permission'
 
 // Element Plus 图标全局注册
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -17,15 +18,18 @@ async function bootstrap(): Promise<void> {
   // 1. 注册 Pinia
   setupStore(app)
 
-  // 2. 注册路由
+  // 2. 权限指令（依赖 Pinia）
+  registerPermission(app)
+
+  // 3. 注册路由
   app.use(router)
 
-  // 3. 全局注册 Element Plus 图标
+  // 4. 全局注册 Element Plus 图标
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
 
-  // 4. 等待路由准备完成后挂载，避免首屏路由守卫未执行
+  // 5. 等待路由准备完成后挂载，避免首屏路由守卫未执行
   await router.isReady()
 
   app.mount('#app')

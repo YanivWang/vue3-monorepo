@@ -6,18 +6,12 @@ import { debounce, throttle } from 'lodash-es'
 // ────────────────────────────────────────────────────────────
 
 /** 格式化日期，默认格式 YYYY-MM-DD */
-export function formatDate(
-  date: string | number | Date | dayjs.Dayjs,
-  format = 'YYYY-MM-DD',
-): string {
+export function formatDate(date: string | number | Date | dayjs.Dayjs, format = 'YYYY-MM-DD'): string {
   return dayjs(date).format(format)
 }
 
 /** 格式化日期时间，默认格式 YYYY-MM-DD HH:mm:ss */
-export function formatDateTime(
-  date: string | number | Date | dayjs.Dayjs,
-  format = 'YYYY-MM-DD HH:mm:ss',
-): string {
+export function formatDateTime(date: string | number | Date | dayjs.Dayjs, format = 'YYYY-MM-DD HH:mm:ss'): string {
   return dayjs(date).format(format)
 }
 
@@ -82,7 +76,7 @@ export function unique<T>(arr: T[]): T[] {
 /** 根据字段对对象数组去重 */
 export function uniqueBy<T>(arr: T[], key: keyof T): T[] {
   const seen = new Set<T[keyof T]>()
-  return arr.filter((item) => {
+  return arr.filter(item => {
     const val = item[key]
     if (seen.has(val)) return false
     seen.add(val)
@@ -91,16 +85,17 @@ export function uniqueBy<T>(arr: T[], key: keyof T): T[] {
 }
 
 /** 将平铺数组转换为树形结构 */
-export function arrayToTree<
-  T extends { id: number | string; parentId: number | string | null },
->(list: T[], rootId: number | string | null = null): (T & { children?: T[] })[] {
+export function arrayToTree<T extends { id: number | string; parentId: number | string | null }>(
+  list: T[],
+  rootId: number | string | null = null
+): (T & { children?: T[] })[] {
   return list
-    .filter((item) => item.parentId === rootId)
-    .map((item) => ({
+    .filter(item => item.parentId === rootId)
+    .map(item => ({
       ...item,
-      children: arrayToTree(list, item.id),
+      children: arrayToTree(list, item.id)
     }))
-    .map((item) => (item.children?.length ? item : { ...item, children: undefined }))
+    .map(item => (item.children?.length ? item : { ...item, children: undefined }))
 }
 
 // ────────────────────────────────────────────────────────────

@@ -3,6 +3,8 @@ import Cookies from 'js-cookie'
 /** Token 存储 key，优先读取环境变量 */
 const TOKEN_KEY = import.meta.env.VITE_TOKEN_KEY || 'access_token'
 
+const REFRESH_TOKEN_KEY = import.meta.env.VITE_REFRESH_TOKEN_KEY || 'refresh_token'
+
 // ────────────────────────────────────────────────────────────
 //  Token 操作（使用 Cookie 存储，可配合 HttpOnly 策略）
 // ────────────────────────────────────────────────────────────
@@ -20,6 +22,18 @@ export function setToken(token: string, expires = 1): void {
 /** 移除 Token */
 export function removeToken(): void {
   Cookies.remove(TOKEN_KEY)
+}
+
+export function getRefreshToken(): string | undefined {
+  return Cookies.get(REFRESH_TOKEN_KEY)
+}
+
+export function setRefreshToken(token: string, expires = 7): void {
+  Cookies.set(REFRESH_TOKEN_KEY, token, { expires })
+}
+
+export function removeRefreshToken(): void {
+  Cookies.remove(REFRESH_TOKEN_KEY)
 }
 
 // ────────────────────────────────────────────────────────────
@@ -41,7 +55,7 @@ interface StorageItem<T> {
 export function lsSet<T>(key: string, value: T, ttl?: number): void {
   const item: StorageItem<T> = {
     value,
-    expire: ttl ? Date.now() + ttl * 1000 : undefined,
+    expire: ttl ? Date.now() + ttl * 1000 : undefined
   }
   localStorage.setItem(key, JSON.stringify(item))
 }

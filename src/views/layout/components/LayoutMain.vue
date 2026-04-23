@@ -6,9 +6,7 @@ const route = useRoute()
 
 // keep-alive 缓存名称列表
 const keepAliveNames = computed<string[]>(() => {
-  return [route.name as string].filter(
-    (name) => name && route.meta.keepAlive,
-  )
+  return [route.name as string].filter(name => name && route.meta.keepAlive)
 })
 </script>
 
@@ -28,9 +26,8 @@ const keepAliveNames = computed<string[]>(() => {
 .layout-main {
   flex: 1;
   padding: $spacing-lg;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: $bg-page;
   margin-top: $header-height;
+  overflow: hidden auto;
+  background-color: $bg-page;
 }
 </style>

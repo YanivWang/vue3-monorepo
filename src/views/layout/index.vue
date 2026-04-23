@@ -14,10 +14,7 @@ const isCollapsed = computed(() => appStore.isCollapsed)
     <!-- 侧边栏 -->
     <LayoutSidebar :collapsed="isCollapsed" />
 
-    <el-container
-      class="layout-right"
-      :class="{ 'layout-right--collapsed': isCollapsed }"
-    >
+    <el-container class="layout-right" :class="{ 'layout-right--collapsed': isCollapsed }">
       <!-- 顶部导航 -->
       <LayoutHeader />
 
@@ -37,8 +34,8 @@ const isCollapsed = computed(() => appStore.isCollapsed)
 .layout-right {
   flex: 1;
   flex-direction: column;
-  overflow: hidden;
   margin-left: $sidebar-width;
+  overflow: hidden;
   transition: margin-left 0.3s ease;
 
   &--collapsed {

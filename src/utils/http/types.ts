@@ -10,6 +10,10 @@ export interface RequestConfig extends AxiosRequestConfig {
   showError?: boolean
   /** 是否携带 Token，默认 true */
   withToken?: boolean
+  /**
+   * 为 true 时不走 401 自动刷新/重试逻辑，避免 refresh 请求自身递归
+   */
+  skipAuthRefresh?: boolean
   /** 请求重试次数 */
   retryCount?: number
   /** 请求重试间隔（ms） */

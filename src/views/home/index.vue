@@ -25,7 +25,7 @@ const statCards = ref<StatCard[]>([
   { title: '今日访问', value: 1024, unit: '次', icon: markRaw(DataLine), color: '#409eff', trend: 12.5 },
   { title: '用户总数', value: 8848, unit: '人', icon: markRaw(User), color: '#67c23a', trend: 3.2 },
   { title: '待处理工单', value: 36, unit: '条', icon: markRaw(Tickets), color: '#e6a23c', trend: -5.1 },
-  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), color: '#909399', trend: 0 },
+  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), color: '#909399', trend: 0 }
 ])
 
 const techList = [
@@ -40,7 +40,7 @@ const techList = [
   { name: 'Sass', color: '#cc669920' },
   { name: 'dayjs', color: '#ff5f5720' },
   { name: 'lodash-es', color: '#3492ff20' },
-  { name: 'js-cookie', color: '#f0db4f20' },
+  { name: 'js-cookie', color: '#f0db4f20' }
 ]
 </script>
 
@@ -59,13 +59,7 @@ const techList = [
 
     <!-- 统计卡片 -->
     <el-row :gutter="16" class="stat-row">
-      <el-col
-        v-for="card in statCards"
-        :key="card.title"
-        :xs="24"
-        :sm="12"
-        :lg="6"
-      >
+      <el-col v-for="card in statCards" :key="card.title" :xs="24" :sm="12" :lg="6">
         <el-card class="stat-card" shadow="hover">
           <div class="stat-card__inner">
             <div class="stat-card__info">
@@ -86,10 +80,7 @@ const techList = [
                 <span class="trend-label">较昨日</span>
               </div>
             </div>
-            <el-icon
-              class="stat-card__icon"
-              :style="{ color: card.color, backgroundColor: `${card.color}20` }"
-            >
+            <el-icon class="stat-card__icon" :style="{ color: card.color, backgroundColor: `${card.color}20` }">
               <component :is="card.icon" />
             </el-icon>
           </div>
@@ -97,18 +88,17 @@ const techList = [
       </el-col>
     </el-row>
 
+    <p v-permission="'admin'" class="perm-hint">
+      当前账号拥有 <code>admin</code> 权限，若移除该权限则本行由 v-permission 隐藏。
+    </p>
+
     <!-- 技术栈信息 -->
     <el-card class="tech-card" shadow="never">
       <template #header>
         <span class="tech-card__title">项目技术栈</span>
       </template>
       <div class="tech-list">
-        <el-tag
-          v-for="tech in techList"
-          :key="tech.name"
-          effect="light"
-          class="tech-tag"
-        >
+        <el-tag v-for="tech in techList" :key="tech.name" effect="light" class="tech-tag">
           {{ tech.name }}
         </el-tag>
       </div>
@@ -141,16 +131,26 @@ const techList = [
 }
 
 .welcome-title {
+  margin-bottom: $spacing-sm;
   font-size: 22px;
   font-weight: 600;
   color: $text-primary;
-  margin-bottom: $spacing-sm;
 }
 
 .welcome-time {
   font-size: 14px;
-  color: $text-secondary;
   font-variant-numeric: tabular-nums;
+  color: $text-secondary;
+}
+
+.perm-hint {
+  font-size: 13px;
+  color: $text-secondary;
+  code {
+    padding: 2px 6px;
+    background: $bg-page;
+    border-radius: 4px;
+  }
 }
 
 .stat-card {
@@ -163,23 +163,23 @@ const techList = [
   }
 
   &__title {
+    margin-bottom: $spacing-sm;
     font-size: 13px;
     color: $text-secondary;
-    margin-bottom: $spacing-sm;
   }
 
   &__value {
     display: flex;
-    align-items: baseline;
     gap: $spacing-xs;
+    align-items: baseline;
     margin-bottom: $spacing-xs;
   }
 
   &__num {
     font-size: 28px;
     font-weight: 700;
-    color: $text-primary;
     line-height: 1;
+    color: $text-primary;
   }
 
   &__unit {
@@ -188,25 +188,31 @@ const techList = [
   }
 
   &__trend {
-    font-size: 12px;
     display: flex;
-    align-items: center;
     gap: 4px;
+    align-items: center;
+    font-size: 12px;
 
-    &.trend-up   { color: $success-color; }
-    &.trend-down { color: $danger-color; }
-    &.trend-flat { color: $text-placeholder; }
+    &.trend-up {
+      color: $success-color;
+    }
+    &.trend-down {
+      color: $danger-color;
+    }
+    &.trend-flat {
+      color: $text-placeholder;
+    }
   }
 
   &__icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
-    font-size: 24px;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+    border-radius: 12px;
   }
 }
 
@@ -216,8 +222,8 @@ const techList = [
 
 .tech-card {
   &__title {
-    font-weight: 600;
     font-size: 15px;
+    font-weight: 600;
   }
 }
 
