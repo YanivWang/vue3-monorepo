@@ -65,6 +65,64 @@ export const constantRoutes: RouteRecordRaw[] = [
           requiresAuth: true,
           permissions: ['dashboard:view']
         }
+      },
+
+      // ── 示例页（开发 / 演示用）────────────────────────────────
+      {
+        path: 'examples',
+        name: 'Examples',
+        redirect: '/examples/crud',
+        meta: {
+          title: '示例',
+          icon: 'Grid',
+          requiresAuth: true
+        },
+        children: [
+          {
+            path: 'crud',
+            name: 'ExampleCrud',
+            component: () => import('@/views/examples/crud/index.vue'),
+            meta: {
+              title: 'CRUD 示例',
+              icon: 'List',
+              keepAlive: true,
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'form',
+            name: 'ExampleForm',
+            component: () => import('@/views/examples/form/index.vue'),
+            meta: {
+              title: '表单验证',
+              icon: 'Document',
+              keepAlive: true,
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'upload',
+            name: 'ExampleUpload',
+            component: () => import('@/views/examples/upload/index.vue'),
+            meta: {
+              title: '文件上传',
+              icon: 'Upload',
+              keepAlive: true,
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'charts',
+            name: 'ExampleCharts',
+            component: () => import('@/views/examples/charts/index.vue'),
+            meta: {
+              title: '图表',
+              icon: 'TrendCharts',
+              keepAlive: true,
+              requiresAuth: true
+            }
+          }
+        ]
       }
     ]
   },

@@ -19,6 +19,72 @@ const adminMenus: MenuRoute[] = [
     }
   },
   {
+    id: 20,
+    parentId: 0,
+    name: 'Examples',
+    path: '/examples',
+    redirect: '/examples/crud',
+    meta: {
+      title: '示例页面',
+      icon: 'Grid',
+      requiresAuth: true
+    },
+    children: [
+      {
+        id: 21,
+        parentId: 20,
+        name: 'ExampleCrud',
+        path: '/examples/crud',
+        component: 'examples/crud/index',
+        meta: {
+          title: 'CRUD 示例',
+          icon: 'List',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 22,
+        parentId: 20,
+        name: 'ExampleForm',
+        path: '/examples/form',
+        component: 'examples/form/index',
+        meta: {
+          title: '表单验证',
+          icon: 'Document',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 23,
+        parentId: 20,
+        name: 'ExampleUpload',
+        path: '/examples/upload',
+        component: 'examples/upload/index',
+        meta: {
+          title: '文件上传',
+          icon: 'Upload',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 24,
+        parentId: 20,
+        name: 'ExampleCharts',
+        path: '/examples/charts',
+        component: 'examples/charts/index',
+        meta: {
+          title: '图表',
+          icon: 'TrendCharts',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      }
+    ]
+  },
+  {
     id: 10,
     parentId: 0,
     name: 'System',
@@ -77,7 +143,7 @@ const adminMenus: MenuRoute[] = [
   }
 ]
 
-/** editor 只有首页 */
+/** editor 有首页 + 示例页 */
 const editorMenus: MenuRoute[] = [
   {
     id: 1,
@@ -93,6 +159,72 @@ const editorMenus: MenuRoute[] = [
       requiresAuth: true,
       permissions: ['dashboard:view']
     }
+  },
+  {
+    id: 20,
+    parentId: 0,
+    name: 'Examples',
+    path: '/examples',
+    redirect: '/examples/crud',
+    meta: {
+      title: '示例页面',
+      icon: 'Grid',
+      requiresAuth: true
+    },
+    children: [
+      {
+        id: 21,
+        parentId: 20,
+        name: 'ExampleCrud',
+        path: '/examples/crud',
+        component: 'examples/crud/index',
+        meta: {
+          title: 'CRUD 示例',
+          icon: 'List',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 22,
+        parentId: 20,
+        name: 'ExampleForm',
+        path: '/examples/form',
+        component: 'examples/form/index',
+        meta: {
+          title: '表单验证',
+          icon: 'Document',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 23,
+        parentId: 20,
+        name: 'ExampleUpload',
+        path: '/examples/upload',
+        component: 'examples/upload/index',
+        meta: {
+          title: '文件上传',
+          icon: 'Upload',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      },
+      {
+        id: 24,
+        parentId: 20,
+        name: 'ExampleCharts',
+        path: '/examples/charts',
+        component: 'examples/charts/index',
+        meta: {
+          title: '图表',
+          icon: 'TrendCharts',
+          keepAlive: true,
+          requiresAuth: true
+        }
+      }
+    ]
   }
 ]
 
