@@ -37,7 +37,7 @@ export default {
   // 控制在 Vue 单文件组件中 <script> 和 <style> 标签内的代码缩进方式
   vueIndentScriptAndStyle: false,
   // 换行符使用 lf 结尾是 可选值 "<auto|lf|crlf|cr>"
-  endOfLine: 'auto',
+  endOfLine: 'lf',
   // 这两个选项可用于格式化以给定字符偏移量（分别包括和不包括）开始和结束的代码 (rangeStart：开始，rangeEnd：结束)
   rangeStart: 0,
   rangeEnd: Infinity

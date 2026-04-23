@@ -4,4 +4,3 @@ pnpm-lock.yaml
 coverage
 **/*.d.ts
 .eslintrc-auto-import.json
-.stylelintrc.json

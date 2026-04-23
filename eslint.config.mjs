@@ -21,7 +21,7 @@ export default tseslint.config(
   {
     files: ['**/*.{ts,vue}'],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.browser,
@@ -44,7 +44,8 @@ export default tseslint.config(
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'vue/multi-word-component-names': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+      // noUnusedLocals / noUnusedParameters in tsconfig already handle this at compile time
+      '@typescript-eslint/no-unused-vars': 'off'
     }
   },
   {
