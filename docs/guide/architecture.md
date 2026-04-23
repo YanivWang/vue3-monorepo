@@ -2,40 +2,42 @@
 
 ## 技术栈
 
-| 分类     | 技术                        | 版本  |
-| -------- | --------------------------- | ----- |
-| 框架     | Vue 3 (Composition API)     | ^3.4  |
-| 构建     | Vite                        | ^5.3  |
-| 语言     | TypeScript                  | ^5.5  |
-| UI       | Element Plus                | ^2.7  |
-| 状态管理 | Pinia                       | ^2.1  |
-| 路由     | Vue Router                  | ^4.3  |
-| HTTP     | Axios                       | ^1.7  |
-| 国际化   | Vue I18n                    | ^9.14 |
-| 工具函数 | VueUse / Lodash-ES / Day.js | —     |
+版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
+
+| 分类     | 技术                                       | 版本              |
+| -------- | ------------------------------------------ | ----------------- |
+| 框架     | Vue 3 (Composition API)                    | ^3.4.31           |
+| 构建     | Vite                                       | ^5.3.3            |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`） | ^5.5.3            |
+| UI       | Element Plus                               | ^2.7.6            |
+| 状态管理 | Pinia + pinia-plugin-persistedstate        | ^2.1 / ^3.2       |
+| 路由     | Vue Router                                 | ^4.3.3            |
+| HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2            |
+| 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4           |
+| 监控     | Sentry + web-vitals                        | 见 package.json   |
+| 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies` |
 
 ## 启动流程
 
+与 `src/main.ts` 中 `bootstrap()` 一致（Element Plus 与全局样式在 `bootstrap` 之前通过 `import` 注入）：
+
 ```
-main.ts bootstrap()
-  ├─ setupStore(app)          # 1. 注册 Pinia
-  ├─ registerDirectives(app)  # 2. 注册全局指令（v-permission / v-role）
-  ├─ setupPlugins(app)        # 3. 注册插件
-  │   ├─ setupErrorHandler    #    全局异常处理
-  │   ├─ setupElementPlus     #    Element Plus 图标
-  │   └─ setupI18n            #    vue-i18n
-  ├─ app.use(router)          # 4. 注册路由
-  ├─ router.isReady()         # 5. 等待路由守卫执行完成
-  ├─ app.mount('#app')        # 6. 挂载
-  └─ initWebVitals()          # 7. 启动 Web Vitals 监控
+bootstrap()
+  1. setupStore(app)           # Pinia + persistedstate 插件
+  2. registerDirectives(app)   # v-permission / v-role
+  3. app.use(router)           # 先注册路由（Sentry 等需 router）
+  4. setupPlugins(app, router) # 顺序：ErrorHandler → Element Plus → I18n → Sentry（无 DSN 则跳过）
+  5. await router.isReady()
+  6. app.mount('#app')
+  7. initWebVitals()
 ```
 
 ## 路由体系
 
 ### 静态路由（`router/index.ts`）
 
-- 登录、注册、忘记密码、403、404
-- Layout + `/home`
+- 登录、注册、忘记密码、403、Layout（含子路由 `home`、嵌套 `examples`：crud / form / upload / charts 等）、404 兜底
+- 需登录的页面也可配置 `meta.permissions`（如首页 `dashboard:view`）
 
 ### 动态路由（`stores/modules/permission.ts`）
 
@@ -47,13 +49,14 @@ main.ts bootstrap()
 ### 路由守卫（`router/guards.ts`）
 
 ```
-beforeEach:
-  未登录 → /login（白名单直接放行）
-  已登录未加载路由 → fetchUserInfo + generateRoutes → addRoute
-  已登录 → 检查 meta.permissions / meta.roles
-afterEach:
-  设置 document.title
-  tabsStore.addTab(to)
+beforeEach（含 NProgress）:
+  无 token：白名单 /login、/register、/forgot-password 或 requiresAuth === false 放行，否则去登录
+  有 token 访问 /login：重定向 /
+  有 token 但无 userInfo：fetchUserInfo，失败则登出
+  动态路由未加载：generateRoutes 后对每段 router.addRoute('Layout', route)，并 replace 重匹配
+  已加载：仅合并 meta.permissions 做 hasPermission 校验，不通过 → /403
+  （RouteMeta.roles 已声明，当前守卫不校验；角色请用 v-role / usePermission().hasRole()）
+afterEach: document.title、tabsStore.addTab、NProgress.done
 ```
 
 ## 状态管理
@@ -101,9 +104,9 @@ onUnmounted(cancelAllRequests)
 ## 主题体系
 
 - CSS 自定义属性（`:root` / `html.dark`）驱动
-- `app.setTheme('dark'|'light'|'system')` 切换
-- Element Plus 暗黑 CSS 变量集成
-- SCSS 变量作为 fallback（编译时静态值）
+- `useAppStore().setTheme('light' | 'dark' | 'system')` 切换；`system` 监听 `prefers-color-scheme`
+- Element Plus `theme-chalk/dark/css-vars.css` 在 `main.ts` 中于主样式前引入
+- `variables.scss` 经 Vite `additionalData` 注入各 SCSS；`index.scss` 含 reset、dark 覆盖与工具类
 
 ## 异常处理
 
