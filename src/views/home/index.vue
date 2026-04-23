@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, markRaw } from 'vue'
+import type { Component } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
 import { DataLine, User, Tickets, Setting } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/modules/user'
@@ -15,16 +16,16 @@ interface StatCard {
   title: string
   value: number
   unit: string
-  icon: unknown
+  icon: Component
   color: string
   trend: number
 }
 
 const statCards = ref<StatCard[]>([
-  { title: '今日访问', value: 1024, unit: '次', icon: DataLine, color: '#409eff', trend: 12.5 },
-  { title: '用户总数', value: 8848, unit: '人', icon: User, color: '#67c23a', trend: 3.2 },
-  { title: '待处理工单', value: 36, unit: '条', icon: Tickets, color: '#e6a23c', trend: -5.1 },
-  { title: '系统配置', value: 128, unit: '项', icon: Setting, color: '#909399', trend: 0 },
+  { title: '今日访问', value: 1024, unit: '次', icon: markRaw(DataLine), color: '#409eff', trend: 12.5 },
+  { title: '用户总数', value: 8848, unit: '人', icon: markRaw(User), color: '#67c23a', trend: 3.2 },
+  { title: '待处理工单', value: 36, unit: '条', icon: markRaw(Tickets), color: '#e6a23c', trend: -5.1 },
+  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), color: '#909399', trend: 0 },
 ])
 
 const techList = [

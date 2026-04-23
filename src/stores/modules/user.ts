@@ -35,14 +35,27 @@ export const useUserStore = defineStore('user', () => {
 
   /** 登录 */
   async function loginAction(params: LoginParams): Promise<void> {
-    const result = await login(params)
+    // const result = await login(params)
+    const result = {
+      accessToken: '1234567890'
+    }
     token.value = result.accessToken
     setToken(result.accessToken)
   }
 
   /** 获取用户信息 */
   async function fetchUserInfo(): Promise<UserInfo> {
-    const info = await getUserInfo()
+    // const info = await getUserInfo()
+    const info = {
+      id: 1,
+      username: 'admin',
+      nickname: '管理员',
+      avatar: 'https://avatars.githubusercontent.com/u/100000000?v=4',
+      email: 'admin@example.com',
+      phone: '1234567890',
+      roles: ['admin'],
+      permissions: ['admin']
+    }
     userInfo.value = info
     return info
   }
@@ -83,6 +96,6 @@ export const useUserStore = defineStore('user', () => {
     fetchUserInfo,
     logoutAction,
     logout,
-    resetState,
+    resetState
   }
 })

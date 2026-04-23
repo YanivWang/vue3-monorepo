@@ -10,7 +10,7 @@ const enum HttpCode {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
-  SERVER_ERROR = 500,
+  SERVER_ERROR = 500
 }
 
 /** 防重复提示：避免多个接口同时 401 弹出多次 */
@@ -43,7 +43,7 @@ class HttpRequest {
         if (config.method?.toUpperCase() === 'GET') {
           config.params = {
             _t: Date.now(),
-            ...config.params,
+            ...config.params
           }
         }
 
@@ -51,7 +51,7 @@ class HttpRequest {
       },
       (error: unknown) => {
         return Promise.reject(error)
-      },
+      }
     )
 
     // ── 响应拦截器 ──────────────────────────────────────────────────────────
@@ -59,6 +59,8 @@ class HttpRequest {
       (response: AxiosResponse<ResponseData>) => {
         const { data, config } = response
         const customConfig = config as RequestConfig
+
+        // debugger
 
         // 业务状态码非 200 视为错误
         if (data.code !== HttpCode.SUCCESS) {
@@ -101,7 +103,7 @@ class HttpRequest {
               ElMessageBox.confirm('登录状态已过期，请重新登录', '提示', {
                 confirmButtonText: '重新登录',
                 cancelButtonText: '取消',
-                type: 'warning',
+                type: 'warning'
               })
                 .then(() => {
                   removeToken()
@@ -128,23 +130,18 @@ class HttpRequest {
 
           default:
             if (customConfig.showError !== false) {
-              ElMessage.error(
-                (response.data as { message?: string })?.message ||
-                  `请求失败（${status}）`,
-              )
+              ElMessage.error((response.data as { message?: string })?.message || `请求失败（${status}）`)
             }
         }
 
         return Promise.reject(error)
-      },
+      }
     )
   }
 
   /** 通用请求方法，返回剥离后的 data 字段 */
   request<T = unknown>(config: RequestConfig): Promise<T> {
-    return this.instance
-      .request<ResponseData<T>>(config)
-      .then((res) => res.data.data)
+    return this.instance.request<ResponseData<T>>(config).then(res => res.data.data)
   }
 
   get<T = unknown>(url: string, params?: Record<string, unknown>, config?: RequestConfig): Promise<T> {
@@ -173,8 +170,8 @@ const http = new HttpRequest({
   baseURL: import.meta.env.VITE_API_PREFIX || '/api',
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-  },
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
 })
 
 export default http
