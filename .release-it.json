@@ -9,9 +9,14 @@
           { "type": "fix", "section": "🐛 Bug Fixes" },
           { "type": "perf", "section": "⚡ Performance" },
           { "type": "refactor", "section": "♻️ Refactoring" },
+          { "type": "style", "section": "💄 Code Style" },
+          { "type": "test", "section": "🧪 Tests" },
           { "type": "docs", "section": "📖 Documentation" },
+          { "type": "build", "section": "🏗️ Build" },
+          { "type": "ci", "section": "👷 CI/CD" },
           { "type": "chore", "section": "🔧 Chores" },
-          { "type": "ci", "section": "👷 CI/CD" }
+          { "type": "revert", "section": "⏪ Reverts" },
+          { "type": "wip", "section": "🚧 WIP" }
         ]
       },
       "infile": "CHANGELOG.md",
