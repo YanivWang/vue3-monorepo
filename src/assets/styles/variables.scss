@@ -1,0 +1,61 @@
+// ────────────────────────────────────────────────────────────
+//  全局 SCSS 变量
+//  通过 vite.config.ts additionalData 自动注入到所有 Vue SFC
+//  的 <style lang="scss"> 块及直接导入的 .scss 文件
+// ────────────────────────────────────────────────────────────
+
+// 主色
+$primary-color:  #409eff;
+$success-color:  #67c23a;
+$warning-color:  #e6a23c;
+$danger-color:   #f56c6c;
+$info-color:     #909399;
+
+// 文字颜色
+$text-primary:     #303133;
+$text-regular:     #606266;
+$text-secondary:   #909399;
+$text-placeholder: #c0c4cc;
+
+// 背景颜色
+$bg-page:    #f0f2f5;
+$bg-white:   #ffffff;
+$bg-overlay: rgba(0, 0, 0, 0.5);
+
+// 边框
+$border-color:       #dcdfe6;
+$border-color-light: #e4e7ed;
+$border-radius-base:   4px;
+$border-radius-medium: 6px;
+$border-radius-large:  8px;
+
+// 布局尺寸
+$header-height:           60px;
+$sidebar-width:           220px;
+$sidebar-width-collapsed: 64px;
+$footer-height:           50px;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// 阴影
+$box-shadow-base:   0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+$box-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
+$box-shadow-dark:   0 2px 16px rgba(0, 0, 0, 0.15);
+
+// 过渡动画
+$transition-base: all 0.3s ease;
+$transition-fast: all 0.15s ease;
+
+// z-index 层级
+$z-index-base:     1;
+$z-index-dropdown: 1000;
+$z-index-sticky:   1020;
+$z-index-fixed:    1030;
+$z-index-modal:    1040;
+$z-index-popover:  1050;
+$z-index-tooltip:  1070;
