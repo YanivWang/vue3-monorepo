@@ -47,5 +47,11 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
     }
   },
+  {
+    files: ['**/*.{spec,test}.{ts,js}'],
+    rules: {
+      'vue/one-component-per-file': 'off'
+    }
+  },
   prettier
 )

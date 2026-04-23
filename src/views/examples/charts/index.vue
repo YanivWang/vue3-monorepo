@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, nextTick } from 'vue'
 import { useECharts } from '@/composables/useECharts'
 
-// ── 折线图 ────────────────────────────────────────────────────
 const { chartRef: lineRef, setOption: setLineOption } = useECharts()
+const { chartRef: barRef, setOption: setBarOption } = useECharts()
+const { chartRef: pieRef, setOption: setPieOption } = useECharts()
+const { chartRef: radarRef, setOption: setRadarOption } = useECharts()
 
-onMounted(() => {
+onMounted(async () => {
+  // nextTick 确保 useECharts 内部的 onMounted 已全部执行完毕，DOM 尺寸稳定
+  await nextTick()
+
+  // ── 折线图 ────────────────────────────────────────────────
   setLineOption({
     tooltip: { trigger: 'axis' },
     legend: { data: ['访问量', '注册量'] },
@@ -39,12 +45,8 @@ onMounted(() => {
       }
     ]
   })
-})
 
-// ── 柱状图 ────────────────────────────────────────────────────
-const { chartRef: barRef, setOption: setBarOption } = useECharts()
-
-onMounted(() => {
+  // ── 柱状图 ────────────────────────────────────────────────
   setBarOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: {},
@@ -60,12 +62,8 @@ onMounted(() => {
       { name: '联盟广告', type: 'bar', data: [220, 182, 191, 234, 290, 330, 310], barMaxWidth: 40 }
     ]
   })
-})
 
-// ── 饼图 ──────────────────────────────────────────────────────
-const { chartRef: pieRef, setOption: setPieOption } = useECharts()
-
-onMounted(() => {
+  // ── 饼图 ──────────────────────────────────────────────────
   setPieOption({
     tooltip: { trigger: 'item', formatter: '{a} <br/>{b}: {c} ({d}%)' },
     legend: { orient: 'vertical', left: 'left' },
@@ -90,12 +88,8 @@ onMounted(() => {
       }
     ]
   })
-})
 
-// ── 雷达图 ────────────────────────────────────────────────────
-const { chartRef: radarRef, setOption: setRadarOption } = useECharts()
-
-onMounted(() => {
+  // ── 雷达图 ────────────────────────────────────────────────
   setRadarOption({
     tooltip: {},
     legend: { data: ['预算分配', '实际支出'] },

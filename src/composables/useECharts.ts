@@ -48,7 +48,12 @@ export function useECharts() {
 
   onMounted(async () => {
     await nextTick()
-    init()
+    // 若 setOption 已在组件的 onMounted 中被调用（常见用法），instance 已存在，
+    // 此处无需重新 init()（否则会 dispose 并清空已渲染的图表）。
+    // 仅在还没有实例时（如调用方没有立即 setOption 的场景）才主动初始化。
+    if (!instance) {
+      init()
+    }
 
     resizeObserver = new ResizeObserver(() => resize())
     if (chartRef.value) resizeObserver.observe(chartRef.value)
