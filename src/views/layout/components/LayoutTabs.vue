@@ -100,6 +100,8 @@ watch(activeTab, async () => {
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color' as color;
+
 .layout-tabs {
   display: flex;
   align-items: center;
@@ -155,7 +157,7 @@ watch(activeTab, async () => {
 
     &:hover {
       color: #fff;
-      background-color: darken(#409eff, 6%);
+      background-color: color.adjust($primary-color, $lightness: -6%);
     }
 
     .tab-item__close {
