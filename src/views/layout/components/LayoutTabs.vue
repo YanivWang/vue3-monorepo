@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useTabsStore } from '@/stores/modules/tabs'
 import { TabAction } from '@/enums'
@@ -7,18 +7,19 @@ import { TabAction } from '@/enums'
 const router = useRouter()
 const route = useRoute()
 const tabsStore = useTabsStore()
+const scrollRef = ref<HTMLElement>()
 
 const tabs = computed(() => tabsStore.tabs)
 const activeTab = computed(() => tabsStore.activeTab)
 
-function handleTabClick(pane: { paneName?: string | number }): void {
-  const path = pane.paneName as string
+function handleTabClick(path: string): void {
   if (path !== route.fullPath) {
     router.push(path)
   }
 }
 
-function handleTabRemove(path: string): void {
+function handleTabClose(e: MouseEvent, path: string): void {
+  e.stopPropagation()
   const nextPath = tabsStore.removeTab(path)
   if (path === route.fullPath) {
     router.push(nextPath)
@@ -28,7 +29,7 @@ function handleTabRemove(path: string): void {
 function handleContextMenu(action: TabAction, path: string): void {
   switch (action) {
     case TabAction.CLOSE:
-      handleTabRemove(path)
+      handleTabClose(new MouseEvent('click'), path)
       break
     case TabAction.CLOSE_OTHERS:
       tabsStore.removeOtherTabs(path)
@@ -40,102 +41,160 @@ function handleContextMenu(action: TabAction, path: string): void {
       break
     }
     case TabAction.REFRESH:
-      // 通过 key 切换触发重渲染（借助 keep-alive 外层）
       router.replace({ path: '/redirect' + path })
       break
   }
 }
+
+/** 激活 tab 变化时，自动滚动使其可见 */
+watch(activeTab, async () => {
+  await nextTick()
+  const el = scrollRef.value?.querySelector('.tab-item--active') as HTMLElement
+  el?.scrollIntoView({ inline: 'nearest', behavior: 'smooth' })
+})
 </script>
 
 <template>
   <div class="layout-tabs">
-    <el-tabs
-      :model-value="activeTab"
-      type="card"
-      class="tabs-bar"
-      @tab-click="handleTabClick"
-      @tab-remove="(name: string | number) => handleTabRemove(name as string)"
-    >
-      <el-tab-pane v-for="tab in tabs" :key="tab.path" :label="tab.title" :name="tab.path" :closable="!tab.affix">
-        <template #label>
-          <el-dropdown trigger="contextmenu" @command="(action: TabAction) => handleContextMenu(action, tab.path)">
-            <span class="tab-label">
-              <el-icon v-if="tab.icon" class="tab-label__icon">
-                <component :is="tab.icon" />
-              </el-icon>
-              {{ tab.title }}
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item :command="TabAction.REFRESH" :icon="'RefreshRight'">
-                  {{ $t('tabs.refresh') }}
-                </el-dropdown-item>
-                <el-dropdown-item v-if="!tab.affix" :command="TabAction.CLOSE" :icon="'Close'" divided>
-                  {{ $t('tabs.close') }}
-                </el-dropdown-item>
-                <el-dropdown-item :command="TabAction.CLOSE_OTHERS" :icon="'SemiSelect'">
-                  {{ $t('tabs.closeOthers') }}
-                </el-dropdown-item>
-                <el-dropdown-item :command="TabAction.CLOSE_ALL" :icon="'CircleClose'">
-                  {{ $t('tabs.closeAll') }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+    <!-- 可横向滚动的标签列表 -->
+    <div ref="scrollRef" class="tabs-scroll">
+      <el-dropdown
+        v-for="tab in tabs"
+        :key="tab.path"
+        trigger="contextmenu"
+        @command="(action: TabAction) => handleContextMenu(action, tab.path)"
+      >
+        <div
+          class="tab-item"
+          :class="{ 'tab-item--active': tab.path === activeTab, 'tab-item--affix': tab.affix }"
+          @click="handleTabClick(tab.path)"
+        >
+          <el-icon v-if="tab.icon" class="tab-item__icon">
+            <component :is="tab.icon" />
+          </el-icon>
+          <span class="tab-item__title">{{ tab.title }}</span>
+          <el-icon v-if="!tab.affix" class="tab-item__close" @click.stop="handleTabClose($event, tab.path)">
+            <Close />
+          </el-icon>
+        </div>
+
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item :command="TabAction.REFRESH">
+              <el-icon><RefreshRight /></el-icon> {{ $t('tabs.refresh') }}
+            </el-dropdown-item>
+            <el-dropdown-item v-if="!tab.affix" :command="TabAction.CLOSE" divided>
+              <el-icon><Close /></el-icon> {{ $t('tabs.close') }}
+            </el-dropdown-item>
+            <el-dropdown-item :command="TabAction.CLOSE_OTHERS">
+              <el-icon><SemiSelect /></el-icon> {{ $t('tabs.closeOthers') }}
+            </el-dropdown-item>
+            <el-dropdown-item :command="TabAction.CLOSE_ALL">
+              <el-icon><CircleClose /></el-icon> {{ $t('tabs.closeAll') }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
         </template>
-      </el-tab-pane>
-    </el-tabs>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .layout-tabs {
-  height: 40px;
+  display: flex;
+  align-items: center;
+  height: 44px;
   padding: 0 $spacing-md;
   background-color: $bg-white;
   border-bottom: 1px solid $border-color-light;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
 
-  :deep(.el-tabs__header) {
-    margin: 0;
-    border-bottom: none;
-  }
+.tabs-scroll {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  align-items: center;
+  height: 100%;
+  overflow: auto hidden;
+  scrollbar-width: none;
 
-  :deep(.el-tabs__nav) {
-    border: none;
-  }
-
-  :deep(.el-tabs__item) {
-    height: 36px;
-    margin-right: 4px;
-    line-height: 36px;
-    border: 1px solid $border-color-light !important;
-    border-radius: $border-radius-base;
-    transition: $transition-fast;
-
-    &.is-active {
-      color: $primary-color;
-      background-color: rgba(64, 158, 255, 0.1);
-      border-color: $primary-color !important;
-    }
-
-    &:hover {
-      color: $primary-color;
-    }
-  }
-
-  :deep(.el-tabs__nav-wrap::after) {
+  &::-webkit-scrollbar {
     display: none;
   }
 }
 
-.tab-label {
-  display: flex;
-  gap: 4px;
+.tab-item {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 5px;
   align-items: center;
+  height: 30px;
+  padding: 0 10px;
   font-size: 13px;
+  color: $text-regular;
+  cursor: pointer;
+  user-select: none;
+  background-color: #f0f2f5;
+  border-radius: 4px;
+  transition: all 0.18s ease;
+
+  &:hover {
+    color: $primary-color;
+    background-color: rgba(64, 158, 255, 0.08);
+
+    .tab-item__close {
+      opacity: 1;
+    }
+  }
+
+  &--active {
+    color: #fff;
+    background-color: $primary-color;
+    box-shadow: 0 2px 8px rgba(64, 158, 255, 0.35);
+
+    &:hover {
+      color: #fff;
+      background-color: darken(#409eff, 6%);
+    }
+
+    .tab-item__close {
+      color: rgba(255, 255, 255, 0.8);
+      opacity: 1;
+
+      &:hover {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
 
   &__icon {
-    font-size: 14px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  &__title {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: $danger-color;
+      background-color: rgba($danger-color, 0.12);
+    }
   }
 }
 </style>

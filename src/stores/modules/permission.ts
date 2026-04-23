@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, shallowRef } from 'vue'
+import { ref, shallowRef, h } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import type { MenuRoute } from '@/types/api'
 import { getMenuRoutes } from '@/api/modules/menu'
@@ -10,9 +10,38 @@ import { getMenuRoutes } from '@/api/modules/menu'
  */
 const viewModules = import.meta.glob('../../views/**/*.vue')
 
-function resolveComponent(component: string): (() => Promise<unknown>) | undefined {
+/** 找不到组件时的降级占位页（使用 h() 避免运行时编译器依赖） */
+const PlaceholderView = () =>
+  Promise.resolve({
+    name: 'PlaceholderView',
+    setup() {
+      return () =>
+        h(
+          'div',
+          {
+            style:
+              'display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:#909399'
+          },
+          [
+            h('svg', {
+              xmlns: 'http://www.w3.org/2000/svg',
+              width: 48,
+              height: 48,
+              viewBox: '0 0 24 24',
+              fill: 'none',
+              stroke: 'currentColor',
+              'stroke-width': '1.5',
+              innerHTML: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
+            }),
+            h('p', { style: 'font-size:14px;margin:0' }, '页面正在开发中...')
+          ]
+        )
+    }
+  })
+
+function resolveComponent(component: string): () => Promise<unknown> {
   const key = `../../views/${component}.vue`
-  return viewModules[key] as (() => Promise<unknown>) | undefined
+  return (viewModules[key] as () => Promise<unknown>) ?? PlaceholderView
 }
 
 function menuToRoutes(menus: MenuRoute[]): RouteRecordRaw[] {

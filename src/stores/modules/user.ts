@@ -21,6 +21,8 @@ export const useUserStore = defineStore('user', () => {
   const permissions = computed(() => userInfo.value?.permissions ?? [])
 
   function hasPermission(permission: string): boolean {
+    // *:*:* 表示超级管理员，拥有所有权限，直接放行
+    if (permissions.value.includes('*:*:*')) return true
     return permissions.value.includes(permission)
   }
 
