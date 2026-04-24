@@ -1,7 +1,7 @@
-// prettier.config.js
+// prettier.config.mjs — 使用 .mjs 显式为 ESM，避免 Node MODULE_TYPELESS_PACKAGE_JSON 与重复解析
 /**
  * @type {import('prettier').Config}
- * @see https://www.prettier.cn/docs/options.html
+ * @see https://prettier.io/docs/en/options
  */
 export default {
   // 指定最大换行长度

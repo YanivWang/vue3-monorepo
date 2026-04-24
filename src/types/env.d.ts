@@ -33,3 +33,10 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** 供 `tsc` / IDE 解析 `.vue` 导入（`vue-tsc` 会在此基础上做 SFC 类型推导） */
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>
+  export default component
+}

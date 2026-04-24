@@ -14,7 +14,16 @@ const autoImportRaw = JSON.parse(readFileSync(autoImportFile, 'utf8'))
 const autoImportGlobals = Object.fromEntries(Object.keys(autoImportRaw.globals).map(k => [k, 'readonly']))
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', '**/*.d.ts', 'src/types/auto-imports.d.ts', '.eslintrc-auto-import.json'] },
+  {
+    ignores: [
+      'dist',
+      'docs/.vitepress/dist',
+      'node_modules',
+      '**/*.d.ts',
+      'src/types/auto-imports.d.ts',
+      '.eslintrc-auto-import.json'
+    ]
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
@@ -42,16 +51,18 @@ export default tseslint.config(
   {
     files: ['**/*.{ts,vue}'],
     rules: {
-      'no-console': ['warn', { allow: ['log', 'warn', 'error'] }],
+      'no-console': ['warn', { allow: ['log', 'warn', 'error', 'info'] }],
       'vue/multi-word-component-names': 'off',
       // noUnusedLocals / noUnusedParameters in tsconfig already handle this at compile time
       '@typescript-eslint/no-unused-vars': 'off'
     }
   },
   {
-    files: ['**/*.{spec,test}.{ts,js}'],
+    files: ['**/*.{spec,test}.{ts,tsx,js,jsx}'],
     rules: {
-      'vue/one-component-per-file': 'off'
+      'vue/one-component-per-file': 'off',
+      // 故意在 render 中 throw 以测 ErrorBoundary 时无需返回值
+      'vue/require-render-return': 'off'
     }
   },
   prettier

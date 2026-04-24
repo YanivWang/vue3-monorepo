@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "企业级 Vue3 + Vite + TypeScript 脚手架模板",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.33.1",
   "scripts": {
     "dev": "vite",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@commitlint/types": "^20.5.0",
     "@eslint/js": "^9.39.4",
     "@release-it/conventional-changelog": "^10.0.6",
     "@types/js-cookie": "^3.0.6",

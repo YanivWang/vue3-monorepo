@@ -1,7 +1,7 @@
 name: 🐛 Bug 报告
 description: 报告一个可复现的问题
-title: "[Bug]: "
-labels: ["bug", "triage"]
+title: '[Bug]: '
+labels: ['bug', 'triage']
 assignees: []
 
 body:
@@ -74,13 +74,13 @@ body:
     id: node-version
     attributes:
       label: Node.js 版本
-      placeholder: "例如：20.11.0"
+      placeholder: '例如：20.11.0'
 
   - type: input
     id: project-version
     attributes:
       label: 项目版本
-      placeholder: "例如：1.2.3（见 package.json）"
+      placeholder: '例如：1.2.3（见 package.json）'
 
   - type: textarea
     id: console-error

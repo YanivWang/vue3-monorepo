@@ -35,16 +35,16 @@ jobs:
             ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:latest
             ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=registry,ref=${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:buildcache
-          cache-to:   type=registry,ref=${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:buildcache,mode=max
+          cache-to: type=registry,ref=${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:buildcache,mode=max
 
       # ── SSH 部署到服务器 ───────────────────────────────────
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host:     ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key:      ${{ secrets.SSH_KEY }}
-          port:     ${{ secrets.SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:latest
             docker stop vue3-app-template 2>/dev/null || true

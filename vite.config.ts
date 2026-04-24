@@ -45,15 +45,9 @@ export default defineConfig(async ({ mode }) => {
         enable: isMock
       }),
 
-      // Gzip 压缩（生产构建时生成 .gz 文件）
+      // 单实例多算法，避免对 generateBundle 重复挂钩导致同路径资源被多次 emit
       compression({
-        algorithm: 'gzip',
-        exclude: [/\.(br)$/, /\.(gz)$/]
-      }),
-
-      // Brotli 压缩（比 Gzip 压缩率更高，现代浏览器首选）
-      compression({
-        algorithm: 'brotliCompress',
+        algorithms: ['gzip', 'brotliCompress'],
         exclude: [/\.(br)$/, /\.(gz)$/]
       }),
 
@@ -84,7 +78,7 @@ export default defineConfig(async ({ mode }) => {
         [env.VITE_API_PREFIX || '/api']: {
           target: env.VITE_API_BASE_URL || 'http://localhost:3000',
           changeOrigin: true,
-          rewrite: path => path.replace(new RegExp(`^${env.VITE_API_PREFIX || '/api'}`), '')
+          rewrite: (path: string) => path.replace(new RegExp(`^${env.VITE_API_PREFIX || '/api'}`), '')
         }
       }
     },
@@ -97,7 +91,7 @@ export default defineConfig(async ({ mode }) => {
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
-          manualChunks(id) {
+          manualChunks(id: string) {
             if (id.includes('node_modules')) {
               if (id.includes('element-plus')) return 'element-plus'
               if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router')) return 'vue-vendor'

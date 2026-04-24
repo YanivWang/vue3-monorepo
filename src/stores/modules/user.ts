@@ -3,6 +3,8 @@ import { ref, computed } from 'vue'
 import { getUserInfo, login, logout as logoutApi } from '@/api/modules/user'
 import { getToken, setToken, removeToken, setRefreshToken, removeRefreshToken } from '@/utils/storage'
 import { resetRouter } from '@/router'
+import { usePermissionStore } from '@/stores/modules/permission'
+import { useTabsStore } from '@/stores/modules/tabs'
 import type { UserInfo, LoginParams } from '@/types/api'
 
 /**
@@ -64,13 +66,8 @@ export const useUserStore = defineStore('user', () => {
     removeRefreshToken()
     // 重置动态路由（避免下一个账号登录残留路由）
     resetRouter()
-    // 延迟导入避免循环依赖
-    import('@/stores/modules/permission').then(({ usePermissionStore }) => {
-      usePermissionStore().resetRoutes()
-    })
-    import('@/stores/modules/tabs').then(({ useTabsStore }) => {
-      useTabsStore().resetTabs()
-    })
+    usePermissionStore().resetRoutes()
+    useTabsStore().resetTabs()
   }
 
   return {

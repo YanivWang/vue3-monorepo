@@ -50,10 +50,10 @@ jobs:
       - name: Deploy to staging server
         uses: appleboy/ssh-action@v1
         with:
-          host:     ${{ secrets.STAGING_SSH_HOST }}
+          host: ${{ secrets.STAGING_SSH_HOST }}
           username: ${{ secrets.STAGING_SSH_USER }}
-          key:      ${{ secrets.STAGING_SSH_KEY }}
-          port:     ${{ secrets.STAGING_SSH_PORT || 22 }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT || 22 }}
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:staging
             docker stop vue3-app-template-staging 2>/dev/null || true

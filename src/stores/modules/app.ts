@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { ThemeMode as ThemeModeEnum, Language } from '@/enums'
+import { i18n } from '@/locales'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 type LanguageType = 'zh-CN' | 'en-US'
@@ -77,10 +78,7 @@ export const useAppStore = defineStore(
     /** 切换语言（同步更新 vue-i18n locale） */
     function setLanguage(lang: LanguageType): void {
       language.value = lang
-      // 延迟导入避免循环依赖
-      import('@/locales').then(({ i18n }) => {
-        i18n.global.locale.value = lang as typeof i18n.global.locale.value
-      })
+      i18n.global.locale.value = lang as typeof i18n.global.locale.value
     }
 
     /** 设置全局页面加载状态 */
