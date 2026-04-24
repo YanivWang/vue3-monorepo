@@ -1,4 +1,4 @@
-# vue3-app-template
+# vue3-monorepo-template
 
 企业级开箱即用 Vue3 + Vite + TypeScript 脚手架，零配置、零报错、一键启动。
 
@@ -25,7 +25,7 @@
 ## 目录结构
 
 ```
-vue3-app-template/
+vue3-monorepo-template/
 ├── public/                      # 静态资源（不经过 Vite 处理）
 │   └── favicon.svg
 ├── src/
@@ -216,7 +216,7 @@ await userStore.loginAction({ username: 'admin', password: '123456' })
 
 | 变量名                   | 说明                             | 默认值                     |
 | ------------------------ | -------------------------------- | -------------------------- |
-| `VITE_APP_TITLE`         | 应用标题                         | vue3-app-template          |
+| `VITE_APP_TITLE`         | 应用标题                         | vue3-monorepo-template     |
 | `VITE_API_BASE_URL`      | 后端接口地址                     | http://localhost:3000      |
 | `VITE_API_PREFIX`        | 请求前缀（Vite proxy key）       | /api                       |
 | `VITE_TOKEN_KEY`         | Access Token 存储 key（Cookie）  | access_token               |

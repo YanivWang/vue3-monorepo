@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: vue3-app-template API
+  title: vue3-monorepo-template API
   description: 后端接口文档（OpenAPI 3.0）
   version: 1.0.0
 

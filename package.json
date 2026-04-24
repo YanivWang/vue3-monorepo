@@ -1,5 +1,5 @@
 {
-  "name": "vue3-app-template",
+  "name": "vue3-monorepo-template",
   "version": "1.0.0",
   "description": "企业级 Vue3 + Vite + TypeScript 脚手架模板",
   "private": true,

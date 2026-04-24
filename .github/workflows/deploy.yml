@@ -47,10 +47,10 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:latest
-            docker stop vue3-app-template 2>/dev/null || true
-            docker rm   vue3-app-template 2>/dev/null || true
+            docker stop vue3-monorepo-template 2>/dev/null || true
+            docker rm   vue3-monorepo-template 2>/dev/null || true
             docker run -d \
-              --name vue3-app-template \
+              --name vue3-monorepo-template \
               --restart unless-stopped \
               -p 80:80 \
               ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:latest

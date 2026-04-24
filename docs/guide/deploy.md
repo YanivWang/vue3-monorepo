@@ -30,7 +30,7 @@ docker compose logs -f
 | `REGISTRY_URL`  | 镜像仓库地址（如 `registry.cn-hangzhou.aliyuncs.com`） |
 | `REGISTRY_USER` | 仓库用户名                                             |
 | `REGISTRY_PASS` | 仓库密码                                               |
-| `IMAGE_NAME`    | 镜像名（如 `my-namespace/vue3-app-template`）          |
+| `IMAGE_NAME`    | 镜像名（如 `my-namespace/vue3-monorepo-template`）     |
 | `SSH_HOST`      | 目标服务器 IP                                          |
 | `SSH_USER`      | SSH 用户名                                             |
 | `SSH_KEY`       | SSH 私钥（Base64 或 PEM 格式）                         |
@@ -72,7 +72,7 @@ pnpm build
 
 | 变量                | 说明                   | 示例                      |
 | ------------------- | ---------------------- | ------------------------- |
-| `VITE_APP_TITLE`    | 应用标题               | `vue3-app-template`       |
+| `VITE_APP_TITLE`    | 应用标题               | `vue3-monorepo-template`  |
 | `VITE_API_BASE_URL` | 后端 API 基础地址      | `https://api.example.com` |
 | `VITE_API_PREFIX`   | API 路径前缀（代理用） | `/api`                    |
 | `VITE_USE_MOCK`     | 是否启用 Mock          | `true/false`              |

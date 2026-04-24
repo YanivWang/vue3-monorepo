@@ -69,7 +69,7 @@ export function setupRouterGuards(router: Router): void {
 
   // ── 全局后置钩子 ──────────────────────────────────────────────────────────
   router.afterEach(to => {
-    const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-app-template'
+    const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo-template'
     document.title = to.meta?.title ? `${to.meta.title} - ${appTitle}` : appTitle
 
     // 同步 tab 状态
