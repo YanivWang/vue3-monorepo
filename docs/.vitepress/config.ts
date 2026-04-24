@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'Vue3 Vite Template',
+  title: 'vue3-app-template',
   description: '企业级 Vue3 + Vite + TypeScript 脚手架模板文档',
   lang: 'zh-CN',
   base: '/',
@@ -10,7 +10,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: '/logo.svg',
-    siteTitle: 'Vue3 Template',
+    siteTitle: 'vue3-app-template',
 
     nav: [
       { text: '指南', link: '/guide/getting-started' },
@@ -18,7 +18,7 @@ export default defineConfig({
       { text: '架构', link: '/guide/architecture' },
       {
         text: '更新日志',
-        link: 'https://github.com/your-org/vue3-vite-template/blob/main/CHANGELOG.md'
+        link: 'https://github.com/your-org/vue3-app-template/blob/main/CHANGELOG.md'
       }
     ],
 
@@ -51,7 +51,7 @@ export default defineConfig({
       ]
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/your-org/vue3-vite-template' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/your-org/vue3-app-template' }],
 
     footer: {
       message: 'Released under the MIT License.',
@@ -61,7 +61,7 @@ export default defineConfig({
     search: { provider: 'local' },
 
     editLink: {
-      pattern: 'https://github.com/your-org/vue3-vite-template/edit/main/docs/:path',
+      pattern: 'https://github.com/your-org/vue3-app-template/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页'
     },
 

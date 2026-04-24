@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: 'Vue3 Vite Template'
+  name: 'vue3-app-template'
   text: '企业级前端脚手架'
   tagline: Vue3 + Vite + TypeScript + Element Plus，开箱即用的最佳实践集合
   actions:
@@ -14,7 +14,7 @@ hero:
       link: /components/page-container
     - theme: alt
       text: GitHub
-      link: https://github.com/your-org/vue3-vite-template
+      link: https://github.com/your-org/vue3-app-template
 
 features:
   - icon: ⚡

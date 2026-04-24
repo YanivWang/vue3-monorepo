@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: vue3-vite-template:local
-    container_name: vue3-vite-template
+    image: vue3-app-template:local
+    container_name: vue3-app-template
     ports:
       - "80:80"
     restart: unless-stopped

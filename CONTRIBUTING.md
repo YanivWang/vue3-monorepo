@@ -6,8 +6,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-org/vue3-vite-template.git
-cd vue3-vite-template
+git clone https://github.com/your-org/vue3-app-template.git
+cd vue3-app-template
 
 # 安装依赖（需要 pnpm >= 10）
 pnpm install

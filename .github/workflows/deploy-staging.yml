@@ -56,10 +56,10 @@ jobs:
           port:     ${{ secrets.STAGING_SSH_PORT || 22 }}
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:staging
-            docker stop vue3-app-staging 2>/dev/null || true
-            docker rm   vue3-app-staging 2>/dev/null || true
+            docker stop vue3-app-template-staging 2>/dev/null || true
+            docker rm   vue3-app-template-staging 2>/dev/null || true
             docker run -d \
-              --name vue3-app-staging \
+              --name vue3-app-template-staging \
               --restart unless-stopped \
               -p 8080:80 \
               -e APP_ENV=staging \

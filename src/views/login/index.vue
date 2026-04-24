@@ -55,7 +55,7 @@ async function handleLogin(): Promise<void> {
       <!-- 标题 -->
       <div class="login-card__header">
         <img src="/favicon.svg" alt="logo" class="login-card__logo" />
-        <h1 class="login-card__title">Vue3 Enterprise</h1>
+        <h1 class="login-card__title">vue3-app-template</h1>
         <p class="login-card__subtitle">企业级管理系统</p>
       </div>
 
