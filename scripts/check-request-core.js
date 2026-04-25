@@ -7,7 +7,7 @@ import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
-const SRC = join(ROOT, 'packages/request/src')
+const SRC = join(ROOT, 'packages/request/core/src')
 
 const BANNED = [
   { re: /\bElMessage\b/, name: 'ElMessage' },
@@ -40,4 +40,4 @@ for (const file of walk(SRC)) {
 }
 
 if (bad) process.exit(1)
-console.log('[check-request-core] OK — packages/request/src 无 UI 耦合字样')
+console.log('[check-request-core] OK — packages/request/core/src 无 UI 耦合字样')

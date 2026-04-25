@@ -1,12 +1,16 @@
 # pnpm workspace 配置
-# packages glob 匹配 4 组：apps、6 基础包、PC UI 4 包、H5 UI 4 包
-# pnpm 会自动忽略没有 package.json 的目录（如 packages/pc、packages/h5 本身）
+# apps：按端分目录（pc / h5）：apps/pc/*、apps/h5/*；文档站根目录 docs
+# packages：基座 4 个 + hooks/request 的 core 与端包 + components/directives 分端
 
 packages:
-  - 'apps/*'
-  - 'packages/*' # shared / utils / bridge / request / locale / hooks（6 基础包）
-  - 'packages/pc/*' # components / hooks / directives / request（PC UI 4 包）
-  - 'packages/h5/*' # components / hooks / directives / request（H5 UI 4 包）
+  - 'apps/pc/*'
+  - 'apps/h5/*'
+  - 'docs'
+  - 'packages/*' # shared / utils / bridge / locale（4 基座；不含 hooks、request 父级）
+  - 'packages/hooks/*'
+  - 'packages/request/*'
+  - 'packages/components/*'
+  - 'packages/directives/*'
 
 # ---------- catalog（全仓锁版本，单点维护） ----------
 # 各包在 package.json 里用 "vue": "catalog:" 引用，版本以此处为准。

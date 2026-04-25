@@ -1,4 +1,4 @@
-# PC 管理端（apps/admin）静态资源 → nginx
+# PC 管理端（apps/pc/pc-admin-template）静态资源 → nginx
 # 构建上下文：仓库根目录
 #   docker build -f docker/images/admin/Dockerfile .
 # Compose：见 docker/docker-compose.yaml（context: .., dockerfile: docker/images/admin/Dockerfile）
@@ -25,7 +25,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY docker/nginx/admin.conf /etc/nginx/conf.d/app.conf
 
-COPY --from=builder /app/apps/admin/dist /usr/share/nginx/html
+COPY --from=builder /app/apps/pc/pc-admin-template/dist /usr/share/nginx/html
 
 EXPOSE 80
 

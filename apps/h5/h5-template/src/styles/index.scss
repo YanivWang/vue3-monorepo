@@ -1,5 +1,5 @@
 // Shared tokens：Sass 不解析 package exports，使用仓库相对路径（与 dev/build/Docker 一致）
-@use '../../../../packages/shared/src/styles/tokens/index.scss' as *;
+@use '../../../../../packages/shared/src/styles/tokens/index.scss' as *;
 
 // Vant 基础样式；使用 css 版本避免重复引入编译开销
 @use 'vant/lib/index.css';

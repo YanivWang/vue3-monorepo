@@ -6,6 +6,19 @@ import pluginVue from 'eslint-plugin-vue'
 import importPlugin from 'eslint-plugin-import'
 import vueParser from 'vue-eslint-parser'
 
+const pcFromRoots = [
+  './packages/components/pc',
+  './packages/directives/pc',
+  './packages/hooks/pc',
+  './packages/request/pc'
+]
+const h5FromRoots = [
+  './packages/components/h5',
+  './packages/directives/h5',
+  './packages/hooks/h5',
+  './packages/request/h5'
+]
+
 export default tseslint.config(
   {
     ignores: [
@@ -28,7 +41,7 @@ export default tseslint.config(
 
   // ---------------- 语言选项（覆盖 monorepo 全部 ts/vue/js/mjs） ----------------
   {
-    files: ['{apps,packages,scripts}/**/*.{ts,vue,js,mjs}', '*.{ts,mjs,js}'],
+    files: ['{apps,docs,packages,scripts}/**/*.{ts,vue,js,mjs}', '*.{ts,mjs,js}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -51,7 +64,7 @@ export default tseslint.config(
 
   // ---------------- 通用规则 ----------------
   {
-    files: ['{apps,packages,scripts}/**/*.{ts,vue}'],
+    files: ['{apps,docs,packages,scripts}/**/*.{ts,vue}'],
     rules: {
       'no-console': ['warn', { allow: ['log', 'warn', 'error', 'info'] }],
       'vue/multi-word-component-names': 'off',
@@ -77,29 +90,24 @@ export default tseslint.config(
         'error',
         {
           zones: [
+            ...['components', 'directives', 'hooks', 'request'].map(type => ({
+              target: `./packages/${type}/pc`,
+              from: `./packages/${type}/h5`,
+              message: 'PC 包禁止引 H5 同类型包'
+            })),
+            ...['components', 'directives', 'hooks', 'request'].map(type => ({
+              target: `./packages/${type}/h5`,
+              from: `./packages/${type}/pc`,
+              message: 'H5 包禁止引 PC 同类型包'
+            })),
             {
-              target: './packages/pc',
-              from: './packages/h5',
-              message: 'PC 包禁止引 H5 包'
+              target: './packages/request/core',
+              from: ['./packages/request/pc', './packages/request/h5'],
+              message: 'core request 禁止反依赖端侧 preset'
             },
             {
-              target: './packages/h5',
-              from: './packages/pc',
-              message: 'H5 包禁止引 PC 包'
-            },
-            {
-              target: './packages/request',
-              from: './packages/pc/request',
-              message: 'core request 禁止反依赖 PC preset'
-            },
-            {
-              target: './packages/request',
-              from: './packages/h5/request',
-              message: 'core request 禁止反依赖 H5 preset'
-            },
-            {
-              target: './packages/hooks',
-              from: ['./packages/pc', './packages/h5'],
+              target: './packages/hooks/core',
+              from: [...pcFromRoots, ...h5FromRoots],
               message: '通用 hooks 禁止依赖端侧 UI 包'
             },
             {
@@ -108,13 +116,13 @@ export default tseslint.config(
               message: '共享包禁止反依赖 apps'
             },
             {
-              target: './apps/admin',
-              from: './apps/h5',
-              message: 'admin 禁止引用 h5 源码（store 不共享）'
+              target: './apps/pc/pc-admin-template',
+              from: './apps/h5/h5-template',
+              message: 'PC admin 禁止引用 h5 源码（store 不共享）'
             },
             {
-              target: './apps/h5',
-              from: './apps/admin',
+              target: './apps/h5/h5-template',
+              from: './apps/pc/pc-admin-template',
               message: 'h5 禁止引用 admin 源码（store 不共享）'
             }
           ]
@@ -125,7 +133,7 @@ export default tseslint.config(
 
   // ---------------- preset 包禁止直接 import axios ----------------
   {
-    files: ['packages/pc/request/**/*.ts', 'packages/h5/request/**/*.ts'],
+    files: ['packages/request/pc/**/*.ts', 'packages/request/h5/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -143,7 +151,7 @@ export default tseslint.config(
 
   // ---------------- core request 禁止 import 任何 UI 库 ----------------
   {
-    files: ['packages/request/**/*.ts'],
+    files: ['packages/request/core/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -161,7 +169,7 @@ export default tseslint.config(
 
   // ---------------- 通用 hooks 禁止 import 端侧 UI ----------------
   {
-    files: ['packages/hooks/**/*.ts'],
+    files: ['packages/hooks/core/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -169,7 +177,7 @@ export default tseslint.config(
           patterns: [
             {
               group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
-              message: '@vue3-mono/hooks 通用 hooks 严禁 import 端侧 UI，端侧 hooks 放 packages/{pc,h5}/hooks'
+              message: '@vue3-mono/hooks 通用 hooks 严禁 import 端侧 UI，端侧 hooks 在 packages/hooks/pc|h5'
             }
           ]
         }

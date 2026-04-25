@@ -7,7 +7,7 @@ VitePress 架构 / API 文档
 ## P2 迁入后目录
 
 ```
-apps/docs/
+docs/
 ├── .vitepress/config.ts
 ├── index.md
 ├── guide/*.md

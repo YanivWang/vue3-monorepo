@@ -6,10 +6,14 @@
   "type": "module",
   "packageManager": "pnpm@10.33.1",
   "workspaces": [
-    "apps/*",
+    "apps/pc/*",
+    "apps/h5/*",
+    "docs",
     "packages/*",
-    "packages/pc/*",
-    "packages/h5/*"
+    "packages/hooks/*",
+    "packages/request/*",
+    "packages/components/*",
+    "packages/directives/*"
   ],
   "scripts": {
     "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
@@ -32,8 +36,8 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:style": "stylelint '{apps,packages}/**/*.{scss,vue,css}'",
-    "lint:style:fix": "stylelint '{apps,packages}/**/*.{scss,vue,css}' --fix",
+    "lint:style": "stylelint '{apps,docs,packages}/**/*.{scss,vue,css}'",
+    "lint:style:fix": "stylelint '{apps,docs,packages}/**/*.{scss,vue,css}' --fix",
     "format": "prettier --write .",
     "check:refs": "node scripts/check-refs.js",
     "check:request-core": "node scripts/check-request-core.js",
@@ -47,9 +51,9 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "{apps,packages}/**/*.{ts,vue,js,mjs}": "eslint --fix",
-    "{apps,packages}/**/*.{scss,vue,css}": "stylelint --fix",
-    "{apps,packages}/**/*.{ts,vue,js,json,scss,css,md,html}": "prettier --write"
+    "{apps,docs,packages}/**/*.{ts,vue,js,mjs}": "eslint --fix",
+    "{apps,docs,packages}/**/*.{scss,vue,css}": "stylelint --fix",
+    "{apps,docs,packages}/**/*.{ts,vue,js,json,scss,css,md,html}": "prettier --write"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",

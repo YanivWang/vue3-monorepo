@@ -21,7 +21,7 @@ jobs:
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
         with:
-          configPath: ./apps/h5/.lighthouserc.json
+          configPath: ./apps/h5/h5-template/.lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
         env:

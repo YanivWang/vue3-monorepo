@@ -58,13 +58,13 @@ vue3-monorepo-template/
 本项目使用 [pnpm](https://pnpm.io/) 与单一份 `pnpm-lock.yaml` 锁定依赖（`catalog:` 统一版本），请勿与 npm/yarn 混用。
 
 ```bash
-# 1. 安装依赖（识别 apps/* + packages/* 共 17 个 workspace）
+# 1. 安装依赖（`pnpm-workspace` 见根目录，共 17 个包）
 pnpm install
 
 # 2. 开发：PC 管理端（默认 5173）
 pnpm run admin:dev
 
-# 3. 开发：H5（默认 5174，需 apps/h5/.env.development 中 VITE_USE_MOCK 等）
+# 3. 开发：H5（默认 5174，需 `apps/h5/h5-template/.env.development` 中 VITE_USE_MOCK 等）
 pnpm run h5:dev
 
 # 4. 文档站
@@ -145,16 +145,16 @@ chore: 升级 vite 到 5.4
 - **`@vue3-mono/request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
 - **`@vue3-mono/request-h5`**：`createH5Http`，默认 Vant 反馈；**h5** 在 `src/plugins/http.ts` 装配。
 
-### PC 管理端（`apps/admin`）
+### PC 管理端（`apps/pc/pc-admin-template`）
 
-- Element Plus、动态路由/权限、Mock 位于 `apps/admin/mock/`。
-- HTTP、布局、业务页面路径均为 `apps/admin/src/*`（详见该目录）。
+- Element Plus、动态路由/权限、Mock 位于 `apps/pc/pc-admin-template/mock/`。
+- HTTP、布局、业务页面路径均为 `apps/pc/pc-admin-template/src/*`（详见该目录）。
 
-### H5（`apps/h5`）
+### H5（`apps/h5/h5-template`）
 
 - Vant 4、`@vue3-mono/bridge` 多宿主、栈式 `keep-alive`、`postcss-mobile-forever` 视口适配。
-- Mock：`apps/h5/mock/`；多宿主说明见 `apps/h5/docs/bridge-protocol.md`。
-- 示例：长列表 + 详情 + 新建/编辑/删除（`apps/h5/src/views/list/`），筛选使用包内 `FilterDrawer` 与 `useProListFilters`。
+- Mock：`apps/h5/h5-template/mock/`；多宿主说明见 `apps/h5/h5-template/docs/bridge-protocol.md`。
+- 示例：长列表 + 详情 + 新建/编辑/删除（`apps/h5/h5-template/src/views/list/`），筛选使用包内 `FilterDrawer` 与 `useProListFilters`。
 
 ### 共享包与约束
 
@@ -182,18 +182,18 @@ chore: 升级 vite 到 5.4
 
 **Admin（PC）**
 
-1. 接口：`apps/admin/src/api/modules/`
-2. 页面与路由：`apps/admin/src/views/`、`apps/admin/src/router/`
-3. Store：`apps/admin/src/stores/modules/`（勿引用 `apps/h5` 的 store）
+1. 接口：`apps/pc/pc-admin-template/src/api/modules/`
+2. 页面与路由：`apps/pc/pc-admin-template/src/views/`、`apps/pc/pc-admin-template/src/router/`
+3. Store：`apps/pc/pc-admin-template/src/stores/modules/`（勿引用 H5 应用的 store）
 
 **H5**
 
-1. 接口：`apps/h5/src/api/`
-2. 页面与路由：`apps/h5/src/views/`、`apps/h5/src/router/routes.ts`
-3. Store：`apps/h5/src/stores/modules/`
+1. 接口：`apps/h5/h5-template/src/api/`
+2. 页面与路由：`apps/h5/h5-template/src/views/`、`apps/h5/src/router/routes.ts`
+3. Store：`apps/h5/h5-template/src/stores/modules/`
 
 **跨端可复用逻辑**
 
 - 纯函数 / 类型：优先放 `@vue3-mono/shared` 或 `@vue3-mono/utils`
 - 与 UI 无关的 composable：`@vue3-mono/hooks`
-- 端专用 UI：分别放 `packages/pc/*` 或 `packages/h5/*`
+- 端专用 UI：分别放 `packages/{components,directives,hooks,request}/{pc,h5}`；共享 `hooks` / `request` 在子目录 `core`

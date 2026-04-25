@@ -9,5 +9,5 @@ node_modules
 *.log
 .env*.local
 coverage
-apps/docs/.vitepress/dist
+docs/.vitepress/dist
 **/.turbo

@@ -10,25 +10,27 @@
  */
 export default [
   // apps
-  './apps/admin',
+  './apps/pc/pc-admin-template',
+  './apps/h5/h5-template',
 
-  // 6 基础包
+  // 4 基座
   './packages/shared',
   './packages/utils',
   './packages/bridge',
-  './packages/request',
   './packages/locale',
-  './packages/hooks',
+
+  './packages/request/core',
+  './packages/hooks/core',
 
   // PC UI 4 包
-  './packages/pc/components',
-  './packages/pc/hooks',
-  './packages/pc/directives',
-  './packages/pc/request',
+  './packages/components/pc',
+  './packages/hooks/pc',
+  './packages/directives/pc',
+  './packages/request/pc',
 
   // H5 UI 4 包
-  './packages/h5/components',
-  './packages/h5/hooks',
-  './packages/h5/directives',
-  './packages/h5/request'
+  './packages/components/h5',
+  './packages/hooks/h5',
+  './packages/directives/h5',
+  './packages/request/h5'
 ]

@@ -42,7 +42,7 @@ export default {
 暗黑模式 / `:root` CSS 变量建议在应用入口一次性引入：
 
 ```scss
-// apps/admin/src/styles/index.scss
+// apps/pc/pc-admin-template/src/styles/index.scss
 @use '@vue3-mono/shared/styles/tokens/root';
 @use '@vue3-mono/shared/styles/tokens/dark';
 ```
