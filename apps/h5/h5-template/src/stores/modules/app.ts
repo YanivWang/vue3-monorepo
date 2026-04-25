@@ -4,6 +4,7 @@ import type { Composer } from 'vue-i18n'
 import {
   applyBrand,
   applyThemeMode,
+  getAppliedThemeMode,
   Language,
   ThemeMode as ThemeModeEnum,
   type BrandId,
@@ -16,6 +17,8 @@ type LanguageType = 'zh-CN' | 'en-US'
 
 /** 管理 system 模式下的媒体查询监听 teardown */
 let teardownThemeMode: () => void = () => {}
+/** system 模式：系统深浅色变化时同步刷新 isDark（如 Vant ConfigProvider） */
+let teardownSystemDarkSync: () => void = () => {}
 
 export const useAppStore = defineStore(
   'h5-app',
@@ -27,18 +30,31 @@ export const useAppStore = defineStore(
     const language = ref<LanguageType>(Language.ZH_CN)
     const pageLoading = ref(false)
 
-    const isDark = computed(() =>
-      themeMode.value === 'dark'
-        ? true
-        : themeMode.value === 'light'
-          ? false
-          : typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
-    )
+    const themeTick = ref(0)
+
+    const isDark = computed(() => {
+      void themeTick.value
+      if (themeMode.value === 'dark') return true
+      if (themeMode.value === 'light') return false
+      return getAppliedThemeMode() === 'dark'
+    })
 
     function setTheme(mode: ThemeModeId): void {
+      teardownSystemDarkSync()
       themeMode.value = mode
       teardownThemeMode()
       teardownThemeMode = applyThemeMode(mode)
+      themeTick.value++
+      if (mode === 'system' && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+        const mql = window.matchMedia('(prefers-color-scheme: dark)')
+        const onSchemeChange = () => {
+          themeTick.value++
+        }
+        mql.addEventListener('change', onSchemeChange)
+        teardownSystemDarkSync = () => mql.removeEventListener('change', onSchemeChange)
+      } else {
+        teardownSystemDarkSync = () => {}
+      }
     }
 
     function setBrand(id: BrandId): void {

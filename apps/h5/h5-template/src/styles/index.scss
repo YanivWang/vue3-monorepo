@@ -4,6 +4,13 @@
 // Vant 基础样式；使用 css 版本避免重复引入编译开销
 @use 'vant/lib/index.css';
 
+// Vant 语义色与 shared design token 对齐（primary / danger 等）
+:root,
+:host {
+  --van-primary-color: var(--color-primary);
+  --van-danger-color: var(--color-danger);
+}
+
 // 全局重置
 html,
 body,
