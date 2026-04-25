@@ -4,22 +4,22 @@
 
 ## 技术栈
 
-| 分类         | 技术                             | 版本        |
-| ------------ | -------------------------------- | ----------- |
-| 核心框架     | Vue 3                            | ^3.4        |
-| 构建工具     | Vite                             | ^5.3        |
-| 类型系统     | TypeScript                       | ^5.5        |
-| 路由         | Vue Router                       | ^4.3        |
-| 状态管理     | Pinia                            | ^2.1        |
-| UI 组件库    | Element Plus（PC）/ Vant 4（H5） | ^2.7 / ^4.9 |
-| HTTP 请求    | Axios                            | ^1.7        |
-| 组合式工具   | @VueUse                          | ^10.11      |
-| 日期处理     | dayjs                            | ^1.11       |
-| 工具函数     | lodash-es                        | ^4.17       |
-| Cookie       | js-cookie                        | ^3.0        |
-| CSS 预处理   | Sass                             | ^1.77       |
-| 进度条       | nprogress                        | ^0.2        |
-| UI 组件引用   | 源码中显式 `import`（Element Plus / Vant） | —           |
+| 分类        | 技术                                       | 版本        |
+| ----------- | ------------------------------------------ | ----------- |
+| 核心框架    | Vue 3                                      | ^3.4        |
+| 构建工具    | Vite                                       | ^5.3        |
+| 类型系统    | TypeScript                                 | ^5.5        |
+| 路由        | Vue Router                                 | ^4.3        |
+| 状态管理    | Pinia                                      | ^2.1        |
+| UI 组件库   | Element Plus（PC）/ Vant 4（H5）           | ^2.7 / ^4.9 |
+| HTTP 请求   | Axios                                      | ^1.7        |
+| 组合式工具  | @VueUse                                    | ^10.11      |
+| 日期处理    | dayjs                                      | ^1.11       |
+| 工具函数    | lodash-es                                  | ^4.17       |
+| Cookie      | js-cookie                                  | ^3.0        |
+| CSS 预处理  | Sass                                       | ^1.77       |
+| 进度条      | nprogress                                  | ^0.2        |
+| UI 组件引用 | 源码中显式 `import`（Element Plus / Vant） | —           |
 
 ## 目录结构（pnpm workspace）
 

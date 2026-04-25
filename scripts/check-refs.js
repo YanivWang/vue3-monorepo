@@ -96,9 +96,7 @@ const tsconfigBase = JSON.parse(readFileSync(join(ROOT, 'tsconfig.base.json'), '
 const paths = tsconfigBase.compilerOptions?.paths ?? {}
 const pathKeys = Object.keys(paths).filter(k => !k.endsWith('/*'))
 
-const packageNames = pkgs
-  .filter(p => !p.dir.startsWith('apps/') && p.dir !== 'docs')
-  .map(p => p.name)
+const packageNames = pkgs.filter(p => !p.dir.startsWith('apps/') && p.dir !== 'docs').map(p => p.name)
 
 for (const name of packageNames) {
   if (!pathKeys.includes(name)) {
