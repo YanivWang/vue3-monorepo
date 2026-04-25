@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
 import { NavBar } from 'vant'
+
+const router = useRouter()
+const route = useRoute()
 
 interface Props {
   /** 页面标题（留空则不渲染导航栏） */
@@ -17,6 +21,11 @@ interface Props {
   /** 是否自动应用安全区上下 padding */
   safeAreaTop?: boolean
   safeAreaBottom?: boolean
+  /**
+   * 无历史可退时（如 Tab `replace` 进当前页、直链首屏）NavBar 左侧的兜底目标，默认回首页
+   * @default { name: 'Home' }
+   */
+  backFallback?: RouteLocationRaw
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,7 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: false,
   fill: true,
   safeAreaTop: false,
-  safeAreaBottom: true
+  safeAreaBottom: true,
+  backFallback: () => ({ name: 'Home' })
 })
 
 const emit = defineEmits<{
@@ -45,7 +55,18 @@ defineSlots<{
 
 function onClickLeft() {
   emit('click-left')
-  if (typeof history !== 'undefined') history.back()
+  if (typeof window === 'undefined') return
+  const st = window.history.state as { back?: unknown; replaced?: boolean } | null
+  const isTabRoot = Boolean((route.meta as { tab?: boolean }).tab)
+  // Tab 的 router.replace 会保留「进入底栏上一页前」的 state.back（如 Login），若仅判断 back
+  // 会误用 router.back() 退到错误栈或退不动；对 tab 根页且本页是 replace 进来时一律走兜底
+  if (isTabRoot && st?.replaced) {
+    void router.push(props.backFallback)
+  } else if (st?.back != null) {
+    void router.back()
+  } else {
+    void router.push(props.backFallback)
+  }
 }
 </script>
 

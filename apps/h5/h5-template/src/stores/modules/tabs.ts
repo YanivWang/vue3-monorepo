@@ -23,7 +23,7 @@ export interface TabItem {
 export const useTabsStore = defineStore('h5-tabs', () => {
   const tabs = ref<TabItem[]>([
     { name: 'Home', path: '/home', label: '首页', icon: 'home-o', requiresAuth: true },
-    { name: 'List', path: '/list', label: '长列表', icon: 'list-switching-o', requiresAuth: true },
+    { name: 'List', path: '/list', label: '长列表', icon: 'todo-list-o', requiresAuth: true },
     { name: 'Theme', path: '/theme', label: '主题', icon: 'brush-o' },
     { name: 'Mine', path: '/mine', label: '我的', icon: 'user-o', requiresAuth: true }
   ])

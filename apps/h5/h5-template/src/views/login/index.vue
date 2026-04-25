@@ -21,6 +21,9 @@ const smsForm = ref({ phone: '', code: '' })
 const smsGate = useSmsCodeGate(60)
 const smsRemaining = smsGate.remaining
 
+/** 与 `mock/user.ts` 一致；仅开发 + 启用 vite-plugin-mock 时展示 */
+const showMockHint = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'
+
 const hostLabel = computed(() => {
   switch (bridge.host) {
     case H5Host.WECHAT_MINI:
@@ -107,6 +110,7 @@ async function onBridgeLogin() {
 
             <div class="login-actions">
               <Button round block type="primary" native-type="submit" :loading="loading"> 登录 </Button>
+              <p v-if="showMockHint" class="login-mock-tip">演示账号：admin 或 member / 123456</p>
 
               <Button
                 v-if="bridge.host !== H5Host.BROWSER"
@@ -159,6 +163,7 @@ async function onBridgeLogin() {
 
             <div class="login-actions">
               <Button round block type="primary" native-type="submit" :loading="loading"> 登录 </Button>
+              <p v-if="showMockHint" class="login-mock-tip">本地 mock 验证码：123456</p>
             </div>
           </Form>
         </Tab>
@@ -192,6 +197,14 @@ async function onBridgeLogin() {
 
 .login-form {
   margin-top: 8px;
+}
+
+.login-mock-tip {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  text-align: center;
 }
 
 .login-actions {

@@ -28,12 +28,14 @@
   },
   "peerDependencies": {
     "vue": "catalog:",
+    "vue-router": "catalog:",
     "vant": "catalog:",
     "@vueuse/core": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",
     "@vueuse/core": "catalog:",
+    "vue-router": "catalog:",
     "sass": "catalog:",
     "typescript": "catalog:",
     "vant": "catalog:",

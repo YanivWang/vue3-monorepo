@@ -5,6 +5,7 @@ import type { RouteRecordRaw } from 'vue-router'
  *
  * - `meta.requiresAuth` true 时需登录；未登录将跳转到 /login
  * - `meta.keepAlive` true 时，`<KeepAlive :include>` 基于栈式 history 命中
+ * - `meta.tab` true 表示底部 Tab 主入口（如 Home/List/Mine/Theme，供 PageContainer 等区分 replace 进页）
  * - `meta.transition` 自定义切页动画（可选，默认 slide-fade）
  * - `meta.titleKey` 语言文案 key（配合 i18n.t），优先级高于 meta.title
  */
@@ -41,7 +42,7 @@ export const routes: RouteRecordRaw[] = [
     path: '/list',
     name: 'List',
     component: () => import('@/views/list/index.vue'),
-    meta: { title: '长列表', requiresAuth: true, keepAlive: true }
+    meta: { title: '长列表', requiresAuth: true, keepAlive: true, tab: true }
   },
   {
     path: '/list/detail/:id',

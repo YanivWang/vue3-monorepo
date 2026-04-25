@@ -52,6 +52,7 @@ defineSlots<{
 const list = ref<T[]>([]) as Ref<T[]>
 const pageNum = ref(1)
 const loading = ref(false)
+const requestPending = ref(false)
 const finished = ref(false)
 const error = ref(false)
 const refreshing = ref(false)
@@ -59,8 +60,17 @@ const total = ref(0)
 
 const isEmpty = computed(() => !loading.value && !refreshing.value && list.value.length === 0 && finished.value)
 
+/**
+ * 触底加载：Vant List 在触发 @load 前会先把 v-model:loading 设为 true，
+ * 因此不能用 loading 作为「是否正在请求」的判据，否则会直接 return 且走不到 finally，底部会永久「加载中」。
+ */
 async function load() {
-  if (loading.value || finished.value) return
+  if (finished.value) {
+    loading.value = false
+    return
+  }
+  if (requestPending.value) return
+  requestPending.value = true
   loading.value = true
   error.value = false
   try {
@@ -69,20 +79,25 @@ async function load() {
       pageSize: props.pageSize,
       ...props.query
     })
-    total.value = t
+    const hasValidTotal = typeof t === 'number' && !Number.isNaN(t) && t >= 0
+    total.value = hasValidTotal ? t : 0
     if (refreshing.value) {
       list.value = rows
       refreshing.value = false
     } else {
       list.value = [...list.value, ...rows]
     }
-    if (list.value.length >= t || rows.length === 0) finished.value = true
+    const listLen = list.value.length
+    const reachedEnd =
+      rows.length === 0 || (hasValidTotal && listLen >= t) || (!hasValidTotal && rows.length < props.pageSize)
+    if (reachedEnd) finished.value = true
     emit('loaded', { list: list.value, total: total.value, pageNum: pageNum.value })
     pageNum.value += 1
   } catch (e) {
     error.value = true
     emit('error', e)
   } finally {
+    requestPending.value = false
     loading.value = false
   }
 }
@@ -93,6 +108,7 @@ function reset() {
   finished.value = false
   error.value = false
   total.value = 0
+  requestPending.value = false
 }
 
 async function refresh() {
