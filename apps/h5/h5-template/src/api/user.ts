@@ -45,7 +45,7 @@ export const loginApi = {
     return http.post('/auth/exchange', { credential, host })
   },
   logout(): Promise<null> {
-    return http.post('/auth/logout', {})
+    return http.post('/auth/logout', {}, { skipAuthRefresh: true })
   },
   getUserInfo(): Promise<UserInfo> {
     return http.get('/user/info')

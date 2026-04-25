@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { CellGroup, Cell, Image as VanImage, Button, Toast, Dialog, Skeleton } from 'vant'
+import { CellGroup, Cell, Image as VanImage, Button, Toast, showConfirmDialog, Skeleton } from 'vant'
 import { PageContainer } from '@vue3-mono/components-h5'
 import { listApi, type ListItem } from '@/api/list'
 
@@ -39,7 +39,7 @@ function goEdit() {
 
 async function onDelete() {
   try {
-    await Dialog.confirm({ title: '确认删除', message: '删除后不可恢复' })
+    await showConfirmDialog({ title: '确认删除', message: '删除后不可恢复' })
     await listApi.remove(id.value)
     Toast.success('已删除')
     router.replace({ name: 'List' })

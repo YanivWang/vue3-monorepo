@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Cell, CellGroup, Image as VanImage, Button, Dialog } from 'vant'
+import { Cell, CellGroup, Image as VanImage, Button, showConfirmDialog } from 'vant'
 import { PageContainer } from '@vue3-mono/components-h5'
 import { useUserStore } from '@/stores'
 import { useAuth } from '@/composables/useAuth'
@@ -12,7 +12,7 @@ const { logout, loading } = useAuth()
 
 async function onLogout() {
   try {
-    await Dialog.confirm({ title: '提示', message: '确定退出登录？' })
+    await showConfirmDialog({ title: '提示', message: '确定退出登录？' })
     await logout()
   } catch {
     /* 用户取消 */
