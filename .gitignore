@@ -11,6 +11,7 @@ node_modules
 .DS_Store
 dist
 docs/.vitepress/dist
+**/.vitepress/cache/
 dist-ssr
 coverage
 *.local
@@ -30,3 +31,10 @@ coverage
 # Env files (avoid committing sensitive data)
 .env.local
 .env.*.local
+
+# Toolchain / OS artifacts
+.lighthouseci/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+Thumbs.db
