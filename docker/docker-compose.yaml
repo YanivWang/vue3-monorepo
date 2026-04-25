@@ -1,0 +1,29 @@
+# vue3-monorepo-template — Admin（PC）生产镜像本地验证
+#
+# 用法（在仓库根目录）：
+#   docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d
+# 或：
+#   ./scripts/docker.sh up
+#
+# 说明：
+#   - build.context 为仓库根（.. 相对本 compose 文件所在 docker/ 目录）
+#   - nginx 配置位于 docker/nginx/（构建时打入镜像；换环境可复制 admin.conf 改 Dockerfile COPY）
+#   - 端口默认映射 8080:80，避免占用本机 80（可用 ADMIN_PORT 覆盖）
+
+services:
+  admin-web:
+    build:
+      context: ..
+      dockerfile: docker/images/admin/Dockerfile
+      args:
+        BUILD_MODE: ${BUILD_MODE:-production}
+    image: ${ADMIN_IMAGE:-vue3-mono-admin:local}
+    container_name: ${ADMIN_CONTAINER:-vue3-mono-admin}
+    ports:
+      - '${ADMIN_PORT:-8080}:80'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3

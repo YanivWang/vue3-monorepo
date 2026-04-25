@@ -1,0 +1,66 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@vue3-mono/shared": ["packages/shared/src/index.ts"],
+      "@vue3-mono/shared/*": ["packages/shared/src/*"],
+
+      "@vue3-mono/utils": ["packages/utils/src/index.ts"],
+      "@vue3-mono/utils/*": ["packages/utils/src/*"],
+
+      "@vue3-mono/bridge": ["packages/bridge/src/index.ts"],
+      "@vue3-mono/bridge/*": ["packages/bridge/src/*"],
+
+      "@vue3-mono/request": ["packages/request/src/index.ts"],
+      "@vue3-mono/request/*": ["packages/request/src/*"],
+
+      "@vue3-mono/locale": ["packages/locale/src/index.ts"],
+      "@vue3-mono/locale/*": ["packages/locale/src/*"],
+
+      "@vue3-mono/hooks": ["packages/hooks/src/index.ts"],
+      "@vue3-mono/hooks/*": ["packages/hooks/src/*"],
+
+      "@vue3-mono/components-pc": ["packages/pc/components/src/index.ts"],
+      "@vue3-mono/components-pc/*": ["packages/pc/components/src/*"],
+
+      "@vue3-mono/hooks-pc": ["packages/pc/hooks/src/index.ts"],
+      "@vue3-mono/hooks-pc/*": ["packages/pc/hooks/src/*"],
+
+      "@vue3-mono/directives-pc": ["packages/pc/directives/src/index.ts"],
+      "@vue3-mono/directives-pc/*": ["packages/pc/directives/src/*"],
+
+      "@vue3-mono/request-pc": ["packages/pc/request/src/index.ts"],
+      "@vue3-mono/request-pc/*": ["packages/pc/request/src/*"],
+
+      "@vue3-mono/components-h5": ["packages/h5/components/src/index.ts"],
+      "@vue3-mono/components-h5/*": ["packages/h5/components/src/*"],
+
+      "@vue3-mono/hooks-h5": ["packages/h5/hooks/src/index.ts"],
+      "@vue3-mono/hooks-h5/*": ["packages/h5/hooks/src/*"],
+
+      "@vue3-mono/directives-h5": ["packages/h5/directives/src/index.ts"],
+      "@vue3-mono/directives-h5/*": ["packages/h5/directives/src/*"],
+
+      "@vue3-mono/request-h5": ["packages/h5/request/src/index.ts"],
+      "@vue3-mono/request-h5/*": ["packages/h5/request/src/*"]
+    }
+  }
+}

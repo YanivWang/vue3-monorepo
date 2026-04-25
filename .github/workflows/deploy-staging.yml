@@ -37,6 +37,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: docker/images/admin/Dockerfile
           push: true
           # Staging 镜像与生产镜像分离，通过 :staging tag 区分
           tags: |

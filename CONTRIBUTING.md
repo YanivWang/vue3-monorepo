@@ -86,13 +86,6 @@ git commit -m "docs: 更新 ProTable 组件文档"
 - **样式**：使用 SCSS，颜色/间距优先使用 CSS 变量（支持暗黑模式）
 - **命名**：组件 PascalCase，composable `useXxx`，工具函数 camelCase
 
-## 版本发布（维护者）
-
-```bash
-# 自动计算版本、生成 CHANGELOG、打 Tag
-pnpm release
-```
-
 ## 文档更新
 
 组件/功能变更时，请同步更新 `docs/` 对应文档页。

@@ -1,0 +1,90 @@
+# pnpm workspace 配置
+# packages glob 匹配 4 组：apps、6 基础包、PC UI 4 包、H5 UI 4 包
+# pnpm 会自动忽略没有 package.json 的目录（如 packages/pc、packages/h5 本身）
+
+packages:
+  - 'apps/*'
+  - 'packages/*' # shared / utils / bridge / request / locale / hooks（6 基础包）
+  - 'packages/pc/*' # components / hooks / directives / request（PC UI 4 包）
+  - 'packages/h5/*' # components / hooks / directives / request（H5 UI 4 包）
+
+# ---------- catalog（全仓锁版本，单点维护） ----------
+# 各包在 package.json 里用 "vue": "catalog:" 引用，版本以此处为准。
+catalog:
+  # ---------- 运行时（两端共享） ----------
+  vue: ^3.4.31
+  vue-router: ^4.3.3
+  pinia: ^2.1.7
+  pinia-plugin-persistedstate: ^3.2.3
+  axios: ^1.7.2
+  vue-i18n: ^9.14.4
+  '@vueuse/core': ^10.11.0
+  dayjs: ^1.11.11
+  lodash-es: ^4.17.21
+  js-cookie: ^3.0.5
+  nprogress: ^0.2.0
+  echarts: ^6.0.0
+  vue-echarts: ^8.0.1
+  '@sentry/vue': ^10.49.0
+  web-vitals: ^5.2.0
+  # ---------- 构建工具 ----------
+  vite: ^5.3.3
+  typescript: ~5.5.3
+  vue-tsc: ^2.0.26
+  '@vitejs/plugin-vue': ^5.0.5
+  vite-tsconfig-paths: ^5.0.0
+  unbuild: ^3.0.0
+  sass: ^1.77.6
+  # ---------- PC UI（Element Plus 生态） ----------
+  element-plus: ^2.7.6
+  '@element-plus/icons-vue': ^2.3.1
+  # ---------- H5 UI（Vant 4 生态） ----------
+  vant: ^4.9.0
+  '@vant/auto-import-resolver': ^1.2.0
+  postcss-mobile-forever: ^4.0.0
+  vconsole: ^3.15.0
+  # ---------- 自动导入 / mock / 压缩 / 可视化 ----------
+  unplugin-auto-import: ^0.18.2
+  unplugin-vue-components: ^0.27.3
+  vite-plugin-mock: ^3.0.2
+  vite-plugin-compression2: ^2.5.3
+  rollup-plugin-visualizer: ^7.0.1
+  # ---------- 工程化 ----------
+  eslint: ^9.39.4
+  '@eslint/js': ^9.39.4
+  typescript-eslint: ^8.59.0
+  eslint-plugin-vue: ^10.9.0
+  eslint-plugin-import: ^2.32.0
+  eslint-config-prettier: ^10.1.8
+  vue-eslint-parser: ^10.4.0
+  globals: ^17.5.0
+  prettier: ^3.8.3
+  stylelint: ^17.9.0
+  stylelint-config-html: ^1.1.0
+  stylelint-config-recess-order: ^7.7.0
+  stylelint-config-standard: ^40.0.0
+  stylelint-config-standard-scss: ^17.0.0
+  stylelint-order: ^8.1.1
+  stylelint-prettier: ^5.0.3
+  stylelint-scss: ^6.14.0
+  postcss-html: ^1.8.1
+  '@commitlint/cli': ^20.5.0
+  '@commitlint/config-conventional': ^20.5.0
+  '@commitlint/types': ^20.5.0
+  husky: ^9.1.7
+  lint-staged: ^16.4.0
+  # ---------- 测试 ----------
+  vitest: ^2.1.9
+  '@vitest/coverage-v8': ^2.1.9
+  '@vue/test-utils': ^2.4.6
+  happy-dom: ^20.9.0
+  # ---------- 文档站 ----------
+  vitepress: ^1.6.4
+  # ---------- OpenAPI ----------
+  openapi-typescript: ^7.13.0
+  tsx: ^4.21.0
+  # ---------- 类型声明 ----------
+  '@types/node': ^20.14.9
+  '@types/js-cookie': ^3.0.6
+  '@types/lodash-es': ^4.17.12
+  '@types/nprogress': ^0.2.3

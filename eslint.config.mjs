@@ -1,39 +1,55 @@
 import js from '@eslint/js'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import globals from 'globals'
 import prettier from 'eslint-config-prettier/flat'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
+import importPlugin from 'eslint-plugin-import'
 import vueParser from 'vue-eslint-parser'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+// auto-imports 由 unplugin-auto-import 生成（admin dev/build 时写入根目录）
+// 冷启动时文件可能不存在，降级为空以避免 lint 直接失败
 const autoImportFile = join(__dirname, '.eslintrc-auto-import.json')
-const autoImportRaw = JSON.parse(readFileSync(autoImportFile, 'utf8'))
-const autoImportGlobals = Object.fromEntries(Object.keys(autoImportRaw.globals).map(k => [k, 'readonly']))
+const autoImportGlobals = existsSync(autoImportFile)
+  ? Object.fromEntries(Object.keys(JSON.parse(readFileSync(autoImportFile, 'utf8')).globals).map(k => [k, 'readonly']))
+  : {}
 
 export default tseslint.config(
   {
     ignores: [
       'dist',
-      'docs/.vitepress/dist',
+      '**/dist/**',
+      'coverage',
+      '**/coverage/**',
+      '**/.vitepress/dist/**',
+      '**/.vitepress/cache/**',
       'node_modules',
+      '**/node_modules/**',
       '**/*.d.ts',
-      'src/types/auto-imports.d.ts',
-      '.eslintrc-auto-import.json'
+      '**/auto-imports.d.ts',
+      '**/components.d.ts',
+      '.eslintrc-auto-import.json',
+      '**/.nuxt/**',
+      '**/.output/**'
     ]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
+
+  // ---------------- 语言选项（覆盖 monorepo 全部 ts/vue/js/mjs） ----------------
   {
-    files: ['**/*.{ts,vue}'],
+    files: ['{apps,packages,scripts}/**/*.{ts,vue,js,mjs}', '*.{ts,mjs,js}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.browser,
+        ...globals.node,
         ...autoImportGlobals
       }
     }
@@ -48,22 +64,134 @@ export default tseslint.config(
       }
     }
   },
+
+  // ---------------- 通用规则 ----------------
   {
-    files: ['**/*.{ts,vue}'],
+    files: ['{apps,packages,scripts}/**/*.{ts,vue}'],
     rules: {
       'no-console': ['warn', { allow: ['log', 'warn', 'error', 'info'] }],
       'vue/multi-word-component-names': 'off',
-      // noUnusedLocals / noUnusedParameters in tsconfig already handle this at compile time
       '@typescript-eslint/no-unused-vars': 'off'
     }
   },
+
+  // ---------------- 测试文件宽松规则 ----------------
   {
-    files: ['**/*.{spec,test}.{ts,tsx,js,jsx}'],
+    files: ['**/*.{spec,test}.{ts,tsx,js,jsx}', '**/__tests__/**/*.{ts,tsx,js,jsx}'],
     rules: {
       'vue/one-component-per-file': 'off',
-      // 故意在 render 中 throw 以测 ErrorBoundary 时无需返回值
       'vue/require-render-return': 'off'
     }
   },
+
+  // ---------------- 依赖边界：import/no-restricted-paths ----------------
+  // 严禁端侧包互引、preset 反依赖 core、通用 hooks 依赖端侧 UI、共享包反依赖 apps、两个 app 互引源码
+  {
+    plugins: { import: importPlugin },
+    rules: {
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            {
+              target: './packages/pc',
+              from: './packages/h5',
+              message: 'PC 包禁止引 H5 包'
+            },
+            {
+              target: './packages/h5',
+              from: './packages/pc',
+              message: 'H5 包禁止引 PC 包'
+            },
+            {
+              target: './packages/request',
+              from: './packages/pc/request',
+              message: 'core request 禁止反依赖 PC preset'
+            },
+            {
+              target: './packages/request',
+              from: './packages/h5/request',
+              message: 'core request 禁止反依赖 H5 preset'
+            },
+            {
+              target: './packages/hooks',
+              from: ['./packages/pc', './packages/h5'],
+              message: '通用 hooks 禁止依赖端侧 UI 包'
+            },
+            {
+              target: './packages',
+              from: './apps',
+              message: '共享包禁止反依赖 apps'
+            },
+            {
+              target: './apps/admin',
+              from: './apps/h5',
+              message: 'admin 禁止引用 h5 源码（store 不共享）'
+            },
+            {
+              target: './apps/h5',
+              from: './apps/admin',
+              message: 'h5 禁止引用 admin 源码（store 不共享）'
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  // ---------------- preset 包禁止直接 import axios ----------------
+  {
+    files: ['packages/pc/request/**/*.ts', 'packages/h5/request/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['axios'],
+              message: 'preset 包禁止直接 import axios，必须走 @vue3-mono/request 核心'
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  // ---------------- core request 禁止 import 任何 UI 库 ----------------
+  {
+    files: ['packages/request/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
+              message: '@vue3-mono/request 核心包严禁 import 任何 UI 库，UI 反馈必须走依赖注入'
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  // ---------------- 通用 hooks 禁止 import 端侧 UI ----------------
+  {
+    files: ['packages/hooks/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
+              message: '@vue3-mono/hooks 通用 hooks 严禁 import 端侧 UI，端侧 hooks 放 packages/{pc,h5}/hooks'
+            }
+          ]
+        }
+      ]
+    }
+  },
+
   prettier
 )

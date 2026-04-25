@@ -1,0 +1,9 @@
+dist
+coverage
+node_modules
+*.log
+*.log.*
+.DS_Store
+.cache/
+.temp/
+src/types/auto-imports.d.ts.bak

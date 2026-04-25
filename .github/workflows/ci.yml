@@ -12,17 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - name: Setup pnpm and install
+        uses: ./.github/actions/pnpm-install
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+      - name: Workspace vs tsconfig paths
+        run: pnpm run check:refs
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Request core (no UI coupling)
+        run: pnpm run check:request-core
 
       # ── 安全扫描：检测 high/critical 级漏洞，发现则 CI 失败 ──
       - name: Security audit

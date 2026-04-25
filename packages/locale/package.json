@@ -1,0 +1,32 @@
+{
+  "name": "@vue3-mono/locale",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "i18n 框架层封装（vue-i18n 单例 / 语言切换），文案由各 app 自带",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src --ext .ts"
+  },
+  "peerDependencies": {
+    "vue": "catalog:",
+    "vue-i18n": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vue": "catalog:",
+    "vue-i18n": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

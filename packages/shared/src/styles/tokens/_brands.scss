@@ -1,0 +1,35 @@
+// ────────────────────────────────────────────────────────────
+//  品牌色预设（PC + H5 共享）
+//  通过 html[data-brand="xxx"] 切换；默认沿用 :root 的初始蓝色
+//  变量命名与 _root.scss 保持一致，仅覆盖主色系
+// ────────────────────────────────────────────────────────────
+
+html[data-brand='blue'] {
+  --color-primary: #409eff;
+  --color-primary-light: #79bbff;
+  --color-primary-dark: #337ecc;
+}
+
+html[data-brand='green'] {
+  --color-primary: #07c160;
+  --color-primary-light: #3ecf82;
+  --color-primary-dark: #06a54f;
+}
+
+html[data-brand='red'] {
+  --color-primary: #ee0a24;
+  --color-primary-light: #ff4d4f;
+  --color-primary-dark: #c20619;
+}
+
+html[data-brand='orange'] {
+  --color-primary: #ff8c00;
+  --color-primary-light: #ffa940;
+  --color-primary-dark: #d77300;
+}
+
+html[data-brand='purple'] {
+  --color-primary: #722ed1;
+  --color-primary-light: #9254de;
+  --color-primary-dark: #531dab;
+}

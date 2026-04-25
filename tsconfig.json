@@ -1,28 +1,38 @@
-//这里的 「solution 入口」 是借用了 Visual Studio 里 solution 的说法：
-// 一个不直接装业务源码的顶层文件，只负责把多个子工程（子 tsconfig）挂在一起
-// (不负责编译源码，只负责把多个子工程挂在一起)
-
+// Solution 根配置：不直接编译源码，只把子工程挂在一起
+// 参考 https://www.typescriptlang.org/docs/handbook/project-references.html
+//
+// 设计：
+// - tsconfig.base.json       -> 共享基础（strict + paths 22 个别名）
+// - tsconfig.web.json        -> apps/{admin,h5} 使用（DOM + vite/client）
+// - tsconfig.pkg.json        -> packages/* 类型校验（noEmit + 解析 cross-package 源码）
+// - tsconfig.lib.json        -> packages/* 需要 composite 产物时使用（保留能力）
+// - tsconfig.node.json       -> 根脚本 / 各 app 的 vite|vitest|scripts 使用（Node + CommonJS/ESM）
+//
+// references：3 apps + 14 packages + 根 scripts 的 node 环境
 {
-  // 手动指定需要编译的文件（不常用）
-  // 当前这个根配置不直接包含任何源码文件
-  //声明「我这份配置不直接列出任何要编译的源文件」。声明「真正干活的是这几个子配置」 references 指向的
   "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
 
-  // references作用:
-  // 1.引用其他ts配置文件
-  // 2.把一个工程拆成多个子工程, 每个子工程有自己的 tsconfig
+    { "path": "./apps/admin" },
+    { "path": "./apps/admin/tsconfig.node.json" },
+    { "path": "./apps/docs" },
 
-  // references 的常见好处：
+    { "path": "./packages/shared" },
+    { "path": "./packages/utils" },
+    { "path": "./packages/bridge" },
+    { "path": "./packages/request" },
+    { "path": "./packages/locale" },
+    { "path": "./packages/hooks" },
 
-  // 1.分环境配置：浏览器代码和 Node 代码规则不同，分开更合理
-  // 2.类型检查更清晰：错误定位更准确
-  // 3.构建可扩展：项目变大后（多包、monorepo）更容易管理和增量构建
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+    { "path": "./packages/pc/components" },
+    { "path": "./packages/pc/hooks" },
+    { "path": "./packages/pc/directives" },
+    { "path": "./packages/pc/request" },
+
+    { "path": "./packages/h5/components" },
+    { "path": "./packages/h5/hooks" },
+    { "path": "./packages/h5/directives" },
+    { "path": "./packages/h5/request" }
+  ]
 }
-
-//注意: ts 不会把 references里子工程合并成一个大配置，给所有文件使用
-
-// 实际是：
-
-// 每个子配置各自决定：管哪些文件、用哪些 lib / types / 模块解析规则。
-// 类型检查是在各自的「项目 / Program」上下文里做的（可以想成两套逻辑上的 TS 工程），而不是一份合并表。

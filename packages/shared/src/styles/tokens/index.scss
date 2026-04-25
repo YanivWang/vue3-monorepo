@@ -1,0 +1,5 @@
+// Shared design tokens - 应用入口一次性引入（SCSS 变量 + :root + 品牌切换 + 暗黑）
+@forward './variables';
+@use './root';
+@use './brands';
+@use './dark';

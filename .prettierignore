@@ -1,6 +1,24 @@
+# 构建产物
 dist
+**/dist/**
+**/.vitepress/cache/**
+**/.vitepress/dist/**
+
+# 依赖与锁文件
 node_modules
+**/node_modules/**
 pnpm-lock.yaml
+
+# 测试覆盖率
 coverage
+**/coverage/**
+
+# 类型声明（生成产物 / auto-import）
 **/*.d.ts
+**/auto-imports.d.ts
+**/components.d.ts
 .eslintrc-auto-import.json
+
+# 其它
+**/.nuxt/**
+**/.output/**

@@ -1,0 +1,18 @@
+{
+  "name": "@vue3-mono/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VitePress 架构 / API 文档（企业级 monorepo）",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitepress": "catalog:"
+  }
+}

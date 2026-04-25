@@ -1,0 +1,24 @@
+name: pnpm-install
+description: 启用 pnpm、配置 Node 缓存并安装依赖（monorepo 统一入口，减少 workflow 重复）
+
+inputs:
+  node-version:
+    description: Node.js 主版本
+    required: false
+    default: '20'
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

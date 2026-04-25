@@ -1,16 +1,21 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "composite": true,
-    "skipLibCheck": true,
-    "target": "ES2020",
     "lib": ["ES2023"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "noEmit": true,
-    "types": ["node"]
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts", "vitest.config.ts", "commitlint.config.ts", "eslint.config.mjs"]
+  "include": [
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.workspace.ts",
+    "commitlint.config.ts",
+    "eslint.config.mjs",
+    "prettier.config.mjs",
+    "scripts/**/*.ts",
+    "scripts/**/*.js",
+    "scripts/**/*.mjs"
+  ]
 }

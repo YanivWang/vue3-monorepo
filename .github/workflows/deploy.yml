@@ -30,6 +30,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: docker/images/admin/Dockerfile
           push: true
           tags: |
             ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:latest

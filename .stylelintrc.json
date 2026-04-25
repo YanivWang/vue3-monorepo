@@ -35,5 +35,15 @@
       }
     ]
   },
-  "ignoreFiles": ["dist/**", "node_modules/**", "**/*.js", "**/*.ts"]
+  "ignoreFiles": [
+    "dist/**",
+    "**/dist/**",
+    "coverage/**",
+    "**/coverage/**",
+    "node_modules/**",
+    "**/node_modules/**",
+    "**/*.js",
+    "**/*.ts",
+    "**/.vitepress/dist/**"
+  ]
 }

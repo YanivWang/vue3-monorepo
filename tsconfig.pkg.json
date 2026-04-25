@@ -1,0 +1,14 @@
+// 共享 packages typecheck 配置
+// - 继承 tsconfig.base.json（strict + paths）
+// - 启用 DOM lib（多数包涉及 storage / echarts / echo 浏览器 API）
+// - noEmit: 类型检查只做静态验证，产物由各包自行的 unbuild / Vite lib 生成
+// - 非 composite：允许 paths 跨 workspace 直接源码联动，避免预 build 要求
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": []
+  }
+}

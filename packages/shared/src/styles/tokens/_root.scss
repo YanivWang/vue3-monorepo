@@ -1,0 +1,46 @@
+// ────────────────────────────────────────────────────────────
+//  Design Token - 运行期 CSS 自定义属性（:root）
+//  应由应用入口显式 @use，一次性挂载到 :root，支持运行时主题切换
+// ────────────────────────────────────────────────────────────
+
+:root {
+  // 主色
+  --color-primary: #409eff;
+  --color-primary-light: #79bbff;
+  --color-primary-dark: #337ecc;
+  --color-success: #67c23a;
+  --color-warning: #e6a23c;
+  --color-danger: #f56c6c;
+  --color-info: #909399;
+
+  // 文字
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --text-placeholder: #c0c4cc;
+
+  // 背景
+  --bg-page: #f0f2f5;
+  --bg-white: #ffffff;
+  --bg-card: #ffffff;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  // 边框
+  --border-color: #dcdfe6;
+  --border-color-light: #e4e7ed;
+
+  // 侧边栏
+  --sidebar-bg: #001529;
+  --sidebar-text: rgba(255, 255, 255, 0.65);
+  --sidebar-text-active: #ffffff;
+  --sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-item-active-bg: #1890ff;
+
+  // 头部
+  --header-bg: #ffffff;
+  --header-border: #e8eaec;
+
+  // 阴影
+  --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  --box-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
