@@ -19,8 +19,7 @@
 | Cookie       | js-cookie                        | ^3.0        |
 | CSS 预处理   | Sass                             | ^1.77       |
 | 进度条       | nprogress                        | ^0.2        |
-| 自动导入     | unplugin-auto-import             | ^0.18       |
-| 组件自动导入 | unplugin-vue-components          | ^0.27       |
+| UI 组件引用   | 源码中显式 `import`（Element Plus / Vant） | —           |
 
 ## 目录结构（pnpm workspace）
 

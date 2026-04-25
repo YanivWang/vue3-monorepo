@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Button } from 'vant'
 import { useRouter } from 'vue-router'
 
 defineOptions({ name: 'NotFound' })
@@ -10,7 +11,7 @@ const router = useRouter()
   <div class="not-found">
     <h2>404</h2>
     <p>页面走丢了</p>
-    <van-button type="primary" @click="router.replace('/home')">返回首页</van-button>
+    <Button type="primary" @click="router.replace('/home')">返回首页</Button>
   </div>
 </template>
 

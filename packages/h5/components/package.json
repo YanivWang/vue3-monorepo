@@ -32,7 +32,6 @@
     "@vueuse/core": "catalog:"
   },
   "devDependencies": {
-    "@vant/auto-import-resolver": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vueuse/core": "catalog:",
     "sass": "catalog:",

@@ -1,9 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { VantResolver } from '@vant/auto-import-resolver'
 import { viteMockServe } from 'vite-plugin-mock'
 import { compression } from 'vite-plugin-compression2'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -27,19 +24,6 @@ export default defineConfig(async ({ mode }) => {
       vue(),
 
       tsconfigPaths({ loose: true }),
-
-      AutoImport({
-        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue-i18n'],
-        resolvers: [VantResolver()],
-        dts: 'src/types/auto-imports.d.ts',
-        eslintrc: { enabled: false }
-      }),
-
-      Components({
-        resolvers: [VantResolver()],
-        dts: 'src/types/components.d.ts',
-        dirs: [resolve(__dirname, '../../packages/h5/components/src')]
-      }),
 
       viteMockServe({
         mockPath: 'mock',

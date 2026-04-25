@@ -1,9 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { viteMockServe } from 'vite-plugin-mock'
 import { compression } from 'vite-plugin-compression2'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -27,20 +24,6 @@ export default defineConfig(async ({ mode }) => {
 
       // tsconfig paths：保证 Vite 能解析 @vue3-mono/* workspace 别名至源码
       tsconfigPaths({ loose: true }),
-
-      AutoImport({
-        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue-i18n'],
-        resolvers: [ElementPlusResolver()],
-        dts: 'src/types/auto-imports.d.ts',
-        eslintrc: { enabled: true, filepath: '../../.eslintrc-auto-import.json' }
-      }),
-
-      Components({
-        resolvers: [ElementPlusResolver()],
-        dts: 'src/types/components.d.ts',
-        // 本地 components 目录已抽离至 @vue3-mono/components-pc，保留空列表便于业务自行扩展
-        dirs: []
-      }),
 
       // Mock 服务（开发环境在 vite devServer 层拦截，业务代码无感知）
       viteMockServe({

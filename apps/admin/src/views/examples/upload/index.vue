@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios'
+import { ElButton, ElIcon, ElProgress, ElTag } from 'element-plus'
+import { Document, UploadFilled } from '@element-plus/icons-vue'
 import { formatFileSize } from '@/utils/format'
 import { useMessage } from '@/composables/useMessage'
 
@@ -164,7 +166,7 @@ const statusMap = {
       @dragleave.prevent="isDragging = false"
       @drop.prevent="onDrop"
     >
-      <el-icon class="upload-dragger__icon"><upload-filled /></el-icon>
+      <el-icon class="upload-dragger__icon"><UploadFilled /></el-icon>
       <p class="upload-dragger__text">拖拽文件到此处，或 <em>点击上传</em></p>
       <p class="upload-dragger__hint">支持 JPG、PNG、GIF、WebP、PDF，单文件最大 10MB</p>
       <input ref="inputRef" type="file" multiple class="upload-input" @change="onInputChange" />
@@ -188,7 +190,7 @@ const statusMap = {
         <!-- 缩略图 -->
         <div class="upload-item__thumb">
           <img v-if="isImageType(item.type) && item.url" :src="item.url" :alt="item.name" />
-          <el-icon v-else class="upload-item__icon"><document /></el-icon>
+          <el-icon v-else class="upload-item__icon"><Document /></el-icon>
         </div>
 
         <!-- 文件信息 -->

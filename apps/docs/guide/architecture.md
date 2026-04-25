@@ -133,4 +133,4 @@ onUnmounted(cancelAllRequests)
 - **分包**：element-plus / vue-vendor / vue-i18n / utils 独立 chunk
 - **压缩**：Gzip + Brotli 双格式（nginx 预读压缩文件）
 - **懒加载**：所有页面路由组件均为动态导入
-- **按需加载**：Element Plus + 图标通过 unplugin-vue-components 自动按需
+- **按需加载**：在页面/组件内显式 `import` Element Plus 与 `@element-plus/icons-vue`；Vite `manualChunks` 将 `element-plus` 等打入独立 chunk

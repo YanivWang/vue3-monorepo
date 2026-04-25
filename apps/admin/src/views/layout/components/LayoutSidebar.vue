@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { ElAside, ElMenu } from 'element-plus'
 import { useRoute } from 'vue-router'
 import { usePermissionStore } from '@/stores/modules/permission'
 import SidebarItem from './SidebarItem.vue'

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, nextTick } from 'vue'
+import { ElCard, ElCol, ElRow } from 'element-plus'
 import { useECharts } from '@/composables/useECharts'
 
 const { chartRef: lineRef, setOption: setLineOption } = useECharts()

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { ElMain } from 'element-plus'
 import { useTabsStore } from '@/stores/modules/tabs'
 
 const tabsStore = useTabsStore()

@@ -61,8 +61,6 @@
     "sass": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "unplugin-auto-import": "catalog:",
-    "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vite-plugin-compression2": "catalog:",
     "vite-plugin-mock": "catalog:",

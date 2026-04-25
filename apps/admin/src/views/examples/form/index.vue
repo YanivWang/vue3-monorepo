@@ -1,6 +1,27 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import {
+  ElButton,
+  ElCheckbox,
+  ElCheckboxGroup,
+  ElCol,
+  ElDatePicker,
+  ElDivider,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElLink,
+  ElOption,
+  ElRadio,
+  ElRadioButton,
+  ElRadioGroup,
+  ElRow,
+  ElSelect,
+  ElSlider,
+  ElSwitch,
+  ElTag
+} from 'element-plus'
 import { useMessage } from '@/composables/useMessage'
 
 const { success } = useMessage()

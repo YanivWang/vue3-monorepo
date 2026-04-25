@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElOption, ElSelect, ElSwitch, ElTag } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 import { useMessage } from '@/composables/useMessage'
 import type { TableColumn } from '@vue3-mono/components-pc'
 
@@ -148,7 +150,7 @@ async function handleToggleStatus(row: User) {
 <template>
   <PageContainer title="用户管理" subtitle="CRUD 完整示例">
     <template #extra>
-      <el-button v-permission="'user:create'" type="primary" :icon="'Plus'" @click="openAdd"> 新增用户 </el-button>
+      <el-button v-permission="'user:create'" type="primary" :icon="Plus" @click="openAdd"> 新增用户 </el-button>
     </template>
 
     <ProTable ref="tableRef" :fetch-fn="fetchUsers" :columns="columns" show-search show-action>

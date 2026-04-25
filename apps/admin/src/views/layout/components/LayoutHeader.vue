@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessageBox } from 'element-plus'
+import {
+  ElAvatar,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElHeader,
+  ElIcon,
+  ElMessageBox
+} from 'element-plus'
 import { Fold, Expand, User, SwitchButton } from '@element-plus/icons-vue'
 import { useAppStore } from '@/stores/modules/app'
 import { useUserStore } from '@/stores/modules/user'

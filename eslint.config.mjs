@@ -1,22 +1,10 @@
 import js from '@eslint/js'
-import { readFileSync, existsSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import globals from 'globals'
 import prettier from 'eslint-config-prettier/flat'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import importPlugin from 'eslint-plugin-import'
 import vueParser from 'vue-eslint-parser'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-
-// auto-imports 由 unplugin-auto-import 生成（admin dev/build 时写入根目录）
-// 冷启动时文件可能不存在，降级为空以避免 lint 直接失败
-const autoImportFile = join(__dirname, '.eslintrc-auto-import.json')
-const autoImportGlobals = existsSync(autoImportFile)
-  ? Object.fromEntries(Object.keys(JSON.parse(readFileSync(autoImportFile, 'utf8')).globals).map(k => [k, 'readonly']))
-  : {}
 
 export default tseslint.config(
   {
@@ -30,9 +18,6 @@ export default tseslint.config(
       'node_modules',
       '**/node_modules/**',
       '**/*.d.ts',
-      '**/auto-imports.d.ts',
-      '**/components.d.ts',
-      '.eslintrc-auto-import.json',
       '**/.nuxt/**',
       '**/.output/**'
     ]
@@ -49,8 +34,7 @@ export default tseslint.config(
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.node,
-        ...autoImportGlobals
+        ...globals.node
       }
     }
   },

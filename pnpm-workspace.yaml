@@ -40,12 +40,9 @@ catalog:
   '@element-plus/icons-vue': ^2.3.1
   # ---------- H5 UI（Vant 4 生态） ----------
   vant: ^4.9.0
-  '@vant/auto-import-resolver': ^1.2.0
   postcss-mobile-forever: ^4.0.0
   vconsole: ^3.15.0
-  # ---------- 自动导入 / mock / 压缩 / 可视化 ----------
-  unplugin-auto-import: ^0.18.2
-  unplugin-vue-components: ^0.27.3
+  # ---------- mock / 压缩 / 可视化 ----------
   vite-plugin-mock: ^3.0.2
   vite-plugin-compression2: ^2.5.3
   rollup-plugin-visualizer: ^7.0.1

@@ -2,6 +2,7 @@
 import { ref, computed, markRaw } from 'vue'
 import type { Component } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
+import { ElCard, ElCol, ElIcon, ElRow, ElTag } from 'element-plus'
 import { DataLine, User, Tickets, Setting } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/modules/user'
 

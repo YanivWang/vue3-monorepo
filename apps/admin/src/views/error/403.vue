@@ -1,17 +1,5 @@
-<template>
-  <div class="error-page">
-    <div class="error-content">
-      <h1 class="error-code">403</h1>
-      <p class="error-msg">您没有访问该页面的权限</p>
-      <div class="error-actions">
-        <el-button size="large" @click="goBack">返回上一页</el-button>
-        <el-button type="primary" size="large" @click="goHome">回到首页</el-button>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
+import { ElButton } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -24,6 +12,19 @@ function goHome() {
   router.replace('/home')
 }
 </script>
+
+<template>
+  <div class="error-page">
+    <div class="error-content">
+      <h1 class="error-code">403</h1>
+      <p class="error-msg">您没有访问该页面的权限</p>
+      <div class="error-actions">
+        <el-button size="large" @click="goBack">返回上一页</el-button>
+        <el-button type="primary" size="large" @click="goHome">回到首页</el-button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .error-page {
