@@ -207,7 +207,8 @@ export default tseslint.config(
           patterns: [
             {
               group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
-              message: '@vue3-mono/shared/hooks-core 通用 hooks 严禁 import 端侧 UI，端侧 hooks 在 packages/shared/src/hooks-pc|hooks-h5'
+              message:
+                '@vue3-mono/shared/hooks-core 通用 hooks 严禁 import 端侧 UI，端侧 hooks 在 packages/shared/src/hooks-pc|hooks-h5'
             }
           ]
         }
