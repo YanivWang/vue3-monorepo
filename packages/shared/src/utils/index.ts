@@ -7,7 +7,6 @@
 export * from './common'
 export * from './storage'
 export * from './echarts'
-export * from './performance'
 export * from './validate'
 export * from './mask'
 export * from './host'

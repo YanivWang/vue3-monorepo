@@ -114,7 +114,7 @@ pnpm docs:build
 │   ├── router/             # 路由配置与守卫
 │   ├── stores/             # Pinia 状态管理
 │   ├── types/              # TypeScript 类型声明
-│   ├── utils/              # 工具函数（http / storage / performance）
+│   ├── utils/              # 工具函数（http、storage 等）
 │   └── views/              # 页面视图
 ├── docker/
 │   ├── docker-compose.yaml         # Admin 编排（context: 仓库根）

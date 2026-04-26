@@ -112,8 +112,7 @@
     "dayjs": "catalog:",
     "echarts": "catalog:",
     "js-cookie": "catalog:",
-    "lodash-es": "catalog:",
-    "web-vitals": "catalog:"
+    "lodash-es": "catalog:"
   },
   "peerDependencies": {
     "@element-plus/icons-vue": "catalog:",

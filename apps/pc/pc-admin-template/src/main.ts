@@ -5,7 +5,6 @@ import { setupStore } from './stores'
 import { setupPlugins } from './plugins'
 import { registerDirectives } from './directives'
 import { installComponents } from '@vue3-mono/shared/components-pc'
-import { initWebVitals } from '@vue3-mono/shared/utils'
 
 // Element Plus 预编译 CSS（须在自定义全局样式之前引入，方便覆盖）
 import 'element-plus/dist/index.css'
@@ -36,12 +35,6 @@ async function bootstrap(): Promise<void> {
   await router.isReady()
 
   app.mount('#app')
-
-  // Web Vitals 性能监控（挂载后启动，避免影响首屏性能）
-  initWebVitals({
-    endpoint: import.meta.env.VITE_VITALS_ENDPOINT,
-    dev: import.meta.env.DEV
-  })
 }
 
 bootstrap()

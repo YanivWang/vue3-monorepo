@@ -192,9 +192,6 @@ catalogs:
     vue-tsc:
       specifier: ^2.0.26
       version: 2.2.12
-    web-vitals:
-      specifier: ^5.2.0
-      version: 5.2.0
 
 importers:
 
@@ -432,9 +429,6 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 4.6.4(vue@3.5.33(typescript@5.5.4))
-      web-vitals:
-        specifier: 'catalog:'
-        version: 5.2.0
     devDependencies:
       '@types/js-cookie':
         specifier: 'catalog:'
@@ -523,9 +517,6 @@ importers:
       lodash-es:
         specifier: 'catalog:'
         version: 4.18.1
-      web-vitals:
-        specifier: 'catalog:'
-        version: 5.2.0
     devDependencies:
       '@element-plus/icons-vue':
         specifier: 'catalog:'
@@ -4252,9 +4243,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  web-vitals@5.2.0:
-    resolution: {integrity: sha512-i2z98bEmaCqSDiHEDu+gHl/dmR4Q+TxFmG3/13KkMO+o8UxQzCqWaDRCiLgEa41nlO4VpXSI0ASa1xWmO9sBlA==}
 
   whatwg-mimetype@3.0.0:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
@@ -8282,8 +8270,6 @@ snapshots:
       '@vue/shared': 3.5.33
     optionalDependencies:
       typescript: 5.5.4
-
-  web-vitals@5.2.0: {}
 
   whatwg-mimetype@3.0.0: {}
 

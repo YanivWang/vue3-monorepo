@@ -14,7 +14,7 @@
 | 路由     | Vue Router                                 | ^4.3.3            |
 | HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2            |
 | 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4           |
-| 监控     | Sentry + web-vitals                        | 见 package.json   |
+| 监控     | Sentry                                     | 见 package.json   |
 | 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies` |
 
 ## 启动流程
@@ -29,7 +29,6 @@ bootstrap()
   4. setupPlugins(app, router) # 顺序：ErrorHandler → Element Plus → I18n → Sentry（无 DSN 则跳过）
   5. await router.isReady()
   6. app.mount('#app')
-  7. initWebVitals()
 ```
 
 ## 路由体系
@@ -117,16 +116,6 @@ onUnmounted(cancelAllRequests)
 | Vue 组件错误（全局兜底） | `app.config.errorHandler`                       |
 | 全局 JS 错误             | `window.onerror`                                |
 | 未捕获 Promise           | `window.addEventListener('unhandledrejection')` |
-
-## 性能监控
-
-`utils/performance.ts` 收集 Core Web Vitals：
-
-- **LCP**（最大内容绘制）目标 < 2.5s
-- **INP**（输入延迟）目标 < 200ms
-- **CLS**（累计布局偏移）目标 < 0.1
-- **FCP**（首次内容绘制）目标 < 1.8s
-- **TTFB**（首字节时间）目标 < 800ms
 
 ## 构建优化
 

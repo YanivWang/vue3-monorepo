@@ -36,8 +36,7 @@
     "vue": "catalog:",
     "vue-echarts": "catalog:",
     "vue-i18n": "catalog:",
-    "vue-router": "catalog:",
-    "web-vitals": "catalog:"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@types/js-cookie": "catalog:",
