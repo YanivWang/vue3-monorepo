@@ -41,7 +41,7 @@ vue3-monorepo-template/
 │   ├── nginx/admin.conf        # PC 静态站 nginx
 │   └── images/admin/Dockerfile
 ├── scripts/docker.sh            # docker compose 快捷命令
-└── package.json                 # 根脚本：admin:* / docker:admin:* / verify:p3 …
+└── package.json                 # 根脚本：admin:* / docker:admin:* / verify:full …
 ```
 
 业务代码在 **`apps/*`**；可复用能力在 **`packages/shared`**。Pinia Store、路由、API 模块**不跨 app 共享**，仅共享类型与工具等。
@@ -65,7 +65,7 @@ pnpm run docs:dev
 
 # 5. 类型检查（全 workspace 并行）
 pnpm run typecheck
-# 与 CI 一致别名
+# 别名（与 `verify:full` 中使用的名称一致）
 pnpm run type-check
 
 # 6. ESLint / Stylelint
@@ -79,7 +79,7 @@ pnpm run check:refs
 pnpm run test
 pnpm run test:run
 
-# 9. 构建：admin + h5 + docs（顺序执行，供 CI / 发布）
+# 9. 构建：admin + h5 + docs（顺序执行，供发布或全量验证）
 pnpm run build
 
 # 10. 单端构建
@@ -92,7 +92,7 @@ pnpm --filter @vue3-mono/admin preview
 pnpm --filter @vue3-mono/h5 preview
 ```
 
-CI（GitHub Actions）会在推送/PR 时执行 `check:refs`、`lint`、`lint:style`、`type-check`、`test:run`、`build`（含 `pnpm audit`）。
+推送前建议在本地或团队流水线上跑齐：`check:refs`、`check:request-core`、`lint`、`lint:style`、`type-check`、`test:run`、`build`，并与 `pnpm audit --audit-level=high` 策略对齐；全量可执行根目录 `pnpm run verify:full`（见该脚本说明）。
 
 首次克隆后已启用 Husky，两个 Hook 自动生效：
 
@@ -157,7 +157,7 @@ chore: 升级 vite 到 5.4
 ### 容器镜像
 
 - **`docker/images/admin/Dockerfile`**（构建上下文为 **仓库根**）：`pnpm --filter @vue3-mono/admin build`，nginx 配置为 **`docker/nginx/admin.conf`**。本地：`pnpm run docker:admin:up` 或 `docker compose -f docker/docker-compose.yaml up --build`。H5 / 文档需另起镜像或扩展 `docker/`。
-- **P3 全量门禁**：根目录执行 `pnpm run verify:p3`（refs、request 无 UI、typecheck、lint、stylelint、prettier --check、test、build）。
+- **全量本地校验**：根目录执行 `pnpm run verify:full`（refs、request 无 UI、typecheck、lint、stylelint、prettier --check、test、build）。
 
 ## 环境变量
 

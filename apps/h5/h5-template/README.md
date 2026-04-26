@@ -14,7 +14,6 @@ apps/h5/h5-template/
 ├── vite.config.ts
 ├── vitest.config.ts
 ├── tsconfig.json
-├── .lighthouserc.json      # Lighthouse CI（移动端 preset，dist 为 ./dist）
 └── package.json
 ```
 

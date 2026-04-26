@@ -33,7 +33,6 @@ coverage
 .env.*.local
 
 # Toolchain / OS artifacts
-.lighthouseci/
 .eslintcache
 .stylelintcache
 *.tsbuildinfo

@@ -122,13 +122,9 @@ BREAKING CHANGE: useTable no longer accepts the `url` option.
 Use `fetchFn` instead.
 ```
 
-## CI/CD 触发规则
+## CI/CD
 
-| 操作                 | 触发工作流                  | 效果                    |
-| -------------------- | --------------------------- | ----------------------- |
-| Push 到 `develop`    | `deploy-staging.yml`        | 自动部署到 Staging      |
-| Push 到 `main`       | `deploy.yml`                | 自动部署到生产          |
-| PR 到 `main/develop` | `ci.yml` + `lighthouse.yml` | 代码质量检查 + 性能检测 |
+本仓库模板**不内置**持续集成/部署工作流，请在组织内按规范自行接入（如 GitHub Actions、GitLab CI 等），并与本地/团队的 `lint`、`type-check`、`test:run`、`build` 等门禁对齐。
 
 ## 分支保护规则（建议配置）
 
@@ -136,7 +132,7 @@ Use `fetchFn` instead.
 
 - ✅ Require a pull request before merging
 - ✅ Require approvals（建议 1 人以上）
-- ✅ Require status checks to pass（CI / type-check / tests）
+- ✅ Require status checks to pass（若已接入 CI，可要求与 lint / typecheck / test 等检查一致）
 - ✅ Require branches to be up to date
 - ✅ Do not allow bypassing the above settings
 - ✅ Restrict who can push to matching branches

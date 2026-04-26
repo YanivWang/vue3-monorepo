@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: 📖 查阅文档
-    url: https://your-org.github.io/vue3-monorepo-template/
-    about: 在提 Issue 前，请先查阅文档，看是否已有解答
-  - name: 💬 参与讨论
-    url: https://github.com/your-org/vue3-monorepo-template/discussions
-    about: 功能探讨、技术交流请前往 Discussions

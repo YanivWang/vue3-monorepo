@@ -77,7 +77,7 @@ git commit -m "docs: 更新 ProTable 组件文档"
    ```
 3. 推送分支并创建 PR，目标分支为 `develop`
 4. PR 描述中说明变更内容、影响范围、测试方式
-5. 等待 CI 通过，Code Review 完成后合并
+5. 团队流水线/门禁通过后（若已配置），Code Review 完成后合并
 
 ## 代码规范
 

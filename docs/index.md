@@ -43,7 +43,7 @@ features:
 
   - icon: 🐳
     title: Docker 容器化
-    details: docker/images/admin 多阶段构建（monorepo 根上下文），docker/nginx 含 SPA、Gzip、安全头；docker/docker-compose.yaml 本地验证；H5 Lighthouse 见 apps/h5/h5-template/.lighthouserc.json。
+    details: docker/images/admin 多阶段构建（monorepo 根上下文），docker/nginx 含 SPA、Gzip、安全头；docker/docker-compose.yaml 本地验证。
 
   - icon: 🔄
     title: 请求取消与防重复

@@ -11,7 +11,6 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
     "dev": "pnpm -r --parallel run --if-present dev",
     "admin:dev": "pnpm --filter @vue3-mono/admin dev",
     "admin:build": "pnpm --filter @vue3-mono/admin build",
@@ -36,7 +35,7 @@
     "format": "prettier --write .",
     "check:refs": "node scripts/check-refs.js",
     "check:request-core": "node scripts/check-request-core.js",
-    "verify:p3": "pnpm run check:refs && pnpm run check:request-core && pnpm run typecheck && pnpm run lint && pnpm run lint:style && prettier --check . && pnpm run test:run && pnpm run build",
+    "verify:full": "pnpm run check:refs && pnpm run check:request-core && pnpm run typecheck && pnpm run lint && pnpm run lint:style && prettier --check . && pnpm run test:run && pnpm run build",
     "docker:up": "bash scripts/docker.sh up",
     "docker:down": "bash scripts/docker.sh stop",
     "docker:logs": "bash scripts/docker.sh logs",

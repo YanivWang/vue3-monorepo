@@ -96,10 +96,6 @@ pnpm docs:build
 ## 目录结构
 
 ```
-├── .github/
-│   └── workflows/
-│       ├── ci.yml          # CI（lint + test + build）
-│       └── deploy.yml      # CD（docker build/push/SSH 部署）
 ├── docs/                   # VitePress 文档站
 ├── mock/                   # vite-plugin-mock 数据
 ├── src/

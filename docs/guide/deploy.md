@@ -19,23 +19,13 @@ pnpm run docker:admin:logs
 
 ### 生产部署流程
 
-项目已内置 `.github/workflows/deploy.yml`，推送到 `main`/`master` 分支且 CI 通过后自动执行：
+本模板**不自带** GitHub Actions 工作流，请在自有 CI/CD（GitHub Actions、GitLab CI、Jenkins 等）中编排，典型步骤为：
 
-1. 构建 Docker 镜像并推送到镜像仓库
-2. SSH 到目标服务器，拉取镜像并重启容器
+1. 在构建机执行 `pnpm install` 与 `pnpm run build`（或分别构建需发布的镜像/产物）
+2. 构建 Docker 镜像并推送到镜像仓库
+3. SSH 或 K8s 等到目标环境拉取镜像并重启
 
-**需要在 GitHub 仓库 → Settings → Secrets 中配置：**
-
-| Secret 名称     | 说明                                                   |
-| --------------- | ------------------------------------------------------ |
-| `REGISTRY_URL`  | 镜像仓库地址（如 `registry.cn-hangzhou.aliyuncs.com`） |
-| `REGISTRY_USER` | 仓库用户名                                             |
-| `REGISTRY_PASS` | 仓库密码                                               |
-| `IMAGE_NAME`    | 镜像名（如 `my-namespace/vue3-monorepo-template`）     |
-| `SSH_HOST`      | 目标服务器 IP                                          |
-| `SSH_USER`      | SSH 用户名                                             |
-| `SSH_KEY`       | SSH 私钥（Base64 或 PEM 格式）                         |
-| `SSH_PORT`      | SSH 端口（默认 22，可不填）                            |
+若使用 GitHub Actions 做镜像构建与 SSH 发布，一般需在仓库 **Settings → Secrets and variables** 中配置 registry 与 SSH 等凭据（名称依流水线而定）。
 
 ## Nginx 安全响应头
 
