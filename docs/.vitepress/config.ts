@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitepress'
 
+/** Docker / 无 .git 上下文构建时置 1，避免 VitePress 调用 git 取 lastUpdated */
+const vitePressNoGit = process.env.VITEPRESS_NO_GIT === '1'
+
 export default defineConfig({
   title: 'vue3-monorepo-template',
   description: '企业级 Vue3 + Vite + TypeScript 脚手架模板文档',
@@ -65,7 +68,7 @@ export default defineConfig({
       text: '在 GitHub 上编辑此页'
     },
 
-    lastUpdated: { text: '最后更新' },
+    ...(vitePressNoGit ? {} : { lastUpdated: { text: '最后更新' } }),
 
     outline: { label: '本页目录', level: [2, 3] },
 

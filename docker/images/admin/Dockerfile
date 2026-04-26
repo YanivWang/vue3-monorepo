@@ -7,14 +7,13 @@ FROM node:20-alpine AS builder
 
 ARG BUILD_MODE=production
 
-RUN corepack enable && corepack prepare pnpm@10.33.1 --activate
+RUN corepack enable && corepack prepare pnpm@10.17.0 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-RUN pnpm install --frozen-lockfile
-
+# 须先 COPY 全仓再 install：否则 workspace 子包未就绪时 pnpm 无法把各应用依赖链入子目录 node_modules，vue-tsc 会报找不到 vite/client 等
 COPY . .
+RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 
 RUN pnpm --filter @vue3-mono/admin build --mode ${BUILD_MODE}
 

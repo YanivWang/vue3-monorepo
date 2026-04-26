@@ -1,14 +1,21 @@
-# vue3-monorepo-template — Admin（PC）生产镜像本地验证
+# vue3-monorepo-template — Admin / H5 / Docs 生产镜像本地验证
 #
-# 用法（在仓库根目录）：
+# 一键启动全部（仓库根目录）：
+#   pnpm run docker:up
+# 或：
 #   docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d
 # 或：
 #   ./scripts/docker.sh up
 #
-# 说明：
-#   - build.context 为仓库根（.. 相对本 compose 文件所在 docker/ 目录）
-#   - nginx 配置位于 docker/nginx/（构建时打入镜像；换环境可复制 admin.conf 改 Dockerfile COPY）
-#   - 端口默认映射 8080:80，避免占用本机 80（可用 ADMIN_PORT 覆盖）
+# 仅启动某一服务：
+#   ./scripts/docker.sh up admin-web
+#   ./scripts/docker.sh up h5-web
+#   ./scripts/docker.sh up docs-web
+#
+# 端口（可用环境变量覆盖）：
+#   ADMIN_PORT  默认 8080
+#   H5_PORT     默认 8081
+#   DOCS_PORT   默认 8082
 
 services:
   admin-web:
@@ -21,6 +28,38 @@ services:
     container_name: ${ADMIN_CONTAINER:-vue3-mono-admin}
     ports:
       - '${ADMIN_PORT:-8080}:80'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  h5-web:
+    build:
+      context: ..
+      dockerfile: docker/images/h5/Dockerfile
+      args:
+        BUILD_MODE: ${BUILD_MODE:-production}
+    image: ${H5_IMAGE:-vue3-mono-h5:local}
+    container_name: ${H5_CONTAINER:-vue3-mono-h5}
+    ports:
+      - '${H5_PORT:-8081}:80'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  docs-web:
+    build:
+      context: ..
+      dockerfile: docker/images/docs/Dockerfile
+    image: ${DOCS_IMAGE:-vue3-mono-docs:local}
+    container_name: ${DOCS_CONTAINER:-vue3-mono-docs}
+    ports:
+      - '${DOCS_PORT:-8082}:80'
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://localhost/health']

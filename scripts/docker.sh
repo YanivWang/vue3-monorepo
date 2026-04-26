@@ -13,9 +13,11 @@ compose() {
 
 case "${1:-}" in
   up | start)
-    echo "Building & starting admin-web (compose: $COMPOSE_FILE)..."
+    echo "Building & starting stack (compose: $COMPOSE_FILE)..."
     compose up --build -d "${@:2}"
     echo "Admin: http://localhost:${ADMIN_PORT:-8080}"
+    echo "H5:    http://localhost:${H5_PORT:-8081}"
+    echo "Docs:  http://localhost:${DOCS_PORT:-8082}"
     ;;
   down | stop)
     compose down "${@:2}"
@@ -28,7 +30,7 @@ case "${1:-}" in
     ;;
   *)
     echo "Usage: $0 {up|stop|logs|build} [extra docker compose args]"
-    echo "  Environment: COMPOSE_PROJECT, ADMIN_PORT (see docker/docker-compose.yaml)"
+    echo "  Environment: COMPOSE_PROJECT, ADMIN_PORT, H5_PORT, DOCS_PORT (see docker/docker-compose.yaml)"
     exit 1
     ;;
 esac
