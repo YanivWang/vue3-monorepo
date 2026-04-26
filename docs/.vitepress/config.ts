@@ -9,6 +9,13 @@ export default defineConfig({
   lang: 'zh-CN',
   base: '/',
 
+  /** 与 admin(5173)、h5(5174) 错开，便于 `pnpm dev` 三端同启（走 Vite 的 server 配置） */
+  vite: {
+    server: {
+      port: 5175
+    }
+  },
+
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 
   themeConfig: {

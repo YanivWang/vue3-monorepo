@@ -12,6 +12,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
+    "dev": "pnpm -r --parallel run --if-present dev",
     "admin:dev": "pnpm --filter @vue3-mono/admin dev",
     "admin:build": "pnpm --filter @vue3-mono/admin build",
     "admin:typecheck": "pnpm --filter @vue3-mono/admin typecheck",
