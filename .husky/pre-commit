@@ -1,1 +1,2 @@
+pnpm run check:refs && pnpm run check:request-core
 pnpm exec lint-staged
