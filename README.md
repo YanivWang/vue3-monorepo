@@ -30,7 +30,7 @@ vue3-monorepo-template/
 │   └── h5/h5-template/            # 移动端 H5（Vant 4 + 多宿主 Bridge），端口 5174
 ├── docs/                          # VitePress 文档站
 ├── packages/
-│   └── shared/                    # 单包共享源码：types / enums / constants / styles（tokens）、utils、bridge、request、locale、hooks、components、directives
+│   └── shared/                    # 单包 @vue3-mono/shared；源码在 src/ 分域，对外子路径见 package.json#exports（如 request-core|pc|h5、hooks-core|pc|h5、components-pc|h5、directives-pc|h5）
 ├── scripts/
 │   └── check-refs.js            # 校验 workspace 与 tsconfig paths 一致
 ├── pnpm-workspace.yaml          # workspace glob + catalog 版本锁
@@ -132,7 +132,7 @@ chore: 升级 vite 到 5.4
 
 ## 架构要点
 
-### 请求层（三包）
+### 请求层（`@vue3-mono/shared` 内三子路径）
 
 - **`@vue3-mono/shared/request-core`**：Axios 核心，禁止直接依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
 - **`@vue3-mono/shared/request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
@@ -182,11 +182,12 @@ chore: 升级 vite 到 5.4
 **H5**
 
 1. 接口：`apps/h5/h5-template/src/api/`
-2. 页面与路由：`apps/h5/h5-template/src/views/`、`apps/h5/src/router/routes.ts`
+2. 页面与路由：`apps/h5/h5-template/src/views/`、`apps/h5/h5-template/src/router/routes.ts`
 3. Store：`apps/h5/h5-template/src/stores/modules/`
 
-**跨端可复用逻辑**
+**跨端可复用逻辑**（均在 **`packages/shared/src/`** 下实现，经 **`@vue3-mono/shared/…`** 子路径引用，与 [packages/shared/package.json](packages/shared/package.json) 的 `exports` 一一对应）
 
-- 纯函数 / 类型：优先放 `@vue3-mono/shared/types`、`@vue3-mono/shared/enums`、`@vue3-mono/shared/constants`；主题 token（JS）放 `@vue3-mono/shared/styles/tokens`；工具放 `@vue3-mono/shared/utils`
-- 与 UI 无关的 composable：`@vue3-mono/shared/hooks-core`
-- 端专用 UI：分别放 `packages/{components,directives,hooks,request}/{pc,h5}`；共享 `hooks` / `request` 在子目录 `core`
+- 纯函数 / 类型 / 桥接：子路径 `types`、`enums`、`constants`、`bridge`；主题 token（JS）`styles/tokens`；工具 `utils`；i18n `locale`
+- 与 UI 无关的 composable：`hooks-core`；端专用 `hooks-pc` / `hooks-h5`
+- 请求层：`request-core`（与 UI 解耦）、`request-pc` / `request-h5`（各端反馈与装配）
+- 端专用 UI：物理目录在 `src/components-pc`、`src/components-h5`、`src/directives-pc`、`src/directives-h5`；对应对外子路径 `components-pc` / `components-h5`、`directives-pc` / `directives-h5`（与 `package.json#exports` 一致）

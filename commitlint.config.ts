@@ -3,11 +3,16 @@ import type { UserConfig } from '@commitlint/types'
 /**
  * Conventional Commits + monorepo scope
  *
+ * scope 表示提交影响面，不都对应独立 pnpm 包。本仓 workspace 仅
+ * `apps/pc/*`、`apps/h5/*`、`docs`、`packages/shared`（@vue3-mono/shared 单包），
+ * 与 shared 子路径导出（如 utils、request-core、components-pc 等）对应关系见
+ * `packages/shared/package.json` 的 `exports`。
+ *
  * 合法 scope（20 个）：
- *   - 应用级（3）：admin / h5 / docs
- *   - 6 基础包：shared / utils / bridge / request / locale / hooks
- *   - PC UI 4 包：components-pc / hooks-pc / directives-pc / request-pc
- *   - H5 UI 4 包：components-h5 / hooks-h5 / directives-h5 / request-h5
+ *   - 应用级（3）：admin（PC 管理端 app）/ h5 / docs
+ *   - 共享单包内 6 类：shared / utils / bridge / request / locale / hooks
+ *   - PC 子域 4 项：components-pc / hooks-pc / directives-pc / request-pc
+ *   - H5 子域 4 项：components-h5 / hooks-h5 / directives-h5 / request-h5
  *   - 工程化（3）：repo / deps / docker
  *
  * 示例：
