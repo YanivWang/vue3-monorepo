@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import { registerDirectives as registerH5Directives } from '@vue3-mono/directives-h5'
+import { registerDirectives as registerH5Directives } from '@vue3-mono/shared/directives-h5'
 import { useUserStore } from '@/stores'
 
 /**

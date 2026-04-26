@@ -1,5 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock'
-import type { MenuRoute } from '@vue3-mono/shared'
+import type { MenuRoute } from '@vue3-mono/shared/types'
 
 /** admin 拥有全部菜单 */
 const adminMenus: MenuRoute[] = [

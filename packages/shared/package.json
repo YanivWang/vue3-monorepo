@@ -3,7 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "基础类型 / 枚举 / 常量 / design tokens（两端共享，纯源码包）",
+  "description": "PC / H5 共享源码（单包：类型、工具、请求、hooks、组件、指令、i18n、bridge）",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.vue"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -13,24 +18,145 @@
       "types": "./src/types/index.ts",
       "import": "./src/types/index.ts"
     },
+    "./types/*": "./src/types/*",
     "./enums": {
       "types": "./src/enums/index.ts",
       "import": "./src/enums/index.ts"
     },
+    "./enums/*": "./src/enums/*",
     "./constants": {
       "types": "./src/constants/index.ts",
       "import": "./src/constants/index.ts"
     },
+    "./constants/*": "./src/constants/*",
     "./styles/*": "./src/styles/*",
+    "./styles/tokens": {
+      "types": "./src/styles/tokens.ts",
+      "import": "./src/styles/tokens.ts"
+    },
     "./styles/tokens/*": "./src/styles/tokens/*",
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "import": "./src/utils/index.ts"
+    },
+    "./bridge": {
+      "types": "./src/bridge/index.ts",
+      "import": "./src/bridge/index.ts"
+    },
+    "./bridge/*": "./src/bridge/*",
+    "./locale": {
+      "types": "./src/locale/index.ts",
+      "import": "./src/locale/index.ts"
+    },
+    "./locale/*": "./src/locale/*",
+    "./request-core": {
+      "types": "./src/request-core/index.ts",
+      "import": "./src/request-core/index.ts"
+    },
+    "./request-core/*": "./src/request-core/*",
+    "./request-pc": {
+      "types": "./src/request-pc/index.ts",
+      "import": "./src/request-pc/index.ts"
+    },
+    "./request-pc/*": "./src/request-pc/*",
+    "./request-h5": {
+      "types": "./src/request-h5/index.ts",
+      "import": "./src/request-h5/index.ts"
+    },
+    "./request-h5/*": "./src/request-h5/*",
+    "./hooks-core": {
+      "types": "./src/hooks-core/index.ts",
+      "import": "./src/hooks-core/index.ts"
+    },
+    "./hooks-core/*": "./src/hooks-core/*",
+    "./hooks-pc": {
+      "types": "./src/hooks-pc/index.ts",
+      "import": "./src/hooks-pc/index.ts"
+    },
+    "./hooks-pc/*": "./src/hooks-pc/*",
+    "./hooks-h5": {
+      "types": "./src/hooks-h5/index.ts",
+      "import": "./src/hooks-h5/index.ts"
+    },
+    "./hooks-h5/*": "./src/hooks-h5/*",
+    "./components-pc": {
+      "types": "./src/components-pc/index.ts",
+      "import": "./src/components-pc/index.ts"
+    },
+    "./components-pc/*": "./src/components-pc/*",
+    "./components-h5": {
+      "types": "./src/components-h5/index.ts",
+      "import": "./src/components-h5/index.ts"
+    },
+    "./components-h5/*": "./src/components-h5/*",
+    "./directives-pc": {
+      "types": "./src/directives-pc/index.ts",
+      "import": "./src/directives-pc/index.ts"
+    },
+    "./directives-pc/*": "./src/directives-pc/*",
+    "./directives-h5": {
+      "types": "./src/directives-h5/index.ts",
+      "import": "./src/directives-h5/index.ts"
+    },
+    "./directives-h5/*": "./src/directives-h5/*",
     "./package.json": "./package.json"
   },
   "scripts": {
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts,.vue",
+    "test": "vitest run -c vitest.config.ts",
+    "test:watch": "vitest -c vitest.config.ts"
+  },
+  "dependencies": {
+    "axios": "catalog:",
+    "dayjs": "catalog:",
+    "echarts": "catalog:",
+    "js-cookie": "catalog:",
+    "lodash-es": "catalog:",
+    "web-vitals": "catalog:"
+  },
+  "peerDependencies": {
+    "@element-plus/icons-vue": "catalog:",
+    "@vueuse/core": "catalog:",
+    "element-plus": "catalog:",
+    "vant": "catalog:",
+    "vconsole": "catalog:",
+    "vue": "catalog:",
+    "vue-i18n": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "vconsole": {
+      "optional": true
+    },
+    "element-plus": {
+      "optional": true
+    },
+    "vant": {
+      "optional": true
+    },
+    "@element-plus/icons-vue": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@element-plus/icons-vue": "catalog:",
+    "@types/js-cookie": "catalog:",
+    "@types/lodash-es": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vueuse/core": "catalog:",
+    "element-plus": "catalog:",
+    "happy-dom": "catalog:",
+    "sass": "catalog:",
     "typescript": "catalog:",
+    "vant": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:",
+    "vconsole": "catalog:",
+    "vue": "catalog:",
+    "vue-i18n": "catalog:",
+    "vue-router": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useECharts as useEChartsBase, type UseEChartsOptions } from '@vue3-mono/hooks-pc'
+import { useECharts as useEChartsBase, type UseEChartsOptions } from '@vue3-mono/shared/hooks-pc'
 import { useAppStore } from '@/stores/modules/app'
 
 /**

@@ -1,4 +1,4 @@
-import { createTokenStorage } from '@vue3-mono/utils'
+import { createTokenStorage } from '@vue3-mono/shared/utils'
 
 /**
  * H5 应用的 token 存储实例。

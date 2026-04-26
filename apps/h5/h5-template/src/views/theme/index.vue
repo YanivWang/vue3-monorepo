@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CellGroup, Cell, RadioGroup, Radio, Tag } from 'vant'
-import { PageContainer } from '@vue3-mono/components-h5'
-import { brandPalettes, ThemeMode as ThemeModeEnum, type BrandId, type ThemeModeId } from '@vue3-mono/shared'
+import { PageContainer } from '@vue3-mono/shared/components-h5'
+import { ThemeMode as ThemeModeEnum } from '@vue3-mono/shared/enums'
+import { brandPalettes, type BrandId, type ThemeModeId } from '@vue3-mono/shared/styles/tokens'
 import { useAppStore } from '@/stores'
 import { setLocale, getLocale, BASE_LOCALES, type BaseLocale } from '@/composables/useI18n'
 import TabLayout from '@/layouts/TabLayout.vue'

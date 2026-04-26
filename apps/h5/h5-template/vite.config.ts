@@ -45,7 +45,7 @@ export default defineConfig(async ({ mode }) => {
     },
 
     optimizeDeps: {
-      include: ['vant', '@vue3-mono/components-h5']
+      include: ['vant', '@vue3-mono/shared/components-h5']
     },
 
     css: {

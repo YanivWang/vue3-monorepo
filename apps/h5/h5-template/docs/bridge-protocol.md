@@ -1,6 +1,6 @@
 # H5 WebView 与原生 App Bridge 协议（约定稿）
 
-> 与 iOS / Android 客户端共维。`@vue3-mono/bridge` 的 `native-app` 策略依赖客户端注入的全局对象与 `postMessage` 约定；以下为业务对齐用的**最小协议说明**，详细字段以各端 SDK 为准。
+> 与 iOS / Android 客户端共维。`@vue3-mono/shared/bridge` 的 `native-app` 策略依赖客户端注入的全局对象与 `postMessage` 约定；以下为业务对齐用的**最小协议说明**，详细字段以各端 SDK 为准。
 
 ## 1. 注入与发现
 
@@ -32,5 +32,5 @@
 
 ## 5. 变更流程
 
-- 协议变更需同步更新本文档版本号与 `@vue3-mono/bridge` 类型定义。
+- 协议变更需同步更新本文档版本号与 `@vue3-mono/shared/bridge` 类型定义。
 - 破坏性变更需发迁移说明给 H5 与双端负责人。

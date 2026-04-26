@@ -5,11 +5,11 @@ import {
   getLocale as _getLocale,
   BASE_LOCALES,
   type BaseLocale
-} from '@vue3-mono/locale'
+} from '@vue3-mono/shared/locale'
 
 /**
- * Admin 端 i18n 实例：直接复用 @vue3-mono/locale 的中/英文基础文案。
- * 若业务需要扩展词条，可在此通过 messages 参数合并更多 messages（见 @vue3-mono/locale README）。
+ * Admin 端 i18n 实例：直接复用 @vue3-mono/shared/locale 的中/英文基础文案。
+ * 若业务需要扩展词条，可在此通过 messages 参数合并更多 messages（见 @vue3-mono/shared/locale README）。
  */
 export const i18n = createI18nInstance({
   locale: ((typeof localStorage !== 'undefined' && (localStorage.getItem('language') as BaseLocale)) ||

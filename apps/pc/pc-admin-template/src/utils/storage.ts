@@ -1,4 +1,4 @@
-import { createTokenStorage } from '@vue3-mono/utils'
+import { createTokenStorage } from '@vue3-mono/shared/utils'
 
 /**
  * 应用级 Token 存储：Cookie 持久化，key 从 env 读取，全局共享一份实例

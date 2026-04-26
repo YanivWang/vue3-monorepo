@@ -26,18 +26,11 @@
 ```
 vue3-monorepo-template/
 ├── apps/
-│   ├── admin/                   # PC 管理端（Element Plus），端口默认 5173
-│   ├── h5/                      # 移动端 H5（Vant 4 + 多宿主 Bridge），端口 5174
-│   └── docs/                    # VitePress 文档站
+│   ├── pc/pc-admin-template/    # PC 管理端（Element Plus），端口默认 5173
+│   └── h5/h5-template/            # 移动端 H5（Vant 4 + 多宿主 Bridge），端口 5174
+├── docs/                          # VitePress 文档站
 ├── packages/
-│   ├── shared/                  # 类型、枚举、常量、设计 tokens（SCSS + TS）
-│   ├── utils/                   # 工具函数、宿主检测、Token 存储工厂等
-│   ├── bridge/                  # 多宿主 Bridge（browser / wx-mini / ali-mini / native-app）
-│   ├── request/                 # Axios 核心（UI 无关 + 依赖注入）
-│   ├── locale/                  # vue-i18n 框架层
-│   ├── hooks/                   # 与 UI 无关的 composables
-│   ├── pc/                      # PC 专用四包：components / hooks / directives / request
-│   └── h5/                      # H5 专用四包：components / hooks / directives / request
+│   └── shared/                    # 单包共享源码：types / enums / constants / styles（tokens）、utils、bridge、request、locale、hooks、components、directives
 ├── scripts/
 │   └── check-refs.js            # 校验 workspace 与 tsconfig paths 一致
 ├── pnpm-workspace.yaml          # workspace glob + catalog 版本锁
@@ -51,14 +44,14 @@ vue3-monorepo-template/
 └── package.json                 # 根脚本：admin:* / docker:admin:* / verify:p3 …
 ```
 
-业务代码在 **`apps/*`**；可复用能力在 **`packages/*`**。Pinia Store、路由、API 模块**不跨 app 共享**，仅共享类型与工具包。
+业务代码在 **`apps/*`**；可复用能力在 **`packages/shared`**。Pinia Store、路由、API 模块**不跨 app 共享**，仅共享类型与工具等。
 
 ## 快速开始
 
 本项目使用 [pnpm](https://pnpm.io/) 与单一份 `pnpm-lock.yaml` 锁定依赖（`catalog:` 统一版本），请勿与 npm/yarn 混用。
 
 ```bash
-# 1. 安装依赖（`pnpm-workspace` 见根目录，共 17 个包）
+# 1. 安装依赖（`pnpm-workspace` 见根目录：2 个 app + docs + shared）
 pnpm install
 
 # 2. 开发：PC 管理端（默认 5173）
@@ -141,9 +134,9 @@ chore: 升级 vite 到 5.4
 
 ### 请求层（三包）
 
-- **`@vue3-mono/request`**：Axios 核心，禁止直接依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
-- **`@vue3-mono/request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
-- **`@vue3-mono/request-h5`**：`createH5Http`，默认 Vant 反馈；**h5** 在 `src/plugins/http.ts` 装配。
+- **`@vue3-mono/shared/request-core`**：Axios 核心，禁止直接依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
+- **`@vue3-mono/shared/request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
+- **`@vue3-mono/shared/request-h5`**：`createH5Http`，默认 Vant 反馈；**h5** 在 `src/plugins/http.ts` 装配。
 
 ### PC 管理端（`apps/pc/pc-admin-template`）
 
@@ -152,14 +145,14 @@ chore: 升级 vite 到 5.4
 
 ### H5（`apps/h5/h5-template`）
 
-- Vant 4、`@vue3-mono/bridge` 多宿主、栈式 `keep-alive`、`postcss-mobile-forever` 视口适配。
+- Vant 4、`@vue3-mono/shared/bridge` 多宿主、栈式 `keep-alive`、`postcss-mobile-forever` 视口适配。
 - Mock：`apps/h5/h5-template/mock/`；多宿主说明见 `apps/h5/h5-template/docs/bridge-protocol.md`。
 - 示例：长列表 + 详情 + 新建/编辑/删除（`apps/h5/h5-template/src/views/list/`），筛选使用包内 `FilterDrawer` 与 `useProListFilters`。
 
 ### 共享包与约束
 
-- **Store 不跨 app**：仅共享 `@vue3-mono/shared` 等类型与工具。
-- **权限指令**：PC 为 `@vue3-mono/directives-pc`；H5 为 `@vue3-mono/directives-h5`（工厂注入 `hasPermission` / `hasRole`）。
+- **Store 不跨 app**：仅共享 `@vue3-mono/shared/types`、`enums`、`utils` 等子路径。
+- **权限指令**：PC 为 `@vue3-mono/shared/directives-pc`；H5 为 `@vue3-mono/shared/directives-h5`（工厂注入 `hasPermission` / `hasRole`）。
 
 ### 容器镜像
 
@@ -194,6 +187,6 @@ chore: 升级 vite 到 5.4
 
 **跨端可复用逻辑**
 
-- 纯函数 / 类型：优先放 `@vue3-mono/shared` 或 `@vue3-mono/utils`
-- 与 UI 无关的 composable：`@vue3-mono/hooks`
+- 纯函数 / 类型：优先放 `@vue3-mono/shared/types`、`@vue3-mono/shared/enums`、`@vue3-mono/shared/constants`；主题 token（JS）放 `@vue3-mono/shared/styles/tokens`；工具放 `@vue3-mono/shared/utils`
+- 与 UI 无关的 composable：`@vue3-mono/shared/hooks-core`
 - 端专用 UI：分别放 `packages/{components,directives,hooks,request}/{pc,h5}`；共享 `hooks` / `request` 在子目录 `core`

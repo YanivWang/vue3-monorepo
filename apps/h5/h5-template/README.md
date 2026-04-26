@@ -22,7 +22,7 @@ apps/h5/h5-template/
 
 ## 路由栈式 keep-alive（手工回归）
 
-自动化单测见 **`packages/hooks/h5/src/useHistoryStackH5.spec.ts`**。发版前建议在浏览器再确认：
+自动化单测见 **`packages/shared/src/hooks-h5/useHistoryStackH5.spec.ts`**。发版前建议在浏览器再确认：
 
 1. 登录后 **Home → List → Theme**，使用系统返回或页面返回：**栈顶弹出**，`KeepAlive` 缓存符合预期（中间页是否销毁与业务一致）。
 2. 在 **List** 使用 **`router.replace`** 进入同级页：**栈顶替换**，不应多叠一层（与 **`replace` + History `replaceState`** 一致）。

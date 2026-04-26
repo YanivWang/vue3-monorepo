@@ -1,1 +1,1 @@
-export { useMessage } from '@vue3-mono/hooks-pc'
+export { useMessage } from '@vue3-mono/shared/hooks-pc'

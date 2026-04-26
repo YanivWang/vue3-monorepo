@@ -5,7 +5,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/modules/user'
-import type { LoginParams } from '@vue3-mono/shared'
+import type { LoginParams } from '@vue3-mono/shared/types'
 
 const router = useRouter()
 const route = useRoute()

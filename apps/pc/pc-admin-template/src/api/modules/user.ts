@@ -1,5 +1,5 @@
 import http from '@/utils/http'
-import type { LoginParams, LoginResult, UserInfo, UpdatePasswordParams } from '@vue3-mono/shared'
+import type { LoginParams, LoginResult, UserInfo, UpdatePasswordParams } from '@vue3-mono/shared/types'
 
 /** 登录 */
 export function login(params: LoginParams): Promise<LoginResult> {

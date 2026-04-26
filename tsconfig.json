@@ -2,13 +2,12 @@
 // 参考 https://www.typescriptlang.org/docs/handbook/project-references.html
 //
 // 设计：
-// - tsconfig.base.json       -> 共享基础（strict + paths 22 个别名）
+// - tsconfig.base.json       -> 共享基础（strict + paths）
 // - tsconfig.web.json        -> apps 下各应用使用（DOM + vite/client）
-// - tsconfig.pkg.json        -> packages/* 类型校验（noEmit + 解析 cross-package 源码）
-// - tsconfig.lib.json        -> packages/* 需要 composite 产物时使用（保留能力）
+// - tsconfig.pkg.json        -> packages 类型校验（noEmit + 解析 cross-package 源码）
 // - tsconfig.node.json       -> 根脚本 / 各 app 的 vite|vitest|scripts 使用（Node + CommonJS/ESM）
 //
-// references：3 apps + 14 packages + 根 scripts 的 node 环境
+// references：2 apps + docs + 共享 shared + 根 scripts 的 node 环境
 {
   "files": [],
   "references": [
@@ -20,21 +19,6 @@
     { "path": "./apps/h5/h5-template/tsconfig.node.json" },
     { "path": "./docs" },
 
-    { "path": "./packages/shared" },
-    { "path": "./packages/utils" },
-    { "path": "./packages/bridge" },
-    { "path": "./packages/request/core" },
-    { "path": "./packages/locale" },
-    { "path": "./packages/hooks/core" },
-
-    { "path": "./packages/components/pc" },
-    { "path": "./packages/hooks/pc" },
-    { "path": "./packages/directives/pc" },
-    { "path": "./packages/request/pc" },
-
-    { "path": "./packages/components/h5" },
-    { "path": "./packages/hooks/h5" },
-    { "path": "./packages/directives/h5" },
-    { "path": "./packages/request/h5" }
+    { "path": "./packages/shared" }
   ]
 }

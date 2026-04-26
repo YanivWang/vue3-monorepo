@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import type { Composer } from 'vue-i18n'
+import { Language, ThemeMode as ThemeModeEnum } from '@vue3-mono/shared/enums'
 import {
   applyBrand,
   applyThemeMode,
   getAppliedThemeMode,
-  Language,
-  ThemeMode as ThemeModeEnum,
   type BrandId,
   type ThemeModeId
-} from '@vue3-mono/shared'
-import { detectHost } from '@vue3-mono/utils'
+} from '@vue3-mono/shared/styles/tokens'
+import { detectHost } from '@vue3-mono/shared/utils'
 import { i18n } from '@/composables/useI18n'
 
 type LanguageType = 'zh-CN' | 'en-US'

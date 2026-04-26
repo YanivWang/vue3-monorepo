@@ -21,46 +21,8 @@
     "baseUrl": ".",
     "paths": {
       "@vue3-mono/shared": ["packages/shared/src/index.ts"],
-      "@vue3-mono/shared/*": ["packages/shared/src/*"],
-
-      "@vue3-mono/utils": ["packages/utils/src/index.ts"],
-      "@vue3-mono/utils/*": ["packages/utils/src/*"],
-
-      "@vue3-mono/bridge": ["packages/bridge/src/index.ts"],
-      "@vue3-mono/bridge/*": ["packages/bridge/src/*"],
-
-      "@vue3-mono/request": ["packages/request/core/src/index.ts"],
-      "@vue3-mono/request/*": ["packages/request/core/src/*"],
-
-      "@vue3-mono/locale": ["packages/locale/src/index.ts"],
-      "@vue3-mono/locale/*": ["packages/locale/src/*"],
-
-      "@vue3-mono/hooks": ["packages/hooks/core/src/index.ts"],
-      "@vue3-mono/hooks/*": ["packages/hooks/core/src/*"],
-
-      "@vue3-mono/components-pc": ["packages/components/pc/src/index.ts"],
-      "@vue3-mono/components-pc/*": ["packages/components/pc/src/*"],
-
-      "@vue3-mono/hooks-pc": ["packages/hooks/pc/src/index.ts"],
-      "@vue3-mono/hooks-pc/*": ["packages/hooks/pc/src/*"],
-
-      "@vue3-mono/directives-pc": ["packages/directives/pc/src/index.ts"],
-      "@vue3-mono/directives-pc/*": ["packages/directives/pc/src/*"],
-
-      "@vue3-mono/request-pc": ["packages/request/pc/src/index.ts"],
-      "@vue3-mono/request-pc/*": ["packages/request/pc/src/*"],
-
-      "@vue3-mono/components-h5": ["packages/components/h5/src/index.ts"],
-      "@vue3-mono/components-h5/*": ["packages/components/h5/src/*"],
-
-      "@vue3-mono/hooks-h5": ["packages/hooks/h5/src/index.ts"],
-      "@vue3-mono/hooks-h5/*": ["packages/hooks/h5/src/*"],
-
-      "@vue3-mono/directives-h5": ["packages/directives/h5/src/index.ts"],
-      "@vue3-mono/directives-h5/*": ["packages/directives/h5/src/*"],
-
-      "@vue3-mono/request-h5": ["packages/request/h5/src/index.ts"],
-      "@vue3-mono/request-h5/*": ["packages/request/h5/src/*"]
+      "@vue3-mono/shared/styles/tokens": ["packages/shared/src/styles/tokens.ts"],
+      "@vue3-mono/shared/*": ["packages/shared/src/*"]
     }
   }
 }

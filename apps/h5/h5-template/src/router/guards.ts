@@ -1,13 +1,13 @@
 import type { Router } from 'vue-router'
-import { useBridge } from '@vue3-mono/bridge'
-import { H5Host } from '@vue3-mono/shared'
-import { useHistoryStackH5 } from '@vue3-mono/hooks-h5'
+import { useBridge } from '@vue3-mono/shared/bridge'
+import { H5Host } from '@vue3-mono/shared/enums'
+import { useHistoryStackH5 } from '@vue3-mono/shared/hooks-h5'
 import { getToken } from '@/utils/tokenStorage'
 import { i18n } from '@/composables/useI18n'
 
 /**
  * H5 路由守卫：
- * 1. 栈式 keep-alive 入/出栈（依赖 @vue3-mono/hooks-h5）
+ * 1. 栈式 keep-alive 入/出栈（依赖 @vue3-mono/shared/hooks-h5）
  * 2. requiresAuth 校验 token；缺失时按宿主不同走差异化登录入口：
  *      - browser  → 跳转 /login
  *      - wx-mini  → 拉起小程序登录页（通过 bridge.navigation.openExternal）

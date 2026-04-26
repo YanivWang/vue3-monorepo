@@ -1,4 +1,4 @@
-import { createPcHttp } from '@vue3-mono/request-pc'
+import { createPcHttp } from '@vue3-mono/shared/request-pc'
 
 // DEV + mock：同源 /api，经 devServer 走 vite-plugin-mock；否则直连 VITE_API_BASE_URL（未起服务会报网络异常）
 const baseURL = (() => {
@@ -12,7 +12,7 @@ const baseURL = (() => {
 const successCode = import.meta.env.VITE_API_SUCCESS_CODE ? Number(import.meta.env.VITE_API_SUCCESS_CODE) : 200
 
 /**
- * Admin 端全局 HTTP 实例（基于 @vue3-mono/request-pc，内置 Element Plus 反馈）
+ * Admin 端全局 HTTP 实例（基于 @vue3-mono/shared/request-pc，内置 Element Plus 反馈）
  */
 const http = createPcHttp({
   baseURL,

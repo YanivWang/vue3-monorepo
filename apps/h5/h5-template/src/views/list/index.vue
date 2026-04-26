@@ -2,9 +2,9 @@
 import { ref, onActivated } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search, Card, Icon, Field, CellGroup, showFailToast, showToast } from 'vant'
-import { PageContainer, ProList, FilterDrawer } from '@vue3-mono/components-h5'
-import type { ProListPageParams } from '@vue3-mono/components-h5'
-import { useProListFilters } from '@vue3-mono/hooks-h5'
+import { PageContainer, ProList, FilterDrawer } from '@vue3-mono/shared/components-h5'
+import type { ProListPageParams } from '@vue3-mono/shared/components-h5'
+import { useProListFilters } from '@vue3-mono/shared/hooks-h5'
 import { listApi, type ListItem } from '@/api/list'
 
 defineOptions({ name: 'List' })

@@ -9,11 +9,7 @@
     "apps/pc/*",
     "apps/h5/*",
     "docs",
-    "packages/*",
-    "packages/hooks/*",
-    "packages/request/*",
-    "packages/components/*",
-    "packages/directives/*"
+    "packages/shared"
   ],
   "scripts": {
     "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
@@ -28,7 +24,6 @@
     "docs:dev": "pnpm --filter @vue3-mono/docs dev",
     "docs:build": "pnpm --filter @vue3-mono/docs build",
     "docs:preview": "pnpm --filter @vue3-mono/docs preview",
-    "build:packages": "pnpm -r --filter './packages/**' --filter '!./packages/shared' run --if-present build",
     "typecheck": "pnpm -r --parallel run --if-present typecheck",
     "typecheck:packages": "pnpm -r --parallel --filter './packages/**' run --if-present typecheck",
     "test": "vitest run",

@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { installComponents as installH5Components } from '@vue3-mono/components-h5'
-import { useBridge } from '@vue3-mono/bridge'
-import { useVConsole } from '@vue3-mono/hooks-h5'
+import { installComponents as installH5Components } from '@vue3-mono/shared/components-h5'
+import { useBridge } from '@vue3-mono/shared/bridge'
+import { useVConsole } from '@vue3-mono/shared/hooks-h5'
 
 import App from './App.vue'
 import { router } from './router'

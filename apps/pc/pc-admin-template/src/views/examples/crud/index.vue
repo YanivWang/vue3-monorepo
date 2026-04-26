@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElOption, ElSelect, ElSwitch, ElTag } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { useMessage } from '@/composables/useMessage'
-import type { TableColumn } from '@vue3-mono/components-pc'
+import type { TableColumn } from '@vue3-mono/shared/components-pc'
 
 interface User {
   id: number

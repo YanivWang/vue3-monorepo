@@ -1,5 +1,9 @@
 import { ElMessage } from 'element-plus'
-import { useRequest as useRequestBase, type UseRequestOptions, type UseRequestReturn } from '@vue3-mono/hooks'
+import {
+  useRequest as useRequestBase,
+  type UseRequestOptions,
+  type UseRequestReturn
+} from '@vue3-mono/shared/hooks-core'
 
 /**
  * Admin 封装：默认 onError 走 ElMessage.error
