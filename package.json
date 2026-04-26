@@ -4,8 +4,13 @@
   "description": "企业级 Vue3 monorepo 模板（pnpm workspace + admin PC + H5 mobile）",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.33.1",
+  "packageManager": "pnpm@10.17.0",
+  "engines": {
+    "node": ">=20.19.5",
+    "pnpm": ">=10.17.0"
+  },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
     "admin:dev": "pnpm --filter @vue3-mono/admin dev",
     "admin:build": "pnpm --filter @vue3-mono/admin build",
