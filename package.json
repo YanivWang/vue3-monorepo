@@ -5,12 +5,6 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.33.1",
-  "workspaces": [
-    "apps/pc/*",
-    "apps/h5/*",
-    "docs",
-    "packages/shared"
-  ],
   "scripts": {
     "__comment_monorepo": "----- monorepo 级别脚本（-r = --recursive；--filter=<name> 定向单包/子集） -----",
     "admin:dev": "pnpm --filter @vue3-mono/admin dev",
