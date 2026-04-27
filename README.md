@@ -81,10 +81,16 @@ vue3-monorepo/
 
 ## 快速开始
 
+**仓库**：<https://github.com/YanivWang/vue3-monorepo>
+
 ```bash
+git clone https://github.com/YanivWang/vue3-monorepo.git
+cd vue3-monorepo
 pnpm install
 pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 ```
+
+若已在 monorepo 根目录，从 `pnpm install` 起即可。
 
 推送或发版前，可在本地执行 `pnpm run verify:full`（见下表）做一次全量校验；并与团队策略对齐 `pnpm audit --audit-level=high` 等。
 

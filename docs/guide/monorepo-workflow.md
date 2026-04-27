@@ -9,7 +9,7 @@
 - **packages/**：库代码，如 `@vue3-monorepo/shared`。
 - **docs/**：VitePress 包 `@vue3-monorepo/docs`。
 
-工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/your-org/vue3-monorepo/blob/main/pnpm-workspace.yaml)。
+工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。
 
 ## 2. 根脚本 vs 子包脚本
 
@@ -67,7 +67,7 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ## 6. 怎么查「能 import 什么」
 
-打开 [`packages/shared/package.json`](https://github.com/your-org/vue3-monorepo/blob/main/packages/shared/package.json) 的 **`exports` 字段**。
+打开 [`packages/shared/package.json`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 的 **`exports` 字段**。
 
 示例（含义：业务里写 `@vue3-monorepo/shared/utils` 会解析到 `src/utils/index.ts`）：
 
@@ -92,4 +92,4 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ---
 
-更多故障场景见根 [README 故障参考](https://github.com/your-org/vue3-monorepo#故障参考) 与 [质量门禁与脚本](./quality-gates.md)。
+更多故障场景见根 [README 故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考) 与 [质量门禁与脚本](./quality-gates.md)。

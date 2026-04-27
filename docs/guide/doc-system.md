@@ -35,8 +35,8 @@
 
 ### 第 0 步：5 分钟（在 GitHub 上就能完成）
 
-1. 读根 `README` 的 [环境要求](https://github.com/your-org/vue3-monorepo#环境要求)（把 Node / pnpm 装对版本）。
-2. 扫一眼 [仓库结构](https://github.com/your-org/vue3-monorepo#仓库结构) 与 [根目录脚本速查](https://github.com/your-org/vue3-monorepo#根目录脚本速查)。
+1. 读根 `README` 的 [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求)（把 Node / pnpm 装对版本）。
+2. 扫一眼 [仓库结构](https://github.com/YanivWang/vue3-monorepo#仓库结构) 与 [根目录脚本速查](https://github.com/YanivWang/vue3-monorepo#根目录脚本速查)。
 
 ### 第 1 步：本地把文档站跑起来（10 分钟）
 

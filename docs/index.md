@@ -20,7 +20,7 @@ hero:
       link: /components/page-container
     - theme: alt
       text: GitHub
-      link: https://github.com/your-org/vue3-monorepo
+      link: https://github.com/YanivWang/vue3-monorepo
 
 features:
   - icon: ⚡

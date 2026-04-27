@@ -19,8 +19,8 @@
 在**仓库根目录**执行：
 
 ```bash
-git clone <你的仓库地址>
-cd <仓库目录>
+git clone https://github.com/YanivWang/vue3-monorepo.git
+cd vue3-monorepo
 pnpm install
 ```
 
@@ -35,7 +35,7 @@ pnpm install
 | 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175` |
 
 - **`pnpm run dev`（根）**：`pnpm -r --parallel run --if-present dev`，对带 `dev` 的 workspace 包并行启动（当前为 admin、h5、docs；`shared` 无 `dev`）。机器吃紧时建议**不用**，改成上面三条之一。
-- 端口被占用时：见根 README [故障参考](https://github.com/your-org/vue3-monorepo#故障参考)，或改各包 Vite 的 `server.port`。
+- 端口被占用时：见根 README [故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考)，或改各包 Vite 的 `server.port`。
 
 ## 4. 构建
 

@@ -30,7 +30,7 @@ export default defineConfig({
       { text: '架构', link: '/guide/architecture' },
       {
         text: '更新日志',
-        link: 'https://github.com/your-org/vue3-monorepo/blob/main/CHANGELOG.md'
+        link: 'https://github.com/YanivWang/vue3-monorepo/blob/main/CHANGELOG.md'
       }
     ],
 
@@ -72,7 +72,7 @@ export default defineConfig({
       ]
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/your-org/vue3-monorepo' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/YanivWang/vue3-monorepo' }],
 
     footer: {
       message: 'Released under the MIT License.',
@@ -82,7 +82,7 @@ export default defineConfig({
     search: { provider: 'local' },
 
     editLink: {
-      pattern: 'https://github.com/your-org/vue3-monorepo/edit/main/docs/:path',
+      pattern: 'https://github.com/YanivWang/vue3-monorepo/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页'
     },
 

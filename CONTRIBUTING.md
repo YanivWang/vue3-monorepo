@@ -10,7 +10,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-org/vue3-monorepo.git
+git clone https://github.com/YanivWang/vue3-monorepo.git
 cd vue3-monorepo
 
 # 安装依赖（需要 pnpm >= 10）

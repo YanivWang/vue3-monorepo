@@ -15,7 +15,7 @@
 
 ## 2. 环境一条线装齐
 
-1. 安装 **Node.js**，版本需满足根 `package.json` 的 `engines.node`（与根 README [环境要求](https://github.com/your-org/vue3-monorepo#环境要求) 一致）。
+1. 安装 **Node.js**，版本需满足根 `package.json` 的 `engines.node`（与根 README [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求) 一致）。
 2. 安装 **pnpm**，版本需满足 `engines.pnpm`；推荐启用 Corepack 对齐 `packageManager` 字段中的版本（见根 README 故障表）。
 3. 克隆仓库，在**仓库根目录**执行一次：
 
@@ -36,7 +36,7 @@ pnpm run admin:dev
 - 终端里看到 Vite 本地地址，一般为 **`http://127.0.0.1:5173`**（以终端输出为准）。
 - 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（与根 README「环境变量」中 `VITE_USE_MOCK` 等说明一致）。
 
-**若起不来**：对照根 `README` 的 [故障参考](https://github.com/your-org/vue3-monorepo#故障参考)（端口、Node 版本、仅允许 pnpm）。
+**若起不来**：对照根 `README` 的 [故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考)（端口、Node 版本、仅允许 pnpm）。
 
 ### 步骤 2：再启动 H5
 
@@ -69,11 +69,11 @@ pnpm run docs:dev
 
 ## 5. 改哪里：一张表避免放错地方
 
-| 需求                                          | 放哪里（不要混）                                                                                                                                                              |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 只给 **PC 后台** 用                           | `apps/pc/pc-admin-template/` 下，见根 README「Admin（PC）新功能」表                                                                                                           |
-| 只给 **H5** 用                                | `apps/h5/h5-template/` 下，见根 README「H5 新功能」表                                                                                                                         |
-| **两端都要** 用的类型、工具、无业务耦合的封装 | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/your-org/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
+| 需求                                          | 放哪里（不要混）                                                                                                                                                               |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 只给 **PC 后台** 用                           | `apps/pc/pc-admin-template/` 下，见根 README「Admin（PC）新功能」表                                                                                                            |
+| 只给 **H5** 用                                | `apps/h5/h5-template/` 下，见根 README「H5 新功能」表                                                                                                                          |
+| **两端都要** 用的类型、工具、无业务耦合的封装 | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
 
 更系统的决策见 [Monorepo 工作流](./monorepo-workflow.md)。
 
@@ -91,13 +91,13 @@ pnpm run test:run
 
 ## 7. 接下来读什么
 
-| 顺序 | 文档                                                                                                                                                                          |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | [文档体系总览](./doc-system.md)（全局地图）                                                                                                                                   |
-| 2    | [环境与命令速查](./getting-started.md)（命令与易错点）                                                                                                                        |
-| 3    | [Monorepo 工作流](./monorepo-workflow.md)（filter、加依赖、加代码）                                                                                                           |
-| 4    | [架构说明](./architecture.md)（路由、权限、启动流程）                                                                                                                         |
-| 5    | H5 与原生联调时：[bridge-protocol.md 源码路径](https://github.com/your-org/vue3-monorepo/blob/main/apps/h5/h5-template/docs/bridge-protocol.md)（在应用目录内，非 VitePress） |
+| 顺序 | 文档                                                                                                                                                                           |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1    | [文档体系总览](./doc-system.md)（全局地图）                                                                                                                                    |
+| 2    | [环境与命令速查](./getting-started.md)（命令与易错点）                                                                                                                         |
+| 3    | [Monorepo 工作流](./monorepo-workflow.md)（filter、加依赖、加代码）                                                                                                            |
+| 4    | [架构说明](./architecture.md)（路由、权限、启动流程）                                                                                                                          |
+| 5    | H5 与原生联调时：[bridge-protocol.md 源码路径](https://github.com/YanivWang/vue3-monorepo/blob/main/apps/h5/h5-template/docs/bridge-protocol.md)（在应用目录内，非 VitePress） |
 
 ## 8. 常见误区（小白向）
 
