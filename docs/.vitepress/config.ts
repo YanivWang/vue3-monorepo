@@ -3,11 +3,17 @@ import { defineConfig } from 'vitepress'
 /** Docker / 无 .git 上下文构建时置 1，避免 VitePress 调用 git 取 lastUpdated */
 const vitePressNoGit = process.env.VITEPRESS_NO_GIT === '1'
 
+/**
+ * GitHub Pages 项目站 URL 为 https://用户名.github.io/仓库名/ 时，构建前设置
+ * VITEPRESS_BASE=/仓库名/（前后都要有斜杠）。若仓库为 用户名.github.io 根站，不设置，保持 `/`。
+ */
+const vitePressBase = process.env.VITEPRESS_BASE || '/'
+
 export default defineConfig({
   title: 'vue3-monorepo',
   description: '企业级 Vue3 + Vite + TypeScript 脚手架模板文档',
   lang: 'zh-CN',
-  base: '/',
+  base: vitePressBase,
 
   /** 与 admin(5173)、h5(5174) 错开，便于 `pnpm dev` 三端同启（走 Vite 的 server 配置） */
   vite: {
