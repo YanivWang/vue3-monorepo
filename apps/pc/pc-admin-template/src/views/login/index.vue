@@ -2,13 +2,26 @@
 import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from 'element-plus'
-import { User, Lock } from '@element-plus/icons-vue'
+import {
+  ElButton,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElForm,
+  ElFormItem,
+  ElIcon,
+  ElInput,
+  ElMessage
+} from 'element-plus'
+import { User, Lock, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
+import { ThemeMode } from '@vue3-monorepo/shared/enums'
+import { useAppStore } from '@/stores/modules/app'
 import { useUserStore } from '@/stores/modules/user'
 import type { LoginParams } from '@vue3-monorepo/shared/types'
 
 const router = useRouter()
 const route = useRoute()
+const appStore = useAppStore()
 const userStore = useUserStore()
 
 const formRef = ref<FormInstance>()
@@ -47,10 +60,42 @@ async function handleLogin(): Promise<void> {
     loading.value = false
   }
 }
+
+function handleThemeCommand(cmd: string): void {
+  if (cmd === ThemeMode.LIGHT || cmd === ThemeMode.DARK || cmd === ThemeMode.SYSTEM) {
+    appStore.setTheme(cmd)
+  }
+}
 </script>
 
 <template>
   <div class="login-page">
+    <el-dropdown class="login-page__theme" trigger="click" @command="handleThemeCommand">
+      <span class="login-page__theme-trigger" title="主题">
+        <el-icon :size="22">
+          <Sunny v-if="appStore.themeMode === ThemeMode.LIGHT" />
+          <Moon v-else-if="appStore.themeMode === ThemeMode.DARK" />
+          <Monitor v-else />
+        </el-icon>
+      </span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item :command="ThemeMode.LIGHT">
+            <el-icon class="login-page__theme-icon"><Sunny /></el-icon>
+            浅色
+          </el-dropdown-item>
+          <el-dropdown-item :command="ThemeMode.DARK">
+            <el-icon class="login-page__theme-icon"><Moon /></el-icon>
+            深色
+          </el-dropdown-item>
+          <el-dropdown-item :command="ThemeMode.SYSTEM">
+            <el-icon class="login-page__theme-icon"><Monitor /></el-icon>
+            跟随系统
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+
     <div class="login-card">
       <!-- 标题 -->
       <div class="login-card__header">
@@ -108,6 +153,7 @@ async function handleLogin(): Promise<void> {
 
 <style lang="scss" scoped>
 .login-page {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,6 +161,34 @@ async function handleLogin(): Promise<void> {
   height: 100vh;
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  &__theme {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    z-index: 1;
+  }
+
+  &__theme-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-sm;
+    color: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: $border-radius-medium;
+    transition: $transition-fast;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &__theme-icon {
+    margin-right: $spacing-sm;
+    vertical-align: middle;
+  }
 }
 
 .login-card {

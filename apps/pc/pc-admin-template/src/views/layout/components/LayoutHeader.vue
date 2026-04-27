@@ -12,7 +12,8 @@ import {
   ElIcon,
   ElMessageBox
 } from 'element-plus'
-import { Fold, Expand, User, SwitchButton } from '@element-plus/icons-vue'
+import { Fold, Expand, User, SwitchButton, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
+import { ThemeMode } from '@vue3-monorepo/shared/enums'
 import { useAppStore } from '@/stores/modules/app'
 import { useUserStore } from '@/stores/modules/user'
 
@@ -26,6 +27,12 @@ const avatar = computed(() => userStore.avatar)
 
 function toggleSidebar(): void {
   appStore.toggleSidebar()
+}
+
+function handleThemeCommand(cmd: string): void {
+  if (cmd === ThemeMode.LIGHT || cmd === ThemeMode.DARK || cmd === ThemeMode.SYSTEM) {
+    appStore.setTheme(cmd)
+  }
 }
 
 async function handleLogout(): Promise<void> {
@@ -53,8 +60,34 @@ async function handleLogout(): Promise<void> {
       </el-breadcrumb>
     </div>
 
-    <!-- 右侧：用户操作区 -->
+    <!-- 右侧：主题 + 用户 -->
     <div class="layout-header__right">
+      <el-dropdown trigger="click" @command="handleThemeCommand">
+        <span class="theme-switch" title="主题">
+          <el-icon :size="20">
+            <Sunny v-if="appStore.themeMode === ThemeMode.LIGHT" />
+            <Moon v-else-if="appStore.themeMode === ThemeMode.DARK" />
+            <Monitor v-else />
+          </el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item :command="ThemeMode.LIGHT">
+              <el-icon class="theme-switch__item-icon"><Sunny /></el-icon>
+              浅色
+            </el-dropdown-item>
+            <el-dropdown-item :command="ThemeMode.DARK">
+              <el-icon class="theme-switch__item-icon"><Moon /></el-icon>
+              深色
+            </el-dropdown-item>
+            <el-dropdown-item :command="ThemeMode.SYSTEM">
+              <el-icon class="theme-switch__item-icon"><Monitor /></el-icon>
+              跟随系统
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+
       <el-dropdown trigger="click" @command="handleLogout">
         <div class="user-info">
           <el-avatar :size="32" :src="avatar" :icon="User" />
@@ -98,14 +131,32 @@ async function handleLogout(): Promise<void> {
   }
 }
 
-.sidebar-toggle {
-  font-size: 20px;
+.sidebar-toggle,
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: $text-regular;
   cursor: pointer;
   transition: $transition-fast;
 
   &:hover {
     color: $primary-color;
+  }
+}
+
+.theme-switch {
+  height: 32px;
+  padding: 0 $spacing-xs;
+  border-radius: $border-radius-medium;
+
+  &:hover {
+    background-color: $bg-page;
+  }
+
+  &__item-icon {
+    margin-right: $spacing-sm;
+    vertical-align: middle;
   }
 }
 
