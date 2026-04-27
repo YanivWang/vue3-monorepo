@@ -1,0 +1,44 @@
+# 个人仓库 CODEOWNERS：配合「分支保护 → Require review from Code Owners」使用。
+# 使用 GitHub 用户名 @handle；若与推送远程的 owner 不一致，请改成你的账号。
+# 文档：https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# 未使用全仓 *：仅下列路径有 owner；新增顶层目录时请在本文件补充，否则变更可能无 Code Owner 匹配。
+
+# * @YanivWang
+
+/.github/ @YanivWang
+/.husky/ @YanivWang
+/.vscode/ @YanivWang
+
+/apps/h5/h5-template/ @YanivWang
+/apps/pc/pc-admin-template/ @YanivWang
+
+/docker/ @YanivWang
+/docs/ @YanivWang
+# /packages/shared/ @YanivWang
+/scripts/ @YanivWang
+
+# 仓库根目录（含点文件）
+# /.dockerignore @YanivWang
+# /.editorconfig @YanivWang
+# /.gitignore @YanivWang
+# /.npmrc @YanivWang
+# /.nvmrc @YanivWang
+# /.prettierignore @YanivWang
+# /.stylelintrc.json @YanivWang
+# /CHANGELOG.md @YanivWang
+# /CONTRIBUTING.md @YanivWang
+# /LICENSE @YanivWang
+# /README.md @YanivWang
+# /commitlint.config.ts @YanivWang
+# /eslint.config.mjs @YanivWang
+# /package.json @YanivWang
+# /pnpm-lock.yaml @YanivWang
+# /pnpm-workspace.yaml @YanivWang
+# /prettier.config.mjs @YanivWang
+# /tsconfig.base.json @YanivWang
+# /tsconfig.json @YanivWang
+# /tsconfig.node.json @YanivWang
+# /tsconfig.pkg.json @YanivWang
+# /tsconfig.web.json @YanivWang
+# /vitest.workspace.ts @YanivWang
