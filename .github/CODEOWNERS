@@ -7,16 +7,17 @@
 # * @YanivWang
 
 /.github/ @YanivWang
-/.husky/ @YanivWang
-/.vscode/ @YanivWang
+# /.husky/ @YanivWang
+# /.vscode/ @YanivWang
 
+# 保护这两个路径，避免误操作
 /apps/h5/h5-template/ @YanivWang
 /apps/pc/pc-admin-template/ @YanivWang
 
-/docker/ @YanivWang
-/docs/ @YanivWang
+# /docker/ @YanivWang
+# /docs/ @YanivWang
 # /packages/shared/ @YanivWang
-/scripts/ @YanivWang
+# /scripts/ @YanivWang
 
 # 仓库根目录（含点文件）
 # /.dockerignore @YanivWang
