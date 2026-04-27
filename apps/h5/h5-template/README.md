@@ -2,6 +2,8 @@
 
 H5 移动端应用（Vant 4 + 多宿主：浏览器 / 微信小程序 WebView / 支付宝小程序 WebView / 原生 APP WebView）
 
+> **本目录是 monorepo 内的 H5 应用模板**（`pnpm run create-app` 的复制源）。**请勿在此编写业务功能**；请在仓库根执行 `pnpm run create-app` 生成业务应用后再开发，说明见 [新增 H5 / Admin 应用](../../../docs/guide/adding-a-new-app.md)。
+
 ## 目录概要
 
 ```

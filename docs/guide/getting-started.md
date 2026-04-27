@@ -26,15 +26,15 @@ pnpm install
 
 安装完成后，根与子 workspace 的依赖由 **单一** `pnpm-lock.yaml` 管理。
 
-要在 monorepo 里**再增加一个** H5 或 PC Admin 工程（第二个 H5、第二个后台等），推荐在仓库根执行 `pnpm run create-app`（交互式），说明与手工步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+要在 monorepo 里**新增业务应用**（首个或后续的 H5、PC Admin），须在仓库根执行 `pnpm run create-app`（交互式）；**勿**在 `pc-admin-template` / `h5-template` 内写业务。说明与手工步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 3. 本地开发（三端别搞混端口）
 
-| 要启动的  | 根命令               | 包名                   | 说明                         |
-| --------- | -------------------- | ---------------------- | ---------------------------- |
-| PC 管理端 | `pnpm run admin:dev` | `@vue3-monorepo/admin` | 常见 `http://127.0.0.1:5173` |
-| H5        | `pnpm run h5:dev`    | `@vue3-monorepo/h5`    | 常见 `http://127.0.0.1:5174` |
-| 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175` |
+| 要启动的  | 根命令               | 包名                   | 说明                                                                                       |
+| --------- | -------------------- | ---------------------- | ------------------------------------------------------------------------------------------ |
+| PC 管理端 | `pnpm run admin:dev` | `@vue3-monorepo/admin` | 模板包演示，常见 `http://127.0.0.1:5173`；业务请用生成应用的 `前缀:dev` 或 `pnpm --filter` |
+| H5        | `pnpm run h5:dev`    | `@vue3-monorepo/h5`    | 模板包演示，常见 `http://127.0.0.1:5174`；业务同上                                         |
+| 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175`                                                               |
 
 由 `create-app` 新增的 PC / H5 还会在根 `package.json` 里生成 **`前缀:dev`** 等脚本；**前缀**是你在生成器里填的短名。交互提示里出现的默认目录名等与仓库内是否已有该目录无关，仅为命名示例，可按团队规范改掉。
 
@@ -108,10 +108,10 @@ pnpm install
 
 ```
 /
-├── apps/pc/pc-admin-template/   # @vue3-monorepo/admin（默认 PC 模板）
-├── apps/pc/<其他>/              # 可选：create-app 生成的更多 PC 应用
-├── apps/h5/h5-template/         # @vue3-monorepo/h5（默认 H5 模板）
-├── apps/h5/<其他>/              # 可选：create-app 生成的更多 H5 应用
+├── apps/pc/pc-admin-template/   # PC 应用模板（create-app 蓝本；勿写业务）
+├── apps/pc/<业务应用>/          # PC 业务工程（须 create-app 生成）
+├── apps/h5/h5-template/         # H5 应用模板（create-app 蓝本；勿写业务）
+├── apps/h5/<业务应用>/          # H5 业务工程（须 create-app 生成）
 ├── docs/                        # @vue3-monorepo/docs
 ├── packages/shared/             # @vue3-monorepo/shared
 ├── docker/
@@ -120,7 +120,7 @@ pnpm install
 └── package.json
 ```
 
-在 **默认 PC 模板**里加业务页面、API 等，路径以 `apps/pc/pc-admin-template/src/` 为根；在 **默认 H5 模板**以 `apps/h5/h5-template/src/` 为根；若使用 `create-app` 新开的应用，则以**该目录**下 `src/` 为根。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
+**业务开发**（页面、API、store 等）一律以 **`pnpm run create-app` 生成**的应用目录下 `src/` 为根，**勿**在 `pc-admin-template` / `h5-template` 内编写。上表 `admin:dev` / `h5:dev` 拉起的是模板包，用于演示与门禁。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 11. 下一步
 

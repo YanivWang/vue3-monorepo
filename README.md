@@ -1,6 +1,6 @@
 # vue3-monorepo
 
-企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-monorepo/shared`。默认各一条 **模板应用**（`pc-admin-template`、`h5-template`）；需要第二个后台 / H5 工程时在根目录执行 **`pnpm run create-app`**，会在 `apps/pc/*` 或 `apps/h5/*` 下复制模板并接好根脚本、`tsconfig` references、`vitest.workspace.ts` 等（详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)）。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
+企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-monorepo/shared`。默认各一条 **模板应用**（`pc-admin-template`、`h5-template`），仅供 `pnpm run create-app` 复制与开箱演示；**真实业务代码请在生成后的应用目录编写，勿在 `*-template` 内直接写业务**（约定见 [项目与目录约定](docs/guide/project-conventions.md)）。在根目录执行 **`pnpm run create-app`**，会在 `apps/pc/*` 或 `apps/h5/*` 下复制模板并接好根脚本、`tsconfig` references、`vitest.workspace.ts` 等（详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)）。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
 
 **在线文档站（企业级知识库、可搜索）**：[https://yanivwang.github.io/vue3-monorepo/](https://yanivwang.github.io/vue3-monorepo/)
 
@@ -11,7 +11,7 @@
 | 第一次 clone、装依赖、开 dev | [新人上手指南](docs/guide/onboarding.md) |
 | 文档分几层、和 README 谁写什么 | [文档体系总览](docs/guide/doc-system.md) |
 | `pnpm`、filter、新代码/依赖放哪 | [Monorepo 工作流](docs/guide/monorepo-workflow.md)、[项目与目录约定](docs/guide/project-conventions.md) |
-| 再开一个 H5/PC Admin 应用 | 根 `pnpm run create-app`，详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md) |
+| 新建 PC/H5 业务应用 | 根 `pnpm run create-app`，详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md) |
 | `verify:full`、lint、test、构建 | [质量门禁与脚本](docs/guide/quality-gates.md) |
 | 命令/端口、环境要求速查 | [环境与命令速查](docs/guide/getting-started.md) |
 | 排障、环境变量、贡献与 PR、CI、架构细节 | 见文档站侧栏，或上表同路径下的 `.md` 文件 |
@@ -37,10 +37,10 @@ Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Va
 
 ```
 vue3-monorepo/
-├── apps/pc/pc-admin-template/   # 默认 PC 管理端（@vue3-monorepo/admin），dev 5173
-├── apps/pc/<其他目录>/          # 可选：create-app 生成的更多 PC 应用
-├── apps/h5/h5-template/         # 默认 H5（@vue3-monorepo/h5），dev 5174
-├── apps/h5/<其他目录>/          # 可选：create-app 生成的更多 H5 应用
+├── apps/pc/pc-admin-template/   # PC 模板（@vue3-monorepo/admin），dev 5173；勿写业务
+├── apps/pc/<业务目录>/          # PC 业务应用（须 create-app 生成）
+├── apps/h5/h5-template/         # H5 模板（@vue3-monorepo/h5），dev 5174；勿写业务
+├── apps/h5/<业务目录>/          # H5 业务应用（须 create-app 生成）
 ├── docs/                        # VitePress（@vue3-monorepo/docs），dev 5175
 ├── packages/shared/             # @vue3-monorepo/shared
 ├── scripts/                     # create-app、check-refs、check-request-core、docker 封装等
@@ -69,7 +69,7 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | 用途 | 命令 |
 | --- | --- |
 | 开发 | `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` |
-| 新增 H5 或 Admin 应用 | `pnpm run create-app`（见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)） |
+| 新建 PC/H5 业务应用 | `pnpm run create-app`（见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)） |
 | 全 workspace 类型检查 | `pnpm run typecheck` |
 | 全量校验 | `pnpm run verify:full` |
 | 全仓测试 | `pnpm run test` |

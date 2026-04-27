@@ -8,7 +8,7 @@ Monorepo 在 `packages/shared` 中按端拆分请求封装，避免业务与 UI 
 - **`request-pc`**：PC 端 `createPcHttp` 等，默认使用 Element 类反馈，供 admin 使用。
 - **`request-h5`**：H5 用 `createH5Http` 等，在 `src/plugins/http.ts` 等位置装配。
 
-业务侧在各自 app 的 `src/utils/http` 或插件中组合拦截器、Token、Loading 等。PC 端更细的拦截器、取消重复请求（`cancelDuplicate`）等见 [架构说明 — HTTP 层](./architecture.md#http-层-utils-http)（默认模板路径为 `apps/pc/pc-admin-template`，若以 `create-app` 复制出的 Admin 为起点则对应该目录）。
+业务侧在各自 app 的 `src/utils/http` 或插件中组合拦截器、Token、Loading 等。PC 端更细的拦截器、取消重复请求（`cancelDuplicate`）等见 [架构说明 — HTTP 层](./architecture.md#http-层-utils-http)。目录结构与 `apps/pc/pc-admin-template` 一致；**你的 Admin 工程**由 `create-app` 生成时，请将路径替换为 `apps/pc/<你的应用>/`。
 
 ## OpenAPI 与类型生成（PC Admin 模板）
 

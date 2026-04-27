@@ -53,5 +53,5 @@ features:
 
   - icon: 📦
     title: 多应用与工作区脚手架
-    details: 默认 Admin + H5 + 文档站同仓；pnpm run create-app 可从模板复制更多 PC/H5 工程，并自动接根脚本、tsconfig references、vitest.workspace.ts 等。
+    details: 默认 Admin + H5 模板包与文档站同仓；pnpm run create-app 复制出 PC/H5 业务工程并自动接根脚本、tsconfig references、vitest.workspace.ts 等。真实业务须在生成目录开发，勿在 pc-admin-template、h5-template 内写业务。
 ---

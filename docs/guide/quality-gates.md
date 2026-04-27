@@ -20,8 +20,8 @@
 
 在**仓库根**执行时，Vitest 读取根目录的 **`vitest.workspace.ts`（projects 模式）**。默认至少包含：
 
-- `apps/pc/pc-admin-template`
-- `apps/h5/h5-template`
+- `apps/pc/pc-admin-template`（模板包，与业务应用并列进 workspace）
+- `apps/h5/h5-template`（同上）
 - `packages/shared`
 
 使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进该数组（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。

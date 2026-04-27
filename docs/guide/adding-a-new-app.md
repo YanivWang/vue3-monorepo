@@ -2,6 +2,10 @@
 
 本页说明在 **pnpm workspace** 内**再开一条前端应用**（例如第二个 H5 项目、第二个 PC 管理台）时，需要动哪些文件、以及容易踩坑的地方。与 [Monorepo 工作流](./monorepo-workflow.md)、[项目与目录约定](./project-conventions.md) 互补：这里偏**拉新包与工程接线**，不重复业务目录说明。
 
+## 业务应用从哪里来
+
+`pc-admin-template` / `h5-template` **不是**日常业务承载目录，而是 **`create-app` 的复制蓝本**。**首个或后续** PC / H5 业务工程均应通过仓库根 `pnpm run create-app` 生成（手工流程也应与生成器产物对齐）。页面、路由、接口模块等**一律**在生成目录中开发，避免污染模板。规范摘要另见 [项目与目录约定](./project-conventions.md)（文首必读框）。
+
 ## 推荐：一键生成（`create-app`）
 
 在仓库根执行：
@@ -143,15 +147,15 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 ## 5. 小结
 
-| 要做什么                                                                                | 必做 / 常做           |
-| --------------------------------------------------------------------------------------- | --------------------- |
-| `pnpm run create-app` 或手工在 `apps/pc`、`apps/h5` 下建新目录 + 改 `package.json#name` | 推荐生成器 / 手工必做 |
-| 根 `package.json` 根脚本、（可选）`build` 串联                                          | 必做 / 看发布策略     |
-| 根 `tsconfig.json` references                                                           | 必做                  |
-| `pnpm run check:refs`                                                                   | 必做                  |
-| `vitest.workspace.ts`                                                                   | 有单测时做            |
-| `vite` 开发端口与文档/团队约定                                                          | 必做                  |
-| Docker / CI                                                                             | 按需                  |
-| `commitlint` scope                                                                      | 与团队统一            |
+| 要做什么                                                                    | 必做 / 常做       |
+| --------------------------------------------------------------------------- | ----------------- |
+| `pnpm run create-app`（推荐）；或手工复制模板并接线、改 `package.json#name` | 业务应用必做      |
+| 根 `package.json` 根脚本、（可选）`build` 串联                              | 必做 / 看发布策略 |
+| 根 `tsconfig.json` references                                               | 必做              |
+| `pnpm run check:refs`                                                       | 必做              |
+| `vitest.workspace.ts`                                                       | 有单测时做        |
+| `vite` 开发端口与文档/团队约定                                              | 必做              |
+| Docker / CI                                                                 | 按需              |
+| `commitlint` scope                                                          | 与团队统一        |
 
-若仅为**同一应用内加页面/加路由**，不需要新开 workspace，请直接按 [项目与目录约定](./project-conventions.md) 在**现有** `h5-template` 或 `pc-admin-template` 下开发即可。
+在同一业务应用内加页面、加路由，在**该应用的 workspace 目录**（`create-app` 产物）下进行，约定见 [项目与目录约定](./project-conventions.md)。**不要**在 `pc-admin-template` / `h5-template` 内堆业务代码。

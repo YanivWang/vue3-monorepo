@@ -1,12 +1,12 @@
 # 架构说明
 
-本文以 **PC 管理端**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现；H5 在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
+本文以 **PC 管理端模板**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现，便于对照目录结构；若你的工程由 `pnpm run create-app` 生成，**结构相同**，请将路径替换为实际应用目录。H5 在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
 
 ## Monorepo 仓库级视图
 
 ```mermaid
 flowchart TB
-  subgraph apps [apps 默认模板]
+  subgraph apps [apps 默认模板包]
     admin[pc-admin-template]
     h5[h5-template]
   end
@@ -20,12 +20,12 @@ flowchart TB
   h5 --> shared
 ```
 
-> 图中为**开箱默认**的两条应用；还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增 H5 / Admin 应用](./adding-a-new-app.md)）。
+> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增 H5 / Admin 应用](./adding-a-new-app.md)）。
 
 | 单元                        | 职责                                                                                                                    |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `apps/pc/pc-admin-template` | PC 管理端：Element Plus、动态路由与权限、Mock                                                                           |
-| `apps/h5/h5-template`       | H5：Vant、Bridge、移动端适配                                                                                            |
+| `apps/pc/pc-admin-template` | PC **模板**（`create-app` 蓝本）：Element Plus、动态路由与权限、Mock；业务代码写在生成目录中                            |
+| `apps/h5/h5-template`       | H5 **模板**（`create-app` 蓝本）：Vant、Bridge、移动端适配；业务代码写在生成目录中                                      |
 | `packages/shared`           | 跨端复用：类型、工具、`request-core` / `request-pc` / `request-h5`、hooks、分端组件与指令等；**不**承载业务强耦合 store |
 | `docs`                      | 本文档站 `pnpm run docs:dev` / `docs:build`                                                                             |
 | 根 `package.json` 脚本      | 聚合 `typecheck` / `lint` / `test` / `build` / `verify:full` 等                                                         |

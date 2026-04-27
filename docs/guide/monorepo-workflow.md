@@ -9,7 +9,7 @@
 - **packages/**：库代码，如 `@vue3-monorepo/shared`。
 - **docs/**：VitePress 包 `@vue3-monorepo/docs`。
 
-工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**再增加一个**独立应用时，可用根 `pnpm run create-app`，步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 2. 根脚本 vs 子包脚本
 
