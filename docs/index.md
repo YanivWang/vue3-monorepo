@@ -7,7 +7,13 @@ hero:
   tagline: Vue3 + Vite + TypeScript + Element Plus，开箱即用的最佳实践集合
   actions:
     - theme: brand
-      text: 快速开始
+      text: 新人上手
+      link: /guide/onboarding
+    - theme: alt
+      text: 文档体系
+      link: /guide/doc-system
+    - theme: alt
+      text: 环境命令
       link: /guide/getting-started
     - theme: alt
       text: 查看组件
@@ -36,10 +42,6 @@ features:
   - icon: 🛡️
     title: 全局异常处理
     details: 覆盖 Vue 组件错误、全局 JS 错误、未捕获 Promise，ErrorBoundary 组件提供降级 UI，可接入 Sentry。
-
-  - icon: 📊
-    title: Web Vitals 监控
-    details: 自动采集 CLS、INP、LCP、FCP、TTFB 核心性能指标，开发环境带评级输出，生产环境可接入自定义上报。
 
   - icon: 🐳
     title: Docker 容器化

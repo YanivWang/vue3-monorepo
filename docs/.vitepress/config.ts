@@ -23,6 +23,8 @@ export default defineConfig({
     siteTitle: 'vue3-monorepo-template',
 
     nav: [
+      { text: '文档体系', link: '/guide/doc-system' },
+      { text: '新手上路', link: '/guide/onboarding' },
       { text: '指南', link: '/guide/getting-started' },
       { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
@@ -35,9 +37,18 @@ export default defineConfig({
     sidebar: {
       '/guide/': [
         {
-          text: '快速上手',
+          text: '上手与工程化',
           items: [
-            { text: '介绍', link: '/guide/getting-started' },
+            { text: '文档体系总览', link: '/guide/doc-system' },
+            { text: '新人上手指南', link: '/guide/onboarding' },
+            { text: '环境与命令速查', link: '/guide/getting-started' },
+            { text: 'Monorepo 工作流', link: '/guide/monorepo-workflow' },
+            { text: '质量门禁与脚本', link: '/guide/quality-gates' }
+          ]
+        },
+        {
+          text: '架构与能力',
+          items: [
             { text: '架构说明', link: '/guide/architecture' },
             { text: '权限体系', link: '/guide/permission' },
             { text: '主题与暗黑模式', link: '/guide/theme' },

@@ -2,6 +2,10 @@
 
 感谢你对本项目的关注！欢迎通过 Issue 或 Pull Request 参与贡献。
 
+## 完整文档
+
+新人上手、文档分层与 Monorepo 工作流见 VitePress 包：**[docs/guide/doc-system.md](docs/guide/doc-system.md)**（同目录下还有 `onboarding.md`、`monorepo-workflow.md`、`quality-gates.md` 等）。根 `README` 是速查，细节以该文档站为准；本地可执行 `pnpm run docs:dev` 带导航阅读。
+
 ## 本地开发
 
 ```bash
@@ -12,8 +16,9 @@ cd vue3-monorepo-template
 # 安装依赖（需要 pnpm >= 10）
 pnpm install
 
-# 启动开发服务器
-pnpm dev
+# 仅开发某一端时推荐（全并行可改用 pnpm dev）
+pnpm run admin:dev
+# 或: pnpm run h5:dev  /  pnpm run docs:dev
 ```
 
 ## 分支规范

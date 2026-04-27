@@ -2,6 +2,24 @@
 
 企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-mono/shared`。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
 
+**完整文档（新人/小白优先）**：本仓库的**文档体系**（多页指南 + 组件说明）写在 VitePress 包中，与根 README 分工为「README 精简要、文档站可展开」。
+
+| 你打算…… | 优先阅读（Markdown 源文件路径，在 Git 中也可直接打开） |
+| --- | --- |
+| 第一次 clone，不知道从哪条命令开始 | [docs/guide/onboarding.md](docs/guide/onboarding.md) |
+| 理解文档分几层、和 README 谁写什么 | [docs/guide/doc-system.md](docs/guide/doc-system.md) |
+| 查 `pnpm`、filter、新代码/依赖放哪 | [docs/guide/monorepo-workflow.md](docs/guide/monorepo-workflow.md) |
+| 查 `verify:full`、lint、test 何时跑 | [docs/guide/quality-gates.md](docs/guide/quality-gates.md) |
+| 与根表一致的命令/端口速查 | [docs/guide/getting-started.md](docs/guide/getting-started.md) |
+
+在本地起文档站（默认端口与根「脚本速查」一致，常见为 **5175**）：
+
+```bash
+pnpm run docs:dev
+```
+
+更多指南与组件说明见文档站侧栏；协作规范见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
 ## 目录
 
 - [环境要求](#环境要求)
@@ -16,6 +34,8 @@
 - [环境变量](#环境变量)
 - [新功能与目录约定](#新功能与目录约定)
 - [许可证](#许可证)
+
+> 文首**完整文档**表中的 Markdown 在仓库中始终可读；不启动 `docs:dev` 也可在 IDE 里直接打开。细节以文档站页面为准，根 README 作速查与索引。
 
 ## 环境要求
 
