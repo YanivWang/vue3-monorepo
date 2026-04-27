@@ -26,6 +26,8 @@ pnpm install
 
 安装完成后，根与子 workspace 的依赖由 **单一** `pnpm-lock.yaml` 管理。
 
+要在 monorepo 里**再增加一个** H5 或 PC Admin 工程（第二个 H5、第二个后台等），推荐在仓库根执行 `pnpm run create-app`（交互式），说明与手工步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+
 ## 3. 本地开发（三端别搞混端口）
 
 | 要启动的  | 根命令               | 包名                   | 说明                         |

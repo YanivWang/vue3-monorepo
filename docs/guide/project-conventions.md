@@ -9,6 +9,8 @@
 | PC 管理端 | `apps/pc/pc-admin-template` | 后台、权限菜单、Element Plus       |
 | 移动端 H5 | `apps/h5/h5-template`       | 手机站、Vant、与宿主 App 的 Bridge |
 
+若要在仓库内**再增加一个**独立的 H5 或 PC Admin 工程，根目录执行 `pnpm run create-app`，说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+
 路径未写全时，以各应用下的 `src/` 为根（如 `src/views` 即 `pc-admin-template/src/views`）。
 
 ## 新代码放哪？（总表）

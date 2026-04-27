@@ -11,6 +11,7 @@
 | 第一次 clone、装依赖、开 dev | [新人上手指南](docs/guide/onboarding.md) |
 | 文档分几层、和 README 谁写什么 | [文档体系总览](docs/guide/doc-system.md) |
 | `pnpm`、filter、新代码/依赖放哪 | [Monorepo 工作流](docs/guide/monorepo-workflow.md)、[项目与目录约定](docs/guide/project-conventions.md) |
+| 再开一个 H5/PC Admin 应用 | 根 `pnpm run create-app`，详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md) |
 | `verify:full`、lint、test、构建 | [质量门禁与脚本](docs/guide/quality-gates.md) |
 | 命令/端口、环境要求速查 | [环境与命令速查](docs/guide/getting-started.md) |
 | 排障、环境变量、贡献与 PR、CI、架构细节 | 见文档站侧栏，或上表同路径下的 `.md` 文件 |
@@ -64,6 +65,7 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | 用途 | 命令 |
 | --- | --- |
 | 开发 | `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` |
+| 新增 H5 或 Admin 应用 | `pnpm run create-app`（见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)） |
 | 全 workspace 类型检查 | `pnpm run typecheck` |
 | 全量校验 | `pnpm run verify:full` |
 | 全仓测试 | `pnpm run test` |

@@ -67,6 +67,7 @@ pnpm run docs:dev
 | **要写 PC 后台页面**                         | [架构说明](./architecture.md)（admin 部分）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`） |
 | **要写 H5**                                  | 架构中 H5 部分 → [项目与目录约定](./project-conventions.md) → `bridge-protocol.md` 联调时对照                                         |
 | **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 工作流](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`               |
+| **要新增第二个 H5 或 PC Admin 应用**         | 根 `pnpm run create-app`；说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)                                                        |
 | **要发版/过流水线**                          | [质量门禁与脚本](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                          |
 | **要部署/容器**                              | [部署说明](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                     |
 

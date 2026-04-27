@@ -5,7 +5,7 @@
  * check-refs: 校验 monorepo 元数据一致性
  *
  * 覆盖校验项（任一失败即 exit 1）：
- *  1) pnpm-workspace.yaml 的 packages 条目扫描出的实际 workspace 数量 = 预期值（当前 4：2 apps + docs + shared）
+ *  1) 从 pnpm-workspace.yaml 枚举 workspace；数量不做固定常数约束（多 app 时无需手改本脚本）
  *  2) 每个 workspace 的 package.json name 必须唯一
  *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 仅 @vue3-monorepo/shared；paths 中 @vue3-monorepo/shared/* 子路径别名不参与此条）
  *  4) tsconfig.base.json paths 目标 src/index.ts 在磁盘上必须真实存在
@@ -59,10 +59,6 @@ for (const entry of entryLines) {
   }
 }
 
-const EXPECTED = 4
-if (workspaces.length !== EXPECTED) {
-  fail(`[check-refs] workspace 数量 ${workspaces.length} ≠ 预期 ${EXPECTED}（2 apps + docs + packages/shared）`)
-}
 log(`[check-refs] 发现 ${workspaces.length} 个 workspace`)
 
 // ---------- 读取各 workspace 的 name ----------
