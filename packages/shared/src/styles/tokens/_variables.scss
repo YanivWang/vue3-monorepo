@@ -1,41 +1,74 @@
 // ────────────────────────────────────────────────────────────
-//  Design Token - 编译期 SCSS 变量（无副作用）
-//  供组件 scoped style @use 引入，不产生任何 CSS 输出
+//  Design Token - 单源默认值（Sass 变量，本文件不直接输出 CSS）
+//  供同目录 _root 映射到 :root 的 --*，供其它 @use 做构建期引用
+//  可随主题/暗黑的语义色以 CSS 变量为准；_root 给出默认，html.dark / data-brand
+//  在运行时覆盖 var(--*)，不覆盖本文件的 $
 // ────────────────────────────────────────────────────────────
 
+// 主色
 $primary-color: #409eff;
+$primary-color-light: #79bbff;
+$primary-color-dark: #337ecc;
 $success-color: #67c23a;
 $warning-color: #e6a23c;
 $danger-color: #f56c6c;
 $info-color: #909399;
+
+// 文字
 $text-primary: #303133;
 $text-regular: #606266;
 $text-secondary: #909399;
 $text-placeholder: #c0c4cc;
+
+// 背景
 $bg-page: #f0f2f5;
 $bg-white: #ffffff;
+$bg-card: #ffffff;
 $bg-overlay: rgba(0, 0, 0, 0.5);
+
+// 边框
 $border-color: #dcdfe6;
 $border-color-light: #e4e7ed;
 $border-radius-base: 4px;
 $border-radius-medium: 6px;
 $border-radius-large: 8px;
+
+// 布局尺寸
 $header-height: 60px;
 $sidebar-width: 220px;
 $sidebar-width-collapsed: 64px;
 $footer-height: 50px;
+
+// 侧栏
+$sidebar-bg: #001529;
+$sidebar-text: rgba(255, 255, 255, 0.65);
+$sidebar-text-active: #ffffff;
+$sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
+$sidebar-item-active-bg: #1890ff;
+
+// 头部
+$header-bg: #ffffff;
+$header-border: #e8eaec;
+
+// 间距
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
+
+// 阴影
 $box-shadow-base:
   0 2px 4px rgba(0, 0, 0, 0.12),
   0 0 6px rgba(0, 0, 0, 0.04);
 $box-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
 $box-shadow-dark: 0 2px 16px rgba(0, 0, 0, 0.15);
+
+// 过渡
 $transition-base: all 0.3s ease;
 $transition-fast: all 0.15s ease;
+
+// z-index
 $z-index-base: 1;
 $z-index-dropdown: 1000;
 $z-index-sticky: 1020;

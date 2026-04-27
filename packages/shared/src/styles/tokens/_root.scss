@@ -1,46 +1,56 @@
 // ────────────────────────────────────────────────────────────
 //  Design Token - 运行期 CSS 自定义属性（:root）
-//  应由应用入口显式 @use，一次性挂载到 :root，支持运行时主题切换
+//  默认值与 _variables.scss 单源同步；由应用入口 @use 本包 index，一次性挂到 :root
+//  主题/暗黑/品牌通过其它文件覆盖 var(--*)，不修改本处映射关系
 // ────────────────────────────────────────────────────────────
+
+@use './variables' as *;
+
+// :root 是 CSS 里的伪类选择器，表示文档根元素
+// 大家喜欢在 :root { --变量名: 值; } 里定义 CSS 自定义属性（--xxx），是因为：
+// 1. 全局作用域：在 :root 中定义的变量在文档中全局可用
+// 2. 可继承性：后代元素可以继承这些变量
+// 3. 可重写性：后代元素可以重写这些变量
+// 4. 可调试性：在浏览器开发者工具中可以方便地查看和调试这些变量
 
 :root {
   // 主色
-  --color-primary: #409eff;
-  --color-primary-light: #79bbff;
-  --color-primary-dark: #337ecc;
-  --color-success: #67c23a;
-  --color-warning: #e6a23c;
-  --color-danger: #f56c6c;
-  --color-info: #909399;
+  --color-primary: #{$primary-color};
+  --color-primary-light: #{$primary-color-light};
+  --color-primary-dark: #{$primary-color-dark};
+  --color-success: #{$success-color};
+  --color-warning: #{$warning-color};
+  --color-danger: #{$danger-color};
+  --color-info: #{$info-color};
 
   // 文字
-  --text-primary: #303133;
-  --text-regular: #606266;
-  --text-secondary: #909399;
-  --text-placeholder: #c0c4cc;
+  --text-primary: #{$text-primary};
+  --text-regular: #{$text-regular};
+  --text-secondary: #{$text-secondary};
+  --text-placeholder: #{$text-placeholder};
 
   // 背景
-  --bg-page: #f0f2f5;
-  --bg-white: #ffffff;
-  --bg-card: #ffffff;
-  --bg-overlay: rgba(0, 0, 0, 0.5);
+  --bg-page: #{$bg-page};
+  --bg-white: #{$bg-white};
+  --bg-card: #{$bg-card};
+  --bg-overlay: #{$bg-overlay};
 
   // 边框
-  --border-color: #dcdfe6;
-  --border-color-light: #e4e7ed;
+  --border-color: #{$border-color};
+  --border-color-light: #{$border-color-light};
 
   // 侧边栏
-  --sidebar-bg: #001529;
-  --sidebar-text: rgba(255, 255, 255, 0.65);
-  --sidebar-text-active: #ffffff;
-  --sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
-  --sidebar-item-active-bg: #1890ff;
+  --sidebar-bg: #{$sidebar-bg};
+  --sidebar-text: #{$sidebar-text};
+  --sidebar-text-active: #{$sidebar-text-active};
+  --sidebar-item-hover-bg: #{$sidebar-item-hover-bg};
+  --sidebar-item-active-bg: #{$sidebar-item-active-bg};
 
   // 头部
-  --header-bg: #ffffff;
-  --header-border: #e8eaec;
+  --header-bg: #{$header-bg};
+  --header-border: #{$header-border};
 
   // 阴影
-  --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  --box-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --box-shadow-base: #{$box-shadow-base};
+  --box-shadow-medium: #{$box-shadow-medium};
 }
