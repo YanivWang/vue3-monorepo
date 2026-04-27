@@ -1,6 +1,6 @@
 # 环境与命令速查
 
-本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本速查」**互补**——根 README 偏索引，本页可配合 [新人上手指南](./onboarding.md) 对着敲命令。
+本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本（摘录）」**互补**——根 README 偏索引，本页可配合 [新人上手指南](./onboarding.md) 对着敲命令。
 
 > **第一次来**：请先读 [文档体系总览](./doc-system.md) 与 [新人上手指南](./onboarding.md)，再回来看本页当手册。
 
@@ -35,7 +35,7 @@ pnpm install
 | 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175` |
 
 - **`pnpm run dev`（根）**：`pnpm -r --parallel run --if-present dev`，对带 `dev` 的 workspace 包并行启动（当前为 admin、h5、docs；`shared` 无 `dev`）。机器吃紧时建议**不用**，改成上面三条之一。
-- 端口被占用时：见根 README [故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考)，或改各包 Vite 的 `server.port`。
+- 端口被占用时：见 [排障与 FAQ](./troubleshooting.md)，或改各包 Vite 的 `server.port`。
 
 ## 4. 构建
 
@@ -91,12 +91,12 @@ pnpm install
 
 ## 9. Docker（可选）
 
-与根 README「Docker 与本地镜像」一致，常用（封装自 `scripts/docker.sh`）：
+与 [部署说明](./deploy.md) 及根 README 中 Docker/compose 速查一致，常用（封装自 `scripts/docker.sh`）：
 
 - `pnpm run docker:up` / `pnpm run docker:down` / `pnpm run docker:logs`
 - 单服务：`pnpm run docker:admin:up` 等
 
-详见 [部署说明](./deploy.md) 与根 README，端口以 `docker-compose` 与 `.env` 为准。
+详见 [部署说明](./deploy.md)，端口以 `docker-compose` 与 `.env` 为准。
 
 ## 10. 仓库目录（和「单项目模板」不同）
 
@@ -114,7 +114,7 @@ pnpm install
 └── package.json
 ```
 
-在 **PC** 里加业务页面、API 等，路径以 `apps/pc/pc-admin-template/src/` 为根；在 **H5** 以 `apps/h5/h5-template/src/` 为根。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与根 README「新功能与目录约定」。
+在 **PC** 里加业务页面、API 等，路径以 `apps/pc/pc-admin-template/src/` 为根；在 **H5** 以 `apps/h5/h5-template/src/` 为根。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 11. 下一步
 

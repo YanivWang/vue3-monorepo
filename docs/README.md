@@ -4,8 +4,8 @@ VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 工
 
 ## 与根 README 的分工
 
-- **根 `README.md`**：环境、目录、脚本表、环境变量、故障速查、目录约定；保持精炼。
-- **本目录**：可浏览、可搜索的完整说明；**总览**从 [`guide/doc-system.md`](./guide/doc-system.md) 开始。
+- **根 `README.md`**：入口介绍、环境、目录、快链、脚本**摘录**；长文与多表在 `guide/` 各专页（见 `doc-system` 交叉索引）。
+- **本目录**：可浏览、可搜索的**企业级展开层**；**总览**从 [`guide/doc-system.md`](./guide/doc-system.md) 开始。
 
 ## 本地开发
 
@@ -34,7 +34,7 @@ docs/
 └── package.json
 ```
 
-H5 与宿主的 **JSBridge 协议**在应用内：`../apps/h5/h5-template/docs/bridge-protocol.md`（不放在 VitePress 中，根 README 有入口说明）。
+H5 与宿主的 **JSBridge 协议**在应用内：`../apps/h5/h5-template/docs/bridge-protocol.md`；入口见 [项目与目录约定](./guide/project-conventions.md) 等页。
 
 ## 维护
 

@@ -1,5 +1,35 @@
 # 架构说明
 
+本文以 **PC 管理端**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现；H5 在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
+
+## Monorepo 仓库级视图
+
+```mermaid
+flowchart TB
+  subgraph apps [apps]
+    admin[pc-admin-template]
+    h5[h5-template]
+  end
+  subgraph packages [packages]
+    shared["@vue3-monorepo/shared"]
+  end
+  subgraph tooling [工程与文档]
+    docsPkg[docs VitePress]
+  end
+  admin --> shared
+  h5 --> shared
+```
+
+| 单元                        | 职责                                                                                                                    |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `apps/pc/pc-admin-template` | PC 管理端：Element Plus、动态路由与权限、Mock                                                                           |
+| `apps/h5/h5-template`       | H5：Vant、Bridge、移动端适配                                                                                            |
+| `packages/shared`           | 跨端复用：类型、工具、`request-core` / `request-pc` / `request-h5`、hooks、分端组件与指令等；**不**承载业务强耦合 store |
+| `docs`                      | 本文档站 `pnpm run docs:dev` / `docs:build`                                                                             |
+| 根 `package.json` 脚本      | 聚合 `typecheck` / `lint` / `test` / `build` / `verify:full` 等                                                         |
+
+**构建顺序**（`pnpm run build`）：`admin:build` → `h5:build` → `docs:build`。新代码与目录放哪见 [项目与目录约定](./project-conventions.md)。
+
 ## 技术栈
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：

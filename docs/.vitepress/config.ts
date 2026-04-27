@@ -34,6 +34,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
+      { text: '贡献', link: '/guide/contributing' },
       {
         text: '更新日志',
         link: 'https://github.com/YanivWang/vue3-monorepo/blob/main/CHANGELOG.md'
@@ -43,24 +44,40 @@ export default defineConfig({
     sidebar: {
       '/guide/': [
         {
-          text: '上手与工程化',
+          text: '入门与工程化',
           items: [
             { text: '文档体系总览', link: '/guide/doc-system' },
             { text: '新人上手指南', link: '/guide/onboarding' },
             { text: '环境与命令速查', link: '/guide/getting-started' },
             { text: 'Monorepo 工作流', link: '/guide/monorepo-workflow' },
-            { text: '质量门禁与脚本', link: '/guide/quality-gates' }
+            { text: '质量门禁与脚本', link: '/guide/quality-gates' },
+            { text: '项目与目录约定', link: '/guide/project-conventions' },
+            { text: '排障与 FAQ', link: '/guide/troubleshooting' },
+            { text: '环境变量', link: '/guide/environment-variables' },
+            { text: '贡献与协作', link: '/guide/contributing' }
           ]
         },
         {
-          text: '架构与能力',
+          text: '应用架构与工程实践',
           items: [
             { text: '架构说明', link: '/guide/architecture' },
             { text: '权限体系', link: '/guide/permission' },
             { text: '主题与暗黑模式', link: '/guide/theme' },
             { text: 'Design Token', link: '/guide/design-tokens' },
+            { text: '国际化', link: '/guide/i18n' },
+            { text: 'HTTP 与 Mock', link: '/guide/http-and-mock' },
+            { text: '错误与可观测性', link: '/guide/errors-and-observability' },
+            { text: '性能与构建', link: '/guide/performance' },
+            { text: '安全', link: '/guide/security' },
+            { text: '无障碍与可用性', link: '/guide/accessibility' }
+          ]
+        },
+        {
+          text: '发布、CI 与分支',
+          items: [
             { text: '分支策略', link: '/guide/branch-strategy' },
-            { text: '部署', link: '/guide/deploy' }
+            { text: '部署', link: '/guide/deploy' },
+            { text: 'CI 与自动化', link: '/guide/ci-and-automation' }
           ]
         }
       ],

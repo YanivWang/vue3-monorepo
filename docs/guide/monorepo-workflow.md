@@ -1,6 +1,6 @@
 # Monorepo 工作流
 
-说明本仓库 **pnpm workspace** 的日常用法：如何**只动一个包**、如何**加依赖**、**新代码放哪**、**共享包怎么引用**。与根 `README`「新功能与目录约定」互补，这里偏**操作细节**。
+说明本仓库 **pnpm workspace** 的日常用法：如何**只动一个包**、如何**加依赖**、**新代码放哪**、**共享包怎么引用**。与 [项目与目录约定](./project-conventions.md) 互补，这里偏**操作细节**。
 
 ## 1. Workspace 里有哪些包
 
@@ -53,14 +53,14 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ## 5. 新代码放哪：决策简表
 
-| 问题                                                                                     | 选择                                                                                      |
-| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| 只服务 **一个端** 的页面、路由、store、接口封装                                          | 放在**对应** `apps/pc/...` 或 `apps/h5/...` 下，见根 README 表格。                        |
-| **PC 和 H5 都要** 用：纯类型、常量、与 UI 无关的工具、`request-core` 扩展、通用 hooks 等 | 放 `packages/shared/src`，经 `@vue3-monorepo/shared/...` 子路径 **export 出去**。         |
-| 带 **Element** 的组件                                                                    | 放 shared 的 **components-pc** 域（以 `exports` 为准）或先放 admin 内，视团队复用度而定。 |
-| 带 **Vant** 的组件                                                                       | 类似，走 **components-h5** 或 h5 应用内。                                                 |
+| 问题                                                                                     | 选择                                                                                            |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 只服务 **一个端** 的页面、路由、store、接口封装                                          | 放在**对应** `apps/pc/...` 或 `apps/h5/...` 下，见 [项目与目录约定](./project-conventions.md)。 |
+| **PC 和 H5 都要** 用：纯类型、常量、与 UI 无关的工具、`request-core` 扩展、通用 hooks 等 | 放 `packages/shared/src`，经 `@vue3-monorepo/shared/...` 子路径 **export 出去**。               |
+| 带 **Element** 的组件                                                                    | 放 shared 的 **components-pc** 域（以 `exports` 为准）或先放 admin 内，视团队复用度而定。       |
+| 带 **Vant** 的组件                                                                       | 类似，走 **components-h5** 或 h5 应用内。                                                       |
 
-**强约束**（与根 README 一致）：
+**强约束**（与 [项目与目录约定](./project-conventions.md) 一致）：
 
 - **Pinia、路由、按业务划分的 API 不跨 app**。
 - `request-core` **实现**中不得调用 Element / Vant 等 **UI 反馈 API**（仓库有 `check-request-core` 脚本做关键字门禁）；PC/H5 的提示与拦截用 `request-pc` / `request-h5` 在应用里装配。
@@ -92,4 +92,4 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ---
 
-更多故障场景见根 [README 故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考) 与 [质量门禁与脚本](./quality-gates.md)。
+更多故障场景见 [排障与 FAQ](./troubleshooting.md) 与 [质量门禁与脚本](./quality-gates.md)。

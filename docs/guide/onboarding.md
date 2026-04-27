@@ -16,7 +16,7 @@
 ## 2. 环境一条线装齐
 
 1. 安装 **Node.js**，版本需满足根 `package.json` 的 `engines.node`（与根 README [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求) 一致）。
-2. 安装 **pnpm**，版本需满足 `engines.pnpm`；推荐启用 Corepack 对齐 `packageManager` 字段中的版本（见根 README 故障表）。
+2. 安装 **pnpm**，版本需满足 `engines.pnpm`；推荐启用 Corepack 对齐 `packageManager` 字段中的版本（排障见 [排障与 FAQ](./troubleshooting.md)）。
 3. 克隆仓库，在**仓库根目录**执行一次：
 
 ```bash
@@ -34,9 +34,9 @@ pnpm run admin:dev
 ```
 
 - 终端里看到 Vite 本地地址，一般为 **`http://127.0.0.1:5173`**（以终端输出为准）。
-- 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（与根 README「环境变量」中 `VITE_USE_MOCK` 等说明一致）。
+- 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（见 [环境变量说明](./environment-variables.md) 中 `VITE_USE_MOCK`）。
 
-**若起不来**：对照根 `README` 的 [故障参考](https://github.com/YanivWang/vue3-monorepo#故障参考)（端口、Node 版本、仅允许 pnpm）。
+**若起不来**：见 [排障与 FAQ](./troubleshooting.md) 或根 README [常见问题](https://github.com/YanivWang/vue3-monorepo#常见问题摘录)（端口、Node 版本、仅允许 pnpm）。
 
 ### 步骤 2：再启动 H5
 
@@ -71,8 +71,8 @@ pnpm run docs:dev
 
 | 需求                                          | 放哪里（不要混）                                                                                                                                                               |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 只给 **PC 后台** 用                           | `apps/pc/pc-admin-template/` 下，见根 README「Admin（PC）新功能」表                                                                                                            |
-| 只给 **H5** 用                                | `apps/h5/h5-template/` 下，见根 README「H5 新功能」表                                                                                                                          |
+| 只给 **PC 后台** 用                           | `apps/pc/pc-admin-template/`，表见 [项目与目录约定](./project-conventions.md)                                                                                                  |
+| 只给 **H5** 用                                | `apps/h5/h5-template/`，表见 [项目与目录约定](./project-conventions.md)                                                                                                        |
 | **两端都要** 用的类型、工具、无业务耦合的封装 | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
 
 更系统的决策见 [Monorepo 工作流](./monorepo-workflow.md)。
@@ -103,7 +103,7 @@ pnpm run test:run
 
 1. **在子包目录里用 npm install** — 必须在**仓库根**用 `pnpm install`，否则破坏 workspace 与 lockfile。
 2. **从 H5 里 import Admin 的 store/页面** — 禁止；两应用不共享业务状态与页面。
-3. **在 `shared` 里引 Element Plus 或 Vant 做默认 UI** — 会破坏「共享层无强 UI 依赖」的边界；请求层用 `request-core` + 各端 `request-pc` / `request-h5` 注入反馈，见根 README「请求层」与架构文。
+3. **在 `shared` 里引 Element Plus 或 Vant 做默认 UI** — 会破坏「共享层无强 UI 依赖」的边界；请求层用 `request-core` + 各端 `request-pc` / `request-h5` 注入反馈，见 [HTTP 与 Mock](./http-and-mock.md) 与 [架构说明](./architecture.md)。
 4. **随便改 `pnpm-lock.yaml`** — 除非你在做依赖升级且清楚影响；否则只通过正常 `pnpm add` / `pnpm update` 流程变更。
 
 有不确定时：先问「这段代码是只给哪一端用的？」再决定放 `apps/...` 还是 `packages/shared`。

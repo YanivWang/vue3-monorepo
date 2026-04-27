@@ -1,6 +1,6 @@
 # 质量门禁与脚本
 
-把根 `package.json` 里的**常用脚本**说明白：什么时候跑、失败代表什么、和发版/PR 怎么对齐。根 README 的「根目录脚本速查」是**表格式索引**，本页是**使用说明**。
+把根 `package.json` 里的**常用脚本**说明白：什么时候跑、失败代表什么、和发版/PR 怎么对齐。根 `README.md` 的「根目录脚本（摘录）」是**极简索引**，本页是**完整说明**；与 **GitHub Actions** 的对应见 [CI 与自动化](./ci-and-automation.md)。
 
 ## 1. 日常开发最常用
 
@@ -60,12 +60,12 @@
 
 ## 5. 构建与预览
 
-| 命令                                            | 作用                                           |
-| ----------------------------------------------- | ---------------------------------------------- |
-| `pnpm run build`                                | 顺序 build admin → h5 → docs                   |
-| `pnpm run admin:build` 等                       | 单端 build                                     |
-| `pnpm run docs:preview`                         | 文档先 `docs:build` 后本地静态预览             |
-| `pnpm --filter @vue3-monorepo/admin preview` 等 | 各 app 的 `vite preview`（见根 README 脚本表） |
+| 命令                                            | 作用                                               |
+| ----------------------------------------------- | -------------------------------------------------- |
+| `pnpm run build`                                | 顺序 build admin → h5 → docs                       |
+| `pnpm run admin:build` 等                       | 单端 build                                         |
+| `pnpm run docs:preview`                         | 文档先 `docs:build` 后本地静态预览                 |
+| `pnpm --filter @vue3-monorepo/admin preview` 等 | 各 app 的 `vite preview`；命令清单见上表与本页上文 |
 
 ## 6. 依赖重装与排障
 
@@ -86,3 +86,9 @@
 - **发版/大合并**：`verify:full`（或 CI 要等价的流水线）。
 
 更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新人上手指南](./onboarding.md)。
+
+## 9. 与 GitHub Actions 的对应
+
+当前仓库在 PR/主分支上**未**统一跑 `verify:full` 的单一工作流；**文档站**由 [`.github/workflows/docs-github-pages.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/docs-github-pages.yml) 在变更 `docs/**` 等路径时构建并发布至 GitHub Pages，见 [CI 与自动化](./ci-and-automation.md)。
+
+若团队新增 `ci.yml` 在 PR 上跑 `lint` / `typecheck` / `test` 等，请同步更新**本页**与 **CI 与自动化**中的命令表，保持与 `package.json` 一致。
