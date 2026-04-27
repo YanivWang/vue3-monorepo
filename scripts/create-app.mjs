@@ -103,13 +103,7 @@ async function main() {
   let port = args.port !== undefined ? Number(args.port) : undefined
   let appendBuild = args.appendBuild === true
 
-  const hasAll =
-    type &&
-    dirName &&
-    packageName &&
-    shortPrefix &&
-    port !== undefined &&
-    !Number.isNaN(port)
+  const hasAll = type && dirName && packageName && shortPrefix && port !== undefined && !Number.isNaN(port)
 
   if (!hasAll) {
     const t = await prompts(
@@ -225,11 +219,21 @@ async function main() {
       console.error('无效的 --prefix')
       process.exit(1)
     }
-    if (port < 1024 || port > 65535) {
+    if (typeof port !== 'number' || Number.isNaN(port) || port < 1024 || port > 65535) {
       console.error('无效的 --port')
       process.exit(1)
     }
   }
+
+  if (type !== 'h5' && type !== 'admin') {
+    console.error('type 须为 h5 或 admin')
+    process.exit(1)
+  }
+  if (typeof port !== 'number' || Number.isNaN(port) || port < 1024 || port > 65535) {
+    console.error('port 未设置或不在 1024–65535 范围内')
+    process.exit(1)
+  }
+  const devPort = port
 
   const base = type === 'h5' ? 'apps/h5' : 'apps/pc'
   const targetRel = join(base, /** @type {string} */ (dirName))
@@ -266,7 +270,7 @@ async function main() {
   console.log(`复制模板 ${TEMPLATES[type].rel} → ${targetRel} ...`)
   cpSync(srcAbs, targetAbs, {
     recursive: true,
-    filter: (src) => shouldCopyPath(src)
+    filter: src => shouldCopyPath(src)
   })
 
   const pkgPath = join(targetAbs, 'package.json')
@@ -281,7 +285,7 @@ async function main() {
   const oldTemplateRel = TEMPLATES[/** @type {'h5'|'admin'} */ (type)].rel
   const vitePath = join(targetAbs, 'vite.config.ts')
   let viteText = readFileSync(vitePath, 'utf8')
-  viteText = viteText.replace(/port:\s*\d+/, `port: ${port}`)
+  viteText = viteText.replace(/port:\s*\d+/, `port: ${devPort}`)
   writeFileSync(vitePath, viteText, 'utf8')
 
   const readmePath = join(targetAbs, 'README.md')
@@ -312,7 +316,8 @@ async function main() {
       if (b.includes('docs:build')) {
         rootPkg.scripts.build = b.replace('pnpm run docs:build', `pnpm run ${shortPrefix}:build && pnpm run docs:build`)
       } else {
-        rootPkg.scripts.build = b + (b.endsWith('&&') || b.length === 0 ? ' ' : ' && ') + `pnpm run ${shortPrefix}:build`
+        rootPkg.scripts.build =
+          b + (b.endsWith('&&') || b.length === 0 ? ' ' : ' && ') + `pnpm run ${shortPrefix}:build`
       }
     }
   }
@@ -344,10 +349,7 @@ async function main() {
   if (vws.includes(`'${vwsPathRel}'`)) {
     console.warn('vitest.workspace.ts 已含该路径，跳过')
   } else {
-    vws = vws.replace(
-      `, './packages/shared']`,
-      `, '${vwsPathRel}', './packages/shared']`
-    )
+    vws = vws.replace(`, './packages/shared']`, `, '${vwsPathRel}', './packages/shared']`)
     if (!vws.includes(vwsPathRel)) {
       console.error('未能自动写入 vitest.workspace.ts，请手改: export default 数组中增加 ' + vwsPathRel)
     } else {
@@ -365,7 +367,7 @@ async function main() {
   console.log(`\n新应用路径: ${rel}`)
 }
 
-main().catch((e) => {
+main().catch(e => {
   console.error(e)
   process.exit(1)
 })
