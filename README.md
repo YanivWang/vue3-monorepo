@@ -8,6 +8,7 @@
 - [技术栈](#技术栈)
 - [仓库结构](#仓库结构)
 - [快速开始](#快速开始)
+- [故障参考](#故障参考)
 - [根目录脚本速查](#根目录脚本速查)
 - [Git 与提交规范](#git-与提交规范)
 - [架构要点](#架构要点)
@@ -67,6 +68,18 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 
 推送或发版前，可在本地执行 `pnpm run verify:full`（见下表）做一次全量校验；并与团队策略对齐 `pnpm audit --audit-level=high` 等。
 
+## 故障参考
+
+| 现象 / 提示 | 可尝试处理 |
+| --- | --- |
+| `The engine "node" is incompatible` 或运行期与 Vite/TS 行为异常 | 使用 **Node `>=20.19.5`**（见[环境要求](#环境要求)）。可用 [nvm](https://github.com/nvm-sh/nvm)、[fnm](https://github.com/Schniz/fnm) 等切换版本后重新 `pnpm install`。 |
+| 执行 `npm install` / `yarn` 时提示 **only-allow pnpm** | 本仓**仅支持 pnpm**，请在仓库根目录执行 `pnpm install`，勿混用其他包管理器。 |
+| `pnpm: command not found` 或 pnpm 版本低于 `engines` | 安装/升级 pnpm 至 `>=10.17.0`；若已装 Node 16.13+，可执行 `corepack enable` 后按根目录 `packageManager` 字段对齐版本。 |
+| 开发服启动报 **端口已被占用**（如 `EADDRINUSE`，默认 **5173** / **5174** / **5175**） | 结束占用端口的进程，或调整对应应用下 Vite 的 `server.port` / `--port`；并行 `pnpm run dev` 时避免多实例抢同一端口。 |
+| 依赖解析异常、安装后仍报错、怀疑本地装坏 | 在仓库根删除各层 `node_modules`（可保留 `pnpm-lock.yaml`）后执行 `pnpm install`；**不要随意删改 `pnpm-lock.yaml`** 除非与团队流程一致。 |
+| `git commit` 不跑 lint / commitlint，或刚 clone 后无 `.husky` | 在根目录执行一次 `pnpm install` 以触发 `prepare` 安装 Husky；仍异常可检查 `core.hooksPath` 是否被全局 Git 配置覆盖。 |
+| **Docker** 相关容器起不来、页面空白、接口不通 | 见[Docker 与本地镜像](#docker-与本地镜像)中的端口、compose 与 `docker:*` 脚本；用 `pnpm run docker:logs` 或 `docker compose ... logs` 看服务日志。 |
+
 ## 根目录脚本速查
 
 | 用途 | 命令 |
@@ -87,8 +100,6 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | 文档预览（构建后） | `pnpm run docs:preview` |
 | 应用内预览 | `pnpm --filter @vue3-mono/admin preview` / `pnpm --filter @vue3-mono/h5 preview` |
 
-`verify:full` 与 CI 中建议跑齐的检查项一致；`HUSKY=0 git commit` 可临时跳过 Hook（不建议长期使用）。
-
 ## Git 与提交规范
 
 克隆后若已执行 `pnpm install`，`prepare` 会安装 Husky：
@@ -97,6 +108,8 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | --- | --- | --- |
 | `pre-commit` | `git commit` 前 | `lint-staged`：对暂存文件跑 ESLint、Stylelint、Prettier |
 | `commit-msg` | 提交信息写入后 | `commitlint`，约定 Conventional Commits |
+
+`HUSKY=0 git commit` 可临时跳过 Hook（不建议长期使用）。
 
 **格式**：`<type>(<scope>): <subject>`
 
