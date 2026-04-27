@@ -1,193 +1,233 @@
 # vue3-monorepo-template
 
-企业级开箱即用 Vue3 + Vite + TypeScript 脚手架，零配置、零报错、一键启动。
+企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-mono/shared`。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
+
+## 目录
+
+- [环境要求](#环境要求)
+- [技术栈](#技术栈)
+- [仓库结构](#仓库结构)
+- [快速开始](#快速开始)
+- [根目录脚本速查](#根目录脚本速查)
+- [Git 与提交规范](#git-与提交规范)
+- [架构要点](#架构要点)
+- [Docker 与本地镜像](#docker-与本地镜像)
+- [环境变量](#环境变量)
+- [新功能与目录约定](#新功能与目录约定)
+- [许可证](#许可证)
+
+## 环境要求
+
+| 项 | 要求 |
+| --- | --- |
+| Node.js | `>=20.19.5`（见根 `package.json` 的 `engines`） |
+| 包管理器 | **pnpm** `>=10.17.0`（与 `packageManager` 字段一致；仓库已配置 `preinstall` 仅允许 pnpm，请勿与 npm/yarn 混用） |
 
 ## 技术栈
 
-| 分类        | 技术                                       | 版本        |
-| ----------- | ------------------------------------------ | ----------- |
-| 核心框架    | Vue 3                                      | ^3.4        |
-| 构建工具    | Vite                                       | ^5.3        |
-| 类型系统    | TypeScript                                 | ^5.5        |
-| 路由        | Vue Router                                 | ^4.3        |
-| 状态管理    | Pinia                                      | ^2.1        |
-| UI 组件库   | Element Plus（PC）/ Vant 4（H5）           | ^2.7 / ^4.9 |
-| HTTP 请求   | Axios                                      | ^1.7        |
-| 组合式工具  | @VueUse                                    | ^10.11      |
-| 日期处理    | dayjs                                      | ^1.11       |
-| 工具函数    | lodash-es                                  | ^4.17       |
-| Cookie      | js-cookie                                  | ^3.0        |
-| CSS 预处理  | Sass                                       | ^1.77       |
-| 进度条      | nprogress                                  | ^0.2        |
-| UI 组件引用 | 源码中显式 `import`（Element Plus / Vant） | —           |
+| 分类 | 技术 | 说明 |
+| --- | --- | --- |
+| 核心 | Vue 3、Vite、TypeScript | 具体版本以 lock / catalog 为准 |
+| 路由与状态 | Vue Router、Pinia | 各 app 内自建，不跨 app 共享 store |
+| UI | Element Plus（PC）/ Vant 4（H5） | 组件按需 `import` |
+| 请求 | Axios | 封装见 `@vue3-mono/shared/request-*` |
+| 其他常用 | @VueUse、dayjs、lodash-es、js-cookie、Sass 等 | — |
 
-## 目录结构（pnpm workspace）
+## 仓库结构
 
 ```
 vue3-monorepo-template/
 ├── apps/
-│   ├── pc/pc-admin-template/    # PC 管理端（Element Plus），端口默认 5173
-│   └── h5/h5-template/            # 移动端 H5（Vant 4 + 多宿主 Bridge），端口 5174
-├── docs/                          # VitePress 文档站
-├── packages/
-│   └── shared/                    # 单包 @vue3-mono/shared；源码在 src/ 分域，对外子路径见 package.json#exports（如 request-core|pc|h5、hooks-core|pc|h5、components-pc|h5、directives-pc|h5）
+│   ├── pc/pc-admin-template/     # PC 管理端，dev 默认端口 5173
+│   └── h5/h5-template/         # H5，dev 默认端口 5174
+├── docs/                        # VitePress，dev 默认端口 5175
+├── packages/shared/            # 单包 @vue3-mono/shared，子路径与 package.json#exports 一致
 ├── scripts/
-│   └── check-refs.js            # 校验 workspace 与 tsconfig paths 一致
-├── pnpm-workspace.yaml          # workspace glob + catalog 版本锁
-├── tsconfig.base.json           # 根 paths 与编译基线
+│   ├── check-refs.js           # workspace 与 tsconfig paths 一致
+│   ├── check-request-core.js   # request-core 不依赖 UI
+│   └── docker.sh               # 调度 docker compose
+├── docker/
+│   ├── docker-compose.yaml     # admin-web / h5-web / docs-web
+│   ├── images/                 # 各端 Dockerfile
+│   └── nginx/                  # 静态与 /api 反代
+├── pnpm-workspace.yaml
+├── tsconfig.base.json
 ├── vitest.workspace.ts
-├── docker/                      # Docker 编排（参照 deer-flow：compose + nginx + images）
-│   ├── docker-compose.yaml    # Admin 本地/默认编排
-│   ├── nginx/admin.conf        # PC 静态站 nginx
-│   └── images/admin/Dockerfile
-├── scripts/docker.sh            # docker compose 快捷命令
-└── package.json                 # 根脚本：admin:* / docker:admin:* / verify:full …
+└── package.json
 ```
 
-业务代码在 **`apps/*`**；可复用能力在 **`packages/shared`**。Pinia Store、路由、API 模块**不跨 app 共享**，仅共享类型与工具等。
+业务与页面在 **`apps/*`**；可复用逻辑在 **`packages/shared`**，经 `@vue3-mono/shared/...` 引用。
 
 ## 快速开始
 
-本项目使用 [pnpm](https://pnpm.io/) 与单一份 `pnpm-lock.yaml` 锁定依赖（`catalog:` 统一版本），请勿与 npm/yarn 混用。
-
 ```bash
-# 1. 安装依赖（`pnpm-workspace` 见根目录：2 个 app + docs + shared）
 pnpm install
-
-# 2. 开发：PC 管理端（默认 5173）
-pnpm run admin:dev
-
-# 3. 开发：H5（默认 5174，需 `apps/h5/h5-template/.env.development` 中 VITE_USE_MOCK 等）
-pnpm run h5:dev
-
-# 4. 文档站
-pnpm run docs:dev
-
-# 5. 类型检查（全 workspace 并行）
-pnpm run typecheck
-# 别名（与 `verify:full` 中使用的名称一致）
-pnpm run type-check
-
-# 6. ESLint / Stylelint
-pnpm run lint
-pnpm run lint:style
-
-# 7. workspace 与 tsconfig paths 一致性
-pnpm run check:refs
-
-# 8. 单元测试（Vitest workspace）
-pnpm run test
-pnpm run test:run
-
-# 9. 构建：admin + h5 + docs（顺序执行，供发布或全量验证）
-pnpm run build
-
-# 10. 单端构建
-pnpm run admin:build
-pnpm run h5:build
-pnpm run docs:build
-
-# 11. 预览（在对应 app 目录下或使用 filter）
-pnpm --filter @vue3-mono/admin preview
-pnpm --filter @vue3-mono/h5 preview
+pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 ```
 
-推送前建议在本地或团队流水线上跑齐：`check:refs`、`check:request-core`、`lint`、`lint:style`、`type-check`、`test:run`、`build`，并与 `pnpm audit --audit-level=high` 策略对齐；全量可执行根目录 `pnpm run verify:full`（见该脚本说明）。
+推送或发版前，可在本地执行 `pnpm run verify:full`（见下表）做一次全量校验；并与团队策略对齐 `pnpm audit --audit-level=high` 等。
 
-首次克隆后已启用 Husky，两个 Hook 自动生效：
+## 根目录脚本速查
 
-| Hook         | 触发时机        | 执行内容                                                      |
-| ------------ | --------------- | ------------------------------------------------------------- |
-| `pre-commit` | `git commit` 前 | `lint-staged`（ESLint + Stylelint + Prettier 仅处理暂存文件） |
-| `commit-msg` | 填写提交信息后  | `commitlint`（校验 Conventional Commits 格式）                |
+| 用途 | 命令 |
+| --- | --- |
+| 并行启动所有带 `dev` 的包 | `pnpm run dev` |
+| 开发 | `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` |
+| 单端类型检查 | `pnpm run admin:typecheck` / `pnpm run h5:typecheck` |
+| 全 workspace 类型检查 | `pnpm run typecheck`（别名 `type-check`） |
+| 仅 packages 类型检查 | `pnpm run typecheck:packages` |
+| 单端单元测试 | `pnpm run admin:test` / `pnpm run h5:test` |
+| 全仓测试（Vitest） | `pnpm run test`（别名 `test:run`） |
+| 测试 watch / 覆盖率 | `pnpm run test:watch` / `pnpm run test:coverage` |
+| ESLint / Stylelint | `pnpm run lint` / `pnpm run lint:style`（`:fix` 变体见 package.json） |
+| Prettier 全仓写入 | `pnpm run format` |
+| 引用与 request-core 检查 | `pnpm run check:refs` / `pnpm run check:request-core` |
+| 全量校验 | `pnpm run verify:full` → `check:refs` + `check:request-core` + `typecheck` + `lint` + `lint:style` + `prettier --check` + `test` + `build` |
+| 构建（admin → h5 → docs） | `pnpm run build`；单端：`pnpm run admin:build` / `pnpm run h5:build` / `pnpm run docs:build` |
+| 文档预览（构建后） | `pnpm run docs:preview` |
+| 应用内预览 | `pnpm --filter @vue3-mono/admin preview` / `pnpm --filter @vue3-mono/h5 preview` |
 
-### 提交信息规范（commitlint）
+`verify:full` 与 CI 中建议跑齐的检查项一致；`HUSKY=0 git commit` 可临时跳过 Hook（不建议长期使用）。
 
-格式：`<type>(<scope>): <subject>`，例如：
+## Git 与提交规范
+
+克隆后若已执行 `pnpm install`，`prepare` 会安装 Husky：
+
+| Hook | 时机 | 作用 |
+| --- | --- | --- |
+| `pre-commit` | `git commit` 前 | `lint-staged`：对暂存文件跑 ESLint、Stylelint、Prettier |
+| `commit-msg` | 提交信息写入后 | `commitlint`，约定 Conventional Commits |
+
+**格式**：`<type>(<scope>): <subject>`
+
+示例：
 
 ```
 feat(auth): 新增 OAuth2 登录方式
-fix(http): 修复并发 401 时 refresh 队列未清空的问题
-chore: 升级 vite 到 5.4
+fix(http): 修复并发 401 时 refresh 队列问题
+chore: 升级 vite
 ```
 
-支持的 `type`：
-
-| type       | 含义                        |
-| ---------- | --------------------------- |
-| `feat`     | 新功能                      |
-| `fix`      | Bug 修复                    |
-| `perf`     | 性能优化                    |
-| `refactor` | 代码重构（非新功能/非修复） |
-| `style`    | 代码格式（不影响逻辑）      |
-| `test`     | 测试相关                    |
-| `docs`     | 文档更新                    |
-| `build`    | 构建或依赖变更              |
-| `ci`       | CI/CD 配置变更              |
-| `chore`    | 其他杂项                    |
-| `revert`   | 回滚提交                    |
-| `wip`      | 开发中的临时提交            |
-
-若需临时跳过 Hook：`HUSKY=0 git commit ...`（不推荐长期使用）。
+| type | 含义 |
+| --- | --- |
+| `feat` | 新功能 |
+| `fix` | Bug 修复 |
+| `perf` | 性能 |
+| `refactor` | 重构（非新功能/非修复） |
+| `style` | 格式（不影响逻辑） |
+| `test` | 测试 |
+| `docs` | 文档 |
+| `build` | 构建或依赖 |
+| `ci` | CI/CD |
+| `chore` | 其他杂项 |
+| `revert` | 回滚 |
+| `wip` | 临时工作提交 |
 
 ## 架构要点
 
-### 请求层（`@vue3-mono/shared` 内三子路径）
+### 请求层（`@vue3-mono/shared`）
 
-- **`@vue3-mono/shared/request-core`**：Axios 核心，禁止直接依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
-- **`@vue3-mono/shared/request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
-- **`@vue3-mono/shared/request-h5`**：`createH5Http`，默认 Vant 反馈；**h5** 在 `src/plugins/http.ts` 装配。
+- **`request-core`**：Axios 核心，不依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
+- **`request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
+- **`request-h5`**：`createH5Http`，默认 Vant 反馈；H5 在 `src/plugins/http.ts` 等装配。
 
 ### PC 管理端（`apps/pc/pc-admin-template`）
 
-- Element Plus、动态路由/权限、Mock 位于 `apps/pc/pc-admin-template/mock/`。
-- HTTP、布局、业务页面路径均为 `apps/pc/pc-admin-template/src/*`（详见该目录）。
+Element Plus、动态路由与权限、Mock 位于 `mock/`。HTTP、布局、页面在 `src/*`。
 
 ### H5（`apps/h5/h5-template`）
 
-- Vant 4、`@vue3-mono/shared/bridge` 多宿主、栈式 `keep-alive`、`postcss-mobile-forever` 视口适配。
-- Mock：`apps/h5/h5-template/mock/`；多宿主说明见 `apps/h5/h5-template/docs/bridge-protocol.md`。
-- 示例：长列表 + 详情 + 新建/编辑/删除（`apps/h5/h5-template/src/views/list/`），筛选使用包内 `FilterDrawer` 与 `useProListFilters`。
+Vant 4、多宿主 **Bridge**（`@vue3-mono/shared/bridge`）、栈式 `keep-alive`、`postcss-mobile-forever` 等。协议说明见 `apps/h5/h5-template/docs/bridge-protocol.md`；Mock 在 `mock/`。
 
-### 共享包与约束
+### 共享与约束
 
-- **Store 不跨 app**：仅共享 `@vue3-mono/shared/types`、`enums`、`utils` 等子路径。
-- **权限指令**：PC 为 `@vue3-mono/shared/directives-pc`；H5 为 `@vue3-mono/shared/directives-h5`（工厂注入 `hasPermission` / `hasRole`）。
+- **Pinia store、路由、按业务划分的 API 模块不跨 app**；可共享类型、枚举、工具、`request-*`、hooks、端专用组件/指令等。
+- **权限指令**：PC 为 `directives-pc`；H5 为 `directives-h5`（工厂注入 `hasPermission` / `hasRole`）。
 
-### 容器镜像
+`exports` 的完整列表与路径约定见 [packages/shared/package.json](packages/shared/package.json)。
 
-- **`docker/images/admin/Dockerfile`**（构建上下文为 **仓库根**）：`pnpm --filter @vue3-mono/admin build`，nginx 配置为 **`docker/nginx/admin.conf`**。本地：`pnpm run docker:admin:up` 或 `docker compose -f docker/docker-compose.yaml up --build`。H5 / 文档需另起镜像或扩展 `docker/`。
-- **全量本地校验**：根目录执行 `pnpm run verify:full`（refs、request 无 UI、typecheck、lint、stylelint、prettier --check、test、build）。
+## Docker 与本地镜像
+
+[docker/docker-compose.yaml](docker/docker-compose.yaml) 提供三个服务，用于**生产风格镜像的本地验证**（构建上下文为仓库根）：
+
+| 服务 | 默认宿主机端口 | 说明 |
+| --- | --- | --- |
+| `admin-web` | `8080`（`ADMIN_PORT`） | 见 `docker/images/admin/Dockerfile`、`docker/nginx/admin.conf` |
+| `h5-web` | `8081`（`H5_PORT`） | 见 `docker/images/h5/Dockerfile`、`docker/nginx/h5.conf` |
+| `docs-web` | `8082`（`DOCS_PORT`） | 见 `docker/images/docs/Dockerfile` |
+
+Admin / H5 默认按 **docker** 模式构建（同源 `/api` + nginx 反代至宿主机，默认 `host.docker.internal:3000`）。需要生产环境变量打镜像时可设置 `ADMIN_BUILD_MODE=production` 或 `H5_BUILD_MODE=production`（详见 compose 头注释与 nginx 配置）。
+
+**常用命令**（封装自 [scripts/docker.sh](scripts/docker.sh)）：
+
+- 一键起全套：`pnpm run docker:up`
+- 仅某一服务：`pnpm run docker:admin:up` / `pnpm run docker:h5:up` / `pnpm run docker:docs:up`
+- 停止 / 日志：`pnpm run docker:down` + `docker:logs`；单服务有 `docker:*:down`、`docker:*:logs`
+
+也可在仓库根执行：`docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d`。
 
 ## 环境变量
 
-| 变量名                   | 说明                             | 默认值                     |
-| ------------------------ | -------------------------------- | -------------------------- |
-| `VITE_APP_TITLE`         | 应用标题                         | vue3-monorepo-template     |
-| `VITE_API_BASE_URL`      | 后端接口地址                     | http://localhost:3000      |
-| `VITE_API_PREFIX`        | 请求前缀（Vite proxy key）       | /api                       |
-| `VITE_TOKEN_KEY`         | Access Token 存储 key（Cookie）  | access_token               |
-| `VITE_REFRESH_TOKEN_KEY` | Refresh Token 存储 key（Cookie） | refresh_token              |
-| `VITE_API_SUCCESS_CODE`  | 与后端约定成功的业务 `code`      | 200（若成功码为 0 则填 0） |
-| `VITE_USE_MOCK`          | 为 `true` 时用户 API 走内建 mock | 生产建议 `false`           |
+**通用**（Vite 前缀 `VITE_`；具体以各应用构建为准）：
 
-## 新增业务模块指引
+| 变量 | 说明 | 常见默认 |
+| --- | --- | --- |
+| `VITE_APP_TITLE` | 应用标题 | 见各 `.env` |
+| `VITE_API_BASE_URL` | 接口基地址 | 如 `http://localhost:3000` |
+| `VITE_API_PREFIX` | 请求前缀 / 代理 | 如 `/api` |
+| `VITE_TOKEN_KEY` / `VITE_REFRESH_TOKEN_KEY` | Cookie 中 token 键名 | 见示例 |
+| `VITE_API_SUCCESS_CODE` | 与后端约定成功业务码 | 如 `200` 或 `0` |
+| `VITE_USE_MOCK` | `true` 时走内建 mock | 生产宜 `false` |
 
-**Admin（PC）**
+各端完整变量与说明请以示例文件为准并自行复制为 `.env.*`（勿提交敏感信息）：
 
-1. 接口：`apps/pc/pc-admin-template/src/api/modules/`
-2. 页面与路由：`apps/pc/pc-admin-template/src/views/`、`apps/pc/pc-admin-template/src/router/`
-3. Store：`apps/pc/pc-admin-template/src/stores/modules/`（勿引用 H5 应用的 store）
+- [apps/pc/pc-admin-template/.env.example](apps/pc/pc-admin-template/.env.example)
+- [apps/h5/h5-template/.env.example](apps/h5/h5-template/.env.example)
 
-**H5**
+## 新功能与目录约定
 
-1. 接口：`apps/h5/h5-template/src/api/`
-2. 页面与路由：`apps/h5/h5-template/src/views/`、`apps/h5/h5-template/src/router/routes.ts`
-3. Store：`apps/h5/h5-template/src/stores/modules/`
+**这一节是干什么的？** 说明在仓库里**加新功能、新页面、新接口**时，文件习惯放在哪；**不是**在介绍两个产品的业务含义（那是你们团队的产品文档范畴）。
 
-**跨端可复用逻辑**（均在 **`packages/shared/src/`** 下实现，经 **`@vue3-mono/shared/…`** 子路径引用，与 [packages/shared/package.json](packages/shared/package.json) 的 `exports` 一一对应）
+仓库里对应 **两个独立的前端应用**（各装各的依赖、各跑各的 dev，代码默认不混写）：
 
-- 纯函数 / 类型 / 桥接：子路径 `types`、`enums`、`constants`、`bridge`；主题 token（JS）`styles/tokens`；工具 `utils`；i18n `locale`
-- 与 UI 无关的 composable：`hooks-core`；端专用 `hooks-pc` / `hooks-h5`
-- 请求层：`request-core`（与 UI 解耦）、`request-pc` / `request-h5`（各端反馈与装配）
-- 端专用 UI：物理目录在 `src/components-pc`、`src/components-h5`、`src/directives-pc`、`src/directives-h5`；对应对外子路径 `components-pc` / `components-h5`、`directives-pc` / `directives-h5`（与 `package.json#exports` 一致）
+| 应用 | 在仓库里的位置 | 典型场景 |
+| --- | --- | --- |
+| PC 管理端 | [apps/pc/pc-admin-template](apps/pc/pc-admin-template) | 后台表格、权限菜单、Element Plus |
+| 移动端 H5 | [apps/h5/h5-template](apps/h5/h5-template) | 手机站、Vant、与宿主 App 的 Bridge |
+
+下面路径中，未写全的均以各应用下的 `src/` 为根（如 `src/views` 指 `pc-admin-template/src/views`）。
+
+**先想一步：新代码要放哪？**
+
+| 你的需求 | 放哪里 |
+| --- | --- |
+| 只给 **PC 后台** 用 | 全部写在 `apps/pc/pc-admin-template` 下面对应目录 |
+| 只给 **H5** 用 | 全部写在 `apps/h5/h5-template` 下面对应目录 |
+| **PC 和 H5 都要**用（类型、纯函数、请求封装、无业务耦合的 hook 等） | [packages/shared/src](packages/shared/src)，用 `@vue3-mono/shared/…` 按子路径引用（与 [package.json#exports](packages/shared/package.json) 一致） |
+
+**Admin（PC）新功能——常见三类文件**
+
+| 做什么 | 路径 |
+| --- | --- |
+| 新接口 / API 模块 | `apps/pc/pc-admin-template/src/api/modules/` |
+| 新页面、布局相关 | `src/views/`；路由与菜单配置在 `src/router/` |
+| 新全局/模块状态（Pinia） | `src/stores/modules/` |
+| 注意 | **不要**在 Admin 里 `import` H5 应用里的 store 或业务页面。 |
+
+**H5 新功能——常见三类文件**
+
+| 做什么 | 路径 |
+| --- | --- |
+| 新接口 / API | `apps/h5/h5-template/src/api/` |
+| 新页面 | `src/views/`；**路由表**在 `src/router/routes.ts`（与 Admin 的 router 组织方式可能不同，以本应用为准） |
+| 新状态（Pinia） | `src/stores/modules/` |
+| 注意 | 同样**不要**在 H5 里 `import` Admin 的 store 或业务页面。 |
+
+**跨端复用放 shared 时，怎么引用？**
+
+- 源文件在 `packages/shared/src/` 下按域划分；对外名字由 [packages/shared/package.json](packages/shared/package.json) 的 `exports` 决定。
+- 在业务代码里用包名子路径，例如：`@vue3-mono/shared/types`、`…/utils`、`…/request-core`（无 UI）、`…/request-pc` 或 `…/request-h5`（带各端提示）、`…/bridge`（H5 与宿主通信）、`…/hooks-core` / `…/hooks-pc` / `…/hooks-h5`、`…/components-pc` / `…/components-h5`、`…/directives-pc` / `…/directives-h5`、`…/styles/tokens` 等；**有疑惑时以 `exports` 为准**。
+
+## 许可证
+
+[MIT](LICENSE)
