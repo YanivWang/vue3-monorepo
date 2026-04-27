@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 const vitePressNoGit = process.env.VITEPRESS_NO_GIT === '1'
 
 export default defineConfig({
-  title: 'vue3-monorepo-template',
+  title: 'vue3-monorepo',
   description: '企业级 Vue3 + Vite + TypeScript 脚手架模板文档',
   lang: 'zh-CN',
   base: '/',
@@ -20,7 +20,7 @@ export default defineConfig({
 
   themeConfig: {
     logo: '/logo.svg',
-    siteTitle: 'vue3-monorepo-template',
+    siteTitle: 'vue3-monorepo',
 
     nav: [
       { text: '文档体系', link: '/guide/doc-system' },
@@ -30,7 +30,7 @@ export default defineConfig({
       { text: '架构', link: '/guide/architecture' },
       {
         text: '更新日志',
-        link: 'https://github.com/your-org/vue3-monorepo-template/blob/main/CHANGELOG.md'
+        link: 'https://github.com/your-org/vue3-monorepo/blob/main/CHANGELOG.md'
       }
     ],
 
@@ -72,7 +72,7 @@ export default defineConfig({
       ]
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/your-org/vue3-monorepo-template' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/your-org/vue3-monorepo' }],
 
     footer: {
       message: 'Released under the MIT License.',
@@ -82,7 +82,7 @@ export default defineConfig({
     search: { provider: 'local' },
 
     editLink: {
-      pattern: 'https://github.com/your-org/vue3-monorepo-template/edit/main/docs/:path',
+      pattern: 'https://github.com/your-org/vue3-monorepo/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页'
     },
 

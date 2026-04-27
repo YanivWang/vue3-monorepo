@@ -1,4 +1,4 @@
-# @vue3-mono/docs
+# @vue3-monorepo/docs
 
 VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 工作流、质量门禁、架构与组件说明。
 

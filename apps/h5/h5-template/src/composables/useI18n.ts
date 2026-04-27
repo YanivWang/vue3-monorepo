@@ -10,7 +10,7 @@ import {
   getLocale as _getLocale,
   BASE_LOCALES,
   type BaseLocale
-} from '@vue3-mono/shared/locale'
+} from '@vue3-monorepo/shared/locale'
 
 const PINIA_H5_APP_KEY = 'h5-app'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Cell, CellGroup, Image as VanImage, Button, showConfirmDialog } from 'vant'
-import { PageContainer } from '@vue3-mono/shared/components-h5'
+import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { useUserStore } from '@/stores'
 import { useAuth } from '@/composables/useAuth'
 import TabLayout from '@/layouts/TabLayout.vue'

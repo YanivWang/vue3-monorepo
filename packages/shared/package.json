@@ -1,5 +1,5 @@
 {
-  "name": "@vue3-mono/shared",
+  "name": "@vue3-monorepo/shared",
   "version": "0.0.0",
   "private": true,
   "type": "module",

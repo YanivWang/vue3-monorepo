@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
  * - localStorage 支持 JSON 序列化 + 可选过期时间（秒）
  * - sessionStorage 支持 JSON 序列化
  *
- * 具体 key 定义应在消费方（如 `@vue3-mono/shared/enums` 的 StorageKey）管理，
+ * 具体 key 定义应在消费方（如 `@vue3-monorepo/shared/enums` 的 StorageKey）管理，
  * 本模块只提供行为。Token 封装保留可直接按 key 调用的顶层 API，方便 request 包使用。
  */
 

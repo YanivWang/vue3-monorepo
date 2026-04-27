@@ -43,7 +43,7 @@ defineSlots<{
 </template>
 
 <style lang="scss" scoped>
-@use '@vue3-mono/shared/styles/tokens/variables' as *;
+@use '@vue3-monorepo/shared/styles/tokens/variables' as *;
 
 .page-container {
   width: 100%;

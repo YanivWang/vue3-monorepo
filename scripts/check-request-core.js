@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * P3.4a：@vue3-mono/shared/request-core 核心包禁止出现任何 UI 框架 API 字样（防回归）
+ * P3.4a：@vue3-monorepo/shared/request-core 核心包禁止出现任何 UI 框架 API 字样（防回归）
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'

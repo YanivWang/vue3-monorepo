@@ -4,7 +4,7 @@ import router from './router'
 import { setupStore } from './stores'
 import { setupPlugins } from './plugins'
 import { registerDirectives } from './directives'
-import { installComponents } from '@vue3-mono/shared/components-pc'
+import { installComponents } from '@vue3-monorepo/shared/components-pc'
 
 // Element Plus 预编译 CSS（须在自定义全局样式之前引入，方便覆盖）
 import 'element-plus/dist/index.css'
@@ -22,7 +22,7 @@ async function bootstrap(): Promise<void> {
   // 2. 全局指令（依赖 Pinia）
   registerDirectives(app)
 
-  // 3. 全局共享组件（@vue3-mono/shared/components-pc）
+  // 3. 全局共享组件（@vue3-monorepo/shared/components-pc）
   installComponents(app)
 
   // 4. 注册路由（须在 setupPlugins 前，Sentry 需要 router 实例）

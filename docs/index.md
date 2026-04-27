@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: 'vue3-monorepo-template'
+  name: 'vue3-monorepo'
   text: '企业级前端脚手架'
   tagline: Vue3 + Vite + TypeScript + Element Plus，开箱即用的最佳实践集合
   actions:
@@ -20,7 +20,7 @@ hero:
       link: /components/page-container
     - theme: alt
       text: GitHub
-      link: https://github.com/your-org/vue3-monorepo-template
+      link: https://github.com/your-org/vue3-monorepo
 
 features:
   - icon: ⚡

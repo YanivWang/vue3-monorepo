@@ -1,5 +1,5 @@
-import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-mono/shared/request-core'
-import { createTokenStorage, type TokenStorage } from '@vue3-mono/shared/utils'
+import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-monorepo/shared/request-core'
+import { createTokenStorage, type TokenStorage } from '@vue3-monorepo/shared/utils'
 import { createVantLoadingHandler } from './loading'
 import { createH5Hooks, type H5PresetOptions } from './preset'
 
@@ -65,7 +65,7 @@ export function createH5Http(options: CreateH5HttpOptions = {}): HttpRequest {
   })
 }
 
-export type { TokenStorage } from '@vue3-mono/shared/utils'
+export type { TokenStorage } from '@vue3-monorepo/shared/utils'
 export type {
   RequestConfig,
   ResponseData,
@@ -77,4 +77,4 @@ export type {
   RequestHooks,
   ErrorHookContext,
   LoadingHandler
-} from '@vue3-mono/shared/request-core'
+} from '@vue3-monorepo/shared/request-core'

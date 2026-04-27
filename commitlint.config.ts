@@ -4,7 +4,7 @@ import type { UserConfig } from '@commitlint/types'
  * Conventional Commits + monorepo scope
  *
  * scope 表示提交影响面，不都对应独立 pnpm 包。本仓 workspace 仅
- * `apps/pc/*`、`apps/h5/*`、`docs`、`packages/shared`（@vue3-mono/shared 单包），
+ * `apps/pc/*`、`apps/h5/*`、`docs`、`packages/shared`（@vue3-monorepo/shared 单包），
  * 与 shared 子路径导出（如 utils、request-core、components-pc 等）对应关系见
  * `packages/shared/package.json` 的 `exports`。
  *

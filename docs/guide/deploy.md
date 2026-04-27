@@ -7,7 +7,7 @@
 ```bash
 # 构建并启动 Admin 容器（默认 http://localhost:8080）
 pnpm run docker:admin:up
-# 或：docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d
+# 或：docker compose -p vue3-monorepo -f docker/docker-compose.yaml up --build -d
 
 # 验证健康检查
 curl http://localhost:8080/health
@@ -63,7 +63,7 @@ pnpm build
 
 | 变量                | 说明                   | 示例                      |
 | ------------------- | ---------------------- | ------------------------- |
-| `VITE_APP_TITLE`    | 应用标题               | `vue3-monorepo-template`  |
+| `VITE_APP_TITLE`    | 应用标题               | `vue3-monorepo`           |
 | `VITE_API_BASE_URL` | 后端 API 基础地址      | `https://api.example.com` |
 | `VITE_API_PREFIX`   | API 路径前缀（代理用） | `/api`                    |
 | `VITE_USE_MOCK`     | 是否启用 Mock          | `true/false`              |

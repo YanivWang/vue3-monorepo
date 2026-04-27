@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { Cell, CellGroup, Grid, GridItem, NoticeBar, Button } from 'vant'
 import { useRouter } from 'vue-router'
-import { PageContainer } from '@vue3-mono/shared/components-h5'
+import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { useUserStore } from '@/stores'
 import TabLayout from '@/layouts/TabLayout.vue'
 

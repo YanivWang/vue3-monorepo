@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { UserInfo } from '@vue3-mono/shared/types'
+import type { UserInfo } from '@vue3-monorepo/shared/types'
 import { getToken, setToken, removeToken, tokenStorage } from '@/utils/tokenStorage'
 
 /**

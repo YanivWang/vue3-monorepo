@@ -1,5 +1,5 @@
-import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-mono/shared/request-core'
-import { createTokenStorage, type TokenStorage } from '@vue3-mono/shared/utils'
+import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-monorepo/shared/request-core'
+import { createTokenStorage, type TokenStorage } from '@vue3-monorepo/shared/utils'
 import { createElLoadingHandler } from './loading'
 import { createPcHooks, type PcPresetOptions } from './preset'
 
@@ -58,7 +58,7 @@ export function createPcHttp(options: CreatePcHttpOptions = {}): HttpRequest {
   })
 }
 
-export type { TokenStorage } from '@vue3-mono/shared/utils'
+export type { TokenStorage } from '@vue3-monorepo/shared/utils'
 export type {
   RequestConfig,
   ResponseData,
@@ -70,4 +70,4 @@ export type {
   RequestHooks,
   ErrorHookContext,
   LoadingHandler
-} from '@vue3-mono/shared/request-core'
+} from '@vue3-monorepo/shared/request-core'

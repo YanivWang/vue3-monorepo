@@ -24,7 +24,7 @@
 - `apps/h5/h5-template`
 - `packages/shared`
 
-**不包含** 文档包 `@vue3-mono/docs`（`docs` 无单元测试进该 workspace 配置）。因此 `pnpm run test:run` 跑的是**上述三处**的测试，而不是「全 monorepo 每个包各跑一遍」。
+**不包含** 文档包 `@vue3-monorepo/docs`（`docs` 无单元测试进该 workspace 配置）。因此 `pnpm run test:run` 跑的是**上述三处**的测试，而不是「全 monorepo 每个包各跑一遍」。
 
 | 命令                                       | 作用                                                                                                                                                    |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -60,12 +60,12 @@
 
 ## 5. 构建与预览
 
-| 命令                                        | 作用                                           |
-| ------------------------------------------- | ---------------------------------------------- |
-| `pnpm run build`                            | 顺序 build admin → h5 → docs                   |
-| `pnpm run admin:build` 等                   | 单端 build                                     |
-| `pnpm run docs:preview`                     | 文档先 `docs:build` 后本地静态预览             |
-| `pnpm --filter @vue3-mono/admin preview` 等 | 各 app 的 `vite preview`（见根 README 脚本表） |
+| 命令                                            | 作用                                           |
+| ----------------------------------------------- | ---------------------------------------------- |
+| `pnpm run build`                                | 顺序 build admin → h5 → docs                   |
+| `pnpm run admin:build` 等                       | 单端 build                                     |
+| `pnpm run docs:preview`                         | 文档先 `docs:build` 后本地静态预览             |
+| `pnpm --filter @vue3-monorepo/admin preview` 等 | 各 app 的 `vite preview`（见根 README 脚本表） |
 
 ## 6. 依赖重装与排障
 

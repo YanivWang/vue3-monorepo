@@ -28,25 +28,25 @@ pnpm install
 
 ## 3. 本地开发（三端别搞混端口）
 
-| 要启动的  | 根命令               | 包名               | 说明                         |
-| --------- | -------------------- | ------------------ | ---------------------------- |
-| PC 管理端 | `pnpm run admin:dev` | `@vue3-mono/admin` | 常见 `http://127.0.0.1:5173` |
-| H5        | `pnpm run h5:dev`    | `@vue3-mono/h5`    | 常见 `http://127.0.0.1:5174` |
-| 文档站    | `pnpm run docs:dev`  | `@vue3-mono/docs`  | 常见 `http://127.0.0.1:5175` |
+| 要启动的  | 根命令               | 包名                   | 说明                         |
+| --------- | -------------------- | ---------------------- | ---------------------------- |
+| PC 管理端 | `pnpm run admin:dev` | `@vue3-monorepo/admin` | 常见 `http://127.0.0.1:5173` |
+| H5        | `pnpm run h5:dev`    | `@vue3-monorepo/h5`    | 常见 `http://127.0.0.1:5174` |
+| 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175` |
 
 - **`pnpm run dev`（根）**：`pnpm -r --parallel run --if-present dev`，对带 `dev` 的 workspace 包并行启动（当前为 admin、h5、docs；`shared` 无 `dev`）。机器吃紧时建议**不用**，改成上面三条之一。
-- 端口被占用时：见根 README [故障参考](https://github.com/your-org/vue3-monorepo-template#故障参考)，或改各包 Vite 的 `server.port`。
+- 端口被占用时：见根 README [故障参考](https://github.com/your-org/vue3-monorepo#故障参考)，或改各包 Vite 的 `server.port`。
 
 ## 4. 构建
 
-| 作用                              | 命令                                                                             |
-| --------------------------------- | -------------------------------------------------------------------------------- |
-| 全仓顺序构建（admin → h5 → docs） | `pnpm run build`                                                                 |
-| 仅 PC                             | `pnpm run admin:build`                                                           |
-| 仅 H5                             | `pnpm run h5:build`                                                              |
-| 仅文档                            | `pnpm run docs:build`                                                            |
-| 文档构建后静态预览                | `pnpm run docs:preview`                                                          |
-| 各 app 的 Vite 预览               | `pnpm --filter @vue3-mono/admin preview` / `pnpm --filter @vue3-mono/h5 preview` |
+| 作用                              | 命令                                                                                     |
+| --------------------------------- | ---------------------------------------------------------------------------------------- |
+| 全仓顺序构建（admin → h5 → docs） | `pnpm run build`                                                                         |
+| 仅 PC                             | `pnpm run admin:build`                                                                   |
+| 仅 H5                             | `pnpm run h5:build`                                                                      |
+| 仅文档                            | `pnpm run docs:build`                                                                    |
+| 文档构建后静态预览                | `pnpm run docs:preview`                                                                  |
+| 各 app 的 Vite 预览               | `pnpm --filter @vue3-monorepo/admin preview` / `pnpm --filter @vue3-monorepo/h5 preview` |
 
 > Admin/H5 子包中另有 `build:dev` 等模式，以各 `apps/.../package.json` 为准，用于**测试/预发**构建，而非「全仓」默认。
 
@@ -104,10 +104,10 @@ pnpm install
 
 ```
 /
-├── apps/pc/pc-admin-template/   # @vue3-mono/admin
-├── apps/h5/h5-template/         # @vue3-mono/h5
-├── docs/                        # @vue3-mono/docs
-├── packages/shared/            # @vue3-mono/shared
+├── apps/pc/pc-admin-template/   # @vue3-monorepo/admin
+├── apps/h5/h5-template/         # @vue3-monorepo/h5
+├── docs/                        # @vue3-monorepo/docs
+├── packages/shared/            # @vue3-monorepo/shared
 ├── docker/
 ├── scripts/
 ├── pnpm-workspace.yaml

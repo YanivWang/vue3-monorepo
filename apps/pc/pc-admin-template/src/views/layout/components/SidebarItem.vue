@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElIcon, ElMenuItem, ElSubMenu } from 'element-plus'
-import type { MenuRoute } from '@vue3-mono/shared/types'
+import type { MenuRoute } from '@vue3-monorepo/shared/types'
 
 interface Props {
   menu: MenuRoute

@@ -1,5 +1,5 @@
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { ErrorHookContext, RequestHooks, TokenProvider } from '@vue3-mono/shared/request-core'
+import type { ErrorHookContext, RequestHooks, TokenProvider } from '@vue3-monorepo/shared/request-core'
 
 export interface PcPresetOptions {
   /** 登录页路径，默认 '/login' */

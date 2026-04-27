@@ -1,4 +1,4 @@
-import { H5Host } from '@vue3-mono/shared/enums'
+import { H5Host } from '@vue3-monorepo/shared/enums'
 import type { BridgeAbility, BridgeStrategy } from '../types'
 import { BridgeError } from '../types'
 import { createClipboardBridge, createLocalStorageBridge, createMemoryEvent } from './base'

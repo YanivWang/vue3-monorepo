@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { H5Host } from '@vue3-mono/shared/enums'
+import { H5Host } from '@vue3-monorepo/shared/enums'
 import { BridgeError } from './types'
 import { createBridge, useBridge, __resetBridge } from './index'
 

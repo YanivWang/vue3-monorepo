@@ -5,7 +5,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/modules/user'
-import type { LoginParams } from '@vue3-mono/shared/types'
+import type { LoginParams } from '@vue3-monorepo/shared/types'
 
 const router = useRouter()
 const route = useRoute()
@@ -55,7 +55,7 @@ async function handleLogin(): Promise<void> {
       <!-- 标题 -->
       <div class="login-card__header">
         <img src="/favicon.svg" alt="logo" class="login-card__logo" />
-        <h1 class="login-card__title">vue3-monorepo-template</h1>
+        <h1 class="login-card__title">vue3-monorepo</h1>
         <p class="login-card__subtitle">企业级管理系统</p>
       </div>
 

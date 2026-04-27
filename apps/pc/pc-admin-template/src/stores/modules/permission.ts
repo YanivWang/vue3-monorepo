@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, h } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import type { MenuRoute } from '@vue3-mono/shared/types'
+import type { MenuRoute } from '@vue3-monorepo/shared/types'
 import { getMenuRoutes } from '@/api/modules/menu'
 
 /**

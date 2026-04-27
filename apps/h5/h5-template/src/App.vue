@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ConfigProvider } from 'vant'
-import { useHistoryStackH5 } from '@vue3-mono/shared/hooks-h5'
-import { ErrorBoundaryH5 } from '@vue3-mono/shared/components-h5'
+import { useHistoryStackH5 } from '@vue3-monorepo/shared/hooks-h5'
+import { ErrorBoundaryH5 } from '@vue3-monorepo/shared/components-h5'
 import { useAppStore } from '@/stores'
 import { captureException } from '@/plugins/sentry'
 

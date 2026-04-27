@@ -33,7 +33,7 @@ export const components = [
  * 批量注册所有 H5 共享组件到 Vue app（以 `H5` 前缀 + 原名，避免和 Vant 裸名冲突）
  *
  * @example
- *   import { installComponents } from '@vue3-mono/shared/components-h5'
+ *   import { installComponents } from '@vue3-monorepo/shared/components-h5'
  *   installComponents(app)
  *   // 可在模板内直接使用 <H5PageContainer /> <H5ProList /> ...
  */

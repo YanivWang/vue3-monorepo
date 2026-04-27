@@ -1,4 +1,4 @@
-import type { UserInfo } from '@vue3-mono/shared/types'
+import type { UserInfo } from '@vue3-monorepo/shared/types'
 import { http } from './http'
 
 export interface LoginFormParams extends Record<string, unknown> {

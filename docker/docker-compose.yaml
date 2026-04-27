@@ -1,9 +1,9 @@
-# vue3-monorepo-template — Admin / H5 / Docs 生产镜像本地验证
+# vue3-monorepo — Admin / H5 / Docs 生产镜像本地验证
 #
 # 一键启动全部（仓库根目录）：
 #   pnpm run docker:up
 # 或：
-#   docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d
+#   docker compose -p vue3-monorepo -f docker/docker-compose.yaml up --build -d
 # 或：
 #   ./scripts/docker.sh up
 #
@@ -28,8 +28,8 @@ services:
       dockerfile: docker/images/admin/Dockerfile
       args:
         BUILD_MODE: ${ADMIN_BUILD_MODE:-docker}
-    image: ${ADMIN_IMAGE:-vue3-mono-admin:local}
-    container_name: ${ADMIN_CONTAINER:-vue3-mono-admin}
+    image: ${ADMIN_IMAGE:-vue3-monorepo-admin:local}
+    container_name: ${ADMIN_CONTAINER:-vue3-monorepo-admin}
     ports:
       - '${ADMIN_PORT:-8080}:80'
     extra_hosts:
@@ -47,8 +47,8 @@ services:
       dockerfile: docker/images/h5/Dockerfile
       args:
         BUILD_MODE: ${H5_BUILD_MODE:-docker}
-    image: ${H5_IMAGE:-vue3-mono-h5:local}
-    container_name: ${H5_CONTAINER:-vue3-mono-h5}
+    image: ${H5_IMAGE:-vue3-monorepo-h5:local}
+    container_name: ${H5_CONTAINER:-vue3-monorepo-h5}
     ports:
       - '${H5_PORT:-8081}:80'
     extra_hosts:
@@ -64,8 +64,8 @@ services:
     build:
       context: ..
       dockerfile: docker/images/docs/Dockerfile
-    image: ${DOCS_IMAGE:-vue3-mono-docs:local}
-    container_name: ${DOCS_CONTAINER:-vue3-mono-docs}
+    image: ${DOCS_IMAGE:-vue3-monorepo-docs:local}
+    container_name: ${DOCS_CONTAINER:-vue3-monorepo-docs}
     ports:
       - '${DOCS_PORT:-8082}:80'
     restart: unless-stopped

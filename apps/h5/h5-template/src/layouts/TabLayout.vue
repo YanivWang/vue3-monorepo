@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { TabBarLayout } from '@vue3-mono/shared/components-h5'
+import { TabBarLayout } from '@vue3-monorepo/shared/components-h5'
 import { useTabsStore } from '@/stores'
 
 defineOptions({ name: 'TabLayout' })

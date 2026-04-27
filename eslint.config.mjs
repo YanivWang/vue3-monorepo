@@ -171,7 +171,7 @@ export default tseslint.config(
           patterns: [
             {
               group: ['axios'],
-              message: 'request-pc / request-h5 预设禁止直接 import axios，必须走 @vue3-mono/shared/request-core'
+              message: 'request-pc / request-h5 预设禁止直接 import axios，必须走 @vue3-monorepo/shared/request-core'
             }
           ]
         }
@@ -189,7 +189,7 @@ export default tseslint.config(
           patterns: [
             {
               group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
-              message: '@vue3-mono/shared/request-core 核心包严禁 import 任何 UI 库，UI 反馈必须走依赖注入'
+              message: '@vue3-monorepo/shared/request-core 核心包严禁 import 任何 UI 库，UI 反馈必须走依赖注入'
             }
           ]
         }
@@ -208,7 +208,7 @@ export default tseslint.config(
             {
               group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
               message:
-                '@vue3-mono/shared/hooks-core 通用 hooks 严禁 import 端侧 UI，端侧 hooks 在 packages/shared/src/hooks-pc|hooks-h5'
+                '@vue3-monorepo/shared/hooks-core 通用 hooks 严禁 import 端侧 UI，端侧 hooks 在 packages/shared/src/hooks-pc|hooks-h5'
             }
           ]
         }

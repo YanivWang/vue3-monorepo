@@ -1,5 +1,5 @@
 import { ref, reactive, type Ref } from 'vue'
-import type { PaginationParams, PaginationResult } from '@vue3-mono/shared/types'
+import type { PaginationParams, PaginationResult } from '@vue3-monorepo/shared/types'
 
 export interface UseTableOptions<T, P extends Record<string, unknown> = Record<string, unknown>> {
   /** 数据获取函数 */

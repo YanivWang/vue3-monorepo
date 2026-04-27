@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElCard, ElTable, ElTableColumn, ElPagination, ElTooltip, ElButton, ElEmpty, vLoading } from 'element-plus'
-import type { PaginationResult } from '@vue3-mono/shared/types'
-import { useTable } from '@vue3-mono/shared/hooks-core'
+import type { PaginationResult } from '@vue3-monorepo/shared/types'
+import { useTable } from '@vue3-monorepo/shared/hooks-core'
 
 type AnyRow = Record<string, unknown>
 
@@ -176,7 +176,7 @@ defineExpose({ fetchData, handleSearch, handleReset })
 </template>
 
 <style lang="scss" scoped>
-@use '@vue3-mono/shared/styles/tokens/variables' as *;
+@use '@vue3-monorepo/shared/styles/tokens/variables' as *;
 
 .pro-table {
   display: flex;

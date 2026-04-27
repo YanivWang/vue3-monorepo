@@ -1,4 +1,4 @@
-import { createUsePermission } from '@vue3-mono/shared/hooks-core'
+import { createUsePermission } from '@vue3-monorepo/shared/hooks-core'
 import { useUserStore } from '@/stores/modules/user'
 
 /**

@@ -20,9 +20,9 @@
 
     "baseUrl": ".",
     "paths": {
-      "@vue3-mono/shared": ["packages/shared/src/index.ts"],
-      "@vue3-mono/shared/styles/tokens": ["packages/shared/src/styles/tokens.ts"],
-      "@vue3-mono/shared/*": ["packages/shared/src/*"]
+      "@vue3-monorepo/shared": ["packages/shared/src/index.ts"],
+      "@vue3-monorepo/shared/styles/tokens": ["packages/shared/src/styles/tokens.ts"],
+      "@vue3-monorepo/shared/*": ["packages/shared/src/*"]
     }
   }
 }

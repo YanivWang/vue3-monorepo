@@ -5,7 +5,7 @@ import { getToken, setToken, removeToken, setRefreshToken, removeRefreshToken } 
 import { resetRouter } from '@/router'
 import { usePermissionStore } from '@/stores/modules/permission'
 import { useTabsStore } from '@/stores/modules/tabs'
-import type { UserInfo, LoginParams } from '@vue3-mono/shared/types'
+import type { UserInfo, LoginParams } from '@vue3-monorepo/shared/types'
 
 /**
  * 用户状态 Store

@@ -9,7 +9,7 @@ import {
   type BrandId,
   type BrandPalette,
   type ThemeModeId
-} from '@vue3-mono/shared/styles/tokens'
+} from '@vue3-monorepo/shared/styles/tokens'
 
 export interface ThemeStorage {
   /** 读取 key 的字符串值（未命中返回 null/undefined） */

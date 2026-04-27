@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Form, Field, CellGroup, Button, Toast, Tabs, Tab, showToast } from 'vant'
-import { H5Host } from '@vue3-mono/shared/enums'
-import { useBridge } from '@vue3-mono/shared/bridge'
-import { useSmsCodeGate } from '@vue3-mono/shared/hooks-h5'
+import { H5Host } from '@vue3-monorepo/shared/enums'
+import { useBridge } from '@vue3-monorepo/shared/bridge'
+import { useSmsCodeGate } from '@vue3-monorepo/shared/hooks-h5'
 import { useAuth } from '@/composables/useAuth'
 import { loginApi } from '@/api/user'
-import { PageContainer } from '@vue3-mono/shared/components-h5'
+import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 
 defineOptions({ name: 'Login' })
 

@@ -1,5 +1,5 @@
 {
-  "name": "@vue3-mono/admin",
+  "name": "@vue3-monorepo/admin",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -20,7 +20,7 @@
     "gen:api:remote": "node --import tsx/esm scripts/gen-api.ts --remote"
   },
   "dependencies": {
-    "@vue3-mono/shared": "workspace:*",
+    "@vue3-monorepo/shared": "workspace:*",
     "@element-plus/icons-vue": "catalog:",
     "@sentry/vue": "catalog:",
     "@vueuse/core": "catalog:",

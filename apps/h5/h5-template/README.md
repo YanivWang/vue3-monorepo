@@ -1,4 +1,4 @@
-# @vue3-mono/h5
+# @vue3-monorepo/h5
 
 H5 移动端应用（Vant 4 + 多宿主：浏览器 / 微信小程序 WebView / 支付宝小程序 WebView / 原生 APP WebView）
 

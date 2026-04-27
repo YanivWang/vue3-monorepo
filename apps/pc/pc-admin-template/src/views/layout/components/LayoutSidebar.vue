@@ -15,7 +15,7 @@ const permissionStore = usePermissionStore()
 
 const activeMenu = computed(() => route.path)
 const menus = computed(() => permissionStore.menus.filter(m => !m.meta?.hidden))
-const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo-template'
+const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
 </script>
 
 <template>

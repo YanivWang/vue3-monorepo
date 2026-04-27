@@ -2,8 +2,8 @@ import { watch } from 'vue'
 import { Locale as VantLocale } from 'vant'
 import zhCN from 'vant/es/locale/lang/zh-CN'
 import enUS from 'vant/es/locale/lang/en-US'
-import { createUseTheme, type ThemeStorage, type UseThemeReturn } from '@vue3-mono/shared/hooks-core'
-import type { BrandId, ThemeModeId } from '@vue3-mono/shared/styles/tokens'
+import { createUseTheme, type ThemeStorage, type UseThemeReturn } from '@vue3-monorepo/shared/hooks-core'
+import type { BrandId, ThemeModeId } from '@vue3-monorepo/shared/styles/tokens'
 
 export interface UseThemeH5Options {
   storage: ThemeStorage

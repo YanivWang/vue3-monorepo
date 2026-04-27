@@ -1,4 +1,4 @@
-# @vue3-mono/admin
+# @vue3-monorepo/admin
 
 PC 管理后台（Element Plus）
 
@@ -24,7 +24,7 @@ docker build -f docker/images/admin/Dockerfile .
 ```bash
 pnpm run docker:admin:up
 # 或
-docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d
+docker compose -p vue3-monorepo -f docker/docker-compose.yaml up --build -d
 ```
 
 ## 源码结构

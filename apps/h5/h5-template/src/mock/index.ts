@@ -1,5 +1,5 @@
-import { detectHost } from '@vue3-mono/shared/utils'
-import { H5Host } from '@vue3-mono/shared/enums'
+import { detectHost } from '@vue3-monorepo/shared/utils'
+import { H5Host } from '@vue3-monorepo/shared/enums'
 
 /**
  * H5 运行时 Mock 启动：

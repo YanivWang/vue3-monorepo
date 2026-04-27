@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Composer } from 'vue-i18n'
-import { ThemeMode as ThemeModeEnum, Language } from '@vue3-mono/shared/enums'
+import { ThemeMode as ThemeModeEnum, Language } from '@vue3-monorepo/shared/enums'
 import { i18n } from '@/locales'
 
 type ThemeMode = 'light' | 'dark' | 'system'

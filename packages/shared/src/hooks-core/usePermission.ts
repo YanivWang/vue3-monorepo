@@ -22,7 +22,7 @@ function unwrap<T>(source: Ref<T> | ComputedRef<T> | (() => T)): T {
  * @example
  * // apps/admin/src/composables/usePermission.ts
  * import { useUserStore } from '@/stores/modules/user'
- * import { createUsePermission } from '@vue3-mono/shared/hooks-core'
+ * import { createUsePermission } from '@vue3-monorepo/shared/hooks-core'
  *
  * export const usePermission = createUsePermission({
  *   permissions: () => useUserStore().permissions,

@@ -1,8 +1,8 @@
-import { H5Host } from '@vue3-mono/shared/enums'
+import { H5Host } from '@vue3-monorepo/shared/enums'
 
 /**
  * 宿主环境检测（浏览器 / 微信 / 支付宝 / 原生 WebView）
- * 供 @vue3-mono/shared/bridge 与 apps/h5 共用
+ * 供 @vue3-monorepo/shared/bridge 与 apps/h5 共用
  */
 
 export interface HostDetection {

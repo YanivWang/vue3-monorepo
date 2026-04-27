@@ -45,14 +45,14 @@ export default defineConfig(async ({ mode }) => {
     },
 
     optimizeDeps: {
-      include: ['vant', '@vue3-mono/shared/components-h5']
+      include: ['vant', '@vue3-monorepo/shared/components-h5']
     },
 
     css: {
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
-          additionalData: `@use "@vue3-mono/shared/styles/tokens/variables" as *;`
+          additionalData: `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`
         }
       },
       postcss: {

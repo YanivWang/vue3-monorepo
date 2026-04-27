@@ -7,7 +7,7 @@
  * 覆盖校验项（任一失败即 exit 1）：
  *  1) pnpm-workspace.yaml 的 packages 条目扫描出的实际 workspace 数量 = 预期值（当前 4：2 apps + docs + shared）
  *  2) 每个 workspace 的 package.json name 必须唯一
- *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 仅 @vue3-mono/shared；paths 中 @vue3-mono/shared/* 子路径别名不参与此条）
+ *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 仅 @vue3-monorepo/shared；paths 中 @vue3-monorepo/shared/* 子路径别名不参与此条）
  *  4) tsconfig.base.json paths 目标 src/index.ts 在磁盘上必须真实存在
  *  5) 根 tsconfig.json 的 references 路径目录必须存在
  *  6) 每个包的 "workspace:*" 依赖目标必须存在于当前 workspace
@@ -103,8 +103,8 @@ for (const name of packageNames) {
 }
 for (const key of pathKeys) {
   if (packageNames.includes(key)) continue
-  // @vue3-mono/shared/* 子路径别名（如 styles/tokens.ts 与 styles/tokens/ 目录区分）
-  if (key.startsWith('@vue3-mono/shared/')) continue
+  // @vue3-monorepo/shared/* 子路径别名（如 styles/tokens.ts 与 styles/tokens/ 目录区分）
+  if (key.startsWith('@vue3-monorepo/shared/')) continue
   fail(`[check-refs] tsconfig.base.json paths 的 ${key} 对应不到任何 workspace 包`)
 }
 

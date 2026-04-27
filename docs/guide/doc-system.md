@@ -35,8 +35,8 @@
 
 ### 第 0 步：5 分钟（在 GitHub 上就能完成）
 
-1. 读根 `README` 的 [环境要求](https://github.com/your-org/vue3-monorepo-template#环境要求)（把 Node / pnpm 装对版本）。
-2. 扫一眼 [仓库结构](https://github.com/your-org/vue3-monorepo-template#仓库结构) 与 [根目录脚本速查](https://github.com/your-org/vue3-monorepo-template#根目录脚本速查)。
+1. 读根 `README` 的 [环境要求](https://github.com/your-org/vue3-monorepo#环境要求)（把 Node / pnpm 装对版本）。
+2. 扫一眼 [仓库结构](https://github.com/your-org/vue3-monorepo#仓库结构) 与 [根目录脚本速查](https://github.com/your-org/vue3-monorepo#根目录脚本速查)。
 
 ### 第 1 步：本地把文档站跑起来（10 分钟）
 
@@ -70,7 +70,7 @@ pnpm run docs:dev
 | 层       | 技术                                | 说明                                                                                                  |
 | -------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | 站点框架 | [VitePress](https://vitepress.dev/) | 版本见 `pnpm-workspace.yaml` 的 `catalog.vitepress`（如 `^1.6.4`）；Markdown 驱动，本仓库中文默认语言 |
-| 包管理   | 与根工程一致，**仅 pnpm**           | `docs` 是 workspace 一包：`@vue3-mono/docs`                                                           |
+| 包管理   | 与根工程一致，**仅 pnpm**           | `docs` 是 workspace 一包：`@vue3-monorepo/docs`                                                       |
 | 本地开发 | `pnpm run docs:dev`                 | 见根 `package.json` 的 `docs:dev`                                                                     |
 | 生产构建 | `pnpm run docs:build`               | 产物在 `docs/.vitepress/dist`；Docker 见根 README 与 [部署说明](./deploy.md)                          |
 

@@ -290,7 +290,7 @@ importers:
       '@sentry/vue':
         specifier: 'catalog:'
         version: 10.50.0(pinia@2.3.1(typescript@5.5.4)(vue@3.5.33(typescript@5.5.4)))(vue@3.5.33(typescript@5.5.4))
-      '@vue3-mono/shared':
+      '@vue3-monorepo/shared':
         specifier: workspace:*
         version: link:../../../packages/shared
       '@vueuse/core':
@@ -384,7 +384,7 @@ importers:
       '@sentry/vue':
         specifier: 'catalog:'
         version: 10.50.0(pinia@2.3.1(typescript@5.5.4)(vue@3.5.33(typescript@5.5.4)))(vue@3.5.33(typescript@5.5.4))
-      '@vue3-mono/shared':
+      '@vue3-monorepo/shared':
         specifier: workspace:*
         version: link:../../../packages/shared
       '@vueuse/core':

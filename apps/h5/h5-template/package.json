@@ -1,5 +1,5 @@
 {
-  "name": "@vue3-mono/h5",
+  "name": "@vue3-monorepo/h5",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
     "lint:style": "stylelint \"src/**/*.{scss,vue,css}\""
   },
   "dependencies": {
-    "@vue3-mono/shared": "workspace:*",
+    "@vue3-monorepo/shared": "workspace:*",
     "@vueuse/core": "catalog:",
     "axios": "catalog:",
     "dayjs": "catalog:",

@@ -22,7 +22,7 @@ export default defineConfig(async ({ mode }) => {
     plugins: [
       vue(),
 
-      // tsconfig paths：保证 Vite 能解析 @vue3-mono/* workspace 别名至源码
+      // tsconfig paths：保证 Vite 能解析 @vue3-monorepo/* workspace 别名至源码
       tsconfigPaths({ loose: true }),
 
       // Mock 服务（开发环境在 vite devServer 层拦截，业务代码无感知）
@@ -50,7 +50,7 @@ export default defineConfig(async ({ mode }) => {
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
-          additionalData: `@use "@vue3-mono/shared/styles/tokens/variables" as *;`
+          additionalData: `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`
         }
       }
     },

@@ -1,6 +1,6 @@
-# vue3-monorepo-template
+# vue3-monorepo
 
-企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-mono/shared`。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
+企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-monorepo/shared`。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
 
 **完整文档（新人/小白优先）**：本仓库的**文档体系**（多页指南 + 组件说明）写在 VitePress 包中，与根 README 分工为「README 精简要、文档站可展开」。
 
@@ -51,18 +51,18 @@ pnpm run docs:dev
 | 核心 | Vue 3、Vite、TypeScript | 具体版本以 lock / catalog 为准 |
 | 路由与状态 | Vue Router、Pinia | 各 app 内自建，不跨 app 共享 store |
 | UI | Element Plus（PC）/ Vant 4（H5） | 组件按需 `import` |
-| 请求 | Axios | 封装见 `@vue3-mono/shared/request-*` |
+| 请求 | Axios | 封装见 `@vue3-monorepo/shared/request-*` |
 | 其他常用 | @VueUse、dayjs、lodash-es、js-cookie、Sass 等 | — |
 
 ## 仓库结构
 
 ```
-vue3-monorepo-template/
+vue3-monorepo/
 ├── apps/
 │   ├── pc/pc-admin-template/     # PC 管理端，dev 默认端口 5173
 │   └── h5/h5-template/         # H5，dev 默认端口 5174
 ├── docs/                        # VitePress，dev 默认端口 5175
-├── packages/shared/            # 单包 @vue3-mono/shared，子路径与 package.json#exports 一致
+├── packages/shared/            # 单包 @vue3-monorepo/shared，子路径与 package.json#exports 一致
 ├── scripts/
 │   ├── check-refs.js           # workspace 与 tsconfig paths 一致
 │   ├── check-request-core.js   # request-core 不依赖 UI
@@ -77,7 +77,7 @@ vue3-monorepo-template/
 └── package.json
 ```
 
-业务与页面在 **`apps/*`**；可复用逻辑在 **`packages/shared`**，经 `@vue3-mono/shared/...` 引用。
+业务与页面在 **`apps/*`**；可复用逻辑在 **`packages/shared`**，经 `@vue3-monorepo/shared/...` 引用。
 
 ## 快速开始
 
@@ -119,7 +119,7 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | 全量校验 | `pnpm run verify:full` → `check:refs` + `check:request-core` + `typecheck` + `lint` + `lint:style` + `prettier --check` + `test` + `build` |
 | 构建（admin → h5 → docs） | `pnpm run build`；单端：`pnpm run admin:build` / `pnpm run h5:build` / `pnpm run docs:build` |
 | 文档预览（构建后） | `pnpm run docs:preview` |
-| 应用内预览 | `pnpm --filter @vue3-mono/admin preview` / `pnpm --filter @vue3-mono/h5 preview` |
+| 应用内预览 | `pnpm --filter @vue3-monorepo/admin preview` / `pnpm --filter @vue3-monorepo/h5 preview` |
 
 ## Git 与提交规范
 
@@ -159,7 +159,7 @@ chore: 升级 vite
 
 ## 架构要点
 
-### 请求层（`@vue3-mono/shared`）
+### 请求层（`@vue3-monorepo/shared`）
 
 - **`request-core`**：Axios 核心，不依赖任何 UI；通过 `onError` / `onUnauthorized` / `TokenProvider` 等注入。
 - **`request-pc`**：`createPcHttp`，默认 Element Plus 反馈；**admin** 使用。
@@ -171,7 +171,7 @@ Element Plus、动态路由与权限、Mock 位于 `mock/`。HTTP、布局、页
 
 ### H5（`apps/h5/h5-template`）
 
-Vant 4、多宿主 **Bridge**（`@vue3-mono/shared/bridge`）、栈式 `keep-alive`、`postcss-mobile-forever` 等。协议说明见 `apps/h5/h5-template/docs/bridge-protocol.md`；Mock 在 `mock/`。
+Vant 4、多宿主 **Bridge**（`@vue3-monorepo/shared/bridge`）、栈式 `keep-alive`、`postcss-mobile-forever` 等。协议说明见 `apps/h5/h5-template/docs/bridge-protocol.md`；Mock 在 `mock/`。
 
 ### 共享与约束
 
@@ -198,7 +198,7 @@ Admin / H5 默认按 **docker** 模式构建（同源 `/api` + nginx 反代至�
 - 仅某一服务：`pnpm run docker:admin:up` / `pnpm run docker:h5:up` / `pnpm run docker:docs:up`
 - 停止 / 日志：`pnpm run docker:down` + `docker:logs`；单服务有 `docker:*:down`、`docker:*:logs`
 
-也可在仓库根执行：`docker compose -p vue3-mono -f docker/docker-compose.yaml up --build -d`。
+也可在仓库根执行：`docker compose -p vue3-monorepo -f docker/docker-compose.yaml up --build -d`。
 
 ## 环境变量
 
@@ -237,7 +237,7 @@ Admin / H5 默认按 **docker** 模式构建（同源 `/api` + nginx 反代至�
 | --- | --- |
 | 只给 **PC 后台** 用 | 全部写在 `apps/pc/pc-admin-template` 下面对应目录 |
 | 只给 **H5** 用 | 全部写在 `apps/h5/h5-template` 下面对应目录 |
-| **PC 和 H5 都要**用（类型、纯函数、请求封装、无业务耦合的 hook 等） | [packages/shared/src](packages/shared/src)，用 `@vue3-mono/shared/…` 按子路径引用（与 [package.json#exports](packages/shared/package.json) 一致） |
+| **PC 和 H5 都要**用（类型、纯函数、请求封装、无业务耦合的 hook 等） | [packages/shared/src](packages/shared/src)，用 `@vue3-monorepo/shared/…` 按子路径引用（与 [package.json#exports](packages/shared/package.json) 一致） |
 
 **Admin（PC）新功能——常见三类文件**
 
@@ -260,7 +260,7 @@ Admin / H5 默认按 **docker** 模式构建（同源 `/api` + nginx 反代至�
 **跨端复用放 shared 时，怎么引用？**
 
 - 源文件在 `packages/shared/src/` 下按域划分；对外名字由 [packages/shared/package.json](packages/shared/package.json) 的 `exports` 决定。
-- 在业务代码里用包名子路径，例如：`@vue3-mono/shared/types`、`…/utils`、`…/request-core`（无 UI）、`…/request-pc` 或 `…/request-h5`（带各端提示）、`…/bridge`（H5 与宿主通信）、`…/hooks-core` / `…/hooks-pc` / `…/hooks-h5`、`…/components-pc` / `…/components-h5`、`…/directives-pc` / `…/directives-h5`、`…/styles/tokens` 等；**有疑惑时以 `exports` 为准**。
+- 在业务代码里用包名子路径，例如：`@vue3-monorepo/shared/types`、`…/utils`、`…/request-core`（无 UI）、`…/request-pc` 或 `…/request-h5`（带各端提示）、`…/bridge`（H5 与宿主通信）、`…/hooks-core` / `…/hooks-pc` / `…/hooks-h5`、`…/components-pc` / `…/components-h5`、`…/directives-pc` / `…/directives-h5`、`…/styles/tokens` 等；**有疑惑时以 `exports` 为准**。
 
 ## 许可证
 

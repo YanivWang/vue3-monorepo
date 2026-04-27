@@ -1,5 +1,5 @@
 import { ElMessage } from 'element-plus'
-import { useTable as useTableBase, type UseTableOptions } from '@vue3-mono/shared/hooks-core'
+import { useTable as useTableBase, type UseTableOptions } from '@vue3-monorepo/shared/hooks-core'
 
 /**
  * Admin 封装：默认 onError 走 ElMessage.error

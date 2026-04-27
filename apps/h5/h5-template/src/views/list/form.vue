@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form, Field, CellGroup, Button, Toast } from 'vant'
-import { PageContainer } from '@vue3-mono/shared/components-h5'
+import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { listApi } from '@/api/list'
 
 defineOptions({ name: 'ListForm' })

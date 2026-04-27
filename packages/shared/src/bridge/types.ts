@@ -1,4 +1,4 @@
-import type { H5Host } from '@vue3-mono/shared/enums'
+import type { H5Host } from '@vue3-monorepo/shared/enums'
 
 /**
  * 多宿主桥接能力枚举 —— 用于 bridge.hasAbility() 能力嗅探
