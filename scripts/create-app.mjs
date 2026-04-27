@@ -122,11 +122,18 @@ async function main() {
     if (!t.type) process.exit(1)
     type = t.type
 
+    const dirHint =
+      type === 'admin'
+        ? '将创建在 apps/pc/ 下，如 pc-portal'
+        : '将创建在 apps/h5/ 下，如 h5-shop'
+    const dirInitial = type === 'admin' ? 'pc-portal' : 'h5-shop'
+
     const d = await prompts(
       {
         type: 'text',
         name: 'dirName',
-        message: '新应用目录名（将创建在 apps/h5/ 或 apps/pc/ 下，如 h5-marketing）',
+        message: `新应用目录名（${dirHint}）`,
+        initial: dirInitial,
         validate: s => {
           if (!/^[a-z][a-z0-9-]*$/.test(String(s).trim())) {
             return '仅小写字母、数字、连字符，且以字母开头'
