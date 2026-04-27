@@ -76,7 +76,7 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 | 执行 `npm install` / `yarn` 时提示 **only-allow pnpm** | 本仓**仅支持 pnpm**，请在仓库根目录执行 `pnpm install`，勿混用其他包管理器。 |
 | `pnpm: command not found` 或 pnpm 版本低于 `engines` | 安装/升级 pnpm 至 `>=10.17.0`；若已装 Node 16.13+，可执行 `corepack enable` 后按根目录 `packageManager` 字段对齐版本。 |
 | 开发服启动报 **端口已被占用**（如 `EADDRINUSE`，默认 **5173** / **5174** / **5175**） | 结束占用端口的进程，或调整对应应用下 Vite 的 `server.port` / `--port`；并行 `pnpm run dev` 时避免多实例抢同一端口。 |
-| 依赖解析异常、安装后仍报错、怀疑本地装坏 | 在仓库根删除各层 `node_modules`（可保留 `pnpm-lock.yaml`）后执行 `pnpm install`；**不要随意删改 `pnpm-lock.yaml`** 除非与团队流程一致。 |
+| 依赖解析异常、安装后仍报错、怀疑本地装坏 | 在仓库根执行 `pnpm run clean:install`（会删**根目录与各 workspace 包**下的 `node_modules` 后重装；加 `--` 传参：`pnpm run clean:install -- -y` 跳过确认）。亦可手动删各层 `node_modules` 再 `pnpm install`；**勿随意删改 `pnpm-lock.yaml`** 除非与团队流程一致。 |
 | `git commit` 不跑 lint / commitlint，或刚 clone 后无 `.husky` | 在根目录执行一次 `pnpm install` 以触发 `prepare` 安装 Husky；仍异常可检查 `core.hooksPath` 是否被全局 Git 配置覆盖。 |
 | **Docker** 相关容器起不来、页面空白、接口不通 | 见[Docker 与本地镜像](#docker-与本地镜像)中的端口、compose 与 `docker:*` 脚本；用 `pnpm run docker:logs` 或 `docker compose ... logs` 看服务日志。 |
 
@@ -84,6 +84,7 @@ pnpm run admin:dev    # 或 pnpm run h5:dev / pnpm run docs:dev
 
 | 用途 | 命令 |
 | --- | --- |
+| 清依赖并重装（排障） | `pnpm run clean:install`（无确认：`pnpm run clean:install -- -y`） |
 | 并行启动所有带 `dev` 的包 | `pnpm run dev` |
 | 开发 | `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` |
 | 单端类型检查 | `pnpm run admin:typecheck` / `pnpm run h5:typecheck` |
