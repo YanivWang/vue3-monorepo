@@ -22,6 +22,25 @@ appStore.setTheme('dark')
 appStore.setTheme('system')
 ```
 
+与路由、指令等处对齐时，可使用 **`@vue3-monorepo/shared`** 中的枚举（值为 `'light' | 'dark' | 'system'`），避免魔法字符串：
+
+```ts
+import { ThemeMode } from '@vue3-monorepo/shared/enums'
+
+appStore.setTheme(ThemeMode.DARK)
+```
+
+在模板里与 `appStore.themeMode` 比较时同样可写 `ThemeMode.LIGHT` 等（PC 模板中 `LayoutHeader`、`views/login` 已按此实现）。
+
+## 模板中的入口（PC Admin）
+
+| 位置                                       | 说明                                                                        |
+| ------------------------------------------ | --------------------------------------------------------------------------- |
+| `views/layout/components/LayoutHeader.vue` | 顶栏右侧：主题图标 + 下拉（浅色 / 深色 / 跟随系统）                         |
+| `views/login/index.vue`                    | 登录页右上角：同款主题下拉，**未携带 token 时**也可切换，便于预览暗色登录态 |
+
+二者均调用 `useAppStore().setTheme`，与 [应用 Store](./architecture.md#状态管理) 中 `app` 的持久化逻辑一致。
+
 `setTheme` 会自动：
 
 1. 将选择持久化到 `localStorage`

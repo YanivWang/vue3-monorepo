@@ -31,7 +31,7 @@ pnpm run docs:dev
 
 ## 技术栈（摘要）
 
-Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Vant 4 与 Bridge；请求封装在 `@vue3-monorepo/shared/request-*`。**带版本与模块说明**见文档站 [架构说明](docs/guide/architecture.md)。
+Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Vant 4 与 Bridge；请求封装在 `@vue3-monorepo/shared/request-*`。PC 模板在**顶栏**与**登录页**提供主题下拉（浅色 / 深色 / 跟随系统），枚举 `ThemeMode` 来自 `@vue3-monorepo/shared/enums`，样式与 Token 说明见 [主题与暗黑模式](docs/guide/theme.md)、[Design Token](docs/guide/design-tokens.md)。**带版本与模块说明**见文档站 [架构说明](docs/guide/architecture.md)。
 
 ## 仓库结构
 

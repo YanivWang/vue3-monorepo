@@ -33,7 +33,7 @@ features:
 
   - icon: 🌙
     title: 暗黑模式
-    details: 基于 CSS 变量的完整暗黑主题，支持 light/dark/system 三种模式，Element Plus 深度集成，跟随系统自动切换。
+    details: 基于 CSS 变量与 html.dark 的完整暗黑主题；light / dark / system 三种模式（ThemeMode 在 shared 枚举）；Element Plus 官方暗色变量接入。PC 模板在顶栏与登录页均提供下拉切换，未登录也可选主题。
 
   - icon: 🌐
     title: 国际化

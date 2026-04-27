@@ -4,12 +4,14 @@ Design Token 是设计与代码之间的**共同语言**，将颜色、字号、
 
 ## 概览
 
-本项目的 Token 分为两层：
+本项目的 Token 分为两层（PC 应用内），并与 **`@vue3-monorepo/shared`** 中的 Token 对齐，便于跨端复用：
 
-| 层级                      | 实现                           | 用途               |
-| ------------------------- | ------------------------------ | ------------------ |
-| **CSS 自定义属性**        | `variables.scss` + `dark.scss` | 样式层动态主题切换 |
-| **TypeScript Token 对象** | `src/assets/styles/tokens.ts`  | 逻辑层类型安全引用 |
+| 层级                      | 实现                                                                                                                                            | 用途                                    |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| **CSS 自定义属性**        | 应用内 `src/assets/styles/variables.scss` + `dark.scss`（`:root` / `html.dark`）                                                                | 样式层动态主题切换                      |
+| **TypeScript Token 对象** | 应用内 `src/assets/styles/tokens.ts`；共享包 `packages/shared/src/styles/tokens.ts`（可 `import … from '@vue3-monorepo/shared/styles/tokens'`） | 逻辑层类型安全引用、`applyThemeMode` 等 |
+
+Admin 模板优先使用**应用内** `tokens.ts` 与 SCSS 变量（与 Vite `additionalData` 注入的 `$spacing-*` 等一致）；需要与 H5 或 shared hooks 共用同一套 CSS 变量名时，以 shared 导出为准。
 
 ## 颜色 Token
 

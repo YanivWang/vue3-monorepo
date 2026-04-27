@@ -36,18 +36,18 @@ flowchart TB
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
 
-| 分类     | 技术                                       | 版本              |
-| -------- | ------------------------------------------ | ----------------- |
-| 框架     | Vue 3 (Composition API)                    | ^3.4.31           |
-| 构建     | Vite                                       | ^5.3.3            |
-| 语言     | TypeScript（`tsconfig` 中 `strict: true`） | ^5.5.3            |
-| UI       | Element Plus                               | ^2.7.6            |
-| 状态管理 | Pinia + pinia-plugin-persistedstate        | ^2.1 / ^3.2       |
-| 路由     | Vue Router                                 | ^4.3.3            |
-| HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2            |
-| 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4           |
-| 监控     | Sentry                                     | 见 package.json   |
-| 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies` |
+| 分类     | 技术                                       | 版本                                                |
+| -------- | ------------------------------------------ | --------------------------------------------------- |
+| 框架     | Vue 3 (Composition API)                    | ^3.4.31                                             |
+| 构建     | Vite                                       | ^5.3.3                                              |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`） | ^5.5.3                                              |
+| UI       | Element Plus                               | ^2.7.6                                              |
+| 状态管理 | Pinia + pinia-plugin-persistedstate        | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog） |
+| 路由     | Vue Router                                 | ^4.3.3                                              |
+| HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2                                              |
+| 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4                                             |
+| 监控     | Sentry                                     | 见 package.json                                     |
+| 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies`                                   |
 
 ## 启动流程
 
@@ -135,9 +135,10 @@ onUnmounted(cancelAllRequests)
 ## 主题体系
 
 - CSS 自定义属性（`:root` / `html.dark`）驱动
-- `useAppStore().setTheme('light' | 'dark' | 'system')` 切换；`system` 监听 `prefers-color-scheme`
+- `useAppStore().setTheme('light' | 'dark' | 'system')` 切换；`system` 监听 `prefers-color-scheme`；模式枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`
+- **PC 模板交互**：顶栏 `LayoutHeader` 与登录页均提供主题下拉（浅色 / 深色 / 跟随系统），未登录页也可切换
 - Element Plus `theme-chalk/dark/css-vars.css` 在 `main.ts` 中于主样式前引入
-- `variables.scss` 经 Vite `additionalData` 注入各 SCSS；`index.scss` 含 reset、dark 覆盖与工具类
+- `variables.scss` 经 Vite `additionalData` 注入各 SCSS；`index.scss` 含 reset、dark 覆盖与工具类；跨包运行时 Token 与 `applyThemeMode` 等见 `packages/shared/src/styles/tokens.ts`（详述见 [Design Token](./design-tokens.md)）
 
 ## 异常处理
 

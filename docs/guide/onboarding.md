@@ -34,7 +34,7 @@ pnpm run admin:dev
 ```
 
 - 终端里看到 Vite 本地地址，一般为 **`http://127.0.0.1:5173`**（以终端输出为准）。
-- 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（见 [环境变量说明](./environment-variables.md) 中 `VITE_USE_MOCK`）。
+- 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（见 [环境变量说明](./environment-variables.md) 中 `VITE_USE_MOCK`）。进入登录页后可用页面提示的演示账号（当前模板为 **admin / 123456**）；顶栏与登录页右上角均可切换浅色 / 深色 / 跟随系统主题（见 [主题与暗黑模式](./theme.md)）。
 
 **若起不来**：见 [排障与 FAQ](./troubleshooting.md) 或根 README [常见问题](https://github.com/YanivWang/vue3-monorepo#常见问题摘录)（端口、Node 版本、仅允许 pnpm）。
 
