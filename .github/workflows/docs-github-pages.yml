@@ -25,19 +25,21 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 与 GitHub 弃用 Node 20 的 runner 环境对齐，避免 checkout / pnpm action 的 Node 20 告警
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 不显式写 version，与根 package.json 的 packageManager 字段一致，避免 ERR_PNPM_BAD_PM_VERSION
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install dependencies
