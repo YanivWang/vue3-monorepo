@@ -16,6 +16,10 @@
 #   ADMIN_PORT  默认 8080
 #   H5_PORT     默认 8081
 #   DOCS_PORT   默认 8082
+#
+# Admin / H5 本地镜像：默认 docker 模式构建（同源 /api + nginx 反代）。生产构建可设：
+#   ADMIN_BUILD_MODE=production  或  H5_BUILD_MODE=production
+# 反代目标见 docker/nginx/admin.conf、h5.conf（默认宿主机 :3000）
 
 services:
   admin-web:
@@ -23,11 +27,13 @@ services:
       context: ..
       dockerfile: docker/images/admin/Dockerfile
       args:
-        BUILD_MODE: ${BUILD_MODE:-production}
+        BUILD_MODE: ${ADMIN_BUILD_MODE:-docker}
     image: ${ADMIN_IMAGE:-vue3-mono-admin:local}
     container_name: ${ADMIN_CONTAINER:-vue3-mono-admin}
     ports:
       - '${ADMIN_PORT:-8080}:80'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://localhost/health']
@@ -40,11 +46,13 @@ services:
       context: ..
       dockerfile: docker/images/h5/Dockerfile
       args:
-        BUILD_MODE: ${BUILD_MODE:-production}
+        BUILD_MODE: ${H5_BUILD_MODE:-docker}
     image: ${H5_IMAGE:-vue3-mono-h5:local}
     container_name: ${H5_CONTAINER:-vue3-mono-h5}
     ports:
       - '${H5_PORT:-8081}:80'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://localhost/health']

@@ -15,8 +15,8 @@ case "${1:-}" in
   up | start)
     echo "Building & starting stack (compose: $COMPOSE_FILE)..."
     compose up --build -d "${@:2}"
-    echo "Admin: http://localhost:${ADMIN_PORT:-8080}"
-    echo "H5:    http://localhost:${H5_PORT:-8081}"
+    echo "Admin: http://localhost:${ADMIN_PORT:-8080}  （默认 /api 反代宿主机 :3000；无后端会登录失败）"
+    echo "H5:    http://localhost:${H5_PORT:-8081}  （默认 /api 反代宿主机 :3000）"
     echo "Docs:  http://localhost:${DOCS_PORT:-8082}"
     ;;
   down | stop)
