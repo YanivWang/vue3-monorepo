@@ -122,6 +122,7 @@ async function main() {
     if (!t.type) process.exit(1)
     type = t.type
 
+    // 以下「如 pc-portal / h5-shop」与 initial 仅为交互占位示例名，非仓库固定应用
     const dirHint =
       type === 'admin'
         ? '将创建在 apps/pc/ 下，如 pc-portal'

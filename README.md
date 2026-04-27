@@ -1,6 +1,6 @@
 # vue3-monorepo
 
-企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-monorepo/shared`。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
+企业级 Vue3 monorepo 模板：pnpm workspace、PC 管理端（Element Plus）、移动端 H5（Vant 4 + Bridge）、VitePress 文档站与共享包 `@vue3-monorepo/shared`。默认各一条 **模板应用**（`pc-admin-template`、`h5-template`）；需要第二个后台 / H5 工程时在根目录执行 **`pnpm run create-app`**，会在 `apps/pc/*` 或 `apps/h5/*` 下复制模板并接好根脚本、`tsconfig` references、`vitest.workspace.ts` 等（详见 [新增 H5 / Admin 应用](docs/guide/adding-a-new-app.md)）。依赖版本以根目录 `package.json` 与 `pnpm-lock.yaml`（及 `pnpm-workspace.yaml` 中的 `catalog`）为准。
 
 **在线文档站（企业级知识库、可搜索）**：[https://yanivwang.github.io/vue3-monorepo/](https://yanivwang.github.io/vue3-monorepo/)
 
@@ -37,15 +37,19 @@ Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Va
 
 ```
 vue3-monorepo/
-├── apps/pc/pc-admin-template/   # PC 管理端，dev 默认 5173
-├── apps/h5/h5-template/         # H5，dev 默认 5174
-├── docs/                        # VitePress，dev 默认 5175
+├── apps/pc/pc-admin-template/   # 默认 PC 管理端（@vue3-monorepo/admin），dev 5173
+├── apps/pc/<其他目录>/          # 可选：create-app 生成的更多 PC 应用
+├── apps/h5/h5-template/         # 默认 H5（@vue3-monorepo/h5），dev 5174
+├── apps/h5/<其他目录>/          # 可选：create-app 生成的更多 H5 应用
+├── docs/                        # VitePress（@vue3-monorepo/docs），dev 5175
 ├── packages/shared/             # @vue3-monorepo/shared
-├── scripts/                     # check-refs、check-request-core、docker 封装等
+├── scripts/                     # create-app、check-refs、check-request-core、docker 封装等
 ├── docker/                      # compose、各端 Dockerfile、nginx
 ├── pnpm-workspace.yaml
 └── package.json
 ```
+
+根脚本 `pnpm run dev` 会对**所有**在子包中声明了 `dev` 的 workspace **并行**启动（默认三端 + 你新增的 app）；机器资源紧张时建议只用 `admin:dev` / `h5:dev` / `docs:dev` 或某个 `前缀:dev` 单开。
 
 ## 快速开始
 

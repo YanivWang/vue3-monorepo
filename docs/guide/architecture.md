@@ -6,7 +6,7 @@
 
 ```mermaid
 flowchart TB
-  subgraph apps [apps]
+  subgraph apps [apps 默认模板]
     admin[pc-admin-template]
     h5[h5-template]
   end
@@ -20,6 +20,8 @@ flowchart TB
   h5 --> shared
 ```
 
+> 图中为**开箱默认**的两条应用；还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增 H5 / Admin 应用](./adding-a-new-app.md)）。
+
 | 单元                        | 职责                                                                                                                    |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `apps/pc/pc-admin-template` | PC 管理端：Element Plus、动态路由与权限、Mock                                                                           |
@@ -28,7 +30,7 @@ flowchart TB
 | `docs`                      | 本文档站 `pnpm run docs:dev` / `docs:build`                                                                             |
 | 根 `package.json` 脚本      | 聚合 `typecheck` / `lint` / `test` / `build` / `verify:full` 等                                                         |
 
-**构建顺序**（`pnpm run build`）：`admin:build` → `h5:build` → `docs:build`。新代码与目录放哪见 [项目与目录约定](./project-conventions.md)。
+**构建顺序**（根 `pnpm run build`）：默认 `admin:build` → `h5:build` → `docs:build`。若在 `create-app` 时勾选将新应用写入根 `build` 链，或手工改过根 `package.json` 的 `build` 字段，**以当前仓库内脚本为准**。新代码与目录放哪见 [项目与目录约定](./project-conventions.md)。
 
 ## 技术栈
 

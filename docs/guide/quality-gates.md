@@ -18,20 +18,20 @@
 
 ## 2. 测试
 
-在**仓库根**执行时，Vitest 读取根目录的 **`vitest.workspace.ts`（projects 模式）**，当前包含三个 project：
+在**仓库根**执行时，Vitest 读取根目录的 **`vitest.workspace.ts`（projects 模式）**。默认至少包含：
 
 - `apps/pc/pc-admin-template`
 - `apps/h5/h5-template`
 - `packages/shared`
 
-**不包含** 文档包 `@vue3-monorepo/docs`（`docs` 无单元测试进该 workspace 配置）。因此 `pnpm run test:run` 跑的是**上述三处**的测试，而不是「全 monorepo 每个包各跑一遍」。
+使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进该数组（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。
 
-| 命令                                       | 作用                                                                                                                                                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述 `vitest.workspace.ts`                                                                                                |
-| `pnpm run test:watch`                      | 交互/watch，适合 TDD                                                                                                                                    |
-| `pnpm run test:coverage`                   | 覆盖率；对接 CI 时打开阈值策略                                                                                                                          |
-| `pnpm run admin:test` / `pnpm run h5:test` | `pnpm --filter` 在**单包目录**内执行各 app 的 `test` 脚本；配置以各应用自己的 `vitest.config.ts` 为准，与根 workspace 的**并集/范围可能不同**（调试用） |
+| 命令                                       | 作用                                                                                                                                                                                                                                          |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述 `vitest.workspace.ts`                                                                                                                                                                                      |
+| `pnpm run test:watch`                      | 交互/watch，适合 TDD                                                                                                                                                                                                                          |
+| `pnpm run test:coverage`                   | 覆盖率；对接 CI 时打开阈值策略                                                                                                                                                                                                                |
+| `pnpm run admin:test` / `pnpm run h5:test` | `pnpm --filter` 在**单包目录**内执行各 app 的 `test` 脚本；配置以各应用自己的 `vitest.config.ts` 为准。若某包**未**声明 `test`，pnpm 会提示无脚本且**仍以 0 退出**，容易误以为跑过测试——模板中 admin / h5 已提供 `test`，新增应用请自行对齐。 |
 
 根 `verify:full` 里串联的是**根** `test:run`；若只关心某一 app，可在该 app 下单独跑 `admin:test` / `h5:test`。
 

@@ -24,9 +24,10 @@ docs/
 ├── .vitepress/config.ts
 ├── index.md
 ├── guide/
-│   ├── doc-system.md  # 文档体系总览
+│   ├── doc-system.md           # 文档体系总览
 │   ├── onboarding.md           # 新人第一天
 │   ├── getting-started.md      # 环境与命令速查
+│   ├── adding-a-new-app.md     # create-app、多应用接线
 │   ├── monorepo-workflow.md    # pnpm、filter、新代码放哪
 │   ├── quality-gates.md        # verify:full、lint、test
 │   ├── architecture.md …

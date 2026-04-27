@@ -19,6 +19,10 @@ apps/h5/h5-template/
 
 > 生产级 **Docker/nginx** 可参照 **`docker/images/admin/Dockerfile`** 与 **`docker/nginx/`** 另建 H5 镜像（本 app 默认不自带独立 Dockerfile）。
 
+## 测试
+
+在仓库根：`pnpm run h5:test` 或 `pnpm run test`（根 Vitest workspace 含本包）。单测文件约定为 `src/**/*.spec.ts`。
+
 ## 路由栈式 keep-alive（手工回归）
 
 自动化单测见 **`packages/shared/src/hooks-h5/useHistoryStackH5.spec.ts`**。发版前建议在浏览器再确认：

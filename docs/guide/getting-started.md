@@ -36,7 +36,9 @@ pnpm install
 | H5        | `pnpm run h5:dev`    | `@vue3-monorepo/h5`    | 常见 `http://127.0.0.1:5174` |
 | 文档站    | `pnpm run docs:dev`  | `@vue3-monorepo/docs`  | 常见 `http://127.0.0.1:5175` |
 
-- **`pnpm run dev`（根）**：`pnpm -r --parallel run --if-present dev`，对带 `dev` 的 workspace 包并行启动（当前为 admin、h5、docs；`shared` 无 `dev`）。机器吃紧时建议**不用**，改成上面三条之一。
+由 `create-app` 新增的 PC / H5 还会在根 `package.json` 里生成 **`前缀:dev`** 等脚本；**前缀**是你在生成器里填的短名。交互提示里出现的默认目录名等与仓库内是否已有该目录无关，仅为命名示例，可按团队规范改掉。
+
+- **`pnpm run dev`（根）**：`pnpm -r --parallel run --if-present dev`，对**所有**带 `dev` 的 workspace 包并行启动（默认至少为 admin、h5、docs；`shared` 无 `dev`；你每多接一个 app 就会多一路进程与端口）。机器吃紧时建议**不用**根 `dev`，改成上表之一或某个 `前缀:dev`。
 - 端口被占用时：见 [排障与 FAQ](./troubleshooting.md)，或改各包 Vite 的 `server.port`。
 
 ## 4. 构建
@@ -72,13 +74,13 @@ pnpm install
 
 ## 7. 测试
 
-| 作用                | 命令                                                                                                                                |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Vitest 单次（根）   | `pnpm run test:run` 或 `pnpm run test`；使用根 `vitest.workspace.ts`，当前含 **admin、h5、shared** 三处 project，**不含** `docs` 包 |
-| Watch               | `pnpm run test:watch`                                                                                                               |
-| 覆盖率              | `pnpm run test:coverage`                                                                                                            |
-| 仅 Admin 子包内测试 | `pnpm run admin:test`                                                                                                               |
-| 仅 H5 子包内测试    | `pnpm run h5:test`                                                                                                                  |
+| 作用                | 命令                                                                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vitest 单次（根）   | `pnpm run test:run` 或 `pnpm run test`；使用根 `vitest.workspace.ts`，默认含 **admin、h5、shared** 三处 project（`pnpm run create-app` 新增的 **H5 或 PC** 目录也会自动追加到该文件），**不含** `docs` 包 |
+| Watch               | `pnpm run test:watch`                                                                                                                                                                                     |
+| 覆盖率              | `pnpm run test:coverage`                                                                                                                                                                                  |
+| 仅 Admin 子包内测试 | `pnpm run admin:test`                                                                                                                                                                                     |
+| 仅 H5 子包内测试    | `pnpm run h5:test`（须在 H5 包内存在 `test` 脚本；模板已与 admin 对齐）                                                                                                                                   |
 
 `verify:full` 用的是根 `test:run`；检查项、与 `check:refs` 等差异见 [质量门禁与脚本](./quality-gates.md)。
 
@@ -106,17 +108,19 @@ pnpm install
 
 ```
 /
-├── apps/pc/pc-admin-template/   # @vue3-monorepo/admin
-├── apps/h5/h5-template/         # @vue3-monorepo/h5
+├── apps/pc/pc-admin-template/   # @vue3-monorepo/admin（默认 PC 模板）
+├── apps/pc/<其他>/              # 可选：create-app 生成的更多 PC 应用
+├── apps/h5/h5-template/         # @vue3-monorepo/h5（默认 H5 模板）
+├── apps/h5/<其他>/              # 可选：create-app 生成的更多 H5 应用
 ├── docs/                        # @vue3-monorepo/docs
-├── packages/shared/            # @vue3-monorepo/shared
+├── packages/shared/             # @vue3-monorepo/shared
 ├── docker/
 ├── scripts/
 ├── pnpm-workspace.yaml
 └── package.json
 ```
 
-在 **PC** 里加业务页面、API 等，路径以 `apps/pc/pc-admin-template/src/` 为根；在 **H5** 以 `apps/h5/h5-template/src/` 为根。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
+在 **默认 PC 模板**里加业务页面、API 等，路径以 `apps/pc/pc-admin-template/src/` 为根；在 **默认 H5 模板**以 `apps/h5/h5-template/src/` 为根；若使用 `create-app` 新开的应用，则以**该目录**下 `src/` 为根。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 11. 下一步
 

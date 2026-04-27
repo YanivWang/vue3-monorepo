@@ -57,7 +57,7 @@ pnpm run docs:dev
 - 默认 **`http://127.0.0.1:5175`** 左右。
 - 在侧栏里继续读 [文档体系总览](./doc-system.md) 和 [架构说明](./architecture.md)。
 
-> **说明**：`pnpm run dev`（根脚本）等价于 `pnpm -r --parallel run --if-present dev`，会对**所有**在 `package.json` 里定义了 `dev` 的 workspace 包执行（当前为 `@vue3-monorepo/admin`、`@vue3-monorepo/h5`、`@vue3-monorepo/docs`；`@vue3-monorepo/shared` **无** `dev`）。三端并行较吃资源，新人可只开**单端**（如上三条之一）。
+> **说明**：`pnpm run dev`（根脚本）等价于 `pnpm -r --parallel run --if-present dev`，会对**所有**在 `package.json` 里定义了 `dev` 的 workspace 包执行（默认至少为 `@vue3-monorepo/admin`、`@vue3-monorepo/h5`、`@vue3-monorepo/docs`；`@vue3-monorepo/shared` **无** `dev`）。若通过 `create-app` 增加了更多 app，根 `dev` 会**再多并行**若干进程与端口。多路并行较吃资源，新人可只开**单端**（如上三条之一或某个 `前缀:dev`）。
 
 ## 4. 三个应用默认端口速查
 

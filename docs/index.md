@@ -50,4 +50,8 @@ features:
   - icon: 🔄
     title: 请求取消与防重复
     details: HTTP 层集成 AbortController，cancelDuplicate 选项自动取消重复请求，适合搜索联想等高频场景。
+
+  - icon: 📦
+    title: 多应用与工作区脚手架
+    details: 默认 Admin + H5 + 文档站同仓；pnpm run create-app 可从模板复制更多 PC/H5 工程，并自动接根脚本、tsconfig references、vitest.workspace.ts 等。
 ---

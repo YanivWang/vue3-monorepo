@@ -12,7 +12,10 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "lint": "eslint \"src/**/*.{ts,vue}\" --max-warnings 0",
     "lint:fix": "eslint \"src/**/*.{ts,vue}\" --fix",
-    "lint:style": "stylelint \"src/**/*.{scss,vue,css}\""
+    "lint:style": "stylelint \"src/**/*.{scss,vue,css}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@vue3-monorepo/shared": "workspace:*",

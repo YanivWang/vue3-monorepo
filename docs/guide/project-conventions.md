@@ -2,16 +2,16 @@
 
 说明在仓库里**加新功能、新页面、新接口**时，文件习惯放在哪；**不是**产品业务域文档。跨端与 `shared` 的边界以 [packages/shared/package.json](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 的 `exports` 为唯一真源。
 
-## 两个独立应用
+## 默认两条模板应用（可扩展更多）
 
-| 应用      | 位置                        | 典型场景                           |
+| 应用      | 位置（默认模板）            | 典型场景                           |
 | --------- | --------------------------- | ---------------------------------- |
 | PC 管理端 | `apps/pc/pc-admin-template` | 后台、权限菜单、Element Plus       |
 | 移动端 H5 | `apps/h5/h5-template`       | 手机站、Vant、与宿主 App 的 Bridge |
 
-若要在仓库内**再增加一个**独立的 H5 或 PC Admin 工程，根目录执行 `pnpm run create-app`，说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+若要在仓库内**再增加一个**独立的 H5 或 PC Admin 工程，根目录执行 `pnpm run create-app`，说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。新目录与上表**并列**，仍通过 `@vue3-monorepo/shared` 复用能力。
 
-路径未写全时，以各应用下的 `src/` 为根（如 `src/views` 即 `pc-admin-template/src/views`）。
+路径未写全时，以**当前正在开发的**应用下 `src/` 为根（如默认模板下 `src/views` 即 `pc-admin-template/src/views`）。
 
 ## 新代码放哪？（总表）
 
