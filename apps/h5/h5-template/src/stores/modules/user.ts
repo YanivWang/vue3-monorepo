@@ -7,8 +7,8 @@ import { getToken, setToken, removeToken, tokenStorage } from '@/utils/tokenStor
  * H5 用户 store（与 admin 完全独立）
  *
  * - token 走 cookie 持久化（createTokenStorage）
- * - userInfo 放 memory，不做持久化
- * - fetchUserInfo / login / logout 的 API 调用在 P3-11 接入 @/api/user
+ * - userInfo 仅内存；刷新后由 `@/bootstrap/userInfo` 在有 token 时调用 getUserInfo 回填
+ * - login / logout：`@/composables/useAuth`
  */
 export const useUserStore = defineStore('h5-user', () => {
   const token = ref<string>(getToken() ?? '')

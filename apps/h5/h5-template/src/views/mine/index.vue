@@ -33,7 +33,9 @@ async function onLogout() {
           :src="user.avatar || 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'"
         />
         <div class="mine-profile__info">
-          <div class="mine-profile__name">{{ user.nickname || t('common.notLoggedIn') }}</div>
+          <div class="mine-profile__name">
+            {{ user.isLoggedIn ? user.nickname || user.username || '-' : t('common.notLoggedIn') }}
+          </div>
           <div class="mine-profile__meta">{{ user.username || '-' }}</div>
         </div>
       </div>
