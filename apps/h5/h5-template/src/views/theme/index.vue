@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { CellGroup, Cell, RadioGroup, Radio, Tag } from 'vant'
 import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { ThemeMode as ThemeModeEnum } from '@vue3-monorepo/shared/enums'
@@ -10,6 +11,7 @@ import TabLayout from '@/layouts/TabLayout.vue'
 
 defineOptions({ name: 'Theme' })
 
+const { t } = useI18n()
 const app = useAppStore()
 
 const brand = computed({
@@ -33,8 +35,8 @@ const language = computed({
 
 <template>
   <TabLayout>
-    <PageContainer title="主题" :left-arrow="false" fill>
-      <CellGroup inset title="品牌色">
+    <PageContainer :title="t('nav.theme')" :left-arrow="false" fill>
+      <CellGroup inset :title="t('theme.brand')">
         <RadioGroup v-model="brand" class="brand-group">
           <Cell v-for="p in brandPalettes" :key="p.id" clickable :title="p.id" @click="brand = p.id">
             <template #icon>
@@ -47,19 +49,19 @@ const language = computed({
         </RadioGroup>
       </CellGroup>
 
-      <CellGroup inset title="模式">
+      <CellGroup inset :title="t('theme.sectionMode')">
         <RadioGroup v-model="mode">
-          <Cell clickable title="浅色" @click="mode = ThemeModeEnum.LIGHT">
+          <Cell clickable :title="t('theme.light')" @click="mode = ThemeModeEnum.LIGHT">
             <template #right-icon>
               <Radio :name="ThemeModeEnum.LIGHT" />
             </template>
           </Cell>
-          <Cell clickable title="深色" @click="mode = ThemeModeEnum.DARK">
+          <Cell clickable :title="t('theme.dark')" @click="mode = ThemeModeEnum.DARK">
             <template #right-icon>
               <Radio :name="ThemeModeEnum.DARK" />
             </template>
           </Cell>
-          <Cell clickable title="跟随系统" @click="mode = ThemeModeEnum.SYSTEM">
+          <Cell clickable :title="t('theme.system')" @click="mode = ThemeModeEnum.SYSTEM">
             <template #right-icon>
               <Radio :name="ThemeModeEnum.SYSTEM" />
             </template>
@@ -67,13 +69,13 @@ const language = computed({
         </RadioGroup>
       </CellGroup>
 
-      <CellGroup inset title="语言">
+      <CellGroup inset :title="t('theme.sectionLanguage')">
         <RadioGroup v-model="language">
           <Cell
             v-for="l in BASE_LOCALES"
             :key="l"
             clickable
-            :title="l === 'zh-CN' ? '简体中文' : 'English'"
+            :title="l === 'zh-CN' ? t('theme.langZh') : t('theme.langEn')"
             @click="language = l"
           >
             <template #right-icon>
@@ -83,17 +85,17 @@ const language = computed({
         </RadioGroup>
       </CellGroup>
 
-      <CellGroup inset title="当前状态">
-        <Cell title="宿主"
+      <CellGroup inset :title="t('theme.sectionCurrent')">
+        <Cell :title="t('theme.statusHost')"
           ><Tag plain type="primary">{{ app.host }}</Tag></Cell
         >
-        <Cell title="品牌"
+        <Cell :title="t('theme.statusBrand')"
           ><Tag plain type="primary">{{ app.brand }}</Tag></Cell
         >
-        <Cell title="模式"
+        <Cell :title="t('theme.statusMode')"
           ><Tag plain type="primary">{{ app.themeMode }}</Tag></Cell
         >
-        <Cell title="语言"
+        <Cell :title="t('theme.statusLanguage')"
           ><Tag plain type="primary">{{ app.language }}</Tag></Cell
         >
       </CellGroup>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Cell, CellGroup, Image as VanImage, Button, showConfirmDialog } from 'vant'
 import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { useUserStore } from '@/stores'
@@ -7,12 +8,13 @@ import TabLayout from '@/layouts/TabLayout.vue'
 
 defineOptions({ name: 'Mine' })
 
+const { t } = useI18n()
 const user = useUserStore()
 const { logout, loading } = useAuth()
 
 async function onLogout() {
   try {
-    await showConfirmDialog({ title: '提示', message: '确定退出登录？' })
+    await showConfirmDialog({ title: t('common.tip'), message: t('mine.logoutConfirm') })
     await logout()
   } catch {
     /* 用户取消 */
@@ -22,7 +24,7 @@ async function onLogout() {
 
 <template>
   <TabLayout>
-    <PageContainer title="我的" :left-arrow="false" fill>
+    <PageContainer :title="t('nav.mine')" :left-arrow="false" fill>
       <div class="mine-profile">
         <VanImage
           round
@@ -31,27 +33,27 @@ async function onLogout() {
           :src="user.avatar || 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'"
         />
         <div class="mine-profile__info">
-          <div class="mine-profile__name">{{ user.nickname || '未登录' }}</div>
+          <div class="mine-profile__name">{{ user.nickname || t('common.notLoggedIn') }}</div>
           <div class="mine-profile__meta">{{ user.username || '-' }}</div>
         </div>
       </div>
 
-      <CellGroup inset title="账户">
-        <Cell title="用户名" :value="user.username || '-'" />
-        <Cell title="角色" :value="user.roles.join(', ') || '-'" />
-        <Cell title="权限数" :value="String(user.permissions.length)" />
+      <CellGroup inset :title="t('mine.account')">
+        <Cell :title="t('mine.username')" :value="user.username || '-'" />
+        <Cell :title="t('mine.role')" :value="user.roles.join(', ') || '-'" />
+        <Cell :title="t('mine.permissionCount')" :value="String(user.permissions.length)" />
       </CellGroup>
 
-      <CellGroup inset title="更多">
-        <Cell title="主题设置" is-link to="/theme" />
-        <Cell title="长列表" is-link to="/list" />
+      <CellGroup inset :title="t('mine.more')">
+        <Cell :title="t('mine.themeSettings')" is-link to="/theme" />
+        <Cell :title="t('mine.listLink')" is-link to="/list" />
       </CellGroup>
 
       <div class="mine-actions">
         <Button v-if="user.isLoggedIn" round block type="danger" :loading="loading" @click="onLogout">
-          退出登录
+          {{ t('common.logout') }}
         </Button>
-        <Button v-else round block type="primary" @click="$router.push('/login')">去登录</Button>
+        <Button v-else round block type="primary" @click="$router.push('/login')">{{ t('common.goLogin') }}</Button>
       </div>
     </PageContainer>
   </TabLayout>

@@ -21,11 +21,12 @@ export interface TabItem {
  * - activeName 由当前路由同步（在 App.vue 或 layout 中 watch route）
  */
 export const useTabsStore = defineStore('h5-tabs', () => {
+  /** `label` 为 vue-i18n 文案 key（如 nav.home），由布局层 `t(label)` 渲染 */
   const tabs = ref<TabItem[]>([
-    { name: 'Home', path: '/home', label: '首页', icon: 'home-o', requiresAuth: true },
-    { name: 'List', path: '/list', label: '长列表', icon: 'todo-list-o', requiresAuth: true },
-    { name: 'Theme', path: '/theme', label: '主题', icon: 'brush-o' },
-    { name: 'Mine', path: '/mine', label: '我的', icon: 'user-o', requiresAuth: true }
+    { name: 'Home', path: '/home', label: 'nav.home', icon: 'home-o', requiresAuth: true },
+    { name: 'List', path: '/list', label: 'nav.list', icon: 'todo-list-o', requiresAuth: true },
+    { name: 'Theme', path: '/theme', label: 'nav.theme', icon: 'brush-o' },
+    { name: 'Mine', path: '/mine', label: 'nav.mine', icon: 'user-o', requiresAuth: true }
   ])
   const activeName = ref<string>('Home')
 

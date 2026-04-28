@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/index.vue'),
-    meta: { title: '登录', requiresAuth: false, keepAlive: false, transition: 'slide-fade' }
+    meta: { titleKey: 'common.login', requiresAuth: false, keepAlive: false, transition: 'slide-fade' }
   },
   {
     path: '/',
@@ -24,66 +24,66 @@ export const routes: RouteRecordRaw[] = [
     path: '/home',
     name: 'Home',
     component: () => import('@/views/home/index.vue'),
-    meta: { title: '首页', requiresAuth: true, keepAlive: true, tab: true }
+    meta: { titleKey: 'nav.home', requiresAuth: true, keepAlive: true, tab: true }
   },
   {
     path: '/mine',
     name: 'Mine',
     component: () => import('@/views/mine/index.vue'),
-    meta: { title: '我的', requiresAuth: true, keepAlive: true, tab: true }
+    meta: { titleKey: 'nav.mine', requiresAuth: true, keepAlive: true, tab: true }
   },
   {
     path: '/theme',
     name: 'Theme',
     component: () => import('@/views/theme/index.vue'),
-    meta: { title: '主题', requiresAuth: false, keepAlive: true, tab: true }
+    meta: { titleKey: 'nav.theme', requiresAuth: false, keepAlive: true, tab: true }
   },
   {
     path: '/list',
     name: 'List',
     component: () => import('@/views/list/index.vue'),
-    meta: { title: '长列表', requiresAuth: true, keepAlive: true, tab: true }
+    meta: { titleKey: 'nav.list', requiresAuth: true, keepAlive: true, tab: true }
   },
   {
     path: '/list/detail/:id',
     name: 'ListDetail',
     component: () => import('@/views/list/detail.vue'),
-    meta: { title: '条目详情', requiresAuth: true, keepAlive: false }
+    meta: { titleKey: 'list.detail', requiresAuth: true, keepAlive: false }
   },
   {
     path: '/list/create',
     name: 'ListCreate',
     component: () => import('@/views/list/form.vue'),
-    meta: { title: '新建条目', requiresAuth: true, keepAlive: false }
+    meta: { titleKey: 'list.create', requiresAuth: true, keepAlive: false }
   },
   {
     path: '/list/edit/:id',
     name: 'ListEdit',
     component: () => import('@/views/list/form.vue'),
-    meta: { title: '编辑条目', requiresAuth: true, keepAlive: false }
+    meta: { titleKey: 'list.edit', requiresAuth: true, keepAlive: false }
   },
   {
     path: '/error/500',
     name: 'Error500',
     component: () => import('@/views/error/500.vue'),
-    meta: { title: '服务异常', requiresAuth: false, keepAlive: false }
+    meta: { titleKey: 'error.server', requiresAuth: false, keepAlive: false }
   },
   {
     path: '/error/network',
     name: 'ErrorNetwork',
     component: () => import('@/views/error/network.vue'),
-    meta: { title: '网络异常', requiresAuth: false, keepAlive: false }
+    meta: { titleKey: 'error.network', requiresAuth: false, keepAlive: false }
   },
   {
     path: '/error/empty',
     name: 'ErrorEmpty',
     component: () => import('@/views/error/empty.vue'),
-    meta: { title: '暂无数据', requiresAuth: false, keepAlive: false }
+    meta: { titleKey: 'common.noData', requiresAuth: false, keepAlive: false }
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/error/404.vue'),
-    meta: { title: '404', requiresAuth: false, keepAlive: false }
+    meta: { titleKey: 'error.notFound', requiresAuth: false, keepAlive: false }
   }
 ]
