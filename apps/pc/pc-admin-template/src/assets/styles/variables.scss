@@ -1,7 +1,7 @@
 // ────────────────────────────────────────────────────────────
-//  全局 SCSS 变量
-//  通过 vite.config.ts additionalData 自动注入到所有 Vue SFC
-//  的 <style lang="scss"> 块及直接导入的 .scss 文件
+//  本仓库 PC 模板的全局 SCSS / :root 对照（可选查阅）
+//  Vite additionalData 注入的是共享包 `@vue3-monorepo/shared/styles/tokens/variables`
+//  （见根别名），而非本文件路径；当前入口 index.scss 也未 @use 本文件。
 // ────────────────────────────────────────────────────────────
 
 // ── CSS 自定义属性（支持暗黑模式动态切换）─────────────────────

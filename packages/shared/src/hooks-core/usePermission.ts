@@ -20,7 +20,7 @@ function unwrap<T>(source: Ref<T> | ComputedRef<T> | (() => T)): T {
  * 创建一个 `usePermission` composable，由业务层（Pinia store / 其他 state）注入权限上下文。
  *
  * @example
- * // apps/admin/src/composables/usePermission.ts
+ * 应用内封装，例如：`src/composables/usePermission.ts`
  * import { useUserStore } from '@/stores/modules/user'
  * import { createUsePermission } from '@vue3-monorepo/shared/hooks-core'
  *

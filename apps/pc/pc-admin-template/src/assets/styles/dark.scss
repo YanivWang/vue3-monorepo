@@ -1,7 +1,6 @@
 // ────────────────────────────────────────────────────────────
-//  暗黑模式 CSS 变量覆盖
-//  当 html 元素具有 .dark class 时生效
-//  由 app store setTheme('dark') 触发
+//  暗黑模式 CSS 变量覆盖（含 Element Plus）
+//  当 `html` 带有 `.dark` 时生效（由 `applyThemeMode('dark' | 'system')` 切换 class）
 // ────────────────────────────────────────────────────────────
 
 html.dark {
@@ -20,7 +19,7 @@ html.dark {
   --sidebar-text: rgba(255, 255, 255, 0.6);
   --sidebar-text-active: #ffffff;
   --sidebar-item-hover-bg: rgba(255, 255, 255, 0.06);
-  --sidebar-item-active-bg: #1890ff;
+  --sidebar-item-active-bg: var(--color-primary);
   --header-bg: #1d1e20;
   --header-border: #2c2c2c;
   --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 6px rgba(0, 0, 0, 0.2);

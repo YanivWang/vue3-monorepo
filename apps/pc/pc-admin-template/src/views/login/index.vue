@@ -15,6 +15,7 @@ import {
 } from 'element-plus'
 import { User, Lock, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
 import { ThemeMode } from '@vue3-monorepo/shared/enums'
+import { brandPalettes, type BrandId } from '@vue3-monorepo/shared/styles/tokens'
 import { useAppStore } from '@/stores/modules/app'
 import { useUserStore } from '@/stores/modules/user'
 import type { LoginParams } from '@vue3-monorepo/shared/types'
@@ -66,35 +67,60 @@ function handleThemeCommand(cmd: string): void {
     appStore.setTheme(cmd)
   }
 }
+
+function handleBrandCommand(cmd: string): void {
+  if (brandPalettes.some(p => p.id === cmd)) {
+    appStore.setBrand(cmd as BrandId)
+  }
+}
 </script>
 
 <template>
   <div class="login-page">
-    <el-dropdown class="login-page__theme" trigger="click" @command="handleThemeCommand">
-      <span class="login-page__theme-trigger" title="主题">
-        <el-icon :size="22">
-          <Sunny v-if="appStore.themeMode === ThemeMode.LIGHT" />
-          <Moon v-else-if="appStore.themeMode === ThemeMode.DARK" />
-          <Monitor v-else />
-        </el-icon>
-      </span>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item :command="ThemeMode.LIGHT">
-            <el-icon class="login-page__theme-icon"><Sunny /></el-icon>
-            浅色
-          </el-dropdown-item>
-          <el-dropdown-item :command="ThemeMode.DARK">
-            <el-icon class="login-page__theme-icon"><Moon /></el-icon>
-            深色
-          </el-dropdown-item>
-          <el-dropdown-item :command="ThemeMode.SYSTEM">
-            <el-icon class="login-page__theme-icon"><Monitor /></el-icon>
-            跟随系统
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    <div class="login-page__top-actions">
+      <el-dropdown trigger="click" @command="handleBrandCommand">
+        <span class="login-page__theme-trigger" title="品牌色">
+          <span
+            class="login-page__brand-dot"
+            :style="{ background: brandPalettes.find(p => p.id === appStore.brand)?.primary }"
+          />
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item v-for="p in brandPalettes" :key="p.id" :command="p.id">
+              <span class="login-page__brand-dot login-page__brand-dot--menu" :style="{ background: p.primary }" />
+              {{ p.id }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+
+      <el-dropdown trigger="click" @command="handleThemeCommand">
+        <span class="login-page__theme-trigger" title="主题">
+          <el-icon :size="22">
+            <Sunny v-if="appStore.themeMode === ThemeMode.LIGHT" />
+            <Moon v-else-if="appStore.themeMode === ThemeMode.DARK" />
+            <Monitor v-else />
+          </el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item :command="ThemeMode.LIGHT">
+              <el-icon class="login-page__theme-icon"><Sunny /></el-icon>
+              浅色
+            </el-dropdown-item>
+            <el-dropdown-item :command="ThemeMode.DARK">
+              <el-icon class="login-page__theme-icon"><Moon /></el-icon>
+              深色
+            </el-dropdown-item>
+            <el-dropdown-item :command="ThemeMode.SYSTEM">
+              <el-icon class="login-page__theme-icon"><Monitor /></el-icon>
+              跟随系统
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
 
     <div class="login-card">
       <!-- 标题 -->
@@ -162,11 +188,28 @@ function handleThemeCommand(cmd: string): void {
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-  &__theme {
+  &__top-actions {
     position: absolute;
     top: $spacing-md;
     right: $spacing-md;
     z-index: 1;
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+  }
+
+  &__brand-dot {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+
+    &--menu {
+      margin-right: $spacing-sm;
+      vertical-align: middle;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+    }
   }
 
   &__theme-trigger {

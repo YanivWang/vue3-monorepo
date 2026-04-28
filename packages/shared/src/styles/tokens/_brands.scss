@@ -4,8 +4,7 @@
 //  变量命名与 _root.scss 保持一致；覆盖主色及与品牌一致的侧栏激活、边框与 info 等
 // ────────────────────────────────────────────────────────────
 
-// 专门用于匹配 HTML 文档中根元素 <html> 上带有 **data-brand="blue"** 属性的情况W3C
-// 在根节点html上通过data-brand="blue" 属性来配置，覆盖:root上定义的默认的css变量
+// 运行时由 `applyBrand(id)` 设置 `document.documentElement` 的 `data-brand`，覆盖 :root 中对应变量
 
 html[data-brand='blue'] {
   --color-primary: #409eff;

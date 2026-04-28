@@ -16,8 +16,7 @@
 
 // @use：把 root / brands / dark 真正编进样式里，形成完整的 token 输出。
 
-// 使用 @use './root' 导入scss模块，会为导入的模块创建一个默认的命名空间，
-// 默认就是文件名称
+// 以下为演示 @use 默认命名空间（root）与自定义命名空间（myBrands）的示例，业务可删除
 .test-btn {
   width: root.$border-width; // 默认命名空间
   // color: $primary-color; //会报错 undefined

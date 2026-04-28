@@ -34,25 +34,32 @@ export interface UseThemeContext {
 export interface UseThemeReturn {
   brand: Ref<BrandId>
   mode: Ref<ThemeModeId>
-  /** 当前实际模式（system 已解析为 light/dark） */
+  /**
+   * 最近一次根据 DOM 同步的 light/dark（在 `mode` 变化、`onMounted` 时刷新）
+   * `mode === 'system'` 且仅操作系统配色变化时不会自动更新，请以 `getAppliedThemeMode()` 或 store 的 `themeTick` 策略为准
+   */
   resolvedMode: Ref<'light' | 'dark'>
   brands: readonly BrandPalette[]
   setBrand(id: BrandId): void
   setMode(id: ThemeModeId): void
-  /** 循环切换下一个品牌（demo / 主题按钮场景） */
+  /** 按 `brandPalettes` 顺序切到下一品牌（内部 `setBrand`，由 watch 写 DOM） */
   cycleBrand(): void
-  /** 在 light / dark 之间切换（不处理 system） */
+  /**
+   * 根据当前 `resolvedMode` 在显式 `light` / `dark` 间切换（`setMode`）
+   * 若当前 `mode === 'system'`，会改为固定 light 或 dark，不再保持 system
+   */
   toggleMode(): void
 }
 
 /**
- * 主题 composable 工厂。
+ * 主题 composable 工厂（须在组件内调用返回的 `useTheme()` 才会注册生命周期与 `watch`）。
  *
- * - brand & mode 均持久化到注入的 storage
- * - mode='system' 时动态订阅 prefers-color-scheme
+ * - `setBrand` / `setMode`：只改 ref + `storage`；写 DOM 靠 `watch(brand|mode)` 调用 `applyBrand` / `applyThemeMode`
+ * - `onMounted`：`applyAll()` 同步当前持久化状态到 DOM，并刷新 `resolvedMode`
+ * - `mode === 'system'`：`applyThemeMode` 会监听系统配色；`resolvedMode` 仅在 `mode` 变化或 `applyAll` 时刷新，系统配色单独变化时不会更新（与 Pinia store 的 `themeTick` 策略不同）
  *
  * @example
- *   // apps/h5/src/composables/useTheme.ts
+ *   应用内封装，例如：`src/composables/useTheme.ts`
  *   export const useTheme = createUseTheme({ storage: sessionTokenStorage })
  */
 export function createUseTheme(ctx: UseThemeContext) {
@@ -66,6 +73,7 @@ export function createUseTheme(ctx: UseThemeContext) {
 
   let teardownMode: () => void = () => {}
 
+  /** 挂载时一次性：品牌 + 深浅模式写 DOM，并同步 `resolvedMode` */
   function applyAll(): void {
     applyBrand(brand.value)
     teardownMode()
@@ -73,11 +81,13 @@ export function createUseTheme(ctx: UseThemeContext) {
     resolvedMode.value = getAppliedThemeMode()
   }
 
+  /** 仅更新状态与 storage；`useTheme()` 内的 `watch(brand)` 负责 `applyBrand` */
   function setBrand(id: BrandId): void {
     brand.value = id
     storage.set(BRAND_KEY, id)
   }
 
+  /** 仅更新状态与 storage；`watch(mode)` 负责 `applyThemeMode` 与 `resolvedMode` */
   function setMode(id: ThemeModeId): void {
     mode.value = id
     storage.set(MODE_KEY, id)

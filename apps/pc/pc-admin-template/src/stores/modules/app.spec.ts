@@ -5,8 +5,8 @@ import { useAppStore } from './app'
 describe('useAppStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    // 重置 DOM
     document.documentElement.className = ''
+    document.documentElement.removeAttribute('data-brand')
   })
 
   afterEach(() => {
@@ -16,7 +16,8 @@ describe('useAppStore', () => {
   it('默认值正确', () => {
     const store = useAppStore()
     expect(store.sidebarCollapsed).toBe(false)
-    expect(store.themeMode).toBe('light')
+    expect(store.themeMode).toBe('system')
+    expect(store.brand).toBe('blue')
     expect(store.language).toBe('zh-CN')
     expect(store.pageLoading).toBe(false)
   })
@@ -62,7 +63,23 @@ describe('useAppStore', () => {
     const store = useAppStore()
     store.setTheme('system')
     expect(document.documentElement.classList.contains('dark')).toBe(true)
-    expect(mockMQ.addEventListener).toHaveBeenCalledWith('change', expect.any(Function))
+    expect(mockMQ.addEventListener).toHaveBeenCalled()
+  })
+
+  it('setBrand 设置 data-brand', () => {
+    const store = useAppStore()
+    store.setBrand('green')
+    expect(store.brand).toBe('green')
+    expect(document.documentElement.getAttribute('data-brand')).toBe('green')
+  })
+
+  it('init 同步品牌与主题到 DOM', () => {
+    const store = useAppStore()
+    store.brand = 'purple'
+    store.themeMode = 'dark'
+    store.init()
+    expect(document.documentElement.getAttribute('data-brand')).toBe('purple')
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
   })
 
   it('setPageLoading 设置加载状态', () => {

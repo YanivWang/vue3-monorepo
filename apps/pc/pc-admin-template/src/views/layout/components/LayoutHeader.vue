@@ -14,6 +14,7 @@ import {
 } from 'element-plus'
 import { Fold, Expand, User, SwitchButton, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
 import { ThemeMode } from '@vue3-monorepo/shared/enums'
+import { brandPalettes, type BrandId } from '@vue3-monorepo/shared/styles/tokens'
 import { useAppStore } from '@/stores/modules/app'
 import { useUserStore } from '@/stores/modules/user'
 
@@ -32,6 +33,12 @@ function toggleSidebar(): void {
 function handleThemeCommand(cmd: string): void {
   if (cmd === ThemeMode.LIGHT || cmd === ThemeMode.DARK || cmd === ThemeMode.SYSTEM) {
     appStore.setTheme(cmd)
+  }
+}
+
+function handleBrandCommand(cmd: string): void {
+  if (brandPalettes.some(p => p.id === cmd)) {
+    appStore.setBrand(cmd as BrandId)
   }
 }
 
@@ -60,8 +67,22 @@ async function handleLogout(): Promise<void> {
       </el-breadcrumb>
     </div>
 
-    <!-- 右侧：主题 + 用户 -->
+    <!-- 右侧：品牌色 + 主题 + 用户 -->
     <div class="layout-header__right">
+      <el-dropdown trigger="click" @command="handleBrandCommand">
+        <span class="theme-switch" title="品牌色">
+          <span class="brand-dot" :style="{ background: brandPalettes.find(p => p.id === appStore.brand)?.primary }" />
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item v-for="p in brandPalettes" :key="p.id" :command="p.id">
+              <span class="brand-dot brand-dot--menu" :style="{ background: p.primary }" />
+              {{ p.id }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+
       <el-dropdown trigger="click" @command="handleThemeCommand">
         <span class="theme-switch" title="主题">
           <el-icon :size="20">
@@ -155,6 +176,19 @@ async function handleLogout(): Promise<void> {
   }
 
   &__item-icon {
+    margin-right: $spacing-sm;
+    vertical-align: middle;
+  }
+}
+
+.brand-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  &--menu {
     margin-right: $spacing-sm;
     vertical-align: middle;
   }

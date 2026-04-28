@@ -1,14 +1,19 @@
 // ────────────────────────────────────────────────────────────
 //  全局样式入口
-//  variables.scss 已通过 vite.config additionalData 自动注入
+//  shared tokens/variables 已通过 vite.config additionalData 注入到各 SFC
 //  在 main.ts 中 import 此文件
 // ────────────────────────────────────────────────────────────
 
-// CSS Reset
+// 所有 @use 须置于文件最前（Sass 要求）
 @use './reset';
-
-// 暗黑模式 CSS 变量覆盖（必须在全局样式之前定义变量）
+@use '@vue3-monorepo/shared/styles/tokens/root';
+@use '@vue3-monorepo/shared/styles/tokens/brands';
 @use './dark';
+
+// Element Plus 主色跟随设计 token（换品牌时一并变化）
+:root {
+  --el-color-primary: var(--color-primary);
+}
 
 // ── 布局工具类 ────────────────────────────────────────────────
 

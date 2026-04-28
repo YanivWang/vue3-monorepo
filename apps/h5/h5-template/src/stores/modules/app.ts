@@ -14,9 +14,12 @@ import { i18n } from '@/composables/useI18n'
 
 type LanguageType = 'zh-CN' | 'en-US'
 
-/** 管理 system 模式下的媒体查询监听 teardown */
+/** `applyThemeMode` 返回的清理函数；切换主题前先调用，避免重复注册 matchMedia */
 let teardownThemeMode: () => void = () => {}
-/** system 模式：系统深浅色变化时同步刷新 isDark（如 Vant ConfigProvider） */
+/**
+ * `themeMode === 'system'` 时：单独监听 `prefers-color-scheme`，`themeTick++` 触发 `isDark` 等计算属性
+ *（`applyThemeMode` 已负责改 `html.dark`，此处只补 Vue 响应式刷新）
+ */
 let teardownSystemDarkSync: () => void = () => {}
 
 export const useAppStore = defineStore(
@@ -31,6 +34,7 @@ export const useAppStore = defineStore(
 
     const themeTick = ref(0)
 
+    /** light / dark 看 `themeMode`；system 看当前 DOM（`getAppliedThemeMode`），并依赖 `themeTick` 在系统配色变化时重算 */
     const isDark = computed(() => {
       void themeTick.value
       if (themeMode.value === 'dark') return true
@@ -38,6 +42,7 @@ export const useAppStore = defineStore(
       return getAppliedThemeMode() === 'dark'
     })
 
+    /** 同步 `themeMode`、调用 `applyThemeMode` 写 DOM；system 下额外注册 `themeTick` 监听 */
     function setTheme(mode: ThemeModeId): void {
       teardownSystemDarkSync()
       themeMode.value = mode
@@ -47,7 +52,6 @@ export const useAppStore = defineStore(
       if (mode === 'system' && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
         const mql = window.matchMedia('(prefers-color-scheme: dark)')
         const onSchemeChange = () => {
-          console.log('onSchemeChange11111111')
           themeTick.value++
         }
         mql.addEventListener('change', onSchemeChange)
@@ -57,6 +61,7 @@ export const useAppStore = defineStore(
       }
     }
 
+    /** 更新 `brand` 并 `applyBrand` 写 `html[data-brand]` */
     function setBrand(id: BrandId): void {
       brand.value = id
       applyBrand(id)
@@ -73,8 +78,8 @@ export const useAppStore = defineStore(
     }
 
     /**
-     * 初始化（须在 app.use(pinia) 之后、mount 之前调用）：
-     * 根据已持久化状态把主题 / 品牌 / 语言同步到 DOM 与 i18n
+     * 将已持久化的 `brand` / `themeMode` / `language` 同步到 DOM（`data-brand`、`html.dark`）与 i18n
+     * 须在 `app.use(pinia)` 之后调用（当前在 `main.ts` 里于 `mount` 之前执行）
      */
     function init(): void {
       setBrand(brand.value)

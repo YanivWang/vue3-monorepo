@@ -49,7 +49,7 @@ export interface UseAuthReturn<TLoginParams, TLoginResult, TProfile> {
  * 创建 useAuth composable：多登录策略 + 生命周期钩子，UI/存储 无关。
  *
  * @example
- *   // apps/h5/src/composables/useAuth.ts
+ *   应用内封装，例如：`src/composables/useAuth.ts`
  *   export const useAuth = createUseAuth({
  *     loginStrategies: {
  *       form: (p) => http.post('/auth/login', p),
