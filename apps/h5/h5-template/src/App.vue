@@ -38,11 +38,11 @@ function onRouteError(err: unknown) {
 
 <template>
   <ConfigProvider :theme="vantTheme">
-    <RouterView v-slot="{ Component, route }">
+    <RouterView v-slot="{ Component, route: routeView }">
       <ErrorBoundaryH5 :on-capture="onRouteError">
-        <Transition :name="(route.meta?.transition as string) || 'slide-fade'" mode="out-in">
+        <Transition :name="(routeView.meta?.transition as string) || 'slide-fade'" mode="out-in">
           <KeepAlive :include="keepAliveInclude">
-            <component :is="Component" :key="route.fullPath" />
+            <component :is="Component" :key="routeView.fullPath" />
           </KeepAlive>
         </Transition>
       </ErrorBoundaryH5>
