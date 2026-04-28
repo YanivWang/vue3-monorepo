@@ -1,7 +1,7 @@
 // ────────────────────────────────────────────────────────────
 //  品牌色预设（PC + H5 共享）
 //  通过 html[data-brand="xxx"] 切换；默认沿用 :root 的初始蓝色
-//  变量命名与 _root.scss 保持一致，仅覆盖主色系
+//  变量命名与 _root.scss 保持一致；覆盖主色及与品牌一致的侧栏激活、边框与 info 等
 // ────────────────────────────────────────────────────────────
 
 // 专门用于匹配 HTML 文档中根元素 <html> 上带有 **data-brand="blue"** 属性的情况W3C
@@ -11,30 +11,55 @@ html[data-brand='blue'] {
   --color-primary: #409eff;
   --color-primary-light: #79bbff;
   --color-primary-dark: #337ecc;
+  --sidebar-item-active-bg: #409eff;
+  --border-color: #d0dae8;
+  --border-color-light: #e4eaf2;
+  --header-border: #eaeff6;
+  --color-info: #909399;
 }
 
 html[data-brand='green'] {
   --color-primary: #07c160;
   --color-primary-light: #3ecf82;
   --color-primary-dark: #06a54f;
+  --sidebar-item-active-bg: #07c160;
+  --border-color: #bfddd0;
+  --border-color-light: #e2f3eb;
+  --header-border: #d9eee4;
+  --color-info: #7d8a82;
 }
 
 html[data-brand='red'] {
   --color-primary: #ee0a24;
   --color-primary-light: #ff4d4f;
   --color-primary-dark: #c20619;
+  --sidebar-item-active-bg: #ee0a24;
+  --border-color: #e5ced1;
+  --border-color-light: #f7eaea;
+  --header-border: #f0e0e3;
+  --color-info: #909399;
 }
 
 html[data-brand='orange'] {
   --color-primary: #ff8c00;
   --color-primary-light: #ffa940;
   --color-primary-dark: #d77300;
+  --sidebar-item-active-bg: #ff8c00;
+  --border-color: #e5d9c9;
+  --border-color-light: #f5efe6;
+  --header-border: #ede4d6;
+  --color-info: #968f85;
 }
 
 html[data-brand='purple'] {
   --color-primary: #722ed1;
   --color-primary-light: #9254de;
   --color-primary-dark: #531dab;
+  --sidebar-item-active-bg: #722ed1;
+  --border-color: #d6cfe6;
+  --border-color-light: #eae6f5;
+  --header-border: #e3ddf0;
+  --color-info: #8a8699;
 }
 
 $brands-color: #001529;

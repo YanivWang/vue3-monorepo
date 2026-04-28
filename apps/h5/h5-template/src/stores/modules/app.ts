@@ -47,6 +47,7 @@ export const useAppStore = defineStore(
       if (mode === 'system' && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
         const mql = window.matchMedia('(prefers-color-scheme: dark)')
         const onSchemeChange = () => {
+          console.log('onSchemeChange11111111')
           themeTick.value++
         }
         mql.addEventListener('change', onSchemeChange)
