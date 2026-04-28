@@ -1,5 +1,7 @@
 # 主题、暗黑与品牌色
 
+**共享层**：Token 与运行时 API 出自 `@vue3-monorepo/shared`。**PC（Element Plus `--el-*`）与 H5（Vant 变量映射）**为两条**并列**接入线，下文分端说明时不表示另一端次要。
+
 ## 三种主题模式
 
 | 模式     | 说明                                                   |
@@ -47,8 +49,24 @@ appStore.setBrand('green')
 业务侧亦可直接使用共享 API（例如在不经由 Pinia 的场景）：
 
 ```ts
-import { applyBrand, brandPalettes, type BrandId } from '@vue3-monorepo/shared/styles/tokens'
+import {
+  applyBrand,
+  applyThemeMode,
+  brandPalettes,
+  getAppliedBrand,
+  getAppliedThemeMode,
+  type BrandId
+} from '@vue3-monorepo/shared/styles/tokens'
 ```
+
+### Composable：`createUseTheme` / `createUseThemeH5`
+
+若页面或子应用**不想依赖 Pinia**，可用共享包提供的工厂，在自定义 `ThemeStorage`（`get` / `set` / 可选 `remove`）上挂载品牌与深浅模式，内部仍调用 `applyBrand` / `applyThemeMode`：
+
+- **`@vue3-monorepo/shared/hooks-core`**：`createUseTheme(ctx)` → 返回 `useTheme()`，在组件 `setup` 中调用；`resolvedMode` 在 `mode === 'system'` 且仅操作系统配色变化时**不会**自动递增（与 store 的 `themeTick` 策略不同，详见源码注释）。
+- **`@vue3-monorepo/shared/hooks-h5`**：`createUseThemeH5({ storage, locale?, ... })`，在 `createUseTheme` 基础上可选 `watch` 语言并同步 `VantLocale`。
+
+模板默认仍以 **`useAppStore`** 为准：PC 在 **`App.vue`** 调用 `appStore.init()`；H5 在 **`main.ts`** 于 `mount` 前调用 `useAppStore().init()`。
 
 ## 模板中的入口（PC Admin）
 
@@ -67,18 +85,24 @@ import { applyBrand, brandPalettes, type BrandId } from '@vue3-monorepo/shared/s
 
 ## CSS 变量体系（源码位置）
 
-亮色默认值与映射来自 **`packages/shared/src/styles/tokens/_root.scss`**（基于同目录 **`_variables.scss`** 中的 Sass 变量）；品牌覆盖在 **`_brands.scss`**（`html[data-brand='…']`）。
+亮色默认值与映射来自共享包 **`packages/shared/src/styles/tokens/_root.scss`**（Sass 数值与同目录 **`_variables.scss`**）；品牌覆盖在 **`_brands.scss`**（`html[data-brand='…']`）；**通用业务向**暗黑覆盖在 **`dark.scss`**（`html.dark`，与框架无关的 `--text-*` / `--bg-*` 等）。
 
-PC 管理端模板在全局样式入口 **`src/assets/styles/index.scss`** 中 `@use` 上述共享 `root`、`brands`，再 `@use` 本应用 **`src/assets/styles/dark.scss`**，用于业务侧暗黑覆盖及 Element Plus 暗黑变量对齐。
+| 端     | 全局样式入口                   | 引入方式（要点）                                                                                                                                                                                                                             |
+| ------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PC** | `src/assets/styles/index.scss` | `@use` 包路径 **`@vue3-monorepo/shared/styles/tokens/root`**、**`.../brands`**，再 `@use` 本应用 **`dark.scss`**（在共享业务 token 之外追加 **Element Plus `--el-*`** 等）。**不**经共享 `tokens/index.scss`，因此与 H5 的打包链不同。       |
+| **H5** | `src/styles/index.scss`        | 使用**仓库相对路径** `@use '../../../../../packages/shared/src/styles/tokens/index.scss' as *`（Sass 不解析 package exports，与 Vite 解析一致），一次带入 `root`、`brands`、共享 **`dark.scss`**；其下再将 **Vant** 变量映射到同一套 `--*`。 |
+
+各端 `vite.config` 的 **`additionalData`** 另注入 `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`，单文件组件内可直接写 `$spacing-md` 等，无需在每个 `<style lang="scss">` 里重复 `@use variables`。
+
+业务模板中的 **`src/assets/styles/variables.scss`**（PC 若仍存在）为可选对照清单；**默认不参与**全局 `@use` 链。
 
 ```scss
 /* 语义与数值以仓库内文件为准；以下为结构示意 */
 /* shared：_root.scss → :root { --bg-page: … } */
 /* shared：_brands.scss → html[data-brand='green'] { --color-primary: … } */
-/* PC 应用：dark.scss → html.dark { --bg-page: …; … } */
+/* shared：dark.scss → html.dark { --bg-page: …; … }（H5 经 index.scss 打入） */
+/* PC 应用：dark.scss → 业务层与 Element --el-* 一并覆盖 */
 ```
-
-业务模板中的 **`src/assets/styles/variables.scss`**（若仍存在）为可选对照文件：`$*` 与各 `--*` 的实际构建注入来自共享包 **`tokens/variables`**（见各端 `vite.config` `additionalData`），并非默认 `@use` 该本地路径。
 
 在组件中使用 CSS 变量：
 

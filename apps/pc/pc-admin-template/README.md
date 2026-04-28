@@ -2,7 +2,7 @@
 
 PC 管理后台（Element Plus）
 
-> **本目录是 monorepo 内的 PC 应用模板**（`pnpm run create-app` 的复制源）。**请勿在此编写业务功能**；请在仓库根执行 `pnpm run create-app` 生成业务应用后再开发，说明见 [新增 H5 / Admin 应用](../../../docs/guide/adding-a-new-app.md)。
+> **本目录是 monorepo 内的 PC 应用模板**（`pnpm run create-app` 的复制源）。**请勿在此编写业务功能**；请在仓库根执行 `pnpm run create-app` 生成业务应用后再开发，说明见 [新增业务应用](../../../docs/guide/adding-a-new-app.md)。
 
 ## Docker / Nginx（与 deer-flow-vue3 一致：集中在 `docker/`）
 

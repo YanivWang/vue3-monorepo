@@ -11,7 +11,7 @@
 | 会一点 **Vue 3**（`<script setup>`）         | PC 为 Element Plus，H5 为 Vant 4                                |
 | 可选                                         | TypeScript、pnpm workspace 概念                                 |
 
-若完全不懂 monorepo：先只记住——**一个仓库里装了好几个前端项目，共享代码在 `packages/shared`**。
+若完全不懂 monorepo：先只记住——**一个仓库里装了好几个前端项目，共享代码在 `packages/shared`**；**PC Admin 与 H5** 是两条**同等重要**的成品线，不是「主站 + 附属」。
 
 ## 2. 环境一条线装齐
 
@@ -27,7 +27,11 @@ pnpm install
 
 ## 3. 第一天建议做的事（带顺序）
 
-### 步骤 1：确认能启动「管理端（PC）」
+### 步骤 1：确认能启动两条业务端模板（顺序随意）
+
+PC 管理端与 H5 **无主次**——你可先起 Admin、先起 H5，或只起一端。**建议两条都跑一次**，确认 workspace 与环境正常。
+
+#### PC 管理端（Element Plus）
 
 ```bash
 pnpm run admin:dev
@@ -36,11 +40,9 @@ pnpm run admin:dev
 - 终端里看到 Vite 本地地址，一般为 **`http://127.0.0.1:5173`**（以终端输出为准）。
 - 浏览器能打开页面；默认 Mock 下通常**无需真实后端**即可看界面（见 [环境变量说明](./environment-variables.md) 中 `VITE_USE_MOCK`）。进入登录页后可用页面提示的演示账号（当前模板为 **admin / 123456**）；顶栏与登录页右上均可切换 **品牌色** 与 **浅色 / 深色 / 跟随系统**（见 [主题、暗黑与品牌色](./theme.md)）。
 
-**若起不来**：见 [排障与 FAQ](./troubleshooting.md) 或根 README [常见问题](https://github.com/YanivWang/vue3-monorepo#常见问题摘录)（端口、Node 版本、仅允许 pnpm）。
+#### H5（Vant）
 
-### 步骤 2：再启动 H5
-
-另开一个终端，在**同一仓库根**执行：
+另开终端（或与上并行），在**同一仓库根**执行：
 
 ```bash
 pnpm run h5:dev
@@ -48,7 +50,9 @@ pnpm run h5:dev
 
 - 默认 **`http://127.0.0.1:5174`** 左右（以终端为准）。
 
-### 步骤 3：打开文档站（推荐）
+**任一端起不来**：见 [排障与 FAQ](./troubleshooting.md) 或根 README [常见问题](https://github.com/YanivWang/vue3-monorepo#常见问题摘录)（端口、Node 版本、仅允许 pnpm）。
+
+### 步骤 2：打开文档站（推荐）
 
 ```bash
 pnpm run docs:dev
@@ -57,7 +61,7 @@ pnpm run docs:dev
 - 默认 **`http://127.0.0.1:5175`** 左右。
 - 在侧栏里继续读 [文档体系总览](./doc-system.md) 和 [架构说明](./architecture.md)。
 
-> **说明**：`pnpm run dev`（根脚本）等价于 `pnpm -r --parallel run --if-present dev`，会对**所有**在 `package.json` 里定义了 `dev` 的 workspace 包执行（默认至少为 `@vue3-monorepo/admin`、`@vue3-monorepo/h5`、`@vue3-monorepo/docs`；`@vue3-monorepo/shared` **无** `dev`）。若通过 `create-app` 增加了更多 app，根 `dev` 会**再多并行**若干进程与端口。多路并行较吃资源，新人可只开**单端**（如上三条之一或某个 `前缀:dev`）。
+> **说明**：`pnpm run dev`（根脚本）等价于 `pnpm -r --parallel run --if-present dev`，会对**所有**在 `package.json` 里定义了 `dev` 的 workspace 包执行（默认至少为 `@vue3-monorepo/admin`、`@vue3-monorepo/h5`、`@vue3-monorepo/docs`；`@vue3-monorepo/shared` **无** `dev`）。若通过 `create-app` 增加了更多 app，根 `dev` 会**再多并行**若干进程与端口。多路并行较吃资源，新人可只开**单端**（`admin:dev` / `h5:dev` / `docs:dev` 或某个 `前缀:dev`）。
 
 ## 4. 三个应用默认端口速查
 
@@ -104,7 +108,7 @@ pnpm run test:run
 1. **在子包目录里用 npm install** — 必须在**仓库根**用 `pnpm install`，否则破坏 workspace 与 lockfile。
 2. **从 H5 里 import Admin 的 store/页面** — 禁止；两应用不共享业务状态与页面。
 3. **在 `shared` 里引 Element Plus 或 Vant 做默认 UI** — 会破坏「共享层无强 UI 依赖」的边界；请求层用 `request-core` + 各端 `request-pc` / `request-h5` 注入反馈，见 [HTTP 与 Mock](./http-and-mock.md) 与 [架构说明](./architecture.md)。
-4. **在 `pc-admin-template` / `h5-template` 里写业务** — 两目录仅为模板源；应 `pnpm run create-app` 生成应用后在产物目录开发，见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+4. **在 `pc-admin-template` / `h5-template` 里写业务** — 两目录仅为模板源；应 `pnpm run create-app` 生成应用后在产物目录开发，见 [新增业务应用](./adding-a-new-app.md)。
 5. **随便改 `pnpm-lock.yaml`** — 除非你在做依赖升级且清楚影响；否则只通过正常 `pnpm add` / `pnpm update` 流程变更。
 
 有不确定时：先问「这段代码是只给哪一端用的？」再决定放 `apps/...` 还是 `packages/shared`。

@@ -1,6 +1,6 @@
 # 环境与命令速查
 
-本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本（摘录）」**互补**——根 README 偏索引，本页可配合 [新人上手指南](./onboarding.md) 对着敲命令。
+本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本（摘录）」**互补**——根 README 偏索引，本页可配合 [新人上手指南](./onboarding.md) 对着敲命令。**前提**：仓库是 **pnpm Monorepo**；**`admin:dev` 与 `h5:dev`** 对应两条**同等重要**的业务端模板（无主次）。
 
 > **第一次来**：请先读 [文档体系总览](./doc-system.md) 与 [新人上手指南](./onboarding.md)，再回来看本页当手册。
 
@@ -26,7 +26,7 @@ pnpm install
 
 安装完成后，根与子 workspace 的依赖由 **单一** `pnpm-lock.yaml` 管理。
 
-要在 monorepo 里**新增业务应用**（首个或后续的 H5、PC Admin），须在仓库根执行 `pnpm run create-app`（交互式）；**勿**在 `pc-admin-template` / `h5-template` 内写业务。说明与手工步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
+要在 monorepo 里**新增业务应用**（首个或后续的 **PC Admin 与 H5**，顺序不限），须在仓库根执行 `pnpm run create-app`（交互式）；**勿**在 `pc-admin-template` / `h5-template` 内写业务。说明与手工步骤见 [新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 3. 本地开发（三端别搞混端口）
 
@@ -43,14 +43,14 @@ pnpm install
 
 ## 4. 构建
 
-| 作用                              | 命令                                                                                     |
-| --------------------------------- | ---------------------------------------------------------------------------------------- |
-| 全仓顺序构建（admin → h5 → docs） | `pnpm run build`                                                                         |
-| 仅 PC                             | `pnpm run admin:build`                                                                   |
-| 仅 H5                             | `pnpm run h5:build`                                                                      |
-| 仅文档                            | `pnpm run docs:build`                                                                    |
-| 文档构建后静态预览                | `pnpm run docs:preview`                                                                  |
-| 各 app 的 Vite 预览               | `pnpm --filter @vue3-monorepo/admin preview` / `pnpm --filter @vue3-monorepo/h5 preview` |
+| 作用                                                          | 命令                                                                                     |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 全仓顺序构建（admin → h5 → docs，**仅脚本串联、无业务主次**） | `pnpm run build`                                                                         |
+| 仅 PC                                                         | `pnpm run admin:build`                                                                   |
+| 仅 H5                                                         | `pnpm run h5:build`                                                                      |
+| 仅文档                                                        | `pnpm run docs:build`                                                                    |
+| 文档构建后静态预览                                            | `pnpm run docs:preview`                                                                  |
+| 各 app 的 Vite 预览                                           | `pnpm --filter @vue3-monorepo/admin preview` / `pnpm --filter @vue3-monorepo/h5 preview` |
 
 > Admin/H5 子包中另有 `build:dev` 等模式，以各 `apps/.../package.json` 为准，用于**测试/预发**构建，而非「全仓」默认。
 

@@ -1,6 +1,6 @@
-# 新增 H5 或 PC Admin 类应用
+# 新增业务应用（PC Admin / H5）
 
-本页说明在 **pnpm workspace** 内**再开一条前端应用**（例如第二个 H5 项目、第二个 PC 管理台）时，需要动哪些文件、以及容易踩坑的地方。与 [Monorepo 工作流](./monorepo-workflow.md)、[项目与目录约定](./project-conventions.md) 互补：这里偏**拉新包与工程接线**，不重复业务目录说明。
+本页说明在 **pnpm workspace（Monorepo）** 内**再开一条前端应用**（第二个 PC 管理台、第二个 H5 等，`PC`/`H5` **无优先级**）时，需要动哪些文件、以及容易踩坑的地方。与 [Monorepo 工作流](./monorepo-workflow.md)、[项目与目录约定](./project-conventions.md) 互补：这里偏**拉新包与工程接线**，不重复业务目录说明。
 
 ## 业务应用从哪里来
 
@@ -32,8 +32,8 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 | 端            | 物理目录                | 包内应使用的 shared 子域                                                | UI 与典型能力                                 |
 | ------------- | ----------------------- | ----------------------------------------------------------------------- | --------------------------------------------- |
-| **H5 移动端** | `apps/h5/<你的目录名>/` | `request-h5`、`hooks-h5`、`components-h5`、`directives-h5`、`bridge` 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
 | **PC 管理端** | `apps/pc/<你的目录名>/` | `request-pc`、`hooks-pc`、`components-pc`、`directives-pc` 等           | Element Plus、动态菜单/权限（若以模板为起点） |
+| **H5 移动端** | `apps/h5/<你的目录名>/` | `request-h5`、`hooks-h5`、`components-h5`、`directives-h5`、`bridge` 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
 
 **不要**把两个真实业务端混进同一个 Vite 工程目录；**不要**在 H5 应用里直接 import 另一个 Admin 应用的 store/页面，反之亦然。跨端只走 `@vue3-monorepo/shared` 的 **exports** 已导出路径，规则见 [项目与目录约定](./project-conventions.md)。
 

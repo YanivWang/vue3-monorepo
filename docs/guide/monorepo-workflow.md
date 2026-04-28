@@ -2,6 +2,8 @@
 
 说明本仓库 **pnpm workspace** 的日常用法：如何**只动一个包**、如何**加依赖**、**新代码放哪**、**共享包怎么引用**。与 [项目与目录约定](./project-conventions.md) 互补，这里偏**操作细节**。
 
+> **定位**：**Monorepo（pnpm workspace）** 是协作前提；**`@vue3-monorepo/admin` 与 `@vue3-monorepo/h5`** 为两条**同等重要**的可运行应用线。下文示例若只写 `admin:*` 或只写 `h5:*`，仅为篇幅，**不表示另一端次要**。
+
 ## 1. Workspace 里有哪些包
 
 - **根目录**：`package.json` 放**全仓脚本**与公共开发依赖（ESLint、Vitest 等），不是发布 npm 的包。
@@ -9,7 +11,7 @@
 - **packages/**：库代码，如 `@vue3-monorepo/shared`。
 - **docs/**：VitePress 包 `@vue3-monorepo/docs`。
 
-工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [新增 H5 / Admin 应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
+工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 2. 根脚本 vs 子包脚本
 

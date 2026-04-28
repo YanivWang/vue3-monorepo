@@ -1,6 +1,6 @@
 # @vue3-monorepo/docs
 
-VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 工作流、质量门禁、架构与组件说明。
+VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 工作流、质量门禁、架构与组件说明。**叙述立场**：**Monorepo（pnpm workspace）** 为协作核心；**PC Admin 与 H5** 在脚手架与文档中**地位对等**（某页以一端展开细节，不代表另一端次要）。
 
 ## 与根 README 的分工
 
@@ -30,8 +30,8 @@ docs/
 │   ├── adding-a-new-app.md     # create-app、多应用接线
 │   ├── monorepo-workflow.md    # pnpm、filter、新代码放哪
 │   ├── quality-gates.md        # verify:full、lint、test
-│   ├── theme.md                # 深浅模式、品牌色、CSS 变量来源
-│   ├── design-tokens.md        # Token 分层、扩展方式
+│   ├── theme.md                # 深浅模式、品牌色、CSS 变量来源、createUseTheme
+│   ├── design-tokens.md        # Token 分层、Vite additionalData、扩展方式
 │   ├── architecture.md …
 ├── components/                 # 业务/共享组件文档
 └── package.json

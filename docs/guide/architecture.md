@@ -1,6 +1,8 @@
 # 架构说明
 
-本文以 **PC 管理端模板**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现，便于对照目录结构；若你的工程由 `pnpm run create-app` 生成，**结构相同**，请将路径替换为实际应用目录。H5 在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
+**仓库骨架**以 **pnpm workspace（Monorepo）** 为核心：`packages/shared` 与各应用同仓，**PC 管理端与 H5 模板地位对等**——依赖关系上两条应用线均只指向 `shared`，无主从。
+
+本文**正文**以 **PC 管理端模板**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现，便于对照（后台能力文档化较深）；若你的工程由 `pnpm run create-app` 生成，**结构相同**，请将路径替换为实际应用目录。**H5** 在 [项目与目录约定](./project-conventions.md) 中有对称路径说明，本文在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
 
 ## Monorepo 仓库级视图
 
@@ -20,7 +22,7 @@ flowchart TB
   h5 --> shared
 ```
 
-> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增 H5 / Admin 应用](./adding-a-new-app.md)）。
+> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增业务应用](./adding-a-new-app.md)）。
 
 | 单元                        | 职责                                                                                                                    |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -36,18 +38,19 @@ flowchart TB
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
 
-| 分类     | 技术                                       | 版本                                                |
-| -------- | ------------------------------------------ | --------------------------------------------------- |
-| 框架     | Vue 3 (Composition API)                    | ^3.4.31                                             |
-| 构建     | Vite                                       | ^5.3.3                                              |
-| 语言     | TypeScript（`tsconfig` 中 `strict: true`） | ^5.5.3                                              |
-| UI       | Element Plus                               | ^2.7.6                                              |
-| 状态管理 | Pinia + pinia-plugin-persistedstate        | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog） |
-| 路由     | Vue Router                                 | ^4.3.3                                              |
-| HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2                                              |
-| 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4                                             |
-| 监控     | Sentry                                     | 见 package.json                                     |
-| 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies`                                   |
+| 分类     | 技术                                       | 版本                                                              |
+| -------- | ------------------------------------------ | ----------------------------------------------------------------- |
+| 框架     | Vue 3 (Composition API)                    | ^3.4.31                                                           |
+| 构建     | Vite                                       | ^5.3.3                                                            |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`） | ^5.5.3                                                            |
+| UI（PC） | Element Plus                               | ^2.7.6                                                            |
+| UI（H5） | Vant 4                                     | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`） |
+| 状态管理 | Pinia + pinia-plugin-persistedstate        | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）               |
+| 路由     | Vue Router                                 | ^4.3.3                                                            |
+| HTTP     | Axios（`src/utils/http` 封装）             | ^1.7.2                                                            |
+| 国际化   | Vue I18n（`src/locales`）                  | ^9.14.4                                                           |
+| 监控     | Sentry                                     | 见 package.json                                                   |
+| 工具     | VueUse、Lodash-ES、Day.js 等               | 见 `dependencies`                                                 |
 
 ## 启动流程
 
@@ -134,12 +137,13 @@ onUnmounted(cancelAllRequests)
 
 ## 主题体系
 
-- **CSS 变量**：共享包 `_root.scss` / `_brands.scss`（`html[data-brand]`）与各应用 `dark.scss`（`html.dark`）共同构成亮色、品牌与暗黑外观。
+- **CSS 变量**：共享包 `_root.scss` / `_brands.scss`（`html[data-brand]`）；**H5** 全局入口 `@use` 共享 `tokens/index.scss`（内含共享 `dark.scss`）；**PC** 在 `assets/styles/index.scss` 中 `@use` 共享 `tokens/root`、`tokens/brands` 与**本应用** `dark.scss`（业务 token 与 **Element Plus `--el-*`** 一并覆盖，不经共享 `tokens/index.scss`）。
 - **深浅模式**：`useAppStore().setTheme('light' | 'dark' | 'system')`；内部 `applyThemeMode`；`system` 跟随 `prefers-color-scheme`，store 内 `themeTick` 用于 Vue 侧响应式刷新；枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`。
-- **品牌色**：`useAppStore().setBrand(BrandId)`；内部 `applyBrand`；预设列表见 `@vue3-monorepo/shared/styles/tokens`。
+- **品牌色**：`useAppStore().setBrand(BrandId)`；内部 `applyBrand`；`getAppliedBrand` / `getAppliedThemeMode` 等见 `@vue3-monorepo/shared/styles/tokens`。
+- **无 Pinia 场景**：`createUseTheme`（`@vue3-monorepo/shared/hooks-core`）、`createUseThemeH5`（`@vue3-monorepo/shared/hooks-h5`），详见 [主题、暗黑与品牌色](./theme.md)。
 - **PC 模板交互**：顶栏 `LayoutHeader` 与登录页均提供 **品牌色 + 主题模式** 下拉，未登录也可切换以便预览。
 - **Element Plus**：`theme-chalk/dark/css-vars.css` 在 `main.ts` 中紧跟官方 `dist/index.css` 之后、应用全局 `index.scss` 之前引入。
-- **构建注入**：`@vue3-monorepo/shared/styles/tokens/variables`（`$*`）经 Vite `additionalData` 注入各 SCSS；应用 `index.scss` 另 `@use` 共享 `root` / `brands` 与本地 `dark`（详见 [主题、暗黑与品牌色](./theme.md)、[Design Token](./design-tokens.md)）。
+- **构建注入**：`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;` 经 Vite `additionalData` 注入各 SFC 的 SCSS（详见 [Design Token](./design-tokens.md)）。
 
 ## 异常处理
 

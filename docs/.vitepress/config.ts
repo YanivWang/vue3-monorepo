@@ -50,7 +50,7 @@ export default defineConfig({
             { text: '新人上手指南', link: '/guide/onboarding' },
             { text: '环境与命令速查', link: '/guide/getting-started' },
             { text: 'Monorepo 工作流', link: '/guide/monorepo-workflow' },
-            { text: '新增 H5 / Admin 应用', link: '/guide/adding-a-new-app' },
+            { text: '新增业务应用（PC Admin / H5）', link: '/guide/adding-a-new-app' },
             { text: '质量门禁与脚本', link: '/guide/quality-gates' },
             { text: '项目与目录约定', link: '/guide/project-conventions' },
             { text: '排障与 FAQ', link: '/guide/troubleshooting' },

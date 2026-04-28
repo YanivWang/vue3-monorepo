@@ -2,8 +2,10 @@
 
 说明在仓库里**加新功能、新页面、新接口**时，文件习惯放在哪；**不是**产品业务域文档。跨端与 `shared` 的边界以 [packages/shared/package.json](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 的 `exports` 为唯一真源。
 
+> **Monorepo 优先**：仓库以 **pnpm workspace** 组织多包；**PC 与 H5** 为两条**并列**的应用线，目录与「只给某端 / 两端共享」的约定**对称**，无主从之分。
+
 > **模板与业务分离（必读）**  
-> `apps/pc/pc-admin-template` 与 `apps/h5/h5-template` **只是应用模板**，供 `pnpm run create-app` 复制，并作为下文路径示例的参照。**真实业务代码不要写在上述模板目录内**；应通过 `create-app` 在 `apps/pc/<你的应用>/` 或 `apps/h5/<你的应用>/` 生成业务工程后，在该目录的 `src/` 下开发。对模板的改动应限于升级脚手架能力（宜与业务 PR 分开）。根脚本 `admin:*` / `h5:*` 对应模板包，用于开箱演示与门禁；日常业务请使用生成应用的 **`前缀:*`** 或 `pnpm --filter <包名>`。详见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。
+> `apps/pc/pc-admin-template` 与 `apps/h5/h5-template` **只是应用模板**，供 `pnpm run create-app` 复制，并作为下文路径示例的参照。**真实业务代码不要写在上述模板目录内**；应通过 `create-app` 在 `apps/pc/<你的应用>/` 或 `apps/h5/<你的应用>/` 生成业务工程后，在该目录的 `src/` 下开发。对模板的改动应限于升级脚手架能力（宜与业务 PR 分开）。根脚本 `admin:*` / `h5:*` 对应模板包，用于开箱演示与门禁；日常业务请使用生成应用的 **`前缀:*`** 或 `pnpm --filter <包名>`。详见 [新增业务应用](./adding-a-new-app.md)。
 
 ## 默认两条模板应用（仅脚手架源）
 
@@ -12,7 +14,7 @@
 | PC 管理端 | `apps/pc/pc-admin-template` | 后台、权限菜单、Element Plus       |
 | 移动端 H5 | `apps/h5/h5-template`       | 手机站、Vant、与宿主 App 的 Bridge |
 
-在仓库内**新增业务应用**时，根目录执行 `pnpm run create-app`，说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)。生成目录与上表**并列**于 `apps/pc/*`、`apps/h5/*`，仍通过 `@vue3-monorepo/shared` 复用能力。
+在仓库内**新增业务应用**时，根目录执行 `pnpm run create-app`，说明见 [新增业务应用](./adding-a-new-app.md)。生成目录与上表**并列**于 `apps/pc/*`、`apps/h5/*`，仍通过 `@vue3-monorepo/shared` 复用能力。
 
 路径未写全时，以**当前正在开发的业务应用**（`pnpm --filter` 指向的包）下 `src/` 为根。
 

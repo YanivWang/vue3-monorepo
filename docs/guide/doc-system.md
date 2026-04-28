@@ -4,6 +4,8 @@
 
 ## 1. 为什么需要「文档体系」
 
+**叙事核心**：**Monorepo（pnpm workspace）** 统管多包与共享层；**PC Admin 与 H5** 在工程上**并列**，文档分专页展开时不代表某一端次要。
+
 | 问题                                      | 文档体系的作法                                                                                                          |
 | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | README 只有一页，长文影响「一眼看清仓库」 | 根 README 保持**速查**；细节放到 **VitePress 文档站**（本 `docs/` 包）                                                  |
@@ -61,15 +63,17 @@ pnpm run docs:dev
 
 ### 第 2 步：按角色选读（可并行）
 
-| 角色 / 目标                                  | 建议阅读顺序                                                                                                                          |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **完全没接触过 monorepo 的新人**             | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 工作流](./monorepo-workflow.md)                  |
-| **要写 PC 后台页面**                         | [架构说明](./architecture.md)（admin 部分）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`） |
-| **要写 H5**                                  | 架构中 H5 部分 → [项目与目录约定](./project-conventions.md) → `bridge-protocol.md` 联调时对照                                         |
-| **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 工作流](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`               |
-| **要新增 H5 或 PC Admin 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [新增 H5 / Admin 应用](./adding-a-new-app.md)                            |
-| **要发版/过流水线**                          | [质量门禁与脚本](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                          |
-| **要部署/容器**                              | [部署说明](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                     |
+**定位**：**Monorepo（pnpm workspace）** 是协作枢纽；**PC Admin（Element Plus）与 H5（Vant）** 为两条**同等重要**的应用线——下表按「你要做什么」拆分，**无主次顺序**；某篇以 Admin 为主写实现细节时，仅因后台能力（动态路由、权限等）文档化较深，**不表示 H5 次要**。
+
+| 角色 / 目标                                  | 建议阅读顺序                                                                                                                                     |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **完全没接触过 monorepo 的新人**             | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 工作流](./monorepo-workflow.md)                             |
+| **要写 PC Admin 业务页面**                   | [架构说明](./architecture.md)（正文以 Admin 模板展开）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`） |
+| **要写 H5 业务页面**                         | [项目与目录约定](./project-conventions.md) → [架构说明](./architecture.md) 中与 H5 并列的仓库视图；与原生联调时对照应用内 `bridge-protocol.md`   |
+| **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 工作流](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`                          |
+| **要新增 PC Admin 或 H5 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [新增业务应用](./adding-a-new-app.md)                                               |
+| **要发版/过流水线**                          | [质量门禁与脚本](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                                     |
+| **要部署/容器**                              | [部署说明](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                                |
 
 ### 第 3 步：和团队规范对齐
 
