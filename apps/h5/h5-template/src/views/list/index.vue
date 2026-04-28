@@ -173,6 +173,11 @@ function goCreate() {
     flex: 1;
     padding: 0;
   }
+
+  :deep(.van-field__control::placeholder) {
+    color: var(--text-secondary);
+    opacity: 1;
+  }
 }
 
 .list-filter-btn {

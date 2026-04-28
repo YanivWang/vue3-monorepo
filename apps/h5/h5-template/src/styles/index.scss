@@ -43,6 +43,12 @@
   // 遮罩 / 占位（组件变量名与 token 语义一致）
   --van-overlay-background: var(--bg-overlay);
   --van-field-placeholder-text-color: var(--text-placeholder);
+
+  // Search：Vant 默认把 content 背景绑到 --van-background（已映射为页面底），与页面同色会「看不见」；
+  // 外槽白底还会在圆角处露出块面。改为浅底 + 透明外层，与页面区分且去掉伪「角标」感。
+  --van-search-background: transparent;
+  --van-search-content-background: var(--border-color-light);
+  --van-search-left-icon-color: var(--text-regular);
 }
 
 // 全局重置
