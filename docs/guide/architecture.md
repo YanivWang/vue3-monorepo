@@ -134,11 +134,12 @@ onUnmounted(cancelAllRequests)
 
 ## 主题体系
 
-- CSS 自定义属性（`:root` / `html.dark`）驱动
-- `useAppStore().setTheme('light' | 'dark' | 'system')` 切换；`system` 监听 `prefers-color-scheme`；模式枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`
-- **PC 模板交互**：顶栏 `LayoutHeader` 与登录页均提供主题下拉（浅色 / 深色 / 跟随系统），未登录页也可切换
-- Element Plus `theme-chalk/dark/css-vars.css` 在 `main.ts` 中于主样式前引入
-- `variables.scss` 经 Vite `additionalData` 注入各 SCSS；`index.scss` 含 reset、dark 覆盖与工具类；跨包运行时 Token 与 `applyThemeMode` 等见 `packages/shared/src/styles/tokens.ts`（详述见 [Design Token](./design-tokens.md)）
+- **CSS 变量**：共享包 `_root.scss` / `_brands.scss`（`html[data-brand]`）与各应用 `dark.scss`（`html.dark`）共同构成亮色、品牌与暗黑外观。
+- **深浅模式**：`useAppStore().setTheme('light' | 'dark' | 'system')`；内部 `applyThemeMode`；`system` 跟随 `prefers-color-scheme`，store 内 `themeTick` 用于 Vue 侧响应式刷新；枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`。
+- **品牌色**：`useAppStore().setBrand(BrandId)`；内部 `applyBrand`；预设列表见 `@vue3-monorepo/shared/styles/tokens`。
+- **PC 模板交互**：顶栏 `LayoutHeader` 与登录页均提供 **品牌色 + 主题模式** 下拉，未登录也可切换以便预览。
+- **Element Plus**：`theme-chalk/dark/css-vars.css` 在 `main.ts` 中紧跟官方 `dist/index.css` 之后、应用全局 `index.scss` 之前引入。
+- **构建注入**：`@vue3-monorepo/shared/styles/tokens/variables`（`$*`）经 Vite `additionalData` 注入各 SCSS；应用 `index.scss` 另 `@use` 共享 `root` / `brands` 与本地 `dark`（详见 [主题、暗黑与品牌色](./theme.md)、[Design Token](./design-tokens.md)）。
 
 ## 异常处理
 

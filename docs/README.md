@@ -30,6 +30,8 @@ docs/
 │   ├── adding-a-new-app.md     # create-app、多应用接线
 │   ├── monorepo-workflow.md    # pnpm、filter、新代码放哪
 │   ├── quality-gates.md        # verify:full、lint、test
+│   ├── theme.md                # 深浅模式、品牌色、CSS 变量来源
+│   ├── design-tokens.md        # Token 分层、扩展方式
 │   ├── architecture.md …
 ├── components/                 # 业务/共享组件文档
 └── package.json

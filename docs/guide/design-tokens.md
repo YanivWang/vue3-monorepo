@@ -4,14 +4,19 @@ Design Token 是设计与代码之间的**共同语言**，将颜色、字号、
 
 ## 概览
 
-本项目的 Token 分为两层（PC 应用内），并与 **`@vue3-monorepo/shared`** 中的 Token 对齐，便于跨端复用：
+Token 由 **`@vue3-monorepo/shared`** 与各应用样式入口共同组成，跨 PC / H5 对齐：
 
-| 层级                      | 实现                                                                                                                                            | 用途                                    |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| **CSS 自定义属性**        | 应用内 `src/assets/styles/variables.scss` + `dark.scss`（`:root` / `html.dark`）                                                                | 样式层动态主题切换                      |
-| **TypeScript Token 对象** | 应用内 `src/assets/styles/tokens.ts`；共享包 `packages/shared/src/styles/tokens.ts`（可 `import … from '@vue3-monorepo/shared/styles/tokens'`） | 逻辑层类型安全引用、`applyThemeMode` 等 |
+| 层级                               | 源码位置                                                                                                                                                                       | 用途                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **Sass 变量（`$*`）**              | `packages/shared/src/styles/tokens/_variables.scss`，经各端 `vite.config` → `css.preprocessorOptions.scss.additionalData` **注入所有** `<style lang="scss">` 与构建链中的 SCSS | `$spacing-md`、`$header-height` 等，无需在每个文件手动 `@use`                                    |
+| **`:root` CSS 变量**               | `packages/shared/src/styles/tokens/_root.scss`（由应用全局样式 `@use`）；**品牌**见 `_brands.scss`（`html[data-brand]`）                                                       | `--color-primary`、`--bg-page` 等                                                                |
+| **暗黑覆盖**                       | PC：`apps/pc/.../src/assets/styles/dark.scss`（`html.dark`）；H5：入口样式 `@use` shared `tokens/index.scss`（内含 dark 等）                                                   | 暗色下 `--text-*`、`--el-*` 等                                                                   |
+| **TypeScript（CSS 变量名字符串）** | PC 应用 `src/assets/styles/tokens.ts`（`tokens.color.primary` → `'--color-primary'`）                                                                                          | `getCssVar` / `setCssVar`、图表等脚本读样式                                                      |
+| **TypeScript（运行时主题 API）**   | `packages/shared/src/styles/tokens.ts`                                                                                                                                         | `applyBrand`、`applyThemeMode`、`getAppliedThemeMode`、`brandPalettes`、`BrandId`、`ThemeModeId` |
 
-Admin 模板优先使用**应用内** `tokens.ts` 与 SCSS 变量（与 Vite `additionalData` 注入的 `$spacing-*` 等一致）；需要与 H5 或 shared hooks 共用同一套 CSS 变量名时，以 shared 导出为准。
+可选：`apps/pc/pc-admin-template/src/assets/styles/variables.scss` 仅作本地对照清单，**默认不参与** `@use` 链；与 `_variables.scss` 重复时需以共享包与 `index.scss` 为准。
+
+Admin 模板在逻辑与文档示例中常用**应用内** `tokens.ts`（属性名为 `--*` 字符串）；与 H5、hooks 对齐变量名时以 **`@vue3-monorepo/shared/styles/tokens`**（SCSS + TS）为准。
 
 ## 颜色 Token
 
@@ -146,15 +151,10 @@ const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
 
 ## 主题扩展
 
-如需替换品牌色，只需修改 `variables.scss` 中的 `:root` 变量：
-
-```scss
-:root {
-  --color-primary: #1890ff; // 替换为你的品牌色
-}
-```
-
-暗黑模式下的覆盖在 `dark.scss` 的 `html.dark` 块中同步修改。
+- **新增或调整品牌预设**：编辑 `packages/shared/src/styles/tokens/_brands.scss`（`html[data-brand='…']`）及共享 `tokens.ts` 中的 `BrandId` / `brandPalettes`，并在应用 UI（下拉项等）与 Pinia `persist` 字段中保持一致。
+- **修改全局默认主色（无 `data-brand` 时）**：编辑 `packages/shared/src/styles/tokens/_variables.scss` 与 `_root.scss` 中的 Sass/`--*` 映射。
+- **某应用独占的暗黑或 Element 变量**：在对应应用的 `dark.scss`（或 H5 入口样式）中的 `html.dark` 块追加覆盖。
+- **仅在某页面试验色值**：可用应用内 `tokens.ts` 的 `setCssVar(tokens.color.primary, '#1890ff')`，或在浏览器开发者工具中临时改 `--color-primary`。
 
 ## 与 Figma 对接
 

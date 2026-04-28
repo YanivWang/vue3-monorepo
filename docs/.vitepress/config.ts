@@ -63,7 +63,7 @@ export default defineConfig({
           items: [
             { text: '架构说明', link: '/guide/architecture' },
             { text: '权限体系', link: '/guide/permission' },
-            { text: '主题与暗黑模式', link: '/guide/theme' },
+            { text: '主题、暗黑与品牌色', link: '/guide/theme' },
             { text: 'Design Token', link: '/guide/design-tokens' },
             { text: '国际化', link: '/guide/i18n' },
             { text: 'HTTP 与 Mock', link: '/guide/http-and-mock' },

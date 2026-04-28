@@ -32,8 +32,8 @@ features:
     details: 支持后端菜单驱动的动态路由、按钮级 v-permission/v-role 指令、usePermission Composable，角色与权限码双模式。
 
   - icon: 🌙
-    title: 暗黑模式
-    details: 基于 CSS 变量与 html.dark 的完整暗黑主题；light / dark / system 三种模式（ThemeMode 在 shared 枚举）；Element Plus 官方暗色变量接入。PC 模板在顶栏与登录页均提供下拉切换，未登录也可选主题。
+    title: 主题与品牌色
+    details: 共享包内 Sass Token（:root、html.dark、html[data-brand]）与 JS API（applyThemeMode、applyBrand、brandPalettes）；light/dark/system 三种深浅模式；PC 顶栏与登录页可调品牌色与主题，未登录也可预览。
 
   - icon: 🌐
     title: 国际化

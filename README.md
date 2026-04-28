@@ -31,7 +31,11 @@ pnpm run docs:dev
 
 ## 技术栈（摘要）
 
-Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Vant 4 与 Bridge；请求封装在 `@vue3-monorepo/shared/request-*`。PC 模板在**顶栏**与**登录页**提供主题下拉（浅色 / 深色 / 跟随系统），枚举 `ThemeMode` 来自 `@vue3-monorepo/shared/enums`，样式与 Token 说明见 [主题与暗黑模式](docs/guide/theme.md)、[Design Token](docs/guide/design-tokens.md)。**带版本与模块说明**见文档站 [架构说明](docs/guide/architecture.md)。
+Vue 3、Vite、TypeScript、Vue Router、Pinia；PC 为 Element Plus，H5 为 Vant 4 与 Bridge；请求封装在 `@vue3-monorepo/shared/request-*`。
+
+**主题与 Design Token**：深浅模式为 `light` / `dark` / `system`（`ThemeMode` 见 `@vue3-monorepo/shared/enums`），运行时通过 `applyThemeMode` 切换 `html` 的 `.dark` class；**品牌色**为多套预设（如 blue / green / …），通过 `applyBrand` 设置 `html[data-brand]`，色值由 `@vue3-monorepo/shared` 下 SCSS（`_brands.scss` 等）提供。PC 模板在**顶栏**与**登录页**提供**品牌色 + 主题模式**切换；H5 模板在「主题」示例页等处可调品牌与模式（详见应用内路由）。
+
+Sass 侧：`vite.config` 的 `additionalData` 注入 `@vue3-monorepo/shared/styles/tokens/variables`（`$spacing-*` 等）；`:root` / 暗黑覆盖以共享包 `packages/shared/src/styles/tokens/` 与各应用入口样式为准。完整说明见 [主题、暗黑与品牌色](docs/guide/theme.md)、[Design Token](docs/guide/design-tokens.md)、[架构说明](docs/guide/architecture.md)。
 
 ## 仓库结构
 
