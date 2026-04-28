@@ -13,7 +13,8 @@ import { startMock } from './mock'
 import { useAppStore } from './stores'
 import { initSentry } from './plugins/sentry'
 import { bootstrapUserInfo } from './bootstrap/userInfo'
-import { collectWebVitals } from './plugins/webVitals'
+import { setupClientErrorReporting } from './plugins/clientErrorReport'
+import { collectWebVitals } from './plugins/webVitalsReport'
 
 //在vite里，这样写，目的是把这个scss模块当做 “副作用”执行-构建时会编译成css文件，并挂到整个应用上
 //相当于给h5模版加了一个全局link的css样式，保证应用已启动就能加载这些样式
@@ -28,6 +29,7 @@ async function bootstrap() {
 
   const app = createApp(App)
   initSentry(app)
+  setupClientErrorReporting(app)
 
   const pinia = createPinia()
   pinia.use(piniaPluginPersistedstate)
