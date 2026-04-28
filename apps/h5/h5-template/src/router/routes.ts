@@ -81,6 +81,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'common.noData', requiresAuth: false, keepAlive: false }
   },
   {
+    path: '/dev/error-collect',
+    name: 'DevErrorCollect',
+    component: () => import('@/views/dev/error-collect-test.vue'),
+    meta: { title: '错误采集测试', requiresAuth: false, keepAlive: false }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/error/404.vue'),
