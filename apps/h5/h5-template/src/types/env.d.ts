@@ -10,6 +10,10 @@ interface ImportMetaEnv {
   readonly VITE_SENTRY_DSN: string
   readonly VITE_SENTRY_ENV: string
   readonly VITE_APP_VERSION: string
+  /** 完整 URL，接收 POST JSON（Web Vitals 指标）；未配置则仅本地调试、不上报 */
+  readonly VITE_WEB_VITALS_REPORT_URL: string
+  /** 设为 true 则每条指标打印 console；设为 false 则即使在 DEV 也不打印（仍上报）；未设则 DEV 下默认打印 */
+  readonly VITE_WEB_VITALS_DEBUG: string
 }
 
 interface ImportMeta {

@@ -18,6 +18,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@sentry/vue": "catalog:",
     "@vue3-monorepo/shared": "workspace:*",
     "@vueuse/core": "catalog:",
     "axios": "catalog:",
@@ -25,12 +26,12 @@
     "lodash-es": "catalog:",
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
-    "@sentry/vue": "catalog:",
     "vant": "catalog:",
     "vconsole": "catalog:",
     "vue": "catalog:",
     "vue-i18n": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "web-vitals": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:",

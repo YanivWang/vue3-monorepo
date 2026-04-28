@@ -329,6 +329,9 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 4.6.4(vue@3.5.33(typescript@5.5.4))
+      web-vitals:
+        specifier: ^5.2.0
+        version: 5.2.0
     devDependencies:
       '@types/lodash-es':
         specifier: 'catalog:'
@@ -4224,6 +4227,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  web-vitals@5.2.0:
+    resolution: {integrity: sha512-i2z98bEmaCqSDiHEDu+gHl/dmR4Q+TxFmG3/13KkMO+o8UxQzCqWaDRCiLgEa41nlO4VpXSI0ASa1xWmO9sBlA==}
 
   whatwg-mimetype@3.0.0:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
@@ -8216,6 +8222,8 @@ snapshots:
       '@vue/shared': 3.5.33
     optionalDependencies:
       typescript: 5.5.4
+
+  web-vitals@5.2.0: {}
 
   whatwg-mimetype@3.0.0: {}
 
