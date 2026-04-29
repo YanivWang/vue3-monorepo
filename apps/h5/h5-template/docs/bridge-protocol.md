@@ -1,4 +1,4 @@
-# H5 WebView 与原生 App Bridge 协议（约定稿）
+# H5 Bridge 与 WebView
 
 > 与 iOS / Android 客户端共维。`@vue3-monorepo/shared/bridge` 的 `native-app` 策略依赖客户端注入的全局对象与 `postMessage` 约定；以下为业务对齐用的**最小协议说明**，详细字段以各端 SDK 为准。
 

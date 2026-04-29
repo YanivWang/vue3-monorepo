@@ -1,31 +1,60 @@
 import type { App } from 'vue'
 import {
-  createI18nInstance,
+  createI18nLazyShell,
+  mergeSharedLocaleMessage,
+  preloadSharedLocales,
   setLocale as _setLocale,
   getLocale as _getLocale,
   BASE_LOCALES,
   type BaseLocale
 } from '@vue3-monorepo/shared/locale'
 
-/**
- * Admin 端 i18n 实例：直接复用 @vue3-monorepo/shared/locale 的中/英文基础文案。
- * 若业务需要扩展词条，可在此通过 messages 参数合并更多 messages（见 @vue3-monorepo/shared/locale README）。
- */
-export const i18n = createI18nInstance({
-  locale: ((typeof localStorage !== 'undefined' && (localStorage.getItem('language') as BaseLocale)) ||
-    'zh-CN') as BaseLocale
+/** 与 Pinia `app` store 持久化字段对齐（插件在 store 之后 hydrate） */
+function resolveInitialPcLocale(): BaseLocale {
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('app')
+      if (raw) {
+        const data = JSON.parse(raw) as { language?: string }
+        const lang = data.language
+        if (lang && BASE_LOCALES.includes(lang as BaseLocale)) return lang as BaseLocale
+      }
+    } catch {
+      /* ignore */
+    }
+    const legacy = localStorage.getItem('language')
+    if (legacy && BASE_LOCALES.includes(legacy as BaseLocale)) return legacy as BaseLocale
+  }
+  return 'zh-CN'
+}
+
+const initialLocale = resolveInitialPcLocale()
+
+export const i18n = createI18nLazyShell({
+  locale: initialLocale,
+  fallbackLocale: 'zh-CN'
 })
+
+/** 须在 `app.use(i18n)` 之前调用（bootstrap） */
+export async function loadInitialAdminI18n(): Promise<void> {
+  await preloadSharedLocales(i18n, initialLocale, 'zh-CN')
+}
 
 export function setupI18n(app: App): void {
   app.use(i18n)
 }
 
-/** 切换当前语言 */
-export function setLocale(locale: BaseLocale): void {
-  _setLocale(i18n, locale)
+export async function ensureAdminLocaleLoaded(locale: BaseLocale): Promise<void> {
+  await mergeSharedLocaleMessage(i18n, locale)
 }
 
-/** 读取当前语言 */
+/** 切换语言并写入 `language` 本地键（业务或测试用） */
+export async function setLocale(locale: BaseLocale): Promise<void> {
+  await ensureAdminLocaleLoaded(locale)
+  _setLocale(i18n, locale)
+  if (typeof localStorage !== 'undefined') localStorage.setItem('language', locale)
+}
+
 export function getLocale(): string {
   return _getLocale(i18n)
 }

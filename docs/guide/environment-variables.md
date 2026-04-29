@@ -37,4 +37,4 @@ Web Vitals、前端错误等变量见 [apps/h5/h5-template/.env.example](https:/
 ## 与文档站、CI 的关系
 
 - 文档站（本包）的构建环境变量见 [CI 与自动化](./ci-and-automation.md)（如 `VITEPRESS_BASE`）。
-- 各应用代理与 Mock 还涉及 Vite `server.proxy` 与 `VITE_USE_MOCK`；细节见 [HTTP 与 Mock](./http-and-mock.md)。
+- 各应用代理与 Mock 还涉及 Vite `server.proxy` 与 `VITE_USE_MOCK`；细节见 [HTTP 请求控制，数据 Mock](./http-and-mock.md)。

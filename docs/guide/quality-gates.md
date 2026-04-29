@@ -1,4 +1,4 @@
-# 质量门禁与脚本
+# 代码质量与规范约束
 
 把根 `package.json` 里的**常用脚本**说明白：什么时候跑、失败代表什么、和发版/PR 怎么对齐。根 `README.md` 的「根目录脚本（摘录）」是**极简索引**，本页是**完整说明**；与 **GitHub Actions** 的对应见 [CI 与自动化](./ci-and-automation.md)。
 
@@ -87,7 +87,19 @@
 
 更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新人上手指南](./onboarding.md)。
 
-## 9. 与 GitHub Actions 的对应
+## 9. Git 钩子与提交信息
+
+与根 `package.json` 一致：
+
+| 机制            | 说明                                                                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **engines**     | 根 `package.json` 的 `engines.node` / `engines.pnpm` 锁定运行环境；与新人文档、排障一致。                                                                             |
+| **husky**       | 根 `prepare` 安装钩子；`.husky/pre-commit` 先跑 `check:refs`、`check:request-core`，再 `lint-staged`。`.husky/commit-msg` 跑 **commitlint**（Conventional Commits）。 |
+| **lint-staged** | 根 `package.json#lint-staged`：**ESLint / Stylelint / Prettier** 仅作用于暂存区对应后缀（与全仓 `lint` / `lint:style` / `format` 互补）。                             |
+
+交互式提交说明见根目录 `CONTRIBUTING.md`（本仓库**未**将 `commitizen` 列入 `devDependencies`，若团队需要可自行加装）。
+
+## 10. 与 GitHub Actions 的对应
 
 当前仓库在 PR/主分支上**未**统一跑 `verify:full` 的单一工作流；**文档站**由 [`.github/workflows/docs-github-pages.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/docs-github-pages.yml) 在变更 `docs/**` 等路径时构建并发布至 GitHub Pages，见 [CI 与自动化](./ci-and-automation.md)。
 

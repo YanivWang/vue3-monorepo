@@ -6,4 +6,4 @@
 
 **提交与 Husky**（摘要）：根目录 `pnpm install` 触发 `prepare` 安装 `pre-commit`（lint-staged）与 `commit-msg`（commitlint）。`HUSKY=0 git commit` 可临时跳过（不建议长期使用）。
 
-**提 PR 前**建议至少与 `CONTRIBUTING` 中基线一致；大改前可执行根目录 `pnpm run verify:full`，详见 [质量门禁与脚本](./quality-gates.md)。
+**提 PR 前**建议至少与 `CONTRIBUTING` 中基线一致；大改前可执行根目录 `pnpm run verify:full`，详见 [代码质量与规范约束](./quality-gates.md)。

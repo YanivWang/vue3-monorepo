@@ -3,7 +3,7 @@
 ## 整体设计
 
 ```
-后端菜单接口 (GET /menu/routes)
+后端菜单接口（`GET {VITE_API_PREFIX}/menu/routes`，模板中 `VITE_API_PREFIX` 多为 `/api`，即 `GET /api/menu/routes`）
     ↓
 usePermissionStore.generateRoutes()
     ↓ menuToRoutes()
@@ -85,7 +85,7 @@ if (hasRole('admin')) {
 
 ## 权限数据来源
 
-权限码和角色均来自登录后 `/user/info` 接口返回的 `UserInfo`：
+权限码和角色均来自登录后用户信息接口返回的 `UserInfo`（模板为 `GET {VITE_API_PREFIX}/user/info`，如 `/api/user/info`）：
 
 ```ts
 interface UserInfo {

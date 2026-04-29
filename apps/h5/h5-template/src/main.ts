@@ -7,7 +7,7 @@ import { useVConsole } from '@vue3-monorepo/shared/hooks-h5'
 
 import App from './App.vue'
 import { router } from './router'
-import { i18n } from './composables/useI18n'
+import { i18n, loadInitialH5I18n } from './composables/useI18n'
 import { registerDirectives } from './composables/registerDirectives'
 import { startMock } from './mock'
 import { useAppStore } from './stores'
@@ -25,6 +25,8 @@ async function bootstrap() {
   await startMock()
 
   useBridge()
+
+  await loadInitialH5I18n()
 
   const app = createApp(App)
   setupClientErrorReporting(app)

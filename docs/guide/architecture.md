@@ -22,7 +22,7 @@ flowchart TB
   h5 --> shared
 ```
 
-> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [新增业务应用](./adding-a-new-app.md)）。
+> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [脚手架一键新增业务应用](./adding-a-new-app.md)）。
 
 | 单元                        | 职责                                                                                                                    |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -38,19 +38,19 @@ flowchart TB
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
 
-| 分类     | 技术                                                                                 | 版本                                                                                    |
-| -------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| 框架     | Vue 3 (Composition API)                                                              | ^3.4.31                                                                                 |
-| 构建     | Vite                                                                                 | ^5.3.3                                                                                  |
-| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                           | ^5.5.3                                                                                  |
-| UI（PC） | Element Plus                                                                         | ^2.7.6                                                                                  |
-| UI（H5） | Vant 4                                                                               | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                       |
-| 状态管理 | Pinia + pinia-plugin-persistedstate                                                  | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                     |
-| 路由     | Vue Router                                                                           | ^4.3.3                                                                                  |
-| HTTP     | Axios（`src/utils/http` 封装）                                                       | ^1.7.2                                                                                  |
-| 国际化   | Vue I18n（`src/locales`）                                                            | ^9.14.4                                                                                 |
-| 监控     | H5：`web-vitals` + 自研错误上报；PC：全局 `errorHandler` + 可扩展 `setErrorReporter` | 见各应用 `plugins`、[H5 observability](../../apps/h5/h5-template/docs/observability.md) |
-| 工具     | VueUse、Lodash-ES、Day.js 等                                                         | 见 `dependencies`                                                                       |
+| 分类     | 技术                                                                                 | 版本                                                                                             |
+| -------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| 框架     | Vue 3 (Composition API)                                                              | ^3.4.31                                                                                          |
+| 构建     | Vite                                                                                 | ^5.3.3                                                                                           |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                           | ^5.5.3                                                                                           |
+| UI（PC） | Element Plus                                                                         | ^2.7.6                                                                                           |
+| UI（H5） | Vant 4                                                                               | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                |
+| 状态管理 | Pinia + pinia-plugin-persistedstate                                                  | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                              |
+| 路由     | Vue Router                                                                           | ^4.3.3                                                                                           |
+| HTTP     | Axios（`src/utils/http` 封装）                                                       | ^1.7.2                                                                                           |
+| 国际化   | Vue I18n（`src/locales`）                                                            | ^9.14.4                                                                                          |
+| 监控     | H5：`web-vitals` + 自研错误上报；PC：全局 `errorHandler` + 可扩展 `setErrorReporter` | 见各应用 `plugins`、[全局性能监控](./web-vitals.md)、`apps/h5/h5-template/docs/observability.md` |
+| 工具     | VueUse、Lodash-ES、Day.js 等                                                         | 见 `dependencies`                                                                                |
 
 ## 启动流程
 
@@ -93,7 +93,7 @@ beforeEach（含 NProgress）:
 afterEach: document.title、tabsStore.addTab、NProgress.done
 ```
 
-## 状态管理
+## 状态管理 {#state-management}
 
 | Store        | 职责                          |
 | ------------ | ----------------------------- |
@@ -102,7 +102,7 @@ afterEach: document.title、tabsStore.addTab、NProgress.done
 | `permission` | 菜单/动态路由/路由加载状态    |
 | `tabs`       | 标签页列表/当前 Tab 操作      |
 
-## HTTP 层（`utils/http/`）
+## HTTP 层（`utils/http/`） {#http-layer}
 
 ```
 HttpRequest 类
@@ -127,7 +127,7 @@ import { cancelAllRequests } from '@/utils/http'
 onUnmounted(cancelAllRequests)
 ```
 
-## 权限体系
+## 权限体系 {#permission-arch}
 
 ```
 后端菜单 → 动态路由（页面级）
@@ -140,12 +140,12 @@ onUnmounted(cancelAllRequests)
 - **CSS 变量**：共享包 `_root.scss` / `_brands.scss`（`html[data-brand]`）；**H5** 全局入口 `@use` 共享 `tokens/index.scss`（内含共享 `dark.scss`）；**PC** 在 `assets/styles/index.scss` 中 `@use` 共享 `tokens/root`、`tokens/brands` 与**本应用** `dark.scss`（业务 token 与 **Element Plus `--el-*`** 一并覆盖，不经共享 `tokens/index.scss`）。
 - **深浅模式**：`useAppStore().setTheme('light' | 'dark' | 'system')`；内部 `applyThemeMode`；`system` 跟随 `prefers-color-scheme`，store 内 `themeTick` 用于 Vue 侧响应式刷新；枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`。
 - **品牌色**：`useAppStore().setBrand(BrandId)`；内部 `applyBrand`；`getAppliedBrand` / `getAppliedThemeMode` 等见 `@vue3-monorepo/shared/styles/tokens`。
-- **无 Pinia 场景**：`createUseTheme`（`@vue3-monorepo/shared/hooks-core`）、`createUseThemeH5`（`@vue3-monorepo/shared/hooks-h5`），详见 [主题、暗黑与品牌色](./theme.md)。
+- **无 Pinia 场景**：`createUseTheme`（`@vue3-monorepo/shared/hooks-core`）、`createUseThemeH5`（`@vue3-monorepo/shared/hooks-h5`），详见 [主题与品牌切换](./theme.md)。
 - **PC 模板交互**：顶栏 `LayoutHeader` 与登录页均提供 **品牌色 + 主题模式** 下拉，未登录也可切换以便预览。
 - **Element Plus**：`theme-chalk/dark/css-vars.css` 在 `main.ts` 中紧跟官方 `dist/index.css` 之后、应用全局 `index.scss` 之前引入。
 - **构建注入**：`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;` 经 Vite `additionalData` 注入各 SFC 的 SCSS（详见 [Design Token](./design-tokens.md)）。
 
-## 异常处理
+## 异常处理 {#error-handling}
 
 | 层级                     | 处理方式                                        |
 | ------------------------ | ----------------------------------------------- |
@@ -155,7 +155,7 @@ onUnmounted(cancelAllRequests)
 | 全局 JS 错误             | `window.onerror`                                |
 | 未捕获 Promise           | `window.addEventListener('unhandledrejection')` |
 
-## 构建优化
+## 构建优化 {#build-optimization}
 
 - **分包**：element-plus / vue-vendor / vue-i18n / utils 独立 chunk
 - **压缩**：Gzip + Brotli 双格式（nginx 预读压缩文件）

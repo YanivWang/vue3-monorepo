@@ -18,9 +18,14 @@ hero:
 
 features:
   - icon: ✅
-    title: 质量门禁
+    title: Monorepo 现代化工程管理方案
+    link: /guide/monorepo-workflow
+    details: Monorepo 是一种现代化工程管理方案。它的优势是实现了规范的统一化管理、代码的统一化管理、方便的代码共享。
+
+  - icon: ✅
+    title: 代码质量与规范约束
     link: /guide/quality-gates
-    details: 版本锁定与类型检查，格式化与 Lint，提交规范与钩子一站配置。
+    details: 环境版本锁定、TypeScript、Prettier、ESLint、StyleLint、Git 提交校验（commitlint、husky、lint-staged）。
 
   - icon: 🔐
     title: 权限体系
@@ -28,19 +33,19 @@ features:
     details: 菜单驱动动态路由、路由守卫与指令/组合式 API，角色与权限码双模式。
 
   - icon: 🌙
-    title: 主题与品牌
+    title: 主题与品牌切换
     link: /guide/theme
     details: 多主题与明暗切换，Design Token 与 CSS 变量驱动，支持多品牌皮肤。
 
   - icon: 🌐
-    title: 国际化
+    title: i18n 国际化
     link: /guide/i18n
-    details: 语言包懒加载，与组件库语言联动，适合后台与 C 端活动等多语言场景。
+    details: 语言包懒加载（shared + 各端动态 import）；Vue I18n 与 Element Plus / Vant 语言联动，store 持久化。
 
   - icon: 📡
-    title: HTTP、Mock 与请求控制
+    title: HTTP 请求控制，数据 Mock
     link: /guide/http-and-mock
-    details: 统一请求封装与 Mock 联调；取消、去重与竞态治理；PC / H5 分层复用。
+    details: 统一请求封装与 Mock 联调；请求取消、去重与竞态治理；PC / H5 分层复用。
 
   - icon: 🛡️
     title: 全局错误监控
@@ -49,8 +54,8 @@ features:
 
   - icon: 🛡️
     title: 全局性能监控
-    link: /guide/errors-and-observability
-    details: 异常与 Promise 分层处理，插件化上报，便于对接自建观测与多端统一策略。
+    link: /guide/web-vitals
+    details: Web Vitals（Core Web Vitals）等指标采集，环境变量配置上报 URL；H5 模板独立插件接入，可与错误观测共用版本号与采集链路。
 
   - icon: 📱
     title: H5 Bridge 与 WebView
@@ -58,7 +63,7 @@ features:
     details: 与宿主 App 的 JSBridge 约定与典型 WebView 场景，细节见仓库协议文档。
 
   - icon: ➕
-    title: 脚手架新增业务应用
+    title: 脚手架一键新增业务应用
     link: /guide/adding-a-new-app
     details: 从 PC / H5 模板一键生成业务应用，对齐 workspace、脚本与测试等 monorepo 约定。
 

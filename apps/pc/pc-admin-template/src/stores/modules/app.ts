@@ -9,7 +9,7 @@ import {
   type BrandId,
   type ThemeModeId
 } from '@vue3-monorepo/shared/styles/tokens'
-import { i18n } from '@/locales'
+import { i18n, ensureAdminLocaleLoaded } from '@/locales'
 
 type LanguageType = 'zh-CN' | 'en-US'
 
@@ -82,8 +82,10 @@ export const useAppStore = defineStore(
       applyBrand(id)
     }
 
-    function setLanguage(lang: LanguageType): void {
+    /** 切换界面语言（按需加载对应语言包 chunk） */
+    async function setLanguage(lang: LanguageType): Promise<void> {
       language.value = lang
+      await ensureAdminLocaleLoaded(lang)
       const composer = i18n.global as unknown as Composer
       composer.locale.value = lang
     }

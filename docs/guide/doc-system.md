@@ -20,9 +20,9 @@
 | 读者          | 建议入口                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | 新同学        | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → 侧栏「入门与工程化」                              |
-| 日常开发      | [项目与目录约定](./project-conventions.md)、[质量门禁与脚本](./quality-gates.md)、[排障与 FAQ](./troubleshooting.md)         |
+| 日常开发      | [项目与目录约定](./project-conventions.md)、[代码质量与规范约束](./quality-gates.md)、[排障与 FAQ](./troubleshooting.md)     |
 | 做需求/看架构 | 侧栏「应用架构与工程实践」→ [架构说明](./architecture.md) 等                                                                 |
-| 发版/CI/部署  | [CI 与自动化](./ci-and-automation.md)、[部署说明](./deploy.md)、[分支策略](./branch-strategy.md)                             |
+| 发版/CI/部署  | [CI 与自动化](./ci-and-automation.md)、[部署与 Docker](./deploy.md)、[分支策略](./branch-strategy.md)                        |
 | 提 PR         | 根 [CONTRIBUTING.md](https://github.com/YanivWang/vue3-monorepo/blob/main/CONTRIBUTING.md) + [贡献与协作](./contributing.md) |
 
 ## 3. 文档资产全景（本仓库里都有啥）
@@ -36,7 +36,7 @@
 | **各应用内注释**   | `apps/*`、`packages/shared` 源码                     | 实现细节、与单行逻辑绑定                                    | 改具体文件时           |
 | **配置即文档**     | `packages/shared/package.json` 的 `exports`          | **子路径怎么 import**，以 `exports` 为唯一真源              | 从 shared 引用时必查   |
 | **锁与版本**       | `pnpm-lock.yaml`、`pnpm-workspace.yaml` 的 `catalog` | 依赖版本真相来源                                            | 升级依赖、排障         |
-| **Docker**         | `docker/*`、`scripts/docker.sh`                      | 与 [部署说明](./deploy.md) 及仓库内 compose/nginx 配套      | 联调/预发镜像          |
+| **Docker**         | `docker/*`、`scripts/docker.sh`                      | 与 [部署与 Docker](./deploy.md) 及仓库内 compose/nginx 配套 | 联调/预发镜像          |
 
 **边界约定**（单源、少双改）：
 
@@ -48,7 +48,7 @@
 ### 第 0 步：5 分钟（在 GitHub 上就能完成）
 
 1. 读根 `README` 的 [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求)（把 Node / pnpm 装对版本）。
-2. 扫一眼 [仓库结构](https://github.com/YanivWang/vue3-monorepo#仓库结构) 与 [根目录脚本（摘录）](https://github.com/YanivWang/vue3-monorepo#根目录脚本摘录)；完整命令见 [质量门禁与脚本](./quality-gates.md)。
+2. 扫一眼 [仓库结构](https://github.com/YanivWang/vue3-monorepo#仓库结构) 与 [根目录脚本（摘录）](https://github.com/YanivWang/vue3-monorepo#根目录脚本摘录)；完整命令见 [代码质量与规范约束](./quality-gates.md)。
 
 ### 第 1 步：本地把文档站跑起来（10 分钟）
 
@@ -67,13 +67,13 @@ pnpm run docs:dev
 
 | 角色 / 目标                                  | 建议阅读顺序                                                                                                                                     |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **完全没接触过 monorepo 的新人**             | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 工作流](./monorepo-workflow.md)                             |
+| **完全没接触过 monorepo 的新人**             | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 现代化工程管理方案](./monorepo-workflow.md)                 |
 | **要写 PC Admin 业务页面**                   | [架构说明](./architecture.md)（正文以 Admin 模板展开）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`） |
 | **要写 H5 业务页面**                         | [项目与目录约定](./project-conventions.md) → [架构说明](./architecture.md) 中与 H5 并列的仓库视图；与原生联调时对照应用内 `bridge-protocol.md`   |
-| **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 工作流](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`                          |
-| **要新增 PC Admin 或 H5 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [新增业务应用](./adding-a-new-app.md)                                               |
-| **要发版/过流水线**                          | [质量门禁与脚本](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                                     |
-| **要部署/容器**                              | [部署说明](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                                |
+| **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 现代化工程管理方案](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`              |
+| **要新增 PC Admin 或 H5 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [脚手架一键新增业务应用](./adding-a-new-app.md)                                     |
+| **要发版/过流水线**                          | [代码质量与规范约束](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                                 |
+| **要部署/容器**                              | [部署与 Docker](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                           |
 
 ### 第 3 步：和团队规范对齐
 
@@ -86,7 +86,7 @@ pnpm run docs:dev
 | 站点框架 | [VitePress](https://vitepress.dev/) | 版本见 `pnpm-workspace.yaml` 的 `catalog.vitepress`（如 `^1.6.4`）；Markdown 驱动，本仓库中文默认语言 |
 | 包管理   | 与根工程一致，**仅 pnpm**           | `docs` 是 workspace 一包：`@vue3-monorepo/docs`                                                       |
 | 本地开发 | `pnpm run docs:dev`                 | 见根 `package.json` 的 `docs:dev`                                                                     |
-| 生产构建 | `pnpm run docs:build`               | 产物在 `docs/.vitepress/dist`；部署见 [部署说明](./deploy.md)                                         |
+| 生产构建 | `pnpm run docs:build`               | 产物在 `docs/.vitepress/dist`；部署见 [部署与 Docker](./deploy.md)                                    |
 
 ## 6. 目录与内容地图（`docs/` 里有什么）
 
@@ -101,15 +101,15 @@ pnpm run docs:dev
 
 根 README 仅保留**摘录与链接**；下列主题以**文档站**为展开层：
 
-| 需求                                   | 文档站                                                         |
-| -------------------------------------- | -------------------------------------------------------------- |
-| 排障、安装异常                         | [排障与 FAQ](./troubleshooting.md)                             |
-| 环境变量                               | [环境变量](./environment-variables.md)                         |
-| 新功能/目录放哪                        | [项目与目录约定](./project-conventions.md)                     |
-| 脚本、verify、质量                     | [质量门禁与脚本](./quality-gates.md)                           |
-| 架构、请求、i18n、安全、性能、可观测性 | 侧栏「应用架构与工程实践」下各页                               |
-| Docker、发版、CI                       | [部署说明](./deploy.md)、[CI 与自动化](./ci-and-automation.md) |
-| 贡献、提交、PR                         | [贡献与协作](./contributing.md) + 根 `CONTRIBUTING.md`         |
+| 需求                                   | 文档站                                                              |
+| -------------------------------------- | ------------------------------------------------------------------- |
+| 排障、安装异常                         | [排障与 FAQ](./troubleshooting.md)                                  |
+| 环境变量                               | [环境变量](./environment-variables.md)                              |
+| 新功能/目录放哪                        | [项目与目录约定](./project-conventions.md)                          |
+| 脚本、verify、质量                     | [代码质量与规范约束](./quality-gates.md)                            |
+| 架构、请求、i18n、安全、性能、可观测性 | 侧栏「应用架构与工程实践」下各页                                    |
+| Docker、发版、CI                       | [部署与 Docker](./deploy.md)、[CI 与自动化](./ci-and-automation.md) |
+| 贡献、提交、PR                         | [贡献与协作](./contributing.md) + 根 `CONTRIBUTING.md`              |
 
 ## 8. 常见问题
 

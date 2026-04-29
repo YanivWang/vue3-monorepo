@@ -26,7 +26,7 @@ pnpm install
 
 安装完成后，根与子 workspace 的依赖由 **单一** `pnpm-lock.yaml` 管理。
 
-要在 monorepo 里**新增业务应用**（首个或后续的 **PC Admin 与 H5**，顺序不限），须在仓库根执行 `pnpm run create-app`（交互式）；**勿**在 `pc-admin-template` / `h5-template` 内写业务。说明与手工步骤见 [新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
+要在 monorepo 里**新增业务应用**（首个或后续的 **PC Admin 与 H5**，顺序不限），须在仓库根执行 `pnpm run create-app`（交互式）；**勿**在 `pc-admin-template` / `h5-template` 内写业务。说明与手工步骤见 [脚手架一键新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 3. 本地开发（三端别搞混端口）
 
@@ -82,7 +82,7 @@ pnpm install
 | 仅 Admin 子包内测试 | `pnpm run admin:test`                                                                                                                                                                                     |
 | 仅 H5 子包内测试    | `pnpm run h5:test`（须在 H5 包内存在 `test` 脚本；模板已与 admin 对齐）                                                                                                                                   |
 
-`verify:full` 用的是根 `test:run`；检查项、与 `check:refs` 等差异见 [质量门禁与脚本](./quality-gates.md)。
+`verify:full` 用的是根 `test:run`；检查项、与 `check:refs` 等差异见 [代码质量与规范约束](./quality-gates.md)。
 
 ## 8. 全量与专项校验
 
@@ -95,12 +95,12 @@ pnpm install
 
 ## 9. Docker（可选）
 
-与 [部署说明](./deploy.md) 及根 README 中 Docker/compose 速查一致，常用（封装自 `scripts/docker.sh`）：
+与 [部署与 Docker](./deploy.md) 及根 README 中 Docker/compose 速查一致，常用（封装自 `scripts/docker.sh`）：
 
 - `pnpm run docker:up` / `pnpm run docker:down` / `pnpm run docker:logs`
 - 单服务：`pnpm run docker:admin:up` 等
 
-详见 [部署说明](./deploy.md)，端口以 `docker-compose` 与 `.env` 为准。
+详见 [部署与 Docker](./deploy.md)，端口以 `docker-compose` 与 `.env` 为准。
 
 ## 10. 仓库目录（和「单项目模板」不同）
 
@@ -120,10 +120,10 @@ pnpm install
 └── package.json
 ```
 
-**业务开发**（页面、API、store 等）一律以 **`pnpm run create-app` 生成**的应用目录下 `src/` 为根，**勿**在 `pc-admin-template` / `h5-template` 内编写。上表 `admin:dev` / `h5:dev` 拉起的是模板包，用于演示与门禁。完整约定见 [Monorepo 工作流](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
+**业务开发**（页面、API、store 等）一律以 **`pnpm run create-app` 生成**的应用目录下 `src/` 为根，**勿**在 `pc-admin-template` / `h5-template` 内编写。上表 `admin:dev` / `h5:dev` 拉起的是模板包，用于演示与门禁。完整约定见 [Monorepo 现代化工程管理方案](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 11. 下一步
 
 - [架构说明](./architecture.md) — 应用启动、路由、权限
-- [Monorepo 工作流](./monorepo-workflow.md) — `pnpm` `filter`、加依赖
-- [质量门禁与脚本](./quality-gates.md) — 深度解释 `verify:full` 与 CI 友好习惯
+- [Monorepo 现代化工程管理方案](./monorepo-workflow.md) — `pnpm` `filter`、加依赖
+- [代码质量与规范约束](./quality-gates.md) — 深度解释 `verify:full` 与 CI 友好习惯

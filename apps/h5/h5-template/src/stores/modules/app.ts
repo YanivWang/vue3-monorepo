@@ -10,7 +10,7 @@ import {
   type ThemeModeId
 } from '@vue3-monorepo/shared/styles/tokens'
 import { detectHost } from '@vue3-monorepo/shared/utils'
-import { i18n } from '@/composables/useI18n'
+import { i18n, ensureH5LocaleReady } from '@/composables/useI18n'
 
 type LanguageType = 'zh-CN' | 'en-US'
 
@@ -67,8 +67,9 @@ export const useAppStore = defineStore(
       applyBrand(id)
     }
 
-    function setLanguage(lang: LanguageType): void {
+    async function setLanguage(lang: LanguageType): Promise<void> {
       language.value = lang
+      await ensureH5LocaleReady(lang)
       const composer = i18n.global as unknown as Composer
       composer.locale.value = lang
     }

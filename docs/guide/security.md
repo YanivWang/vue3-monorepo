@@ -7,7 +7,7 @@
 
 ## 依赖
 
-- 定期在仓库根执行 `pnpm audit`，并与团队策略对齐 **severity 阈值** 与排期修复（与 [质量门禁与脚本](./quality-gates.md) 中「与 PR 基线」配合）。
+- 定期在仓库根执行 `pnpm audit`，并与团队策略对齐 **severity 阈值** 与排期修复（与 [代码质量与规范约束](./quality-gates.md) 中「与 PR 基线」配合）。
 - 升 major 版本前在测试环境做回归。
 
 ## 传输与宿主机

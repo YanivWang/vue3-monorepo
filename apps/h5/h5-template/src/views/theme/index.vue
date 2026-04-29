@@ -6,7 +6,7 @@ import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { ThemeMode as ThemeModeEnum } from '@vue3-monorepo/shared/enums'
 import { brandPalettes, type BrandId, type ThemeModeId } from '@vue3-monorepo/shared/styles/tokens'
 import { useAppStore } from '@/stores'
-import { setLocale, getLocale, BASE_LOCALES, type BaseLocale } from '@/composables/useI18n'
+import { getLocale, BASE_LOCALES, type BaseLocale } from '@/composables/useI18n'
 import TabLayout from '@/layouts/TabLayout.vue'
 
 defineOptions({ name: 'Theme' })
@@ -27,8 +27,7 @@ const mode = computed({
 const language = computed({
   get: () => getLocale() as BaseLocale,
   set: (v: BaseLocale) => {
-    setLocale(v)
-    app.setLanguage(v)
+    void app.setLanguage(v)
   }
 })
 </script>

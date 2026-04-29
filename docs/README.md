@@ -1,6 +1,6 @@
 # @vue3-monorepo/docs
 
-VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 工作流、质量门禁、架构与组件说明。**叙述立场**：**Monorepo（pnpm workspace）** 为协作核心；**PC Admin 与 H5** 在脚手架与文档中**地位对等**（某页以一端展开细节，不代表另一端次要）。
+VitePress 文档包：「**文档体系总览**」、新人上手、Monorepo 现代化工程管理方案、代码质量与规范约束、架构与组件说明。**叙述立场**：**Monorepo（pnpm workspace）** 为协作核心；**PC Admin 与 H5** 在脚手架与文档中**地位对等**（某页以一端展开细节，不代表另一端次要）。
 
 ## 与根 README 的分工
 

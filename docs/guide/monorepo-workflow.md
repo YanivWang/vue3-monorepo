@@ -1,4 +1,4 @@
-# Monorepo 工作流
+# Monorepo 现代化工程管理方案
 
 说明本仓库 **pnpm workspace** 的日常用法：如何**只动一个包**、如何**加依赖**、**新代码放哪**、**共享包怎么引用**。与 [项目与目录约定](./project-conventions.md) 互补，这里偏**操作细节**。
 
@@ -11,7 +11,7 @@
 - **packages/**：库代码，如 `@vue3-monorepo/shared`。
 - **docs/**：VitePress 包 `@vue3-monorepo/docs`。
 
-工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
+工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [脚手架一键新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 2. 根脚本 vs 子包脚本
 
@@ -86,7 +86,7 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 全仓有 `tsconfig.base.json` 等；子应用内可能有各自 `tsconfig` 与 Vite `alias`。出现「能跑不能类型检查」时：
 
 - 先跑 `pnpm run typecheck` 或单端 `pnpm run admin:typecheck` / `pnpm run h5:typecheck`。
-- 与 workspace 包名、tsconfig references、`workspace:*` 依赖等相关的问题可再跑 `pnpm run check:refs`（见 `scripts/check-refs.js` 与 [质量门禁与脚本](./quality-gates.md)）。
+- 与 workspace 包名、tsconfig references、`workspace:*` 依赖等相关的问题可再跑 `pnpm run check:refs`（见 `scripts/check-refs.js` 与 [代码质量与规范约束](./quality-gates.md)）。
 
 ## 8. 文档与改动的关系
 
@@ -94,4 +94,4 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ---
 
-更多故障场景见 [排障与 FAQ](./troubleshooting.md) 与 [质量门禁与脚本](./quality-gates.md)。
+更多故障场景见 [排障与 FAQ](./troubleshooting.md) 与 [代码质量与规范约束](./quality-gates.md)。

@@ -49,9 +49,9 @@ export default defineConfig({
             { text: '文档体系总览', link: '/guide/doc-system' },
             { text: '新人上手指南', link: '/guide/onboarding' },
             { text: '环境与命令速查', link: '/guide/getting-started' },
-            { text: 'Monorepo 工作流', link: '/guide/monorepo-workflow' },
-            { text: '新增业务应用（PC Admin / H5）', link: '/guide/adding-a-new-app' },
-            { text: '质量门禁与脚本', link: '/guide/quality-gates' },
+            { text: 'Monorepo 现代化工程管理方案', link: '/guide/monorepo-workflow' },
+            { text: '脚手架一键新增业务应用', link: '/guide/adding-a-new-app' },
+            { text: '代码质量与规范约束', link: '/guide/quality-gates' },
             { text: '项目与目录约定', link: '/guide/project-conventions' },
             { text: '排障与 FAQ', link: '/guide/troubleshooting' },
             { text: '环境变量', link: '/guide/environment-variables' },
@@ -63,12 +63,13 @@ export default defineConfig({
           items: [
             { text: '架构说明', link: '/guide/architecture' },
             { text: '权限体系', link: '/guide/permission' },
-            { text: '主题、暗黑与品牌色', link: '/guide/theme' },
+            { text: '主题与品牌切换', link: '/guide/theme' },
             { text: 'Design Token', link: '/guide/design-tokens' },
             { text: '国际化', link: '/guide/i18n' },
-            { text: 'HTTP 与 Mock', link: '/guide/http-and-mock' },
-            { text: '错误与可观测性', link: '/guide/errors-and-observability' },
-            { text: '性能与构建', link: '/guide/performance' },
+            { text: 'HTTP 请求控制，数据 Mock', link: '/guide/http-and-mock' },
+            { text: '全局错误监控', link: '/guide/errors-and-observability' },
+            { text: '全局性能监控', link: '/guide/web-vitals' },
+            { text: 'Vite 构建优化', link: '/guide/performance' },
             { text: '安全', link: '/guide/security' },
             { text: '无障碍与可用性', link: '/guide/accessibility' }
           ]
@@ -77,7 +78,7 @@ export default defineConfig({
           text: '发布、CI 与分支',
           items: [
             { text: '分支策略', link: '/guide/branch-strategy' },
-            { text: '部署', link: '/guide/deploy' },
+            { text: '部署与 Docker', link: '/guide/deploy' },
             { text: 'CI 与自动化', link: '/guide/ci-and-automation' }
           ]
         }

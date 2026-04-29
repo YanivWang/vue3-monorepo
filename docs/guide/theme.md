@@ -1,4 +1,4 @@
-# 主题、暗黑与品牌色
+# 主题与品牌切换
 
 **共享层**：Token 与运行时 API 出自 `@vue3-monorepo/shared`。**PC（Element Plus `--el-*`）与 H5（Vant 变量映射）**为两条**并列**接入线，下文分端说明时不表示另一端次要。
 
@@ -75,7 +75,7 @@ import {
 | `views/layout/components/LayoutHeader.vue` | 顶栏右侧：**品牌色圆点 + 下拉**，以及 **主题图标 + 下拉**（浅色 / 深色 / 跟随系统） |
 | `views/login/index.vue`                    | 登录页右上：**品牌色 + 主题**下拉；**未登录**也可切换，便于预览样式                 |
 
-二者均调用 `useAppStore().setBrand` / `setTheme`，与 [应用 Store](./architecture.md#状态管理) 中 `app` 的持久化逻辑一致（Pinia `persist` 路径含 `themeMode` 与 `brand` 等，以各应用 `app` store 为准）。
+二者均调用 `useAppStore().setBrand` / `setTheme`，与 [应用 Store](./architecture.md#state-management) 中 `app` 的持久化逻辑一致（Pinia `persist` 路径含 `themeMode` 与 `brand` 等，以各应用 `app` store 为准）。
 
 `setTheme` 会：
 

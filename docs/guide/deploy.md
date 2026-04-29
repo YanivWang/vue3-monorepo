@@ -1,4 +1,4 @@
-# 部署
+# 部署与 Docker
 
 ## Docker 部署（推荐）
 
@@ -19,7 +19,7 @@ pnpm run docker:admin:logs
 
 ### 生产部署流程
 
-本模板**不自带** GitHub Actions 工作流，请在自有 CI/CD（GitHub Actions、GitLab CI、Jenkins 等）中编排，典型步骤为：
+仓库内仅有文档站发布工作流（`.github/workflows/docs-github-pages.yml`，详见 [CI 与自动化](./ci-and-automation.md)）。**Admin / H5 镜像与生产发版**仍需在自有 CI/CD（GitHub Actions、GitLab CI、Jenkins 等）中编排，典型步骤为：
 
 1. 在构建机执行 `pnpm install` 与 `pnpm run build`（或分别构建需发布的镜像/产物）
 2. 构建 Docker 镜像并推送到镜像仓库

@@ -10,6 +10,6 @@
 | 开发服启动报 **端口已被占用**（`EADDRINUSE`，常见 **5173** / **5174** / **5175**） | 结束占用端口的进程，或调整各应用 Vite 的 `server.port` / CLI `--port`；并行 `pnpm run dev` 时避免多实例抢同一端口。                                                                                                                              |
 | 依赖解析异常、安装后仍报错、怀疑本地装坏                                           | 在仓库根执行 `pnpm run clean:install`（会删**根目录与各 workspace 包**下 `node_modules` 后重装；`pnpm run clean:install -- -y` 跳过确认）。亦可手动删各层 `node_modules` 再 `pnpm install`；**勿随意删改 `pnpm-lock.yaml`** 除非与团队流程一致。 |
 | `git commit` 不跑 lint / commitlint，或刚 clone 后无 `.husky`                      | 在根目录执行 `pnpm install` 以触发 `prepare` 安装 Husky；仍异常可检查 `core.hooksPath` 是否被全局 Git 配置覆盖。                                                                                                                                 |
-| **Docker** 相关容器起不来、页面空白、接口不通                                      | 见 [部署说明](./deploy.md) 与仓库 `docker/docker-compose.yaml`、根脚本 `docker:*`；用 `pnpm run docker:logs` 或 `docker compose ... logs` 看服务日志。                                                                                           |
+| **Docker** 相关容器起不来、页面空白、接口不通                                      | 见 [部署与 Docker](./deploy.md) 与仓库 `docker/docker-compose.yaml`、根脚本 `docker:*`；用 `pnpm run docker:logs` 或 `docker compose ... logs` 看服务日志。                                                                                      |
 
-更多脚本对照与发版前校验见 [质量门禁与脚本](./quality-gates.md)。环境变量与接口地址问题见 [环境变量说明](./environment-variables.md)。
+更多脚本对照与发版前校验见 [代码质量与规范约束](./quality-gates.md)。环境变量与接口地址问题见 [环境变量说明](./environment-variables.md)。

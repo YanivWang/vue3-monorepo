@@ -1,6 +1,6 @@
-# 新增业务应用（PC Admin / H5）
+# 脚手架一键新增业务应用
 
-本页说明在 **pnpm workspace（Monorepo）** 内**再开一条前端应用**（第二个 PC 管理台、第二个 H5 等，`PC`/`H5` **无优先级**）时，需要动哪些文件、以及容易踩坑的地方。与 [Monorepo 工作流](./monorepo-workflow.md)、[项目与目录约定](./project-conventions.md) 互补：这里偏**拉新包与工程接线**，不重复业务目录说明。
+本页说明在 **pnpm workspace（Monorepo）** 内**再开一条前端应用**（第二个 PC 管理台、第二个 H5 等，`PC`/`H5` **无优先级**）时，需要动哪些文件、以及容易踩坑的地方。与 [Monorepo 现代化工程管理方案](./monorepo-workflow.md)、[项目与目录约定](./project-conventions.md) 互补：这里偏**拉新包与工程接线**，不重复业务目录说明。
 
 ## 业务应用从哪里来
 
@@ -80,7 +80,7 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 根目录通过 `vitest.workspace.ts` 声明多 project。若新应用有单元测试且希望与根 `pnpm test` 一起跑，在 `vitest.workspace.ts` 的默认导出数组中**增加**新应用目录。
 
-若新应用**暂无**测试工程，可暂缓；与 [质量门禁与脚本](./quality-gates.md) 中说明一致。
+若新应用**暂无**测试工程，可暂缓；与 [代码质量与规范约束](./quality-gates.md) 中说明一致。
 
 ### 2.6 开发服务器端口
 
@@ -125,7 +125,7 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 - 在**新应用**的 `package.json` 的 `dependencies` 中加入：  
   `"@vue3-monorepo/shared": "workspace:*"`（与现有一致）。
 - 业务 import **仅**使用 `packages/shared/package.json` 里 **`exports`** 已列出的子路径；新增对外 API 时改 shared 的 `exports` 并做类型与构建验证。
-- `request-core` 内**禁止**出现 UI 框架 API；PC/H5 的提示、Loading 等通过 `request-pc` / `request-h5` 在应用层装配。详见 [Monorepo 工作流 — 第 5 节](./monorepo-workflow.md#5-新代码放哪决策简表) 与 `scripts/check-request-core.js`。
+- `request-core` 内**禁止**出现 UI 框架 API；PC/H5 的提示、Loading 等通过 `request-pc` / `request-h5` 在应用层装配。详见 [Monorepo 现代化工程管理方案 — 第 5 节](./monorepo-workflow.md#5-新代码放哪决策简表) 与 `scripts/check-request-core.js`。
 
 ---
 
@@ -141,7 +141,7 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 | 端口与 `pnpm run dev`              | 多应用同时开 dev 不冲突                                  |
 | 文档与 `.env.example`              | 新同事能按说明启动                                       |
 
-更全的门禁说明见 [质量门禁与脚本](./quality-gates.md)。
+更全的门禁说明见 [代码质量与规范约束](./quality-gates.md)。
 
 ---
 
