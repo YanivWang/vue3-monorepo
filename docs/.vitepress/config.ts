@@ -32,7 +32,6 @@ export default defineConfig({
       { text: '文档体系', link: '/guide/doc-system' },
       { text: '新手上路', link: '/guide/onboarding' },
       { text: '指南', link: '/guide/getting-started' },
-      { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
       { text: '贡献', link: '/guide/contributing' }
     ],
@@ -76,18 +75,6 @@ export default defineConfig({
             { text: '分支策略', link: '/guide/branch-strategy' },
             { text: '部署与 Docker', link: '/guide/deploy' },
             { text: 'CI 与自动化', link: '/guide/ci-and-automation' }
-          ]
-        }
-      ],
-      '/components/': [
-        {
-          text: '业务组件',
-          items: [
-            { text: 'PageContainer 页面容器', link: '/components/page-container' },
-            { text: 'ProTable 高级表格', link: '/components/pro-table' },
-            { text: 'Skeleton 骨架屏', link: '/components/skeleton' },
-            { text: 'SvgIcon 图标', link: '/components/svg-icon' },
-            { text: 'ErrorBoundary 错误边界', link: '/components/error-boundary' }
           ]
         }
       ]
