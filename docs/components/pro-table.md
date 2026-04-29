@@ -6,7 +6,7 @@
 
 ```vue
 <script setup lang="ts">
-import type { TableColumn } from '@/components/ProTable/index.vue'
+import type { TableColumn } from '@vue3-monorepo/shared/components-pc'
 import { getUserList } from '@/api/modules/user'
 
 const columns: TableColumn[] = [
@@ -129,8 +129,8 @@ async function getUserList(params: Record<string, unknown>): Promise<PaginationR
 
 ## 在线示例
 
-运行 `pnpm dev` 后访问 `/examples/crud`，可查看 ProTable 与搜索栏、新增/编辑弹窗、删除确认的完整组合。
+在仓库**根目录**运行 `pnpm run admin:dev`，访问 **`/examples/crud`**（PC 模板 CRUD 示例）。
 
 ## 源码位置
 
-`src/components/ProTable/index.vue`
+[`packages/shared/src/components-pc/ProTable/index.vue`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/src/components-pc/ProTable/index.vue)

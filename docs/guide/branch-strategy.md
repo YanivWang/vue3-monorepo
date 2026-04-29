@@ -124,7 +124,7 @@ Use `fetchFn` instead.
 
 ## CI/CD
 
-本仓库模板**不内置**持续集成/部署工作流，请在组织内按规范自行接入（如 GitHub Actions、GitLab CI 等），并与本地/团队的 `lint`、`type-check`、`test:run`、`build` 等门禁对齐。
+本仓库**已配置**文档站发布工作流（`.github/workflows/docs-github-pages.yml`，详见 [CI 与自动化](./ci-and-automation.md)）。**应用**（admin / h5）在 PR 上跑 `lint`、`typecheck`、`test`、`build` 等**暂无**仓库级统一 job——请在团队侧按需接入 GitHub Actions / GitLab CI 等，并与 [代码质量与规范约束](./quality-gates.md) 对齐。
 
 ## 分支保护规则（建议配置）
 

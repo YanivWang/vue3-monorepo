@@ -2,7 +2,7 @@
 
 ## 开发体验
 
-- **Vite** 提供快速冷启动与 HMR；多包并行开发可用根 `pnpm run dev` 或单端 `admin:dev` / `h5:dev` / `docs:dev`（见 [代码质量与规范约束](./quality-gates.md)）。
+- **Vite** 提供快速冷启动与 HMR；多包并行开发可用根 `pnpm run dev` 或单端 `admin:dev` / `h5:dev` / `docs:dev`（见 [环境与命令速查](./getting-started.md)）。
 - 改 `packages/shared` 后建议跑**全 workspace** `pnpm run typecheck`，避免只绿单端。
 
 ## 生产构建（以 PC 模板为参考）

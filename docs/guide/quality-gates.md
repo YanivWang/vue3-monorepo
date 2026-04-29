@@ -1,6 +1,6 @@
 # 代码质量与规范约束
 
-把根 `package.json` 里的**常用脚本**说明白：什么时候跑、失败代表什么、和发版/PR 怎么对齐。根 `README.md` 的「根目录脚本（摘录）」是**极简索引**，本页是**完整说明**；与 **GitHub Actions** 的对应见 [CI 与自动化](./ci-and-automation.md)。
+把根 `package.json` 里的**常用脚本**说明白：什么时候跑、失败代表什么、和发版/PR 怎么对齐。根 `README.md` 的「常用命令」表是**极简索引**，本页是**完整说明**；与 **GitHub Actions** 的对应见 [CI 与自动化](./ci-and-automation.md)。
 
 ## 1. 日常开发最常用
 

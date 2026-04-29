@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     # 与 GitHub 弃用 Node 20 的 runner 环境对齐，避免 checkout / pnpm action 的 Node 20 告警
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

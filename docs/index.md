@@ -52,7 +52,7 @@ features:
     link: /guide/errors-and-observability
     details: 异常与 Promise 分层处理，插件化上报，便于对接自建观测与多端统一策略。
 
-  - icon: 🛡️
+  - icon: 📈
     title: 全局性能监控
     link: /guide/web-vitals
     details: Web Vitals（Core Web Vitals）等指标采集，环境变量配置上报 URL；H5 模板独立插件接入，可与错误观测共用版本号与采集链路。
@@ -75,5 +75,5 @@ features:
   - icon: 🔭
     title: Vite 构建优化
     link: /guide/performance
-    details: Vite 分包、分析与首屏优化；线上可采集体验指标，与错误可观测衔接。
+    details: Vite 分包、分析与首屏优化；体验指标采集见 H5 模板（`web-vitals`），与错误可观测衔接。
 ---

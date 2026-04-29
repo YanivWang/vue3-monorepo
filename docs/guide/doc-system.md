@@ -47,8 +47,8 @@
 
 ### 第 0 步：5 分钟（在 GitHub 上就能完成）
 
-1. 读根 `README` 的 [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求)（把 Node / pnpm 装对版本）。
-2. 扫一眼 [仓库结构](https://github.com/YanivWang/vue3-monorepo#仓库结构) 与 [根目录脚本（摘录）](https://github.com/YanivWang/vue3-monorepo#根目录脚本摘录)；完整命令见 [代码质量与规范约束](./quality-gates.md)。
+1. 克隆后读仓库根 **`README.md`** 的「环境要求」（与根 `package.json` 的 `engines` 一致），装好 Node / pnpm。
+2. 扫一眼 **`README.md`** 中「核心目录结构」「常用命令」；展开的命令手册见本站 [环境与命令速查](./getting-started.md)，门禁与 `verify:full` 细节见 [代码质量与规范约束](./quality-gates.md)。
 
 ### 第 1 步：本地把文档站跑起来（10 分钟）
 

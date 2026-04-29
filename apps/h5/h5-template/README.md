@@ -20,7 +20,7 @@ apps/h5/h5-template/
 └── package.json
 ```
 
-> 生产级 **Docker/nginx** 可参照 **`docker/images/admin/Dockerfile`** 与 **`docker/nginx/`** 另建 H5 镜像（本 app 默认不自带独立 Dockerfile）。
+生产级 **Docker / nginx** 与仓库对齐：见 **`docker/images/h5/Dockerfile`**、**`docker/nginx/h5.conf`**、根 [部署文档](../../../docs/guide/deploy.md)。
 
 ## 测试
 

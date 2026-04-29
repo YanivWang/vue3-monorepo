@@ -15,7 +15,7 @@
 
 ## 2. 环境一条线装齐
 
-1. 安装 **Node.js**，版本需满足根 `package.json` 的 `engines.node`（与根 README [环境要求](https://github.com/YanivWang/vue3-monorepo#环境要求) 一致）。
+1. 安装 **Node.js**，版本需满足根 `package.json` 的 `engines.node`（仓库根 **`README.md`**「环境要求」与其一致）。
 2. 安装 **pnpm**，版本需满足 `engines.pnpm`；推荐启用 Corepack 对齐 `packageManager` 字段中的版本（排障见 [排障与 FAQ](./troubleshooting.md)）。
 3. 克隆仓库，在**仓库根目录**执行一次：
 
@@ -50,7 +50,7 @@ pnpm run h5:dev
 
 - 默认 **`http://127.0.0.1:5174`** 左右（以终端为准）。
 
-**任一端起不来**：见 [排障与 FAQ](./troubleshooting.md) 或根 README [常见问题](https://github.com/YanivWang/vue3-monorepo#常见问题摘录)（端口、Node 版本、仅允许 pnpm）。
+**任一端起不来**：见 [排障与 FAQ](./troubleshooting.md)（端口、Node 版本、仅允许 pnpm 等）。
 
 ### 步骤 2：打开文档站（推荐）
 

@@ -123,10 +123,7 @@ async function main() {
     type = t.type
 
     // 以下「如 pc-portal / h5-shop」与 initial 仅为交互占位示例名，非仓库固定应用
-    const dirHint =
-      type === 'admin'
-        ? '将创建在 apps/pc/ 下，如 pc-portal'
-        : '将创建在 apps/h5/ 下，如 h5-shop'
+    const dirHint = type === 'admin' ? '将创建在 apps/pc/ 下，如 pc-portal' : '将创建在 apps/h5/ 下，如 h5-shop'
     const dirInitial = type === 'admin' ? 'pc-portal' : 'h5-shop'
 
     const d = await prompts(

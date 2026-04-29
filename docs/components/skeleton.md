@@ -2,6 +2,8 @@
 
 在内容加载期间，用占位图形展示内容结构，提升用户体验。
 
+下称 **`Skeleton`** 为 **PC 管理端模板**全局注册的组件（源码在 **shared**，见下）。**H5** 另有 **`SkeletonH5`**：`@vue3-monorepo/shared/components-h5`。
+
 ## 基础用法
 
 ```vue
@@ -86,8 +88,10 @@ const { data, loading } = useRequest(() => getUserInfo())
 
 ## 在线示例
 
-运行 `pnpm dev` 后访问：**文件上传页面**（`/examples/upload`）中包含了 Skeleton 骨架屏与真实数据加载的组合演示。
+在仓库**根目录**运行 `pnpm run admin:dev`，再访问 **`/examples/upload`**（PC 模板文件上传示例页），可看 Skeleton 与加载态组合。
 
 ## 源码位置
 
-`src/components/Skeleton/index.vue`
+[`packages/shared/src/components-pc/Skeleton/index.vue`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/src/components-pc/Skeleton/index.vue)
+
+（全局注册：`apps/pc/pc-admin-template/src/main.ts` 中 `installComponents`。）

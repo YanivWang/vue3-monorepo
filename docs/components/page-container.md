@@ -1,6 +1,6 @@
 # PageContainer 页面容器
 
-统一的页面卡片容器，用于包裹各页面的主内容区域，提供标题区和操作区布局。
+统一的页面卡片容器，用于包裹各页面的主内容区域，提供标题区和操作区布局。组件出自 **`packages/shared`**，经 **`@vue3-monorepo/shared/components-pc`** 在 PC 模板中全局注册；**H5** 另有 `PageContainer`（`components-h5`），结构与 PC 不完全相同。
 
 ## 基础用法
 
@@ -94,7 +94,7 @@ const tableRef = ref()
 
 ## 在线示例
 
-运行 `pnpm dev` 后访问以下页面查看效果：
+在仓库**根目录**运行 `pnpm run admin:dev`，再访问以下路由（均以 PC **模板包** `@vue3-monorepo/admin` 为准）：
 
 | 页面      | 路径               | 说明                         |
 | --------- | ------------------ | ---------------------------- |
@@ -105,4 +105,4 @@ const tableRef = ref()
 
 ## 源码位置
 
-`src/components/PageContainer/index.vue`
+[`packages/shared/src/components-pc/PageContainer/index.vue`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/src/components-pc/PageContainer/index.vue)

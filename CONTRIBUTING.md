@@ -13,10 +13,10 @@
 git clone https://github.com/YanivWang/vue3-monorepo.git
 cd vue3-monorepo
 
-# 安装依赖（需要 pnpm >= 10）
+# 安装依赖（Node ≥20.19.5、pnpm ≥10.17.0，与根 package.json engines 一致）
 pnpm install
 
-# 仅开发某一端时推荐（全并行可改用 pnpm dev）
+# 仅开发某一端时推荐（全并行可改用：pnpm dev）
 pnpm run admin:dev
 # 或: pnpm run h5:dev  /  pnpm run docs:dev
 ```
@@ -86,7 +86,7 @@ git commit -m "docs: 更新 ProTable 组件文档"
 
 ## 代码规范
 
-- **TypeScript**：严格模式，禁止 `any`（eslint `@typescript-eslint/no-explicit-any`）
+- **TypeScript**：以根 `eslint.config.mjs` + TS 编译选项为准（`strict` 等）；不推荐滥用 `any`，具体禁则以当前 ESLint 配置为准。
 - **Vue**：使用 `<script setup>` 语法，Props 使用 `defineProps<T>()` 泛型方式
 - **样式**：使用 SCSS，颜色/间距优先使用 CSS 变量（支持暗黑模式）
 - **命名**：组件 PascalCase，composable `useXxx`，工具函数 camelCase

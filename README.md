@@ -14,10 +14,9 @@
 - **双端开箱模板**：内置 Element Plus PC 后台模板 + Vant H5 模板，支持 Bridge 跨端交互
 - **完整工程规范**：ESLint/Stylelint/Prettier + Husky 提交门禁 + TS 类型校验，强制保障代码质量
 - **一站式业务能力**：内置权限体系、主题/暗黑模式、多品牌 Design Token、i18n 国际化
-- **全链路可观测**：全局错误捕获 + Web Vitals 性能监控，快速定位线上问题
+- **全链路可观测**：双端具备全局错误捕获与可扩展上报；**Web Vitals 指标采集与上报**在 **H5 模板**中自带（`web-vitals` 插件），PC 侧以 `errorHandler` 为主，可按需自行接入同类指标
 - **工程化脚手架**：`create-app` 命令一键生成业务应用，业务与模板彻底解耦
-- **生产级部署**：提供 Docker + Nginx 容器化部署方案，支持 CI/CD 自动化构建
-- **规范文档体系**：配套 VitePress 完整文档，包含架构说明、上手指南、排障手册
+- **生产级部署**：提供 Docker + Nginx 容器化参考；文档站可由 GitHub Actions 发布至 GitHub Pages（应用侧 PR 级 CI 见 [ci-and-automation](docs/guide/ci-and-automation.md)）
 
 ## 🛠️ 技术栈
 
@@ -25,8 +24,8 @@
 **UI 组件**：Element Plus (PC)、Vant (H5)
 **工程化**：pnpm + Monorepo + ESLint + Prettier + Husky + Commitlint
 **可视化**：ECharts、vue-echarts
-**部署方案**：Docker + Nginx + GitHub Actions CI
-**其他**：vue-i18n、Mock 数据、JSBridge、全局错误/性能监控
+**部署与自动化**：Docker + Nginx 参考方案；GitHub Actions 当前用于文档站发布（见 `.github/workflows/`）
+**其他**：vue-i18n、Mock 数据、JSBridge（H5）、全局错误处理；**Web Vitals** 采集见 H5 模板（PC 未默认接入 `web-vitals` 依赖）
 
 ## 🎯 适用场景 & 解决痛点
 
@@ -101,18 +100,13 @@ vue3-monorepo/
 ├── docs/                 # VitePress 项目文档
 ├── scripts/              # 工程化脚本（create-app、校验脚本）
 ├── docker/               # Docker 部署配置
-├── .github/workflows/    # CI/CD 自动化流程
+├── .github/workflows/    # GitHub Actions（当前为文档站发布等，见文档「CI 与自动化」）
 └── 工程配置文件           # ESLint/Prettier/TS/Monorepo 相关配置
 ```
 
-## 📖 完整文档
+## 📖 文档
 
-- 新手上路、环境&命令速查
-- Monorepo 工作流、目录规范
-- 代码质量门禁、排障 FAQ
-- 部署方案、CI 自动化配置
-
-完整架构与使用说明详见：[在线文档站](https://yanivwang.github.io/vue3-monorepo/)
+架构、命令门禁、组件说明、部署与 CI 等均见 VitePress 文档站：[在线文档](https://yanivwang.github.io/vue3-monorepo/)（目录与分层说明见站内 [文档体系总览](docs/guide/doc-system.md)）。
 
 ## 📄 许可证
 
