@@ -1,44 +1,72 @@
 # vue3-monorepo
 
+<div align="center">
+
 🚀 **企业级 Vue3 + Monorepo 多端工程化脚手架**
+
 一套工程体系同时支撑 **PC 管理后台** 与 **H5 移动端**，内置双端模板、共享能力层与完整工程规范，实现多端复用、可观测、可部署的一站式前端研发方案。
 
-## 🔗 项目地址
+[![MIT License](https://img.shields.io/github/license/YanivWang/vue3-monorepo?label=License&color=blue)](./LICENSE)
+[![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![pnpm workspace](https://img.shields.io/badge/pnpm-workspace-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/workspaces)
 
-- 源码：https://github.com/YanivWang/vue3-monorepo
-- 在线文档：https://yanivwang.github.io/vue3-monorepo/
+[**源码仓库**](https://github.com/YanivWang/vue3-monorepo) · [**在线文档**](https://yanivwang.github.io/vue3-monorepo/)
 
-## 🎯 核心亮点
+<br />
 
-- **Monorepo 多端架构**：基于 pnpm workspace 实现 PC/H5 同仓开发，公共逻辑抽离共享，避免重复造轮子
-- **双端开箱模板**：内置 Element Plus PC 后台模板 + Vant H5 模板，支持 Bridge 跨端交互
-- **完整工程规范**：ESLint/Stylelint/Prettier + Husky 提交门禁 + TS 类型校验，强制保障代码质量
-- **一站式业务能力**：内置权限体系、主题/暗黑模式、多品牌 Design Token、i18n 国际化
-- **全链路可观测**：双端具备全局错误捕获与可扩展上报；**Web Vitals 指标采集与上报**在 **H5 模板**中自带（`web-vitals` 插件），PC 侧以 `errorHandler` 为主，可按需自行接入同类指标
-- **工程化脚手架**：`create-app` 命令一键生成业务应用，业务与模板彻底解耦
-- **生产级部署**：提供 Docker + Nginx 容器化参考；文档站可由 GitHub Actions 发布至 GitHub Pages（应用侧 PR 级 CI 见 [ci-and-automation](docs/guide/ci-and-automation.md)）
+</div>
 
-## 🛠️ 技术栈
+---
 
-**核心框架**：Vue3 + TypeScript + Vite + Vue Router + Pinia
-**UI 组件**：Element Plus (PC)、Vant (H5)
-**工程化**：pnpm + Monorepo + ESLint + Prettier + Husky + Commitlint
-**可视化**：ECharts、vue-echarts
-**部署与自动化**：Docker + Nginx 参考方案；GitHub Actions 当前用于文档站发布（见 `.github/workflows/`）
-**其他**：vue-i18n、Mock 数据、JSBridge（H5）、全局错误处理；**Web Vitals** 采集见 H5 模板（PC 未默认接入 `web-vitals` 依赖）
+## 核心亮点
 
-## 🎯 适用场景 & 解决痛点
+| 维度 | 说明 |
+| ---- | ---- |
+| **Monorepo 多端架构** | 基于 pnpm workspace 的 PC/H5 同仓开发，公共逻辑下沉共享，减少重复实现 |
+| **双端开箱模板** | Element Plus 后台 + Vant 移动端模板，内置 Bridge 跨端交互能力 |
+| **工程规范** | ESLint / Stylelint / Prettier + Husky 提交门禁 + TS 类型校验 |
+| **业务能力** | 权限、主题与暗黑、多品牌 Design Token、`vue-i18n` 国际化 |
+| **可观测** | 双端全局错误捕获与可扩展上报；**H5** 内置 Web Vitals 采集（`web-vitals`），PC 以 `errorHandler` 为主，可按需扩展 |
+| **脚手架** | `create-app` 一键生成业务应用，业务与模板解耦 |
+| **部署与 CI** | Docker + Nginx 参考；文档站可由 GitHub Actions 发布至 GitHub Pages；应用侧 CI 见 [ci-and-automation](docs/guide/ci-and-automation.md) |
 
-- 面向需要同时开发 **PC 后台 + H5 移动端** 的团队/个人
-- 解决多端项目重复开发、规范不统一、依赖混乱、部署链路割裂等企业级痛点
-- 实现**一次搭建、多端复用**，新业务快速落地，长期维护成本更低
+## 技术栈
 
-## 📦 环境要求
+| 类别 | 技术 |
+| ---- | ---- |
+| 核心框架 | Vue 3、TypeScript、Vite、Vue Router、Pinia |
+| UI | Element Plus（PC）、Vant（H5） |
+| 工程化 | pnpm、Monorepo、ESLint、Prettier、Husky、Commitlint |
+| 可视化 | ECharts、vue-echarts |
+| 部署与自动化 | Docker、Nginx（参考）；GitHub Actions（见 `.github/workflows/`） |
+| 其他 | vue-i18n、Mock、JSBridge（H5）、全局错误处理；Web Vitals 默认见 H5 模板 |
 
-- Node.js ≥ 20.19.5
-- pnpm ≥ 10.17.0（仅支持 pnpm，禁止混用 npm/yarn）
+## 适用场景与 Monorepo 收益
 
-## 🚀 快速开始
+**谁适合用**
+
+- 需要同时交付 **PC 后台** 与 **H5 移动端** 的团队或个人
+- 希望减少多端重复开发、统一规范与依赖、缩短从开发到部署的协作链路
+
+**Monorepo 能带来什么**
+
+- **一次搭建、多端复用**：新业务快速落地，长期维护成本更低
+- **共享层原子演进**：`packages/shared` 一处修改，PC/H5 同步受益；类型、常量、请求与安全策略可在同一 PR 内联动，减少「先发包再等各端升级」
+- **依赖与工具链统一**：pnpm workspace 约束版本；ESLint、TSConfig、脚本与文档同仓，规范升级一次落地
+- **质量门禁集中**：全量类型检查、Lint、测试与构建可在单仓编排，跨包重构影响一次性可见
+- **协作闭环**：分支、PR、Issue 在同一仓库，Review 上下文完整，弱化多仓对齐 tag / cherry-pick / 发版节奏的成本
+- **扩展友好**：新业务以 `apps/*` 接入，复用 `shared` 与既有脚手架，避免复制整仓或再维护一组相同底座
+
+## 环境要求
+
+| 依赖 | 版本 |
+| ---- | ---- |
+| Node.js | ≥ 20.19.5 |
+| pnpm | ≥ 10.17.0（**仅支持 pnpm**，请勿混用 npm / yarn） |
+
+## 快速开始
 
 ```bash
 # 克隆项目
@@ -53,28 +81,28 @@ pnpm run admin:dev   # PC 管理端（端口 5173）
 pnpm run h5:dev      # H5 移动端（端口 5174）
 pnpm run docs:dev    # 在线文档（端口 5175）
 
-# 全量代码校验（提交/发版前执行）
+# 全量代码校验（提交 / 发版前建议执行）
 pnpm run verify:full
 ```
 
-## ⚙️ 常用命令
+## 常用命令
 
-| 功能                            | 命令                   |
-| ------------------------------- | ---------------------- |
-| 新建业务应用                    | pnpm run create-app    |
-| TypeScript 类型检查             | pnpm run typecheck     |
-| 单元测试                        | pnpm run test          |
-| 项目构建                        | pnpm run build         |
-| 全量校验（类型+Lint+测试+构建） | pnpm run verify:full   |
-| 依赖清理重装                    | pnpm run clean:install |
+| 功能 | 命令 |
+| --- | --- |
+| 新建业务应用 | `pnpm run create-app` |
+| TypeScript 类型检查 | `pnpm run typecheck` |
+| 单元测试 | `pnpm run test` |
+| 项目构建 | `pnpm run build` |
+| 全量校验（类型 + Lint + 测试 + 构建） | `pnpm run verify:full` |
+| 依赖清理重装 | `pnpm run clean:install` |
 
-## 📁 核心目录结构
+## 核心目录结构
 
 ```
 vue3-monorepo/
 ├── apps/                 # 多端应用目录
-│   ├── pc/               # PC 端应用（模板+业务项目）
-│   └── h5/               # H5 端应用（模板+业务项目）
+│   ├── pc/               # PC 端应用（模板 + 业务项目）
+│   └── h5/               # H5 端应用（模板 + 业务项目）
 ├── packages/shared/      # 公共共享包（多端复用业务与工程能力）
 │   ├── src/
 │   │   ├── bridge/           # JSBridge 抽象与多端策略（浏览器 / 微信小程序 / App 等）
@@ -100,14 +128,14 @@ vue3-monorepo/
 ├── docs/                 # VitePress 项目文档
 ├── scripts/              # 工程化脚本（create-app、校验脚本）
 ├── docker/               # Docker 部署配置
-├── .github/workflows/    # GitHub Actions（当前为文档站发布等，见文档「CI 与自动化」）
-└── 工程配置文件           # ESLint/Prettier/TS/Monorepo 相关配置
+├── .github/workflows/    # GitHub Actions（文档站发布等，见文档「CI 与自动化」）
+└── 工程配置文件           # ESLint / Prettier / TS / Monorepo 相关配置
 ```
 
-## 📖 文档
+## 文档
 
-架构、命令门禁、组件说明、部署与 CI 等均见 VitePress 文档站：[在线文档](https://yanivwang.github.io/vue3-monorepo/)（目录与分层说明见站内 [文档体系总览](docs/guide/doc-system.md)）。
+架构、命令门禁、组件说明、部署与 CI 等见 VitePress [**在线文档**](https://yanivwang.github.io/vue3-monorepo/)；目录与分层见站内 [文档体系总览](docs/guide/doc-system.md)。
 
-## 📄 许可证
+## 许可证
 
-MIT License
+[MIT](./LICENSE)
