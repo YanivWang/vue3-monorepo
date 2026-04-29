@@ -108,6 +108,7 @@ pnpm run verify:full
 
 ```
 vue3-monorepo/
+├── pnpm-workspace.yaml   # Monorepo workspace 声明（apps、packages 范围）
 ├── apps/                 # 多端应用目录
 │   ├── pc/               # PC 端应用（模板 + 业务项目）
 │   └── h5/               # H5 端应用（模板 + 业务项目）
