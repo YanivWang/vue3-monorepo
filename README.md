@@ -112,6 +112,7 @@ vue3-monorepo/
 ├── packages/shared/      # 公共共享包（多端复用业务与工程能力）
 │   ├── src/
 │   │   ├── js-bridge/        # JSBridge 抽象与多端策略（浏览器 / 微信小程序 / App 等）
+│   │   ├── web-monitor/      # Web Vitals 与客户端错误上报（PC/H5 共用实现）
 │   │   ├── components-pc/    # PC 共享组件（如 ProTable、PageContainer、ErrorBoundary）
 │   │   ├── components-h5/    # H5 共享组件（如 NavBar、ProList、SafeArea、TabBarLayout）
 │   │   ├── directives-pc/    # PC 指令（权限、复制等）
