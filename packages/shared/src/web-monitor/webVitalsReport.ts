@@ -1,16 +1,11 @@
 /**
- * Web Vitals 采集与上报：由各应用 `main.ts` 在启动 early 调用 `collectWebVitals()`。
- * 行为受 `VITE_WEB_VITALS_REPORT_URL`、`VITE_WEB_VITALS_DEBUG` 控制。
+ * Web Vitals 采集与上报。上报地址、调试开关、release / environment 由调用方通过 `configureWebVitalsSdk` 或 `WebMonitor.init` 传入；
+ * 本模块不依赖任何打包工具或仓库约定的环境变量。
  */
 import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals'
 import type { Metric } from 'web-vitals'
 
-const reportUrl = (import.meta.env.VITE_WEB_VITALS_REPORT_URL ?? '').trim()
-/** 每条指标是否 console：显式 true 全开；显式 false 则 DEV 下也不刷日志（仍会上报）；未配置则 DEV 下打印便于联调 */
-const dbgFlag = import.meta.env.VITE_WEB_VITALS_DEBUG
-const debug = dbgFlag === 'true' || (import.meta.env.DEV && dbgFlag !== 'false')
-
-type WebVitalPayload = {
+export type WebVitalPayload = {
   name: Metric['name']
   value: number
   rating: Metric['rating']
@@ -23,6 +18,28 @@ type WebVitalPayload = {
   mode: string
 }
 
+export type WebVitalsSdkConfig = {
+  webVitalsReportUrl?: string
+  beforeWebVitalReport?: (payload: WebVitalPayload) => WebVitalPayload | null
+  /** 写入载荷 `appVersion` */
+  release?: string
+  /** 写入载荷 `mode` */
+  environment?: string
+  /** `true` 时每条指标 `console.info`，并在开启上报 URL 时打印接入日志 */
+  debug?: boolean
+}
+
+let sdkWebVitalsConfig: WebVitalsSdkConfig = {}
+
+/** SDK / 测试用：以本次传入对象为准完全覆盖运行时配置（未传的键将不再有值） */
+export function configureWebVitalsSdk(config: WebVitalsSdkConfig): void {
+  sdkWebVitalsConfig = { ...config }
+}
+
+function effectiveWebVitalsReportUrl(): string {
+  return (sdkWebVitalsConfig.webVitalsReportUrl ?? '').trim()
+}
+
 function toPayload(metric: Metric): WebVitalPayload {
   return {
     name: metric.name,
@@ -33,22 +50,22 @@ function toPayload(metric: Metric): WebVitalPayload {
     navigationType: metric.navigationType,
     page: typeof location !== 'undefined' ? `${location.pathname}${location.search}` : undefined,
     ts: Date.now(),
-    appVersion: import.meta.env.VITE_APP_VERSION || undefined,
-    mode: import.meta.env.MODE
+    appVersion: sdkWebVitalsConfig.release || undefined,
+    mode: sdkWebVitalsConfig.environment ?? ''
   }
 }
 
-function postReport(body: string): void {
-  if (!reportUrl) return
+function postReport(body: string, url: string): void {
+  if (!url) return
   try {
     const blob = new Blob([body], { type: 'application/json' })
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(reportUrl, blob)) {
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(url, blob)) {
       return
     }
   } catch {
     /* 回退到 fetch */
   }
-  void fetch(reportUrl, {
+  void fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body,
@@ -59,17 +76,30 @@ function postReport(body: string): void {
 }
 
 export function reportWebVital(metric: Metric): void {
-  const payload = toPayload(metric)
-  if (debug) {
+  const built = toPayload(metric)
+  const afterBefore = sdkWebVitalsConfig.beforeWebVitalReport?.(built) ?? built
+  if (afterBefore === null) return
+  const payload = afterBefore
+  if (sdkWebVitalsConfig.debug) {
     console.info(`[Web Vitals] ${metric.name}`, payload)
   }
-  if (!reportUrl) return
-  postReport(JSON.stringify(payload))
+  const url = effectiveWebVitalsReportUrl()
+  if (!url) return
+  postReport(JSON.stringify(payload), url)
 }
 
+let webVitalsCollectorsAttached = false
+
 export function collectWebVitals(): void {
-  if (reportUrl && import.meta.env.DEV) {
-    console.info('[Web Vitals] 上报已启用 →', reportUrl)
+  if (webVitalsCollectorsAttached) {
+    console.warn('[Web Vitals] collectWebVitals 已注册，跳过重复调用')
+    return
+  }
+  webVitalsCollectorsAttached = true
+
+  const url = effectiveWebVitalsReportUrl()
+  if (url && sdkWebVitalsConfig.debug) {
+    console.info('[Web Vitals] 上报已启用 →', url)
   }
 
   onFCP(reportWebVital)

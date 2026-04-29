@@ -8,13 +8,13 @@ interface ImportMetaEnv {
   readonly VITE_ANALYZE: string
   readonly VITE_SOURCEMAP: string
   readonly VITE_APP_VERSION: string
-  /** 完整 URL，接收 POST JSON（Web Vitals 指标）；未配置则仅本地调试、不上报 */
+  /** Web Vitals POST URL，在 `main.ts` 中传入 `WebMonitor.init` */
   readonly VITE_WEB_VITALS_REPORT_URL: string
-  /** 设为 true 则每条指标打印 console；设为 false 则即使在 DEV 也不打印（仍上报）；未设则 DEV 下默认打印 */
+  /** true/false/未设：见 `src/main.ts` 内 `webMonitorEnvFromVite` */
   readonly VITE_WEB_VITALS_DEBUG: string
-  /** 完整 URL，接收 POST JSON（前端错误）；未配置则仅 console（若开启 debug）、不上报 */
+  /** 前端错误 POST URL，在 `main.ts` 中传入 `WebMonitor.init` */
   readonly VITE_ERROR_REPORT_URL: string
-  /** true=每条错误 console.error；false=DEV 也不打印（仍尝试上报）；未设则 DEV 默认打印 */
+  /** true/false/未设：见 `src/main.ts` 内 `webMonitorEnvFromVite` */
   readonly VITE_ERROR_REPORT_DEBUG: string
 }
 

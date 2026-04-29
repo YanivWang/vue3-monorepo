@@ -99,6 +99,10 @@
       "import": "./src/directives-h5/index.ts"
     },
     "./directives-h5/*": "./src/directives-h5/*",
+    "./web-monitor": {
+      "types": "./src/web-monitor/index.ts",
+      "import": "./src/web-monitor/index.ts"
+    },
     "./web-monitor/web-vitals": {
       "types": "./src/web-monitor/webVitalsReport.ts",
       "import": "./src/web-monitor/webVitalsReport.ts"

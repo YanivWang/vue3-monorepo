@@ -1,6 +1,6 @@
 # 全局性能监控
 
-本页说明 **Web Vitals**（尤其 **Core Web Vitals**）的含义，以及 **PC 管理端与 H5 模板**如何通过环境变量与共享插件采集、上报。构建分包与首屏优化见 [Vite 构建优化](./performance.md)；错误与可观测整体见 [全局错误监控](./errors-and-observability.md)。
+本页说明 **Web Vitals**（尤其 **Core Web Vitals**）的含义，以及 **PC 管理端与 H5 模板**如何在 **`src/main.ts`** 装配并调用 `@vue3-monorepo/shared/web-monitor`。构建分包与首屏优化见 [Vite 构建优化](./performance.md)；错误与可观测整体见 [全局错误监控](./errors-and-observability.md)。
 
 ## 什么是 Web Vitals
 
@@ -18,11 +18,11 @@
 
 ## 本仓库中的实现（PC Admin 与 H5 共用）
 
-两端均在 `main.ts` 启动 early 调用 `collectWebVitals()`（不依赖 Vue 实例），与 `setupClientErrorReporting` 并行。实现位于共享包：
+两端均在 **`src/main.ts`**、于 **`createApp` 之后** 调用 `WebMonitor.init({ app, ...webMonitorEnvFromVite() })`（函数名以仓库内实际为准）：内部先挂 Web Vitals，再挂全局错误监听（与单独调用 `collectWebVitals` + `setupClientErrorReporting` 等价，且监听器只挂载一次）。共享包 **`@vue3-monorepo/shared/web-monitor`** 不读取 `VITE_*`，由调用方传入。实现位于：
 
-- [`packages/shared/src/web-monitor/webVitalsReport.ts`](../../packages/shared/src/web-monitor/webVitalsReport.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）
+- [`packages/shared/src/web-monitor/webVitalsReport.ts`](../../packages/shared/src/web-monitor/webVitalsReport.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）；统一入口见同目录 [`webMonitor.ts`](../../packages/shared/src/web-monitor/webMonitor.ts) 的 `WebMonitor.init`。
 
-各应用通过 `@vue3-monorepo/shared/web-monitor/web-vitals` 引用；H5 仍保留 `apps/h5/h5-template/src/plugins/webVitalsReport.ts` 作为 re-export，便于既有 `@/plugins/*` 路径。
+各应用从 `@vue3-monorepo/shared/web-monitor` 导入；仅需 Vitals 时仍可用子路径 `@vue3-monorepo/shared/web-monitor/web-vitals`。
 
 当前注册采集：**FCP、LCP、CLS、TTFB、INP**。每条指标经 `reportWebVital` 序列化后，在配置了上报地址时 **POST** JSON 到采集端；调试模式下可输出到控制台。
 
@@ -30,11 +30,11 @@
 
 ## 环境变量
 
-| 变量                         | 说明                                                                                                       |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `VITE_WEB_VITALS_REPORT_URL` | 非空时向该 URL **POST** `application/json` 上报每条指标                                                    |
-| `VITE_WEB_VITALS_DEBUG`      | `true`：每条指标 `console.info`；`false`：开发环境也不打日志（仍会上报）；未配置时开发环境默认打印便于联调 |
-| `VITE_APP_VERSION`           | 可选，写入载荷 `appVersion`（与 [全局错误监控](./errors-and-observability.md) 一致，便于关联版本）         |
+| 变量                         | 说明                                                                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `VITE_WEB_VITALS_REPORT_URL` | 一般在各端 `main.ts` 中并入 `WebMonitor.init`，非空时向该 URL **POST** `application/json`                      |
+| `VITE_WEB_VITALS_DEBUG`      | 在 `main.ts` 装配为 `webVitalsDebug`：`true` / `false` / 未设时 DEV 默认打印等规则见该文件内实现               |
+| `VITE_APP_VERSION`           | 可选，经 `release` 传入 `init`，写入载荷 `appVersion`（与 [全局错误监控](./errors-and-observability.md) 一致） |
 
 上报通道：优先 `navigator.sendBeacon`，否则 `fetch` + `keepalive: true`，与错误上报策略一致，利于页面卸载时送达。
 
@@ -46,4 +46,4 @@
 
 - [web.dev：Web Vitals](https://web.dev/articles/vitals)
 - [Vite 构建优化](./performance.md)（分包、分析与首屏）
-- [全局错误监控](./errors-and-observability.md)（错误分层与 `setupClientErrorReporting`）
+- [全局错误监控](./errors-and-observability.md)（错误分层与 `WebMonitor.init`）

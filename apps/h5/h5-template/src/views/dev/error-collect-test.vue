@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { CellGroup, Cell, showToast } from 'vant'
 import { PageContainer } from '@vue3-monorepo/shared/components-h5'
-import { reportClientError } from '@/plugins/clientErrorReport'
+import { reportClientError } from '@vue3-monorepo/shared/web-monitor'
 
 defineOptions({ name: 'DevErrorCollect' })
 
@@ -73,9 +73,9 @@ function manualReportResource() {
 <template>
   <PageContainer title="错误采集测试">
     <div class="hint">
-      配置 <code>VITE_ERROR_REPORT_URL</code> 后会上报；开发环境可配合
-      <code>VITE_ERROR_REPORT_DEBUG=true</code> 在控制台查看 <code>[ClientError]</code> 载荷。Web Vitals 需单独配置
-      <code>VITE_WEB_VITALS_REPORT_URL</code>。
+      在 <code>main.ts</code> 中把 Vite 环境的 URL / debug 等传入
+      <code>WebMonitor.init</code> 后会上报；调试规则与同文件内 <code>webMonitorEnvFromVite</code> 一致。Web Vitals
+      与错误须各自配置非空上报 URL。
     </div>
 
     <CellGroup inset title="运行时异常（走全局监听）">

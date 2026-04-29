@@ -22,6 +22,12 @@ interface ImportMetaEnv {
   readonly VITE_SOURCEMAP: string
   /** 应用版本号（可由 CI 注入，供发布与埋点等使用） */
   readonly VITE_APP_VERSION: string
+  /** Web Vitals POST URL，在 `main.ts` 中传入 `WebMonitor.init` */
+  readonly VITE_WEB_VITALS_REPORT_URL: string
+  readonly VITE_WEB_VITALS_DEBUG: string
+  /** 前端错误 POST URL，在 `main.ts` 中传入 `WebMonitor.init` */
+  readonly VITE_ERROR_REPORT_URL: string
+  readonly VITE_ERROR_REPORT_DEBUG: string
 }
 
 interface ImportMeta {

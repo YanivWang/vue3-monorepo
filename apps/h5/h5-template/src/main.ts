@@ -12,16 +12,28 @@ import { registerDirectives } from './composables/registerDirectives'
 import { startMock } from './mock'
 import { useAppStore } from './stores'
 import { bootstrapUserInfo } from './bootstrap/userInfo'
-import { setupClientErrorReporting } from './plugins/clientErrorReport'
-import { collectWebVitals } from './plugins/webVitalsReport'
+import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+
+function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
+  return {
+    errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL,
+    webVitalsReportUrl: import.meta.env.VITE_WEB_VITALS_REPORT_URL,
+    release: import.meta.env.VITE_APP_VERSION,
+    environment: import.meta.env.MODE,
+    clientErrorDebug:
+      import.meta.env.VITE_ERROR_REPORT_DEBUG === 'true' ||
+      (import.meta.env.DEV && import.meta.env.VITE_ERROR_REPORT_DEBUG !== 'false'),
+    webVitalsDebug:
+      import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
+      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
+  }
+}
 
 //在vite里，这样写，目的是把这个scss模块当做 “副作用”执行-构建时会编译成css文件，并挂到整个应用上
 //相当于给h5模版加了一个全局link的css样式，保证应用已启动就能加载这些样式
 import './styles/index.scss'
 
 async function bootstrap() {
-  collectWebVitals()
-
   await startMock()
 
   useBridge()
@@ -29,7 +41,7 @@ async function bootstrap() {
   await loadInitialH5I18n()
 
   const app = createApp(App)
-  setupClientErrorReporting(app)
+  WebMonitor.init({ app, ...webMonitorEnvFromVite() })
 
   const pinia = createPinia()
   pinia.use(piniaPluginPersistedstate)

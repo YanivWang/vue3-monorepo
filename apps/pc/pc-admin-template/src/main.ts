@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
-import { collectWebVitals } from '@vue3-monorepo/shared/web-monitor/web-vitals'
+import { ElMessage } from 'element-plus'
+import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
 import App from './App.vue'
 import router from './router'
 import { loadInitialAdminI18n } from '@/locales'
@@ -15,10 +16,33 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 // 全局样式（包含 reset、工具类、暗黑变量覆盖等）
 import './assets/styles/index.scss'
 
-async function bootstrap(): Promise<void> {
-  collectWebVitals()
+function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
+  return {
+    errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL,
+    webVitalsReportUrl: import.meta.env.VITE_WEB_VITALS_REPORT_URL,
+    release: import.meta.env.VITE_APP_VERSION,
+    environment: import.meta.env.MODE,
+    clientErrorDebug:
+      import.meta.env.VITE_ERROR_REPORT_DEBUG === 'true' ||
+      (import.meta.env.DEV && import.meta.env.VITE_ERROR_REPORT_DEBUG !== 'false'),
+    webVitalsDebug:
+      import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
+      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
+  }
+}
 
+async function bootstrap(): Promise<void> {
   const app = createApp(App)
+  WebMonitor.init({
+    app,
+    ...webMonitorEnvFromVite(),
+    afterVueError: err => {
+      if (import.meta.env.DEV) {
+        const message = err instanceof Error ? err.message : String(err)
+        ElMessage.error(`[Vue 错误] ${message}`)
+      }
+    }
+  })
 
   // 1. 注册 Pinia（须最先，其他模块依赖它）
   setupStore(app)

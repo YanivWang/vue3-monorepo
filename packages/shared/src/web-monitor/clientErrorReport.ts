@@ -1,12 +1,9 @@
 /**
  * 前端错误采集与上报：与 webVitalsReport 相同 HTTP 通道（sendBeacon / fetch keepalive）。
- * 受 `VITE_ERROR_REPORT_URL`、`VITE_ERROR_REPORT_DEBUG` 控制。
+ * 上报地址、调试开关、release / environment 均由调用方通过 `configureClientErrorSdk` 或 `WebMonitor.init` 传入；
+ * 本模块不依赖任何打包工具或仓库约定的环境变量。
  */
 import type { App, ComponentPublicInstance } from 'vue'
-
-const reportUrl = (import.meta.env.VITE_ERROR_REPORT_URL ?? '').trim()
-const dbgFlag = import.meta.env.VITE_ERROR_REPORT_DEBUG
-const debug = dbgFlag === 'true' || (import.meta.env.DEV && dbgFlag !== 'false')
 
 const STACK_MAX = 16 * 1024
 
@@ -34,11 +31,33 @@ export type SetupClientErrorReportingOptions = {
   afterVueError?: (err: unknown, info: string) => void
 }
 
+export type ClientErrorSdkConfig = {
+  errorReportUrl?: string
+  beforeErrorReport?: (payload: ClientErrorPayload) => ClientErrorPayload | null
+  /** 写入载荷 `appVersion` */
+  release?: string
+  /** 写入载荷 `mode` */
+  environment?: string
+  /** `true` 时每条错误 `console.error('[ClientError]', payload)`，并在开启上报 URL 时打印接入日志 */
+  debug?: boolean
+}
+
+let sdkClientErrorConfig: ClientErrorSdkConfig = {}
+
+/** SDK / 测试用：以本次传入对象为准完全覆盖运行时配置（未传的键将不再有值） */
+export function configureClientErrorSdk(config: ClientErrorSdkConfig): void {
+  sdkClientErrorConfig = { ...config }
+}
+
 let additionalClientErrorListener: ((payload: ClientErrorPayload) => void) | undefined
 
-/** 附加消费端（如自建日志、与 HTTP 上报并行）；不等同于替换 `VITE_ERROR_REPORT_URL`。 */
+/** 附加消费端（如自建日志、与 HTTP 上报并行）；不等同于替换上报 URL。 */
 export function setAdditionalClientErrorListener(fn: ((payload: ClientErrorPayload) => void) | undefined): void {
   additionalClientErrorListener = fn
+}
+
+function effectiveErrorReportUrl(): string {
+  return (sdkClientErrorConfig.errorReportUrl ?? '').trim()
 }
 
 function currentPage(): string | undefined {
@@ -50,17 +69,17 @@ function truncateStack(stack: string | undefined): string | undefined {
   return stack.length > STACK_MAX ? `${stack.slice(0, STACK_MAX)}…` : stack
 }
 
-function postReport(body: string): void {
-  if (!reportUrl) return
+function postReport(body: string, url: string): void {
+  if (!url) return
   try {
     const blob = new Blob([body], { type: 'application/json' })
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(reportUrl, blob)) {
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(url, blob)) {
       return
     }
   } catch {
     /* 回退到 fetch */
   }
-  void fetch(reportUrl, {
+  void fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body,
@@ -104,29 +123,43 @@ function buildPayload(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' |
     stack: truncateStack(partial.stack),
     page: currentPage(),
     ts: Date.now(),
-    appVersion: import.meta.env.VITE_APP_VERSION || undefined,
-    mode: import.meta.env.MODE
+    appVersion: sdkClientErrorConfig.release || undefined,
+    mode: sdkClientErrorConfig.environment ?? ''
   }
 }
 
 export function reportClientError(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' | 'appVersion'>): void {
-  const payload = buildPayload(partial)
-  if (debug) {
+  const built = buildPayload(partial)
+  const afterBefore = sdkClientErrorConfig.beforeErrorReport?.(built) ?? built
+  if (afterBefore === null) return
+  const payload = afterBefore
+  if (sdkClientErrorConfig.debug) {
     console.error('[ClientError]', payload)
   }
-  if (reportUrl) {
-    postReport(JSON.stringify(payload))
+  const url = effectiveErrorReportUrl()
+  if (url) {
+    postReport(JSON.stringify(payload), url)
   }
   additionalClientErrorListener?.(payload)
 }
 
+let clientErrorListenersAttached = false
+
 /**
  * 注册 Vue errorHandler（链式保留已有 handler）、window error、unhandledrejection。
- * 与 H5 一致：不在 `unhandledrejection` 上调用 `preventDefault`。
+ * 不在 `unhandledrejection` 上调用 `preventDefault`（保持浏览器默认行为）。
+ * 重复调用会被忽略（适用于 `WebMonitor.init` 单例语义）。
  */
 export function setupClientErrorReporting(app: App, options?: SetupClientErrorReportingOptions): void {
-  if (reportUrl && import.meta.env.DEV) {
-    console.info('[ClientError] 上报已启用 →', reportUrl)
+  if (clientErrorListenersAttached) {
+    console.warn('[ClientError] setupClientErrorReporting 已注册，跳过重复调用')
+    return
+  }
+  clientErrorListenersAttached = true
+
+  const url = effectiveErrorReportUrl()
+  if (url && sdkClientErrorConfig.debug) {
+    console.info('[ClientError] 上报已启用 →', url)
   }
 
   const afterVueError = options?.afterVueError
@@ -146,11 +179,11 @@ export function setupClientErrorReporting(app: App, options?: SetupClientErrorRe
       const target = event.target
       if (target && target !== window && target instanceof Element && RESOURCE_TAG_NAMES.has(target.tagName)) {
         const tagName = target.tagName
-        const url = getFailedResourceUrl(target)
+        const resourceUrl = getFailedResourceUrl(target)
         reportClientError({
           kind: 'resource',
           message: `Failed to load resource <${tagName}>`,
-          source: url || undefined,
+          source: resourceUrl || undefined,
           tagName
         })
         return

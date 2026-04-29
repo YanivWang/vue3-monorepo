@@ -38,19 +38,19 @@ flowchart TB
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
 
-| 分类     | 技术                                                                                                                                              | 版本                                                                                                                           |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| 框架     | Vue 3 (Composition API)                                                                                                                           | ^3.4.31                                                                                                                        |
-| 构建     | Vite                                                                                                                                              | ^5.3.3                                                                                                                         |
-| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                                                                                        | ^5.5.3                                                                                                                         |
-| UI（PC） | Element Plus                                                                                                                                      | ^2.7.6                                                                                                                         |
-| UI（H5） | Vant 4                                                                                                                                            | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                                              |
-| 状态管理 | Pinia + pinia-plugin-persistedstate                                                                                                               | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                                                            |
-| 路由     | Vue Router                                                                                                                                        | ^4.3.3                                                                                                                         |
-| HTTP     | Axios（`src/utils/http` 封装）                                                                                                                    | ^1.7.2                                                                                                                         |
-| 国际化   | Vue I18n（`src/locales`）                                                                                                                         | ^9.14.4                                                                                                                        |
-| 监控     | PC / H5 共用：`web-vitals`（`collectWebVitals`）+ `setupClientErrorReporting`（`packages/shared/web-monitor`）；PC 可选 `setErrorReporter` 兼容层 | 见 [全局性能监控](./web-vitals.md)、[全局错误监控](./errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md` |
-| 工具     | VueUse、Lodash-ES、Day.js 等                                                                                                                      | 见 `dependencies`                                                                                                              |
+| 分类     | 技术                                                                                                                                                                                      | 版本                                                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 框架     | Vue 3 (Composition API)                                                                                                                                                                   | ^3.4.31                                                                                                                        |
+| 构建     | Vite                                                                                                                                                                                      | ^5.3.3                                                                                                                         |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                                                                                                                                | ^5.5.3                                                                                                                         |
+| UI（PC） | Element Plus                                                                                                                                                                              | ^2.7.6                                                                                                                         |
+| UI（H5） | Vant 4                                                                                                                                                                                    | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                                              |
+| 状态管理 | Pinia + pinia-plugin-persistedstate                                                                                                                                                       | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                                                            |
+| 路由     | Vue Router                                                                                                                                                                                | ^4.3.3                                                                                                                         |
+| HTTP     | Axios（`src/utils/http` 封装）                                                                                                                                                            | ^1.7.2                                                                                                                         |
+| 国际化   | Vue I18n（`src/locales`）                                                                                                                                                                 | ^9.14.4                                                                                                                        |
+| 监控     | PC / H5 共用：`WebMonitor.init`（`web-vitals` + `setupClientErrorReporting` 内核，`packages/shared/web-monitor`）；附加上报使用 `setAdditionalClientErrorListener` + `ClientErrorPayload` | 见 [全局性能监控](./web-vitals.md)、[全局错误监控](./errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md` |
+| 工具     | VueUse、Lodash-ES、Day.js 等                                                                                                                                                              | 见 `dependencies`                                                                                                              |
 
 ## 启动流程
 
@@ -66,7 +66,7 @@ bootstrap()
   6. app.mount('#app')
 ```
 
-（Admin 与 H5 均在 `bootstrap` 最早阶段于 `main.ts` 调用 `collectWebVitals()`。）
+（Admin 与 H5 均在 `createApp` 后于各端 `src/main.ts` 调用 `WebMonitor.init`，并从 Vite 环境装配参数。）
 
 ## 路由体系
 
