@@ -11,7 +11,6 @@ import { i18n } from './composables/useI18n'
 import { registerDirectives } from './composables/registerDirectives'
 import { startMock } from './mock'
 import { useAppStore } from './stores'
-import { initSentry } from './plugins/sentry'
 import { bootstrapUserInfo } from './bootstrap/userInfo'
 import { setupClientErrorReporting } from './plugins/clientErrorReport'
 import { collectWebVitals } from './plugins/webVitalsReport'
@@ -28,7 +27,6 @@ async function bootstrap() {
   useBridge()
 
   const app = createApp(App)
-  initSentry(app)
   setupClientErrorReporting(app)
 
   const pinia = createPinia()

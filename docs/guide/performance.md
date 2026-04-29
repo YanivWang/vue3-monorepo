@@ -18,4 +18,4 @@
 
 ## 监控与体验
 
-- 首屏、接口耗时除浏览器 Performance 外，可结合 [错误处理与可观测性](./errors-and-observability.md) 中的 Sentry 性能/事务能力（需配置与成本评估）。
+- 首屏、接口耗时除浏览器 Performance 外，可配合各端错误与性能采集策略评估（H5：`apps/h5/h5-template/docs/observability.md`）。

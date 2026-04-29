@@ -34,3 +34,7 @@
 
 - 协议变更需同步更新本文档版本号与 `@vue3-monorepo/shared/bridge` 类型定义。
 - 破坏性变更需发迁移说明给 H5 与双端负责人。
+
+## 相关文档
+
+- H5 端 Web Vitals 与自研错误上报的环境变量与载荷说明见 [observability.md](./observability.md)。

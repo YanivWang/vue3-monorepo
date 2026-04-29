@@ -23,14 +23,9 @@ Vite 仅加载**各应用自己目录**下的 `.env`、`.env.local`、`.env.[mod
 | ------------------------ | -------------------------------------------------------------------- |
 | `VITE_H5_VIEWPORT_WIDTH` | 移动端视口基准宽度，常见 `375`（与 `postcss-mobile-forever` 等配合） |
 
-## 监控（可选，以源码为准）
+## H5 观测（可选）
 
-PC / H5 的 Sentry 集成使用如下变量（若未在 `.env.example` 中列出，以 `src/plugins/sentry.ts` 等文件注释为准）：
-
-| 变量              | 说明                                  |
-| ----------------- | ------------------------------------- |
-| `VITE_SENTRY_DSN` | Sentry 项目 DSN，未配置则跳过初始化   |
-| `VITE_SENTRY_ENV` | 环境名，默认随 `import.meta.env.MODE` |
+Web Vitals、前端错误等变量见 [apps/h5/h5-template/.env.example](https://github.com/YanivWang/vue3-monorepo/blob/main/apps/h5/h5-template/.env.example) 与 [H5 观测文档](https://github.com/YanivWang/vue3-monorepo/blob/main/apps/h5/h5-template/docs/observability.md)（自建上报链路）。
 
 ## 样例文件位置
 

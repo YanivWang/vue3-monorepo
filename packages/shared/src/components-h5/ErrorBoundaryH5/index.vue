@@ -5,7 +5,7 @@ import { Empty, Button } from 'vant'
 interface Props {
   /** 降级标题 */
   title?: string
-  /** 子树渲染错误时上报（如 Sentry） */
+  /** 子树渲染错误时回调（可自行接入上报） */
   onCapture?: (err: unknown) => void
 }
 

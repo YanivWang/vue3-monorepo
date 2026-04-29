@@ -52,14 +52,17 @@
 ```ts
 // main.ts 或独立的监控初始化文件
 import { setErrorReporter } from '@/plugins/errorHandler'
-import * as Sentry from '@sentry/vue'
 
 setErrorReporter(payload => {
-  Sentry.captureException(new Error(payload.message), {
-    extra: { type: payload.type, info: payload.info }
+  void fetch('/api/error-report', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   })
 })
 ```
+
+实际端点与安全策略（鉴权、脱敏）由团队与后端约定。
 
 ## 源码位置
 

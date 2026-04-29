@@ -8,7 +8,8 @@ H5 移动端应用（Vant 4 + 多宿主：浏览器 / 微信小程序 WebView / 
 
 ```
 apps/h5/h5-template/
-├── src/                    # 入口、路由、页面、stores、API
+├── src/                    # 入口、路由、页面、stores、API、plugins（HTTP、错误与 Web Vitals 等）
+├── docs/                   # 协议与观测说明（如 WebView Bridge、前端观测）
 ├── mock/
 ├── public/
 ├── .env / .env.development / .env.production / .env.staging
@@ -32,3 +33,10 @@ apps/h5/h5-template/
 1. 登录后 **Home → List → Theme**，使用系统返回或页面返回：**栈顶弹出**，`KeepAlive` 缓存符合预期（中间页是否销毁与业务一致）。
 2. 在 **List** 使用 **`router.replace`** 进入同级页：**栈顶替换**，不应多叠一层（与 **`replace` + History `replaceState`** 一致）。
 3. **未登录**访问 `requiresAuth` 路由：应先被鉴权守卫重定向 **Login**，确认 **`setupRouterGuards` 中鉴权先于 `useHistoryStackH5.bind`**，错误路径不会入栈。
+
+## 观测与报错
+
+- **Web Vitals**：`VITE_WEB_VITALS_REPORT_URL`、`VITE_WEB_VITALS_DEBUG`；启动时调用 `collectWebVitals()`（见 `src/plugins/webVitalsReport.ts`）。
+- **前端错误采集**：`VITE_ERROR_REPORT_URL`、`VITE_ERROR_REPORT_DEBUG`（见 `src/plugins/clientErrorReport.ts`）。采集 Vue 错误、JS 运行时错误、资源加载失败、`unhandledrejection`（`setupClientErrorReporting` 在上层若已自定义 `errorHandler` 会先调用原 handler）。
+
+环境与载荷细节见 **`docs/observability.md`**；开发联调可走 **`/dev/error-collect`**。

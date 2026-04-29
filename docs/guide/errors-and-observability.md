@@ -12,15 +12,11 @@
 
 **说明**：H5 与 PC 的插件组织方式可能不同，以各 `src/main.ts` / `plugins` 实际代码为准。架构详述见 [架构说明 — 异常处理](./architecture.md#异常处理)。
 
-## Sentry
+- **PC 管理端**：`setupErrorHandler`（`apps/pc/pc-admin-template/src/plugins/errorHandler.ts`）统一注册 Vue、全局、`unhandledrejection` 与静态资源加载失败；可通过 `setErrorReporter` 接入自建上报。
+- **H5 模板**：`setupClientErrorReporting`、`reportClientError` 与 Web Vitals（`apps/h5/h5-template/docs/observability.md`）。
 
-PC、H5 均支持在配置 **DSN** 后由 `@sentry/vue` 等接入（**异步加载**以减少首屏体积；未配 DSN 时跳过）：
+## 与 ErrorHandler 插件（PC）
 
-- 环境变量以源码为准，常见为 `VITE_SENTRY_DSN`、`VITE_SENTRY_ENV`（或随 `import.meta.env.MODE`）。详见各应用 `src/plugins/sentry.ts` 与 [环境变量说明](./environment-variables.md)。
-- 可配合 Router breadcrumb 等增强现场还原能力。
-
-## 与 ErrorHandler 插件
-
-`errorHandler` 插件中可**替换/扩展**「上报」实现（如接入自建日志接口）。默认实现以注释形式说明，生产环境可改为 `sendBeacon` 或 Sentry。
+`errorHandler` 插件中可**替换/扩展**「上报」实现（如接入自建日志接口）。默认实现以注释形式说明，生产环境可改为 `sendBeacon`、自有采集端点等。
 
 **不要在错误回调中再次抛出未处理异常**，避免监控风暴。

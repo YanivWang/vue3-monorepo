@@ -1,7 +1,7 @@
 import type { App, ComponentPublicInstance } from 'vue'
 import { ElMessage } from 'element-plus'
 
-/** 错误上报函数类型，可替换为 Sentry / 自建监控接口 */
+/** 错误上报函数类型，可替换为自建监控接口 */
 type ErrorReporter = (payload: ErrorPayload) => void
 
 export interface ErrorPayload {
@@ -17,7 +17,7 @@ export interface ErrorPayload {
   tagName?: string
 }
 
-/** 默认上报实现：生产环境可替换为 sendBeacon 或 Sentry */
+/** 默认上报实现：生产环境可替换为 sendBeacon、自建接口等 */
 function defaultReporter(payload: ErrorPayload): void {
   if (import.meta.env.DEV) {
     console.error('[ErrorHandler]', payload)
@@ -28,7 +28,7 @@ function defaultReporter(payload: ErrorPayload): void {
 
 let reporter: ErrorReporter = defaultReporter
 
-/** 替换上报函数（如需接入 Sentry 等第三方） */
+/** 替换上报函数（接入自建或第三方监控时使用） */
 export function setErrorReporter(fn: ErrorReporter): void {
   reporter = fn
 }

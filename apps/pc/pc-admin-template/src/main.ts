@@ -25,11 +25,11 @@ async function bootstrap(): Promise<void> {
   // 3. 全局共享组件（@vue3-monorepo/shared/components-pc）
   installComponents(app)
 
-  // 4. 注册路由（须在 setupPlugins 前，Sentry 需要 router 实例）
+  // 4. 注册路由（须在 setupPlugins 前）
   app.use(router)
 
-  // 5. 注册全局插件（Element Plus、vue-i18n、Sentry 等）
-  setupPlugins(app, router)
+  // 5. 注册全局插件（Element Plus、vue-i18n 等）
+  setupPlugins(app)
 
   // 6. 等待路由准备完成后挂载，避免首屏路由守卫未执行
   await router.isReady()

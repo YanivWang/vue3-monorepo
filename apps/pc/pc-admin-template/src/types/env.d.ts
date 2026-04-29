@@ -20,11 +20,7 @@ interface ImportMetaEnv {
   readonly VITE_ANALYZE: string
   /** 为 true 时开启 Source Map（staging 环境调试用） */
   readonly VITE_SOURCEMAP: string
-  /** Sentry DSN，留空则跳过 Sentry 初始化 */
-  readonly VITE_SENTRY_DSN: string
-  /** Sentry 环境标识（production | staging | development） */
-  readonly VITE_SENTRY_ENV: string
-  /** 应用版本号，对应 Sentry Release */
+  /** 应用版本号（可由 CI 注入，供发布与埋点等使用） */
   readonly VITE_APP_VERSION: string
 }
 

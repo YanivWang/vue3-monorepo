@@ -45,7 +45,7 @@ features:
 
   - icon: 🛡️
     title: 全局异常处理
-    details: 覆盖 Vue 组件错误、全局 JS 错误、未捕获 Promise，ErrorBoundary 组件提供降级 UI，可接入 Sentry。
+    details: 覆盖 Vue 组件错误、全局 JS 错误、未捕获 Promise，ErrorBoundary 组件提供降级 UI；PC/H5 均通过插件与可扩展上报对接自建观测。
 
   - icon: 🐳
     title: Docker 容器化

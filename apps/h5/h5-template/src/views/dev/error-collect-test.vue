@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { CellGroup, Cell, showToast } from 'vant'
 import { PageContainer } from '@vue3-monorepo/shared/components-h5'
 import { reportClientError } from '@/plugins/clientErrorReport'
-import { captureException } from '@/plugins/sentry'
 
 defineOptions({ name: 'DevErrorCollect' })
 
@@ -69,11 +68,6 @@ function manualReportResource() {
   })
   showToast('已调用 reportClientError(resource)')
 }
-
-function triggerSentry() {
-  captureException(new Error('[错误采集测试] Sentry captureException'))
-  showToast('已调用 captureException（未配置 DSN 时无效果）')
-}
 </script>
 
 <template>
@@ -96,10 +90,6 @@ function triggerSentry() {
       <Cell title="reportClientError · js" is-link @click="manualReportJs" />
       <Cell title="reportClientError · unhandledrejection" is-link @click="manualReportRejection" />
       <Cell title="reportClientError · resource" is-link @click="manualReportResource" />
-    </CellGroup>
-
-    <CellGroup inset title="其它">
-      <Cell title="Sentry captureException" is-link @click="triggerSentry" />
     </CellGroup>
 
     <img v-show="showBrokenImg" :src="brokenImgUrl" alt="" class="broken-img" />

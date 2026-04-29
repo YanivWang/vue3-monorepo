@@ -7,8 +7,6 @@ interface ImportMetaEnv {
   readonly VITE_H5_VIEWPORT_WIDTH: string
   readonly VITE_ANALYZE: string
   readonly VITE_SOURCEMAP: string
-  readonly VITE_SENTRY_DSN: string
-  readonly VITE_SENTRY_ENV: string
   readonly VITE_APP_VERSION: string
   /** 完整 URL，接收 POST JSON（Web Vitals 指标）；未配置则仅本地调试、不上报 */
   readonly VITE_WEB_VITALS_REPORT_URL: string

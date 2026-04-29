@@ -114,7 +114,7 @@ export function reportClientError(partial: Omit<ClientErrorPayload, 'ts' | 'mode
 }
 
 /**
- * 注册 Vue errorHandler（链式保留已有 handler，如 Sentry）、window error、unhandledrejection。
+ * 注册 Vue errorHandler（链式保留已有 handler）、window error、unhandledrejection。
  */
 export function setupClientErrorReporting(app: App): void {
   if (reportUrl && import.meta.env.DEV) {

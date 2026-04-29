@@ -8,7 +8,6 @@ import { useBridge } from '@vue3-monorepo/shared/bridge'
 import { useHistoryStackH5 } from '@vue3-monorepo/shared/hooks-h5'
 import { ErrorBoundaryH5 } from '@vue3-monorepo/shared/components-h5'
 import { useAppStore } from '@/stores'
-import { captureException } from '@/plugins/sentry'
 
 const route = useRoute()
 const { locale, t } = useI18n()
@@ -30,16 +29,12 @@ const keepAliveInclude = computed(() => include.value)
 const app = useAppStore()
 const { isDark } = storeToRefs(app)
 const vantTheme = computed(() => (isDark.value ? 'dark' : 'light'))
-
-function onRouteError(err: unknown) {
-  captureException(err)
-}
 </script>
 
 <template>
   <ConfigProvider :theme="vantTheme">
     <RouterView v-slot="{ Component, route: routeView }">
-      <ErrorBoundaryH5 :on-capture="onRouteError">
+      <ErrorBoundaryH5>
         <Transition :name="(routeView.meta?.transition as string) || 'slide-fade'" mode="out-in">
           <KeepAlive :include="keepAliveInclude">
             <component :is="Component" :key="routeView.fullPath" />
