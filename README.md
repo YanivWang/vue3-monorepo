@@ -76,7 +76,28 @@ vue3-monorepo/
 ├── apps/                 # 多端应用目录
 │   ├── pc/               # PC 端应用（模板+业务项目）
 │   └── h5/               # H5 端应用（模板+业务项目）
-├── packages/shared/      # 公共共享包（请求、hooks、工具、样式 Token）
+├── packages/shared/      # 公共共享包（多端复用业务与工程能力）
+│   ├── src/
+│   │   ├── bridge/           # JSBridge 抽象与多端策略（浏览器 / 微信小程序 / App 等）
+│   │   ├── components-pc/    # PC 共享组件（如 ProTable、PageContainer、ErrorBoundary）
+│   │   ├── components-h5/    # H5 共享组件（如 NavBar、ProList、SafeArea、TabBarLayout）
+│   │   ├── directives-pc/    # PC 指令（权限、复制等）
+│   │   ├── directives-h5/    # H5 指令（权限、长按、lazy 等）
+│   │   ├── hooks-core/       # 跨端 hooks（权限、请求、分页、主题、历史栈等）
+│   │   ├── hooks-pc/         # PC 专用 hooks（消息、图表等）
+│   │   ├── hooks-h5/         # H5 专用 hooks（登录、主题、VConsole、列表筛选等）
+│   │   ├── locale/           # vue-i18n 配置与中英文文案
+│   │   ├── request-core/     # HTTP 客户端核心与通用类型
+│   │   ├── request-pc/       # PC 端请求封装与 loading/preset
+│   │   ├── request-h5/       # H5 端请求封装与 loading/preset
+│   │   ├── styles/           # 全局样式与 Design Token（含多品牌、暗黑）
+│   │   ├── types/            # 公共 TS 类型
+│   │   ├── utils/            # 工具函数（校验、存储、echarts、脱敏等）
+│   │   ├── constants/        # 常量
+│   │   └── enums/            # 枚举
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vitest.config.ts
 ├── docs/                 # VitePress 项目文档
 ├── scripts/              # 工程化脚本（create-app、校验脚本）
 ├── docker/               # Docker 部署配置

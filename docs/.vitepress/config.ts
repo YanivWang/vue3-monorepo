@@ -34,11 +34,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
-      { text: '贡献', link: '/guide/contributing' },
-      {
-        text: '更新日志',
-        link: 'https://github.com/YanivWang/vue3-monorepo/blob/main/CHANGELOG.md'
-      }
+      { text: '贡献', link: '/guide/contributing' }
     ],
 
     sidebar: {
@@ -71,8 +67,7 @@ export default defineConfig({
             { text: '全局错误监控', link: '/guide/errors-and-observability' },
             { text: '全局性能监控', link: '/guide/web-vitals' },
             { text: 'Vite 构建优化', link: '/guide/performance' },
-            { text: '安全', link: '/guide/security' },
-            { text: '无障碍与可用性', link: '/guide/accessibility' }
+            { text: '安全', link: '/guide/security' }
           ]
         },
         {

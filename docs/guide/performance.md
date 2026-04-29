@@ -15,8 +15,3 @@
 
 - 与移动端布局相关的插件如 `postcss-mobile-forever`、Bridge 与 WebView 首屏，需在真机/弱网环境抽样验证。
 - 避免在首屏同步引入过重依赖；`bridge` 与宿主协议见 `apps/h5/h5-template/docs/bridge-protocol.md`。
-
-## 监控与体验
-
-- **Web Vitals / Core Web Vitals** 与 H5 采集说明见 [全局性能监控](./web-vitals.md)；实现细节另见 `apps/h5/h5-template/docs/observability.md`。
-- 首屏、接口耗时除浏览器 Performance 外，可配合各端错误与性能采集策略评估。

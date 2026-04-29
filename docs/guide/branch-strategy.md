@@ -59,7 +59,7 @@ git push origin feature/your-feature-name
 git checkout develop
 git checkout -b release/v1.2.0
 
-# 2. 修改根目录 package.json 的 version、更新 CHANGELOG.md
+# 2. 修改根目录 package.json 的 version
 
 # 3. 合并到 main（触发生产部署）
 # PR: release/v1.2.0 → main
