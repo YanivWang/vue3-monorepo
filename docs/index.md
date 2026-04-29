@@ -3,55 +3,72 @@ layout: home
 
 hero:
   name: 'vue3-monorepo'
-  text: '企业级 Monorepo 前端脚手架'
-  tagline: 以 pnpm workspace 与共享包为核心；Admin（Element Plus）与 H5（Vant）双端同等重要，Vue3 + Vite + TypeScript，开箱即用的最佳实践集合
+  text: 'Monorepo 前端脚手架'
+  tagline: pnpm workspace 与共享包；Admin（Element Plus）与 H5（Vant）双模板；Vue3 · Vite · TypeScript
   actions:
     - theme: brand
-      text: 新人上手
-      link: /guide/onboarding
-    - theme: alt
-      text: 文档体系
-      link: /guide/doc-system
-    - theme: alt
-      text: 环境命令
-      link: /guide/getting-started
-    - theme: alt
-      text: 查看组件
+      text: 组件
       link: /components/page-container
+    - theme: alt
+      text: 性能
+      link: /guide/performance
     - theme: alt
       text: GitHub
       link: https://github.com/YanivWang/vue3-monorepo
 
 features:
-  - icon: 📦
-    title: Monorepo 与工作区脚手架
-    details: pnpm workspace 为核心：默认 Admin + H5 模板与文档站同仓，共享 @vue3-monorepo/shared；pnpm run create-app 复制 PC/H5 业务工程并接根脚本、tsconfig references、vitest.workspace.ts。双端同等重要，真实业务须在生成目录开发，勿在 pc-admin-template、h5-template 内写业务。
-
-  - icon: ⚡
-    title: Vite 5 极速构建
-    details: 基于 Vite 5，开发服务器秒启，HMR 热更新，生产构建支持 Gzip/Brotli 双压缩与 Bundle 分析。
+  - icon: ✅
+    title: 质量门禁
+    link: /guide/quality-gates
+    details: 版本锁定与类型检查，格式化与 Lint，提交规范与钩子一站配置。
 
   - icon: 🔐
-    title: 完整权限体系
-    details: 支持后端菜单驱动的动态路由、按钮级 v-permission/v-role 指令、usePermission Composable，角色与权限码双模式。
+    title: 权限体系
+    link: /guide/permission
+    details: 菜单驱动动态路由、路由守卫与指令/组合式 API，角色与权限码双模式。
 
   - icon: 🌙
-    title: 主题与品牌色
-    details: 共享包 Sass（root、brands、dark）与 JS API（applyThemeMode、applyBrand、getAppliedBrand 等）；PC 单独 dark.scss 对齐 Element Plus；H5 入口映射 Vant 变量。Pinia store 或 createUseTheme / createUseThemeH5；light/dark/system；PC 顶栏与登录页可调，未登录也可预览。
+    title: 主题与品牌
+    link: /guide/theme
+    details: 多主题与明暗切换，Design Token 与 CSS 变量驱动，支持多品牌皮肤。
 
   - icon: 🌐
     title: 国际化
-    details: 内置中英文切换，Element Plus 语言同步，vue-i18n 与 appStore 联动，支持运行时动态切换。
+    link: /guide/i18n
+    details: 语言包懒加载，与组件库语言联动，适合后台与 C 端活动等多语言场景。
+
+  - icon: 📡
+    title: HTTP、Mock 与请求控制
+    link: /guide/http-and-mock
+    details: 统一请求封装与 Mock 联调；取消、去重与竞态治理；PC / H5 分层复用。
 
   - icon: 🛡️
-    title: 全局异常处理
-    details: 覆盖 Vue 组件错误、全局 JS 错误、未捕获 Promise，ErrorBoundary 组件提供降级 UI；PC/H5 均通过插件与可扩展上报对接自建观测。
+    title: 全局错误监控
+    link: /guide/errors-and-observability
+    details: 异常与 Promise 分层处理，插件化上报，便于对接自建观测与多端统一策略。
 
-  - icon: 🐳
-    title: Docker 容器化
-    details: docker/images/admin 多阶段构建（monorepo 根上下文），docker/nginx 含 SPA、Gzip、安全头；docker/docker-compose.yaml 本地验证。
+  - icon: 🛡️
+    title: 全局性能监控
+    link: /guide/errors-and-observability
+    details: 异常与 Promise 分层处理，插件化上报，便于对接自建观测与多端统一策略。
 
-  - icon: 🔄
-    title: 请求取消与防重复
-    details: HTTP 层集成 AbortController，cancelDuplicate 选项自动取消重复请求，适合搜索联想等高频场景。
+  - icon: 📱
+    title: H5 Bridge 与 WebView
+    link: https://github.com/YanivWang/vue3-monorepo/blob/main/apps/h5/h5-template/docs/bridge-protocol.md
+    details: 与宿主 App 的 JSBridge 约定与典型 WebView 场景，细节见仓库协议文档。
+
+  - icon: ➕
+    title: 脚手架新增业务应用
+    link: /guide/adding-a-new-app
+    details: 从 PC / H5 模板一键生成业务应用，对齐 workspace、脚本与测试等 monorepo 约定。
+
+  - icon: 🚀
+    title: 部署与 Docker
+    link: /guide/deploy
+    details: 静态发布流程与多阶段镜像、Nginx SPA 等生产级部署参考。
+
+  - icon: 🔭
+    title: Vite 构建优化
+    link: /guide/performance
+    details: Vite 分包、分析与首屏优化；线上可采集体验指标，与错误可观测衔接。
 ---
