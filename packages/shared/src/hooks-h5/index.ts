@@ -1,7 +1,7 @@
 /**
  * @vue3-monorepo/shared/hooks-h5
  *
- * H5 端专用 hooks（依赖 Vant / @vue3-monorepo/shared/bridge / vue-router）
+ * H5 端专用 hooks（依赖 Vant / @vue3-monorepo/shared/js-bridge / vue-router）
  *
  * - useVantMessage：Vant 消息 API 的统一封装
  * - useVConsole：移动端 vconsole 单例挂载

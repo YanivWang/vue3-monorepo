@@ -1,6 +1,6 @@
 # H5 观测：Web Vitals 与前端错误
 
-> 与 `src/plugins/webVitalsReport.ts`、`src/plugins/clientErrorReport.ts` 及 `main.ts` 启动顺序一致。
+> 实现源码在 **`@vue3-monorepo/shared/web-monitor`**；本目录下 `src/plugins/webVitalsReport.ts`、`src/plugins/clientErrorReport.ts` 为 **re-export**，与 `main.ts` 启动顺序一致。
 
 ## 启动顺序（`main.ts`）
 
@@ -49,7 +49,7 @@
 | `appVersion`   | 来自 `VITE_APP_VERSION`                             |
 | `mode`         | `import.meta.env.MODE`                              |
 
-手动上报可调用 `reportClientError()`（同上字段，省略 `ts` / `page` / `mode` / `appVersion`，由内部补全）。
+手动上报可调用 `reportClientError()`（同上字段，省略 `ts` / `page` / `mode` / `appVersion`，由内部补全）。共享包另导出 `setAdditionalClientErrorListener`，用于与 HTTP 上报并行的附加消费。
 
 开发环境若已配置上报地址，控制台会有一条提示：`上报已启用 → <url>`。
 

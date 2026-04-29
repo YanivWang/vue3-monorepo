@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "PC / H5 共享源码（单包：类型、工具、请求、hooks、组件、指令、i18n、bridge）",
+  "description": "PC / H5 共享源码（单包：类型、工具、请求、hooks、组件、指令、i18n、js-bridge）",
   "sideEffects": [
     "**/*.css",
     "**/*.scss",
@@ -39,11 +39,11 @@
       "types": "./src/utils/index.ts",
       "import": "./src/utils/index.ts"
     },
-    "./bridge": {
-      "types": "./src/bridge/index.ts",
-      "import": "./src/bridge/index.ts"
+    "./js-bridge": {
+      "types": "./src/js-bridge/index.ts",
+      "import": "./src/js-bridge/index.ts"
     },
-    "./bridge/*": "./src/bridge/*",
+    "./js-bridge/*": "./src/js-bridge/*",
     "./locale": {
       "types": "./src/locale/index.ts",
       "import": "./src/locale/index.ts"
@@ -99,6 +99,14 @@
       "import": "./src/directives-h5/index.ts"
     },
     "./directives-h5/*": "./src/directives-h5/*",
+    "./web-monitor/web-vitals": {
+      "types": "./src/web-monitor/webVitalsReport.ts",
+      "import": "./src/web-monitor/webVitalsReport.ts"
+    },
+    "./web-monitor/client-error": {
+      "types": "./src/web-monitor/clientErrorReport.ts",
+      "import": "./src/web-monitor/clientErrorReport.ts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -112,7 +120,8 @@
     "dayjs": "catalog:",
     "echarts": "catalog:",
     "js-cookie": "catalog:",
-    "lodash-es": "catalog:"
+    "lodash-es": "catalog:",
+    "web-vitals": "catalog:"
   },
   "peerDependencies": {
     "@element-plus/icons-vue": "catalog:",

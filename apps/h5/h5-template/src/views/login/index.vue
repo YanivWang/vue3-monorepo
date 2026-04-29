@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { Form, Field, CellGroup, Button, Toast, Tabs, Tab, showToast } from 'vant'
 import { H5Host } from '@vue3-monorepo/shared/enums'
-import { useBridge } from '@vue3-monorepo/shared/bridge'
+import { useBridge } from '@vue3-monorepo/shared/js-bridge'
 import { useSmsCodeGate } from '@vue3-monorepo/shared/hooks-h5'
 import { useAuth } from '@/composables/useAuth'
 import { loginApi } from '@/api/user'

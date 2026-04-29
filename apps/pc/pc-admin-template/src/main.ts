@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { collectWebVitals } from '@vue3-monorepo/shared/web-monitor/web-vitals'
 import App from './App.vue'
 import router from './router'
 import { loadInitialAdminI18n } from '@/locales'
@@ -15,6 +16,8 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/styles/index.scss'
 
 async function bootstrap(): Promise<void> {
+  collectWebVitals()
+
   const app = createApp(App)
 
   // 1. 注册 Pinia（须最先，其他模块依赖它）

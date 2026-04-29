@@ -40,29 +40,27 @@
 
 ## 与全局错误处理的区别（以 PC 管理端模板为准）
 
-| 场景                       | 处理方式                                                           |
-| -------------------------- | ------------------------------------------------------------------ |
-| 组件渲染错误（可降级）     | 使用 `ErrorBoundary` 包裹                                          |
-| 全局 JS 错误               | `window.onerror`（已在 PC 模板 `errorHandler.ts` 中注册）          |
-| 未捕获 Promise             | `unhandledrejection`（已在 PC 模板 `errorHandler.ts` 中注册）      |
-| Vue 组件树错误（全局兜底） | `app.config.errorHandler`（已在 PC 模板 `errorHandler.ts` 中注册） |
+| 场景                       | 处理方式                                                             |
+| -------------------------- | -------------------------------------------------------------------- |
+| 组件渲染错误（可降级）     | 使用 `ErrorBoundary` 包裹                                            |
+| 全局 JS 错误               | `window` `error` 捕获阶段（`setupClientErrorReporting`，共享包实现） |
+| 未捕获 Promise             | `unhandledrejection`（同上）                                         |
+| Vue 组件树错误（全局兜底） | `app.config.errorHandler`（同上；PC DEV 下额外 `ElMessage`）         |
 
 H5 模板的错误与性能采集见 [全局错误监控](../guide/errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md`。
 
 ## 接入错误监控
 
-**PC 管理端模板**中 `apps/pc/pc-admin-template/src/plugins/errorHandler.ts` 暴露了 `setErrorReporter` 方法，可替换默认的上报实现：
+**优先**在环境变量中配置 `VITE_ERROR_REPORT_URL`（与 H5 相同，见 [全局错误监控](../guide/errors-and-observability.md)）。
+
+**PC 管理端模板**另提供 `setErrorReporter`（源码 `apps/pc/pc-admin-template/src/plugins/errorReporterCompat.ts`），在历史字段形态 `ErrorPayload`（`type: vue | global | promise | resource`）上附加消费，与 HTTP 上报并行而非替代：
 
 ```ts
-// main.ts 或独立的监控初始化文件
-import { setErrorReporter } from '@/plugins/errorHandler'
+import { setErrorReporter } from '@/plugins/errorReporterCompat'
 
 setErrorReporter(payload => {
-  void fetch('/api/error-report', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
+  // 自定义：日志、第三方 SDK 等
+  console.info('[extra]', payload)
 })
 ```
 
@@ -71,4 +69,5 @@ setErrorReporter(payload => {
 ## 源码位置
 
 - PC 边界组件：`packages/shared/src/components-pc/ErrorBoundary/index.vue`
-- PC 全局错误插件：`apps/pc/pc-admin-template/src/plugins/errorHandler.ts`
+- PC 兼容层（可选附加上报）：`apps/pc/pc-admin-template/src/plugins/errorReporterCompat.ts`
+- 共享实现：`packages/shared/src/web-monitor/clientErrorReport.ts`

@@ -36,7 +36,7 @@ apps/h5/h5-template/
 
 ## 观测与报错
 
-- **Web Vitals**：`VITE_WEB_VITALS_REPORT_URL`、`VITE_WEB_VITALS_DEBUG`；启动时调用 `collectWebVitals()`（见 `src/plugins/webVitalsReport.ts`）。
-- **前端错误采集**：`VITE_ERROR_REPORT_URL`、`VITE_ERROR_REPORT_DEBUG`（见 `src/plugins/clientErrorReport.ts`）。采集 Vue 错误、JS 运行时错误、资源加载失败、`unhandledrejection`（`setupClientErrorReporting` 在上层若已自定义 `errorHandler` 会先调用原 handler）。
+- **Web Vitals**：`VITE_WEB_VITALS_REPORT_URL`、`VITE_WEB_VITALS_DEBUG`；启动时调用 `collectWebVitals()`（实现：`@vue3-monorepo/shared/web-monitor/web-vitals`，本目录 `src/plugins/webVitalsReport.ts` 为 re-export）。
+- **前端错误采集**：`VITE_ERROR_REPORT_URL`、`VITE_ERROR_REPORT_DEBUG`（实现：`@vue3-monorepo/shared/web-monitor/client-error`，本目录 `src/plugins/clientErrorReport.ts` 为 re-export）。采集 Vue 错误、JS 运行时错误、资源加载失败、`unhandledrejection`（`setupClientErrorReporting` 在上层若已自定义 `errorHandler` 会先调用原 handler）。
 
 环境与载荷细节见 **`docs/observability.md`**；开发联调可走 **`/dev/error-collect`**。

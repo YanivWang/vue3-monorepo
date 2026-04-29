@@ -1,11 +1,18 @@
 import type { App } from 'vue'
+import { ElMessage } from 'element-plus'
+import { setupClientErrorReporting } from '@vue3-monorepo/shared/web-monitor/client-error'
 import { setupElementPlus } from './element-plus'
 import { setupI18n } from '@/locales'
-import { setupErrorHandler } from './errorHandler'
 
 export function setupPlugins(app: App): void {
-  // 错误处理最先注册，确保后续插件的错误都能被捕获
-  setupErrorHandler(app)
+  setupClientErrorReporting(app, {
+    afterVueError: err => {
+      if (import.meta.env.DEV) {
+        const message = err instanceof Error ? err.message : String(err)
+        ElMessage.error(`[Vue 错误] ${message}`)
+      }
+    }
+  })
   setupElementPlus(app)
   setupI18n(app)
 }

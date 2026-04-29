@@ -38,19 +38,19 @@ flowchart TB
 
 版本以仓库根目录 `package.json` 为准，以下为当前主要依赖（节选）：
 
-| 分类     | 技术                                                                                 | 版本                                                                                             |
-| -------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| 框架     | Vue 3 (Composition API)                                                              | ^3.4.31                                                                                          |
-| 构建     | Vite                                                                                 | ^5.3.3                                                                                           |
-| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                           | ^5.5.3                                                                                           |
-| UI（PC） | Element Plus                                                                         | ^2.7.6                                                                                           |
-| UI（H5） | Vant 4                                                                               | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                |
-| 状态管理 | Pinia + pinia-plugin-persistedstate                                                  | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                              |
-| 路由     | Vue Router                                                                           | ^4.3.3                                                                                           |
-| HTTP     | Axios（`src/utils/http` 封装）                                                       | ^1.7.2                                                                                           |
-| 国际化   | Vue I18n（`src/locales`）                                                            | ^9.14.4                                                                                          |
-| 监控     | H5：`web-vitals` + 自研错误上报；PC：全局 `errorHandler` + 可扩展 `setErrorReporter` | 见各应用 `plugins`、[全局性能监控](./web-vitals.md)、`apps/h5/h5-template/docs/observability.md` |
-| 工具     | VueUse、Lodash-ES、Day.js 等                                                         | 见 `dependencies`                                                                                |
+| 分类     | 技术                                                                                                                                              | 版本                                                                                                                           |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 框架     | Vue 3 (Composition API)                                                                                                                           | ^3.4.31                                                                                                                        |
+| 构建     | Vite                                                                                                                                              | ^5.3.3                                                                                                                         |
+| 语言     | TypeScript（`tsconfig` 中 `strict: true`）                                                                                                        | ^5.5.3                                                                                                                         |
+| UI（PC） | Element Plus                                                                                                                                      | ^2.7.6                                                                                                                         |
+| UI（H5） | Vant 4                                                                                                                                            | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                                              |
+| 状态管理 | Pinia + pinia-plugin-persistedstate                                                                                                               | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                                                            |
+| 路由     | Vue Router                                                                                                                                        | ^4.3.3                                                                                                                         |
+| HTTP     | Axios（`src/utils/http` 封装）                                                                                                                    | ^1.7.2                                                                                                                         |
+| 国际化   | Vue I18n（`src/locales`）                                                                                                                         | ^9.14.4                                                                                                                        |
+| 监控     | PC / H5 共用：`web-vitals`（`collectWebVitals`）+ `setupClientErrorReporting`（`packages/shared/web-monitor`）；PC 可选 `setErrorReporter` 兼容层 | 见 [全局性能监控](./web-vitals.md)、[全局错误监控](./errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md` |
+| 工具     | VueUse、Lodash-ES、Day.js 等                                                                                                                      | 见 `dependencies`                                                                                                              |
 
 ## 启动流程
 
@@ -61,10 +61,12 @@ bootstrap()
   1. setupStore(app)           # Pinia + persistedstate 插件
   2. registerDirectives(app)   # v-permission / v-role
   3. app.use(router)           # 先注册路由（部分插件或守卫依赖 Router）
-  4. setupPlugins(app)       # 顺序：ErrorHandler → Element Plus → I18n
+  4. setupPlugins(app)         # 顺序：ClientErrorReporting → Element Plus → I18n
   5. await router.isReady()
   6. app.mount('#app')
 ```
+
+（Admin 与 H5 均在 `bootstrap` 最早阶段于 `main.ts` 调用 `collectWebVitals()`。）
 
 ## 路由体系
 

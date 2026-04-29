@@ -29,8 +29,7 @@
     "vconsole": "catalog:",
     "vue": "catalog:",
     "vue-i18n": "catalog:",
-    "vue-router": "catalog:",
-    "web-vitals": "catalog:"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:",

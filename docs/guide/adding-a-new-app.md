@@ -30,10 +30,10 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 ## 1. 先定类型：放在 `apps/h5` 还是 `apps/pc`
 
-| 端            | 物理目录                | 包内应使用的 shared 子域                                                | UI 与典型能力                                 |
-| ------------- | ----------------------- | ----------------------------------------------------------------------- | --------------------------------------------- |
-| **PC 管理端** | `apps/pc/<你的目录名>/` | `request-pc`、`hooks-pc`、`components-pc`、`directives-pc` 等           | Element Plus、动态菜单/权限（若以模板为起点） |
-| **H5 移动端** | `apps/h5/<你的目录名>/` | `request-h5`、`hooks-h5`、`components-h5`、`directives-h5`、`bridge` 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
+| 端            | 物理目录                | 包内应使用的 shared 子域                                                   | UI 与典型能力                                 |
+| ------------- | ----------------------- | -------------------------------------------------------------------------- | --------------------------------------------- |
+| **PC 管理端** | `apps/pc/<你的目录名>/` | `request-pc`、`hooks-pc`、`components-pc`、`directives-pc` 等              | Element Plus、动态菜单/权限（若以模板为起点） |
+| **H5 移动端** | `apps/h5/<你的目录名>/` | `request-h5`、`hooks-h5`、`components-h5`、`directives-h5`、`js-bridge` 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
 
 **不要**把两个真实业务端混进同一个 Vite 工程目录；**不要**在 H5 应用里直接 import 另一个 Admin 应用的 store/页面，反之亦然。跨端只走 `@vue3-monorepo/shared` 的 **exports** 已导出路径，规则见 [项目与目录约定](./project-conventions.md)。
 

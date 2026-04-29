@@ -55,6 +55,6 @@
 ## 跨端复用与 `exports`
 
 - 源文件在 `packages/shared/src/` 按域划分；对外子路径由 `package.json#exports` 决定。
-- 业务中示例：`@vue3-monorepo/shared/types`、`…/utils`、`…/request-core`（无 UI）、`…/request-pc` / `…/request-h5`、`…/bridge`（H5 与宿主通信）、`…/hooks-core` / `…/hooks-pc` / `…/hooks-h5`、`…/components-pc` / `…/components-h5`、`…/directives-pc` / `…/directives-h5`、`…/styles/tokens` 等。
+- 业务中示例：`@vue3-monorepo/shared/types`、`…/utils`、`…/request-core`（无 UI）、`…/request-pc` / `…/request-h5`、`…/js-bridge`（H5 与宿主通信）、`…/hooks-core` / `…/hooks-pc` / `…/hooks-h5`、`…/components-pc` / `…/components-h5`、`…/directives-pc` / `…/directives-h5`、`…/styles/tokens` 等。
 
 更多 workspace、filter 与依赖约定见 [pnpm workspace 日常操作](./monorepo-workflow.md)。

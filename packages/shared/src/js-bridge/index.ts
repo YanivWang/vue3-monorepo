@@ -27,7 +27,7 @@ export interface CreateBridgeOptions {
  * 根据当前宿主（或选项强制）创建 Bridge 单例。
  *
  * @example
- *   import { createBridge } from '@vue3-monorepo/shared/bridge'
+ *   import { createBridge } from '@vue3-monorepo/shared/js-bridge'
  *   const bridge = createBridge({ wxMini: { loginPath: '/pages/login' } })
  *   await bridge.ui.toast({ message: 'hi' })
  *   const token = await bridge.auth.login()

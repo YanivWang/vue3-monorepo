@@ -75,5 +75,5 @@ features:
   - icon: 🔭
     title: Vite 构建优化
     link: /guide/performance
-    details: Vite 分包、分析与首屏优化；体验指标采集见 H5 模板（`web-vitals`），与错误可观测衔接。
+    details: Vite 分包、分析与首屏优化；体验指标 web-vitals 与错误上报由 PC/H5 共用 shared 实现，与错误可观测衔接。
 ---

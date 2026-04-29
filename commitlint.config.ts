@@ -10,7 +10,7 @@ import type { UserConfig } from '@commitlint/types'
  *
  * 合法 scope（20 个）：
  *   - 应用级（3）：admin（PC 管理端 app）/ h5 / docs
- *   - 共享单包内 6 类：shared / utils / bridge / request / locale / hooks
+ *   - 共享单包内 6 类：shared / utils / js-bridge / request / locale / hooks
  *   - PC 子域 4 项：components-pc / hooks-pc / directives-pc / request-pc
  *   - H5 子域 4 项：components-h5 / hooks-h5 / directives-h5 / request-h5
  *   - 工程化（3）：repo / deps / docker
@@ -51,7 +51,7 @@ const config: UserConfig = {
         'docs',
         'shared',
         'utils',
-        'bridge',
+        'js-bridge',
         'request',
         'locale',
         'hooks',
