@@ -36,6 +36,11 @@ function truncateStack(stack: string | undefined): string | undefined {
   return stack.length > STACK_MAX ? `${stack.slice(0, STACK_MAX)}…` : stack
 }
 
+// navigator.sendBeacon 是浏览器提供的 异步， 低优先级的HTTP数据上报接口，常用在
+// 页面即将卸载(关闭标签，跳转，刷新)时，可靠的把少量数据发送到服务器，而尽量不阻塞页面关闭
+// 调用后立即返回，实际发送在后台完成
+// 单次 payload 一般有大小上限（常见约 64KB，各浏览器可能不同）
+// 请求使用 HTTP POST
 function postReport(body: string): void {
   if (!reportUrl) return
   try {
@@ -46,6 +51,7 @@ function postReport(body: string): void {
   } catch {
     /* 回退到 fetch */
   }
+  // keepalive: true 告诉浏览器，即使页面即将卸载，也要继续发送请求
   void fetch(reportUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
