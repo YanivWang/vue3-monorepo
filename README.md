@@ -25,12 +25,17 @@
 | 维度 | 说明 |
 | ---- | ---- |
 | **Monorepo 多端架构** | 基于 pnpm workspace 的 PC/H5 同仓开发，公共逻辑下沉共享，减少重复实现 |
+| **pnpm catalog 依赖治理** | 在 `pnpm-workspace.yaml` 中集中维护 **catalog**，各包以 `catalog:` 引用版本，统一升级、降低多包版本漂移（安装结果以 `pnpm-lock.yaml` 为准） |
 | **双端开箱模板** | Element Plus 后台 + Vant 移动端模板，内置 Bridge 跨端交互能力 |
-| **工程规范** | ESLint / Stylelint / Prettier + Husky 提交门禁 + TS 类型校验 |
-| **业务能力** | 权限、主题与暗黑、多品牌 Design Token、`vue-i18n` 国际化 |
+| **Bridge 协议专档** | H5 宿主（如 App WebView）联调必备：[bridge-protocol.md](apps/h5/h5-template/docs/bridge-protocol.md)，与 `packages/shared` 中 bridge 抽象一致 |
+| **工程规范** | ESLint / Stylelint / Prettier + Husky + **lint-staged** + **Commitlint** + TS 类型校验，提交与暂存区双重约束 |
+| **测试与全量门禁** | 根仓库 **Vitest** 单测（支持 coverage）；`pnpm run verify:full` 串联引用检查、`request-core` 检查、类型、Lint、样式、Prettier、测试与 **admin / h5 / docs** 构建 |
+| **业务能力** | **权限**：后端菜单生成动态路由；`meta` 权限/角色 + `v-permission`、`v-role`、`usePermission` 管控页级与按钮级展示。[权限体系](docs/guide/permission.md)<br>**主题**：多品牌主色与浅/深/**跟随系统**；`packages/shared` 侧 Token（`data-brand`、`html.dark`）+ `createUseTheme`，双端对接 Element Plus / Vant。[主题说明](docs/guide/theme.md)<br>**i18n**：Vue I18n，共享与业务词条分层，`shared/locale` 按需加载；语言切换同步组件库语言包。[i18n](docs/guide/i18n.md)<br>PC / H5 模板已贯通上述能力，可按业务在应用与 shared 内扩展。 |
+| **数据可视化** | 内置 **ECharts**、**vue-echarts**，与 PC 模板能力配套 |
 | **可观测** | 双端全局错误捕获与可扩展上报；**H5** 内置 Web Vitals 采集（`web-vitals`），PC 以 `errorHandler` 为主，可按需扩展 |
 | **脚手架** | `create-app` 一键生成业务应用，业务与模板解耦 |
-| **部署与 CI** | Docker + Nginx 参考；文档站可由 GitHub Actions 发布至 GitHub Pages；应用侧 CI 见 [ci-and-automation](docs/guide/ci-and-automation.md) |
+| **文档体系** | 内置 **VitePress** 文档站（可搜索、可部署），与根 README 分工；详情见下方 [文档](#文档) 与站内 [文档体系总览](docs/guide/doc-system.md) |
+| **部署与 CI** | Docker + Nginx 参考（含 admin / h5 / docs 等 compose 入口）；文档站可由 GitHub Actions 发布至 GitHub Pages；应用侧 CI 见 [ci-and-automation](docs/guide/ci-and-automation.md) |
 
 ## 技术栈
 
@@ -38,7 +43,7 @@
 | ---- | ---- |
 | 核心框架 | Vue 3、TypeScript、Vite、Vue Router、Pinia |
 | UI | Element Plus（PC）、Vant（H5） |
-| 工程化 | pnpm、Monorepo、ESLint、Prettier、Husky、Commitlint |
+| 工程化 | pnpm、Monorepo、**workspace catalog**、ESLint、Prettier、Husky、Commitlint |
 | 可视化 | ECharts、vue-echarts |
 | 部署与自动化 | Docker、Nginx（参考）；GitHub Actions（见 `.github/workflows/`） |
 | 其他 | vue-i18n、Mock、JSBridge（H5）、全局错误处理；Web Vitals 默认见 H5 模板 |
