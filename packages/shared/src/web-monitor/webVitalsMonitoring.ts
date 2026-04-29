@@ -1,9 +1,11 @@
 /**
- * Web Vitals 采集与上报。上报地址、调试开关、release / environment 由调用方通过 `configureWebVitalsSdk` 或 `WebMonitor.init` 传入；
- * 本模块不依赖任何打包工具或仓库约定的环境变量。
+ * Core Web Vitals 等性能指标的采集与上报。
+ * 上报地址、调试开关、release / environment 由调用方通过 `configureWebVitalsSdk` 或 `WebMonitor.init` 传入；
+ * HTTP 投递见同目录 `monitoringHttpTransport`。本模块不读取打包工具或仓库约定的环境变量。
  */
 import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals'
 import type { Metric } from 'web-vitals'
+import { getCurrentPagePath, postJsonReport } from './monitoringHttpTransport'
 
 export type WebVitalPayload = {
   name: Metric['name']
@@ -48,31 +50,11 @@ function toPayload(metric: Metric): WebVitalPayload {
     delta: metric.delta,
     id: metric.id,
     navigationType: metric.navigationType,
-    page: typeof location !== 'undefined' ? `${location.pathname}${location.search}` : undefined,
+    page: getCurrentPagePath(),
     ts: Date.now(),
     appVersion: sdkWebVitalsConfig.release || undefined,
     mode: sdkWebVitalsConfig.environment ?? ''
   }
-}
-
-function postReport(body: string, url: string): void {
-  if (!url) return
-  try {
-    const blob = new Blob([body], { type: 'application/json' })
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(url, blob)) {
-      return
-    }
-  } catch {
-    /* 回退到 fetch */
-  }
-  void fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-    keepalive: true
-  }).catch(() => {
-    /* 静默失败，避免影响业务 */
-  })
 }
 
 export function reportWebVital(metric: Metric): void {
@@ -85,7 +67,7 @@ export function reportWebVital(metric: Metric): void {
   }
   const url = effectiveWebVitalsReportUrl()
   if (!url) return
-  postReport(JSON.stringify(payload), url)
+  postJsonReport(JSON.stringify(payload), url)
 }
 
 let webVitalsCollectorsAttached = false

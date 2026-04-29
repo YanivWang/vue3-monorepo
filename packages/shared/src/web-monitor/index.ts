@@ -1,4 +1,4 @@
-export { WebMonitor } from './webMonitor'
+export { WebMonitor, buildWebMonitorInit } from './webMonitor'
 export type {
   WebMonitorInitEnvFields,
   WebMonitorInitOptions,
@@ -13,12 +13,12 @@ export {
   reportClientError,
   setAdditionalClientErrorListener,
   setupClientErrorReporting
-} from './clientErrorReport'
+} from './clientErrorMonitoring'
 export type {
   ClientErrorKind,
   ClientErrorPayload,
   ClientErrorSdkConfig,
   SetupClientErrorReportingOptions
-} from './clientErrorReport'
-export { collectWebVitals, configureWebVitalsSdk, reportWebVital } from './webVitalsReport'
-export type { WebVitalPayload, WebVitalsSdkConfig } from './webVitalsReport'
+} from './clientErrorMonitoring'
+export { collectWebVitals, configureWebVitalsSdk, reportWebVital } from './webVitalsMonitoring'
+export type { WebVitalPayload, WebVitalsSdkConfig } from './webVitalsMonitoring'

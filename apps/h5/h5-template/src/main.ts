@@ -12,10 +12,12 @@ import { registerDirectives } from './composables/registerDirectives'
 import { startMock } from './mock'
 import { useAppStore } from './stores'
 import { bootstrapUserInfo } from './bootstrap/userInfo'
-import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
 
 function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
-  return {
+  const clientErrors = import.meta.env.VITE_WEB_MONITOR_CLIENT_ERRORS !== 'false'
+  const webVitals = import.meta.env.VITE_WEB_MONITOR_WEB_VITALS !== 'false'
+  const shared = {
     errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL,
     webVitalsReportUrl: import.meta.env.VITE_WEB_VITALS_REPORT_URL,
     release: import.meta.env.VITE_APP_VERSION,
@@ -27,6 +29,16 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
       import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
       (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
   }
+  if (clientErrors && webVitals) {
+    return shared
+  }
+  if (!clientErrors && !webVitals) {
+    return { ...shared, integrations: { webVitals: false, clientErrors: false } }
+  }
+  if (!webVitals) {
+    return { ...shared, integrations: { webVitals: false, clientErrors: true } }
+  }
+  return { ...shared, integrations: { clientErrors: false, webVitals: true } }
 }
 
 //在vite里，这样写，目的是把这个scss模块当做 “副作用”执行-构建时会编译成css文件，并挂到整个应用上
@@ -41,7 +53,7 @@ async function bootstrap() {
   await loadInitialH5I18n()
 
   const app = createApp(App)
-  WebMonitor.init({ app, ...webMonitorEnvFromVite() })
+  WebMonitor.init(buildWebMonitorInit(app, webMonitorEnvFromVite()))
 
   const pinia = createPinia()
   pinia.use(piniaPluginPersistedstate)

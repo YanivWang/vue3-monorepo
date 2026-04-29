@@ -28,6 +28,10 @@ interface ImportMetaEnv {
   /** 前端错误 POST URL，在 `main.ts` 中传入 `WebMonitor.init` */
   readonly VITE_ERROR_REPORT_URL: string
   readonly VITE_ERROR_REPORT_DEBUG: string
+  /** 为 `false` 时关闭客户端错误监控（`integrations.clientErrors`）；未设：开启 */
+  readonly VITE_WEB_MONITOR_CLIENT_ERRORS?: string
+  /** 为 `false` 时关闭 Web Vitals（`integrations.webVitals`）；未设：开启 */
+  readonly VITE_WEB_MONITOR_WEB_VITALS?: string
 }
 
 interface ImportMeta {

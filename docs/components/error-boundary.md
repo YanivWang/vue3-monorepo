@@ -68,4 +68,4 @@ setAdditionalClientErrorListener(payload => {
 ## 源码位置
 
 - PC 边界组件：`packages/shared/src/components-pc/ErrorBoundary/index.vue`
-- 共享实现：`packages/shared/src/web-monitor/clientErrorReport.ts`
+- 共享实现：`packages/shared/src/web-monitor/clientErrorMonitoring.ts`

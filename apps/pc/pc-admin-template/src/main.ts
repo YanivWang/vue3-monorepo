@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { ElMessage } from 'element-plus'
-import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
 import App from './App.vue'
 import router from './router'
 import { loadInitialAdminI18n } from '@/locales'
@@ -17,7 +17,9 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/styles/index.scss'
 
 function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
-  return {
+  const clientErrors = import.meta.env.VITE_WEB_MONITOR_CLIENT_ERRORS !== 'false'
+  const webVitals = import.meta.env.VITE_WEB_MONITOR_WEB_VITALS !== 'false'
+  const shared = {
     errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL,
     webVitalsReportUrl: import.meta.env.VITE_WEB_VITALS_REPORT_URL,
     release: import.meta.env.VITE_APP_VERSION,
@@ -29,20 +31,31 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
       import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
       (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
   }
+  if (clientErrors && webVitals) {
+    return shared
+  }
+  if (!clientErrors && !webVitals) {
+    return { ...shared, integrations: { webVitals: false, clientErrors: false } }
+  }
+  if (!webVitals) {
+    return { ...shared, integrations: { webVitals: false, clientErrors: true } }
+  }
+  return { ...shared, integrations: { clientErrors: false, webVitals: true } }
 }
 
 async function bootstrap(): Promise<void> {
   const app = createApp(App)
-  WebMonitor.init({
-    app,
-    ...webMonitorEnvFromVite(),
-    afterVueError: err => {
-      if (import.meta.env.DEV) {
-        const message = err instanceof Error ? err.message : String(err)
-        ElMessage.error(`[Vue 错误] ${message}`)
+  WebMonitor.init(
+    buildWebMonitorInit(app, {
+      ...webMonitorEnvFromVite(),
+      afterVueError: err => {
+        if (import.meta.env.DEV) {
+          const message = err instanceof Error ? err.message : String(err)
+          ElMessage.error(`[Vue 错误] ${message}`)
+        }
       }
-    }
-  })
+    })
+  )
 
   // 1. 注册 Pinia（须最先，其他模块依赖它）
   setupStore(app)

@@ -1,9 +1,11 @@
 /**
- * 前端错误采集与上报：与 webVitalsReport 相同 HTTP 通道（sendBeacon / fetch keepalive）。
- * 上报地址、调试开关、release / environment 均由调用方通过 `configureClientErrorSdk` 或 `WebMonitor.init` 传入；
- * 本模块不依赖任何打包工具或仓库约定的环境变量。
+ * 浏览器端运行时错误监控（Vue / window / 资源失败）：采集、序列化与上报。
+ * HTTP 投递与 `webVitalsMonitoring` 共用 `monitoringHttpTransport`（sendBeacon / fetch keepalive）。
+ * 上报地址、调试开关、release / environment 由调用方通过 `configureClientErrorSdk` 或 `WebMonitor.init` 传入；
+ * 本模块不读取打包工具或仓库约定的环境变量。
  */
 import type { App, ComponentPublicInstance } from 'vue'
+import { getCurrentPagePath, postJsonReport } from './monitoringHttpTransport'
 
 const STACK_MAX = 16 * 1024
 
@@ -60,33 +62,9 @@ function effectiveErrorReportUrl(): string {
   return (sdkClientErrorConfig.errorReportUrl ?? '').trim()
 }
 
-function currentPage(): string | undefined {
-  return typeof location !== 'undefined' ? `${location.pathname}${location.search}` : undefined
-}
-
 function truncateStack(stack: string | undefined): string | undefined {
   if (!stack) return undefined
   return stack.length > STACK_MAX ? `${stack.slice(0, STACK_MAX)}…` : stack
-}
-
-function postReport(body: string, url: string): void {
-  if (!url) return
-  try {
-    const blob = new Blob([body], { type: 'application/json' })
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon?.(url, blob)) {
-      return
-    }
-  } catch {
-    /* 回退到 fetch */
-  }
-  void fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-    keepalive: true
-  }).catch(() => {
-    /* 静默失败 */
-  })
 }
 
 function normalizeError(err: unknown): { message: string; stack?: string } {
@@ -121,7 +99,7 @@ function buildPayload(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' |
   return {
     ...partial,
     stack: truncateStack(partial.stack),
-    page: currentPage(),
+    page: getCurrentPagePath(),
     ts: Date.now(),
     appVersion: sdkClientErrorConfig.release || undefined,
     mode: sdkClientErrorConfig.environment ?? ''
@@ -138,7 +116,7 @@ export function reportClientError(partial: Omit<ClientErrorPayload, 'ts' | 'mode
   }
   const url = effectiveErrorReportUrl()
   if (url) {
-    postReport(JSON.stringify(payload), url)
+    postJsonReport(JSON.stringify(payload), url)
   }
   additionalClientErrorListener?.(payload)
 }

@@ -3,11 +3,11 @@
  * 不依赖 @sentry/*；上报地址、release、environment、调试开关等均由集成方在调用处传入，本包不读取环境变量或构建注入项。
  */
 import type { App } from 'vue'
-import type { ClientErrorPayload } from './clientErrorReport'
-import { configureClientErrorSdk, reportClientError, setupClientErrorReporting } from './clientErrorReport'
-import type { SetupClientErrorReportingOptions } from './clientErrorReport'
-import type { WebVitalPayload } from './webVitalsReport'
-import { collectWebVitals, configureWebVitalsSdk } from './webVitalsReport'
+import type { ClientErrorPayload } from './clientErrorMonitoring'
+import { configureClientErrorSdk, reportClientError, setupClientErrorReporting } from './clientErrorMonitoring'
+import type { SetupClientErrorReportingOptions } from './clientErrorMonitoring'
+import type { WebVitalPayload } from './webVitalsMonitoring'
+import { collectWebVitals, configureWebVitalsSdk } from './webVitalsMonitoring'
 
 export type WebMonitorIntegrations = {
   /** 默认 `true` */
@@ -65,8 +65,16 @@ export type WebMonitorInitOptions =
   | WebMonitorInitOptionsErrorsOff
   | WebMonitorInitOptionsBothOff
 
-/** 默认双集成下，与 `app` 一并传入 `WebMonitor.init` URL 与元信息（宿主应用常在 `main` 内从环境装配为此形态） */
-export type WebMonitorInitEnvFields = Omit<WebMonitorInitOptionsBoth, 'app'>
+/**
+ * 与 `app` 一并传入 `WebMonitor.init` 的字段（不含 `app`）。
+ * 监控能力仅通过 **`WebMonitor.init` + `integrations`** 开关；勿直接依赖 `web-monitor` 子模块。
+ */
+export type WebMonitorInitEnvFields = Omit<WebMonitorInitOptions, 'app'>
+
+/** 将 `app` 与 `WebMonitorInitEnvFields` 合并为 `WebMonitor.init` 入参（避免对联合类型做对象展开时推断失准）。 */
+export function buildWebMonitorInit(app: App, fields: WebMonitorInitEnvFields): WebMonitorInitOptions {
+  return { app, ...fields } as WebMonitorInitOptions
+}
 
 function assertReportingUrls(options: WebMonitorInitOptions): void {
   const integrations = options.integrations ?? {}

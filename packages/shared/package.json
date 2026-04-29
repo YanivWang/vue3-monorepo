@@ -103,14 +103,6 @@
       "types": "./src/web-monitor/index.ts",
       "import": "./src/web-monitor/index.ts"
     },
-    "./web-monitor/web-vitals": {
-      "types": "./src/web-monitor/webVitalsReport.ts",
-      "import": "./src/web-monitor/webVitalsReport.ts"
-    },
-    "./web-monitor/client-error": {
-      "types": "./src/web-monitor/clientErrorReport.ts",
-      "import": "./src/web-monitor/clientErrorReport.ts"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {

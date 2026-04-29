@@ -16,6 +16,16 @@ interface ImportMetaEnv {
   readonly VITE_ERROR_REPORT_URL: string
   /** true/false/未设：见 `src/main.ts` 内 `webMonitorEnvFromVite` */
   readonly VITE_ERROR_REPORT_DEBUG: string
+  /**
+   * 为 `false` 时关闭客户端错误监控（`WebMonitor.init` → `integrations.clientErrors`）。
+   * 未设或其它值：保持开启（与 `VITE_WEB_MONITOR_WEB_VITALS` 可同时用来只开一侧）。
+   */
+  readonly VITE_WEB_MONITOR_CLIENT_ERRORS?: string
+  /**
+   * 为 `false` 时关闭 Web Vitals（`integrations.webVitals`）。
+   * 未设或其它值：保持开启。
+   */
+  readonly VITE_WEB_MONITOR_WEB_VITALS?: string
 }
 
 interface ImportMeta {
