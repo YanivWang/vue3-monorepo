@@ -51,6 +51,7 @@ export default {
     more: 'More',
     themeSettings: 'Theme',
     listLink: 'Long list',
+    errorReportTest: 'Test error reporting',
     logoutConfirm: 'Sign out?'
   },
   list: { detail: 'Detail', create: 'New item', edit: 'Edit item' },

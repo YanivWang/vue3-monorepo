@@ -51,6 +51,7 @@ export default {
     more: '更多',
     themeSettings: '主题设置',
     listLink: '长列表',
+    errorReportTest: '测试错误上报',
     logoutConfirm: '确定退出登录？'
   },
   list: { detail: '条目详情', create: '新建条目', edit: '编辑条目' },

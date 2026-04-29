@@ -5,6 +5,10 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string
   readonly VITE_USE_MOCK: string
   readonly VITE_H5_VIEWPORT_WIDTH: string
+  /**
+   * 为 `true` 时，在「我的」页显示进入「测试错误上报」（`/dev/error-collect`）的入口。
+   */
+  readonly VITE_H5_SHOW_ERROR_REPORT_TEST?: string
   readonly VITE_ANALYZE: string
   readonly VITE_SOURCEMAP: string
   readonly VITE_APP_VERSION: string

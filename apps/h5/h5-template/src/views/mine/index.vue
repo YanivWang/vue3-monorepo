@@ -8,6 +8,9 @@ import TabLayout from '@/layouts/TabLayout.vue'
 
 defineOptions({ name: 'Mine' })
 
+/** 通过 `VITE_H5_SHOW_ERROR_REPORT_TEST=true` 启用「我的」→ 测试错误上报入口 */
+const showErrorReportTest = import.meta.env.VITE_H5_SHOW_ERROR_REPORT_TEST === 'true'
+
 const { t } = useI18n()
 const user = useUserStore()
 const { logout, loading } = useAuth()
@@ -49,6 +52,7 @@ async function onLogout() {
       <CellGroup inset :title="t('mine.more')">
         <Cell :title="t('mine.themeSettings')" is-link to="/theme" />
         <Cell :title="t('mine.listLink')" is-link to="/list" />
+        <Cell v-if="showErrorReportTest" :title="t('mine.errorReportTest')" is-link to="/dev/error-collect" />
       </CellGroup>
 
       <div class="mine-actions">
