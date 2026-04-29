@@ -1,8 +1,8 @@
 # 环境与命令速查
 
-本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本（摘录）」**互补**——根 README 偏索引，本页可配合 [新人上手指南](./onboarding.md) 对着敲命令。**前提**：仓库是 **pnpm Monorepo**；**`admin:dev` 与 `h5:dev`** 对应两条**同等重要**的业务端模板（无主次）。
+本页与**当前仓库根 `package.json` 的脚本**保持一致；与根 `README` 的「环境要求」「快速开始」「根目录脚本（摘录）」**互补**——根 README 偏索引，本页可配合 [新手上路](./onboarding.md) 对着敲命令。**前提**：仓库是 **pnpm Monorepo**；**`admin:dev` 与 `h5:dev`** 对应两条**同等重要**的业务端模板（无主次）。
 
-> **第一次来**：请先读 [文档体系总览](./doc-system.md) 与 [新人上手指南](./onboarding.md)，再回来看本页当手册。
+> **第一次来**：请先读 [文档体系总览](./doc-system.md) 与 [新手上路](./onboarding.md)，再回来看本页当手册。
 
 ## 1. 环境要求
 
@@ -120,10 +120,11 @@ pnpm install
 └── package.json
 ```
 
-**业务开发**（页面、API、store 等）一律以 **`pnpm run create-app` 生成**的应用目录下 `src/` 为根，**勿**在 `pc-admin-template` / `h5-template` 内编写。上表 `admin:dev` / `h5:dev` 拉起的是模板包，用于演示与门禁。完整约定见 [Monorepo 现代化工程管理方案](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
+**业务开发**（页面、API、store 等）一律以 **`pnpm run create-app` 生成**的应用目录下 `src/` 为根，**勿**在 `pc-admin-template` / `h5-template` 内编写。上表 `admin:dev` / `h5:dev` 拉起的是模板包，用于演示与门禁。完整约定见 [pnpm workspace 日常操作](./monorepo-workflow.md) 与 [项目与目录约定](./project-conventions.md)。
 
 ## 11. 下一步
 
 - [架构说明](./architecture.md) — 应用启动、路由、权限
-- [Monorepo 现代化工程管理方案](./monorepo-workflow.md) — `pnpm` `filter`、加依赖
+- [Monorepo 现代化工程管理方案](./monorepo-introduce.md) — 为何采用 Monorepo
+- [pnpm workspace 日常操作](./monorepo-workflow.md) — `pnpm` `filter`、加依赖
 - [代码质量与规范约束](./quality-gates.md) — 深度解释 `verify:full` 与 CI 友好习惯

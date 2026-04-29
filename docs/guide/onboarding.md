@@ -1,6 +1,6 @@
-# 新人上手指南
+# 新手上路
 
-面向**第一次接触本仓库**的同学：从 0 到能**安全改一行业务代码**的最短路径。更细的命令与原理见 [环境与命令速查](./getting-started.md)、[Monorepo 现代化工程管理方案](./monorepo-workflow.md)。
+面向**第一次接触本仓库**的同学：从 0 到能**安全改一行业务代码**的最短路径。更细的命令与原理见 [环境与命令速查](./getting-started.md)、[Monorepo 现代化工程管理方案](./monorepo-introduce.md)（为何采用 Monorepo）、[pnpm workspace 日常操作](./monorepo-workflow.md)（filter、加依赖、代码放置）。
 
 ## 1. 开始前你需要知道什么
 
@@ -79,7 +79,7 @@ pnpm run docs:dev
 | 只给 **H5** 用                                | `apps/h5/<你的业务应用>/`（须 `create-app` 生成）；**勿**在 `h5-template` 写业务。同上                                                                                         |
 | **两端都要** 用的类型、工具、无业务耦合的封装 | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
 
-更系统的决策见 [Monorepo 现代化工程管理方案](./monorepo-workflow.md)。
+更系统的决策见 [pnpm workspace 日常操作](./monorepo-workflow.md)。
 
 ## 6. 提交前最低检查（在参与 PR 前养成习惯）
 
@@ -99,7 +99,7 @@ pnpm run test:run
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1    | [文档体系总览](./doc-system.md)（全局地图）                                                                                                                                    |
 | 2    | [环境与命令速查](./getting-started.md)（命令与易错点）                                                                                                                         |
-| 3    | [Monorepo 现代化工程管理方案](./monorepo-workflow.md)（filter、加依赖、加代码）                                                                                                |
+| 3    | [Monorepo 现代化工程管理方案](./monorepo-introduce.md)（价值与边界）→ [pnpm workspace 日常操作](./monorepo-workflow.md)（filter、加依赖、加代码）                              |
 | 4    | [架构说明](./architecture.md)（路由、权限、启动流程）                                                                                                                          |
 | 5    | H5 与原生联调时：[bridge-protocol.md 源码路径](https://github.com/YanivWang/vue3-monorepo/blob/main/apps/h5/h5-template/docs/bridge-protocol.md)（在应用目录内，非 VitePress） |
 

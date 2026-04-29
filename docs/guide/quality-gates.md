@@ -85,7 +85,7 @@
 - **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 shared 加 `check:refs` + `check:request-core`。
 - **发版/大合并**：`verify:full`（或 CI 要等价的流水线）。
 
-更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新人上手指南](./onboarding.md)。
+更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新手上路](./onboarding.md)。
 
 ## 9. Git 钩子与提交信息
 

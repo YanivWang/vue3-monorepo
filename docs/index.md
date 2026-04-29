@@ -7,11 +7,11 @@ hero:
   tagline: pnpm workspace 与共享包；Admin（Element Plus）与 H5（Vant）双模板；Vue3 · Vite · TypeScript
   actions:
     - theme: brand
-      text: 组件
-      link: /components/page-container
+      text: 新手上路
+      link: /guide/onboarding
     - theme: alt
-      text: 性能
-      link: /guide/performance
+      text: 架构
+      link: /guide/architecture
     - theme: alt
       text: GitHub
       link: https://github.com/YanivWang/vue3-monorepo
@@ -19,7 +19,7 @@ hero:
 features:
   - icon: ✅
     title: Monorepo 现代化工程管理方案
-    link: /guide/monorepo-workflow
+    link: /guide/monorepo-introduce
     details: Monorepo 是一种现代化工程管理方案。它的优势是实现了规范的统一化管理、代码的统一化管理、方便的代码共享。
 
   - icon: ✅

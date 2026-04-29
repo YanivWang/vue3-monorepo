@@ -28,6 +28,7 @@ docs/
 │   ├── onboarding.md           # 新人第一天
 │   ├── getting-started.md      # 环境与命令速查
 │   ├── adding-a-new-app.md     # create-app、多应用接线
+│   ├── monorepo-introduce.md   # Monorepo 价值、优点与边界
 │   ├── monorepo-workflow.md    # pnpm、filter、新代码放哪
 │   ├── quality-gates.md        # verify:full、lint、test
 │   ├── theme.md                # 深浅模式、品牌色、CSS 变量来源、createUseTheme

@@ -47,9 +47,10 @@ export default defineConfig({
           text: '入门与工程化',
           items: [
             { text: '文档体系总览', link: '/guide/doc-system' },
-            { text: '新人上手指南', link: '/guide/onboarding' },
+            { text: '新手上路', link: '/guide/onboarding' },
             { text: '环境与命令速查', link: '/guide/getting-started' },
-            { text: 'Monorepo 现代化工程管理方案', link: '/guide/monorepo-workflow' },
+            { text: 'Monorepo 现代化工程管理方案', link: '/guide/monorepo-introduce' },
+            { text: 'pnpm workspace 日常操作', link: '/guide/monorepo-workflow' },
             { text: '脚手架一键新增业务应用', link: '/guide/adding-a-new-app' },
             { text: '代码质量与规范约束', link: '/guide/quality-gates' },
             { text: '项目与目录约定', link: '/guide/project-conventions' },

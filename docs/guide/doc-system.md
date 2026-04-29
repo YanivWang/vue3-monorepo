@@ -9,7 +9,7 @@
 | 问题                                      | 文档体系的作法                                                                                                          |
 | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | README 只有一页，长文影响「一眼看清仓库」 | 根 README 保持**速查**；细节放到 **VitePress 文档站**（本 `docs/` 包）                                                  |
-| 新人不知道先装啥、后点啥                  | 提供 **[新人上手指南](./onboarding.md)** 与**推荐阅读顺序**（见下）                                                     |
+| 新人不知道先装啥、后点啥                  | 提供 **[新手上路](./onboarding.md)** 与**推荐阅读顺序**（见下）                                                         |
 | 架构、权限、部署分散在口头约定            | 指南类 Markdown **唯一权威**在 `docs/guide/`，与代码变更同步（见 `CONTRIBUTING.md`）                                    |
 | 业务组件没有用法说明                      | **组件专页**在 `docs/components/`，与模板中已文档化的共享/业务组件**同步维护**（并非 `exports` 中每一子路径都有对应页） |
 
@@ -19,7 +19,7 @@
 
 | 读者          | 建议入口                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| 新同学        | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → 侧栏「入门与工程化」                              |
+| 新同学        | [新手上路](./onboarding.md) → [环境与命令速查](./getting-started.md) → 侧栏「入门与工程化」                                  |
 | 日常开发      | [项目与目录约定](./project-conventions.md)、[代码质量与规范约束](./quality-gates.md)、[排障与 FAQ](./troubleshooting.md)     |
 | 做需求/看架构 | 侧栏「应用架构与工程实践」→ [架构说明](./architecture.md) 等                                                                 |
 | 发版/CI/部署  | [CI 与自动化](./ci-and-automation.md)、[部署与 Docker](./deploy.md)、[分支策略](./branch-strategy.md)                        |
@@ -57,7 +57,7 @@ pnpm install
 pnpm run docs:dev
 ```
 
-浏览器打开终端提示的地址（**默认 `http://127.0.0.1:5175`**），侧边栏从 **[新人上手指南](./onboarding.md)** 开始看。
+浏览器打开终端提示的地址（**默认 `http://127.0.0.1:5175`**），侧边栏从 **[新手上路](./onboarding.md)** 开始看。
 
 > 不启动文档站也可以：在仓库里直接打开 `docs/guide/*.md` 阅读，效果一致，仅无搜索与导航。
 
@@ -65,15 +65,15 @@ pnpm run docs:dev
 
 **定位**：**Monorepo（pnpm workspace）** 是协作枢纽；**PC Admin（Element Plus）与 H5（Vant）** 为两条**同等重要**的应用线——下表按「你要做什么」拆分，**无主次顺序**；某篇以 Admin 为主写实现细节时，仅因后台能力（动态路由、权限等）文档化较深，**不表示 H5 次要**。
 
-| 角色 / 目标                                  | 建议阅读顺序                                                                                                                                     |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **完全没接触过 monorepo 的新人**             | [新人上手指南](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 现代化工程管理方案](./monorepo-workflow.md)                 |
-| **要写 PC Admin 业务页面**                   | [架构说明](./architecture.md)（正文以 Admin 模板展开）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`） |
-| **要写 H5 业务页面**                         | [项目与目录约定](./project-conventions.md) → [架构说明](./architecture.md) 中与 H5 并列的仓库视图；与原生联调时对照应用内 `bridge-protocol.md`   |
-| **要改公共能力（请求、hooks、shared 组件）** | [Monorepo 现代化工程管理方案](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`              |
-| **要新增 PC Admin 或 H5 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [脚手架一键新增业务应用](./adding-a-new-app.md)                                     |
-| **要发版/过流水线**                          | [代码质量与规范约束](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                                 |
-| **要部署/容器**                              | [部署与 Docker](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                           |
+| 角色 / 目标                                  | 建议阅读顺序                                                                                                                                                                      |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **完全没接触过 monorepo 的新人**             | [新手上路](./onboarding.md) → [环境与命令速查](./getting-started.md) → [Monorepo 现代化工程管理方案](./monorepo-introduce.md) → [pnpm workspace 日常操作](./monorepo-workflow.md) |
+| **要写 PC Admin 业务页面**                   | [架构说明](./architecture.md)（正文以 Admin 模板展开）→ [权限体系](./permission.md) → 侧栏 **组件** 里相关页面（如 `PageContainer`、`ProTable`）                                  |
+| **要写 H5 业务页面**                         | [项目与目录约定](./project-conventions.md) → [架构说明](./architecture.md) 中与 H5 并列的仓库视图；与原生联调时对照应用内 `bridge-protocol.md`                                    |
+| **要改公共能力（请求、hooks、shared 组件）** | [pnpm workspace 日常操作](./monorepo-workflow.md) 中 **shared 与 exports** 一节 → 直接读 `packages/shared/package.json#exports`                                                   |
+| **要新增 PC Admin 或 H5 业务应用**           | 根 `pnpm run create-app`（勿在 `*-template` 写业务）；说明见 [脚手架一键新增业务应用](./adding-a-new-app.md)                                                                      |
+| **要发版/过流水线**                          | [代码质量与规范约束](./quality-gates.md) / [CI 与自动化](./ci-and-automation.md)                                                                                                  |
+| **要部署/容器**                              | [部署与 Docker](./deploy.md)（与 `docker/`、`scripts/docker.sh` 一致）                                                                                                            |
 
 ### 第 3 步：和团队规范对齐
 
@@ -114,13 +114,13 @@ pnpm run docs:dev
 ## 8. 常见问题
 
 **Q：我只 clone 了仓库，不跑 `docs:dev` 能上手吗？**  
-可以。按 [新人上手指南](./onboarding.md) 在本地起 `admin` / `h5` 即可；文档用 IDE 读 `docs/guide` 下 Markdown 也行。
+可以。按 [新手上路](./onboarding.md) 在本地起 `admin` / `h5` 即可；文档用 IDE 读 `docs/guide` 下 Markdown 也行。
 
 **Q：组件文档和 Storybook 类工具有啥区别？**  
 当前以 **VitePress 静态站** 为主，便于和版本库、Docker、内网部署一致管理；若团队后续加 Storybook，可并列存在，VitePress 仍适合「叙述性」架构与流程文档。
 
 **Q：本页（`doc-system`）和《环境与命令速查》谁先看？**  
-想理解「**整个仓库怎么学**」→ 先看本页；想「**敲哪些命令**」→ [新人上手指南](./onboarding.md) 与 [环境与命令速查](./getting-started.md)。
+想理解「**整个仓库怎么学**」→ 先看本页；想「**敲哪些命令**」→ [新手上路](./onboarding.md) 与 [环境与命令速查](./getting-started.md)。
 
 ---
 

@@ -1,6 +1,8 @@
-# Monorepo 现代化工程管理方案
+# pnpm workspace 日常操作
 
 说明本仓库 **pnpm workspace** 的日常用法：如何**只动一个包**、如何**加依赖**、**新代码放哪**、**共享包怎么引用**。与 [项目与目录约定](./project-conventions.md) 互补，这里偏**操作细节**。
+
+若你想先了解 **Monorepo 能解决什么问题、带来什么收益**，见 [Monorepo 现代化工程管理方案](./monorepo-introduce.md)。
 
 > **定位**：**Monorepo（pnpm workspace）** 是协作前提；**`@vue3-monorepo/admin` 与 `@vue3-monorepo/h5`** 为两条**同等重要**的可运行应用线。下文示例若只写 `admin:*` 或只写 `h5:*`，仅为篇幅，**不表示另一端次要**。
 

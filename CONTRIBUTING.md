@@ -4,7 +4,7 @@
 
 ## 完整文档
 
-新人上手、文档分层与 Monorepo 工作流见 VitePress 包：**[docs/guide/doc-system.md](docs/guide/doc-system.md)**（同目录下还有 `onboarding.md`、`monorepo-workflow.md`、`quality-gates.md` 等）。根 `README` 是速查，细节以该文档站为准；本地可执行 `pnpm run docs:dev` 带导航阅读。
+新人上手、文档分层与 Monorepo 工作流见 VitePress 包：**[docs/guide/doc-system.md](docs/guide/doc-system.md)**（同目录下还有 `onboarding.md`、`monorepo-introduce.md`、`monorepo-workflow.md`、`quality-gates.md` 等）。根 `README` 是速查，细节以该文档站为准；本地可执行 `pnpm run docs:dev` 带导航阅读。
 
 ## 本地开发
 
