@@ -32,11 +32,24 @@ export default defineConfig({
       { text: '文档体系', link: '/guide/doc-system' },
       { text: '新手上路', link: '/guide/onboarding' },
       { text: '指南', link: '/guide/getting-started' },
+      // { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
       { text: '贡献', link: '/guide/contributing' }
     ],
 
     sidebar: {
+      '/components/': [
+        {
+          text: '共享组件',
+          items: [
+            { text: 'ErrorBoundary', link: '/components/error-boundary' },
+            { text: 'PageContainer', link: '/components/page-container' },
+            { text: 'ProTable', link: '/components/pro-table' },
+            { text: 'Skeleton', link: '/components/skeleton' },
+            { text: 'SvgIcon', link: '/components/svg-icon' }
+          ]
+        }
+      ],
       '/guide/': [
         {
           text: '入门与工程化',
@@ -84,7 +97,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024'
+      copyright: 'Copyright © 2026'
     },
 
     search: { provider: 'local' },

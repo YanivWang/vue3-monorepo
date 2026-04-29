@@ -19,27 +19,48 @@ pnpm run docs:dev
 
 ## 目录（节选）
 
+侧栏分组与下列文件对应（以 `.vitepress/config.ts` 为准）。
+
 ```
 docs/
-├── .vitepress/config.ts
-├── index.md
-├── guide/
-│   ├── doc-system.md           # 文档体系总览
-│   ├── onboarding.md           # 新人第一天
-│   ├── getting-started.md      # 环境与命令速查
-│   ├── adding-a-new-app.md     # create-app、多应用接线
-│   ├── monorepo-introduce.md   # Monorepo 价值、优点与边界
-│   ├── monorepo-workflow.md    # pnpm、filter、新代码放哪
-│   ├── quality-gates.md        # verify:full、lint、test
-│   ├── theme.md                # 深浅模式、品牌色、CSS 变量来源、createUseTheme
-│   ├── design-tokens.md        # Token 分层、Vite additionalData、扩展方式
-│   ├── architecture.md …
-├── components/                 # 业务/共享组件文档
-└── package.json
+├── .vitepress/config.ts        # 站点主题、侧栏（guide / components）、端口 5175
+├── index.md                    # 首页
+├── guide/                      # 指南（入门与工程化 / 架构与实践 / 发布与 CI）
+│   ├── doc-system.md
+│   ├── onboarding.md
+│   ├── getting-started.md
+│   ├── adding-a-new-app.md
+│   ├── monorepo-introduce.md
+│   ├── monorepo-workflow.md
+│   ├── quality-gates.md
+│   ├── project-conventions.md
+│   ├── troubleshooting.md
+│   ├── environment-variables.md
+│   ├── contributing.md
+│   ├── architecture.md
+│   ├── permission.md
+│   ├── theme.md
+│   ├── design-tokens.md
+│   ├── i18n.md
+│   ├── http-and-mock.md
+│   ├── errors-and-observability.md
+│   ├── web-vitals.md
+│   ├── performance.md
+│   ├── security.md
+│   ├── branch-strategy.md
+│   ├── deploy.md
+│   └── ci-and-automation.md
+├── components/                 # 共享组件用法（与侧栏「组件」一致）
+│   ├── error-boundary.md
+│   ├── page-container.md
+│   ├── pro-table.md
+│   ├── skeleton.md
+│   └── svg-icon.md
+└── package.json                # @vue3-monorepo/docs
 ```
 
 H5 与宿主的 **JSBridge 协议**在应用内：`../apps/h5/h5-template/docs/bridge-protocol.md`；入口见 [项目与目录约定](./guide/project-conventions.md) 等页。
 
 ## 维护
 
-组件或对外能力变更时，请同步更新本包相应页面，并遵守根目录 `CONTRIBUTING.md`。
+组件或对外能力变更时，请同步更新本包相应页面（含 `guide/` 与 `components/`），并遵守仓库根目录 [`CONTRIBUTING.md`](../CONTRIBUTING.md)。

@@ -98,5 +98,5 @@ git commit -m "docs: 更新 ProTable 组件文档"
 启动文档预览：
 
 ```bash
-pnpm docs:dev
+pnpm run docs:dev
 ```

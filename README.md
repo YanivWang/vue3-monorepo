@@ -93,14 +93,16 @@ pnpm run verify:full
 
 ## 常用命令
 
-| 功能                                  | 命令                     |
-| ------------------------------------- | ------------------------ |
-| 新建业务应用                          | `pnpm run create-app`    |
-| TypeScript 类型检查                   | `pnpm run typecheck`     |
-| 单元测试                              | `pnpm run test`          |
-| 项目构建                              | `pnpm run build`         |
-| 全量校验（类型 + Lint + 测试 + 构建） | `pnpm run verify:full`   |
-| 依赖清理重装                          | `pnpm run clean:install` |
+| 功能                                                                                                                                                                      | 命令                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 并行启动所有含 `dev` 脚本的包（默认 Admin / H5 / Docs；机器吃紧时可改用单端命令）                                                                                         | `pnpm run dev`                                                          |
+| 新建业务应用                                                                                                                                                              | `pnpm run create-app`                                                   |
+| TypeScript 类型检查                                                                                                                                                       | `pnpm run typecheck`                                                    |
+| 单元测试（根 Vitest workspace，含模板 Admin/H5 与 `packages/shared`）                                                                                                     | `pnpm run test` 或 `pnpm run test:run`                                  |
+| 顺序构建三端（admin → h5 → docs）                                                                                                                                         | `pnpm run build`                                                        |
+| 全量门禁（引用/request-core、样式与 Prettier 检查、`build` 顺序等见 [quality-gates](docs/guide/quality-gates.md)） | `pnpm run verify:full`                                                  |
+| 依赖清理重装                                                                                                                                                              | `pnpm run clean:install`                                               |
+| Docker（compose）                                                                                                                                                         | `pnpm run docker:up` / `docker:admin:up` 等，见 [部署与 Docker](docs/guide/deploy.md) |
 
 ## 核心目录结构
 

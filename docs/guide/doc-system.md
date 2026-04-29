@@ -90,7 +90,7 @@ pnpm run docs:dev
 
 ## 6. 目录与内容地图（`docs/` 里有什么）
 
-侧栏为最新列表；`guide/` 下**按主题**还包含各专页，例如 `troubleshooting`、`environment-variables`、`project-conventions`、`ci-and-automation`、`i18n`、`http-and-mock`、`security` 等（与侧栏**入门与工程化** / **应用架构与工程实践** / **发布、CI 与分支** 三组对应）。
+侧栏为最新列表：顶部导航「组件」对应 **`docs/components/`**（共享组件用法）；`guide/` 下**按主题**还包含各专页，例如 `troubleshooting`、`environment-variables`、`project-conventions`、`ci-and-automation`、`i18n`、`http-and-mock`、`security` 等（与侧栏**入门与工程化** / **应用架构与工程实践** / **发布、CI 与分支** 三组对应）。
 
 **维护规则（企业级项目建议写进团队 Wiki 的一条）**：
 
