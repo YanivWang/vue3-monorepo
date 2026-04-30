@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@vue3-monorepo/shared": "workspace:*",
+    "@vue3-monorepo/web-monitor": "workspace:*",
     "@element-plus/icons-vue": "catalog:",
     "@vueuse/core": "catalog:",
     "axios": "catalog:",

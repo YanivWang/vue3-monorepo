@@ -1,12 +1,15 @@
 # pnpm workspace 配置
 # apps：按端分目录（pc / h5）：apps/pc/*、apps/h5/*；文档站根目录 docs
-# packages：共享源码单包 shared
+# packages：@vue3-monorepo/shared + request-core + web-monitor + js-bridge（目录见 packages/*）
 
 packages:
   - 'apps/pc/*'
   - 'apps/h5/*'
   - 'docs'
   - 'packages/shared'
+  - 'packages/request-core'
+  - 'packages/web-monitor'
+  - 'packages/js-bridge'
 
 # ---------- catalog（全仓锁版本，单点维护） ----------
 # 各包在 package.json 里用 "vue": "catalog:" 引用，版本以此处为准。

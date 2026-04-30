@@ -40,12 +40,12 @@
 
 ## 与全局错误处理的区别（以 PC 管理端模板为准）
 
-| 场景                       | 处理方式                                                                                 |
-| -------------------------- | ---------------------------------------------------------------------------------------- |
-| 组件渲染错误（可降级）     | 使用 `ErrorBoundary` 包裹                                                                |
-| 全局 JS 错误               | `window` `error` 捕获阶段（`WebMonitor.init` / `setupClientErrorReporting`，共享包实现） |
-| 未捕获 Promise             | `unhandledrejection`（同上）                                                             |
-| Vue 组件树错误（全局兜底） | `app.config.errorHandler`（同上；PC DEV 下额外 `ElMessage`）                             |
+| 场景                       | 处理方式                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 组件渲染错误（可降级）     | 使用 `ErrorBoundary` 包裹                                                                                     |
+| 全局 JS 错误               | `window` `error` 捕获阶段（`WebMonitor.init` / `setupClientErrorReporting`，见 `@vue3-monorepo/web-monitor`） |
+| 未捕获 Promise             | `unhandledrejection`（同上）                                                                                  |
+| Vue 组件树错误（全局兜底） | `app.config.errorHandler`（同上；PC DEV 下额外 `ElMessage`）                                                  |
 
 H5 模板的错误与性能采集见 [全局错误监控](../guide/errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md`。
 
@@ -53,10 +53,10 @@ H5 模板的错误与性能采集见 [全局错误监控](../guide/errors-and-ob
 
 **优先**在应用层配置 `VITE_ERROR_REPORT_URL` 并经由 `WebMonitor.init` 传入（与 H5 相同，见 [全局错误监控](../guide/errors-and-observability.md)）。
 
-若需在 **不替代** 默认 JSON 上报的前提下增加自定义逻辑（日志、第三方 SDK 等），PC / H5 均可使用共享包 **`setAdditionalClientErrorListener`**，回调参数为 **`ClientErrorPayload`**（字段 `kind: vue | js | unhandledrejection | resource`）：
+若需在 **不替代** 默认 JSON 上报的前提下增加自定义逻辑（日志、第三方 SDK 等），PC / H5 均可使用 **`@vue3-monorepo/web-monitor`** 的 **`setAdditionalClientErrorListener`**，回调参数为 **`ClientErrorPayload`**（字段 `kind: vue | js | unhandledrejection | resource`）：
 
 ```ts
-import { setAdditionalClientErrorListener } from '@vue3-monorepo/shared/web-monitor'
+import { setAdditionalClientErrorListener } from '@vue3-monorepo/web-monitor'
 
 setAdditionalClientErrorListener(payload => {
   console.info('[extra]', payload)
@@ -68,4 +68,4 @@ setAdditionalClientErrorListener(payload => {
 ## 源码位置
 
 - PC 边界组件：`packages/shared/src/components-pc/ErrorBoundary/index.vue`
-- 共享实现：`packages/shared/src/web-monitor/clientErrorMonitoring.ts`
+- **`@vue3-monorepo/web-monitor`** 实现：`packages/web-monitor/src/clientErrorMonitoring.ts`

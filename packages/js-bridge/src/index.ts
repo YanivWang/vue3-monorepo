@@ -1,5 +1,4 @@
-import { H5Host } from '@vue3-monorepo/shared/enums'
-import { detectHost } from '@vue3-monorepo/shared/utils'
+import { H5Host, detectHost } from './host'
 import type { Bridge, BridgeAbility, BridgeStrategy } from './types'
 import { createBrowserStrategy } from './strategies/browser'
 import { createWxMiniStrategy, type WxMiniStrategyOptions } from './strategies/wx-mini'
@@ -7,6 +6,7 @@ import { createAlipayMiniStrategy, type AlipayMiniStrategyOptions } from './stra
 import { createNativeAppStrategy, type NativeAppStrategyOptions } from './strategies/native-app'
 
 export * from './types'
+export * from './host'
 export * from './strategies/base'
 export { createBrowserStrategy } from './strategies/browser'
 export { createWxMiniStrategy } from './strategies/wx-mini'
@@ -27,7 +27,7 @@ export interface CreateBridgeOptions {
  * 根据当前宿主（或选项强制）创建 Bridge 单例。
  *
  * @example
- *   import { createBridge } from '@vue3-monorepo/shared/js-bridge'
+ *   import { createBridge } from '@vue3-monorepo/js-bridge'
  *   const bridge = createBridge({ wxMini: { loginPath: '/pages/login' } })
  *   await bridge.ui.toast({ message: 'hi' })
  *   const token = await bridge.auth.login()

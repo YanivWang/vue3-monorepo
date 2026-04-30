@@ -36,7 +36,7 @@ apps/h5/h5-template/
 
 ## 观测与报错
 
-- **Web Vitals**：`VITE_WEB_VITALS_*` 在 **`src/main.ts`** 的 `webMonitorEnvFromVite()` 中并入 `WebMonitor.init`（`@vue3-monorepo/shared/web-monitor`）。
+- **Web Vitals**：`VITE_WEB_VITALS_*` 在 **`src/main.ts`** 的 `webMonitorEnvFromVite()` 中并入 `WebMonitor.init`（`@vue3-monorepo/web-monitor`）。
 - **前端错误采集**：`VITE_ERROR_REPORT_*` 同上。采集 Vue 错误、JS 运行时错误、资源加载失败、`unhandledrejection`（`WebMonitor.init` 注册的 `errorHandler` 会先调用应用原有 handler）。
 
 环境与载荷细节见 **`docs/observability.md`**；开发联调可走 **`/dev/error-collect`**。

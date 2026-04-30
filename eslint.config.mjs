@@ -131,7 +131,7 @@ export default tseslint.config(
               message: 'H5 包禁止引 PC 同类型包'
             },
             {
-              target: './packages/shared/src/request-core',
+              target: './packages/request-core',
               from: ['./packages/shared/src/request-pc', './packages/shared/src/request-h5'],
               message: 'core request 禁止反依赖端侧 preset'
             },
@@ -171,7 +171,7 @@ export default tseslint.config(
           patterns: [
             {
               group: ['axios'],
-              message: 'request-pc / request-h5 预设禁止直接 import axios，必须走 @vue3-monorepo/shared/request-core'
+              message: 'request-pc / request-h5 预设禁止直接 import axios，必须走 @vue3-monorepo/request-core'
             }
           ]
         }
@@ -181,7 +181,7 @@ export default tseslint.config(
 
   // ---------------- core request 禁止 import 任何 UI 库 ----------------
   {
-    files: ['packages/shared/src/request-core/**/*.ts'],
+    files: ['packages/request-core/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -189,7 +189,25 @@ export default tseslint.config(
           patterns: [
             {
               group: ['element-plus', 'element-plus/*', 'vant', 'vant/*'],
-              message: '@vue3-monorepo/shared/request-core 核心包严禁 import 任何 UI 库，UI 反馈必须走依赖注入'
+              message: '@vue3-monorepo/request-core 核心包严禁 import 任何 UI 库，UI 反馈必须走依赖注入'
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  // ---------------- js-bridge 禁止依赖 shared ----------------
+  {
+    files: ['packages/js-bridge/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@vue3-monorepo/shared', '@vue3-monorepo/shared/*'],
+              message: '@vue3-monorepo/js-bridge 禁止依赖 shared'
             }
           ]
         }

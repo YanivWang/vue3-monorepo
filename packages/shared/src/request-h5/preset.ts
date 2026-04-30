@@ -1,5 +1,5 @@
 import { showFailToast, showDialog } from 'vant'
-import type { ErrorHookContext, RequestHooks, TokenProvider } from '@vue3-monorepo/shared/request-core'
+import type { ErrorHookContext, RequestHooks, TokenProvider } from '@vue3-monorepo/request-core'
 
 export interface H5PresetOptions {
   /** 登录页路径，默认 '/login' */

@@ -1,5 +1,5 @@
 import { ElLoading } from 'element-plus'
-import type { LoadingHandler } from '@vue3-monorepo/shared/request-core'
+import type { LoadingHandler } from '@vue3-monorepo/request-core'
 
 /**
  * PC 侧 Loading 处理器：全局单例、计数器叠加，依赖 Element Plus 的 ElLoading。

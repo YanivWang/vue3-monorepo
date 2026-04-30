@@ -7,7 +7,7 @@
  * 覆盖校验项（任一失败即 exit 1）：
  *  1) 从 pnpm-workspace.yaml 枚举 workspace；数量不做固定常数约束（多 app 时无需手改本脚本）
  *  2) 每个 workspace 的 package.json name 必须唯一
- *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 仅 @vue3-monorepo/shared；paths 中 @vue3-monorepo/shared/* 子路径别名不参与此条）
+ *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 下各顶层 workspace 包须有映射；paths 中 @vue3-monorepo/shared/* 子路径别名不参与此条）
  *  4) tsconfig.base.json paths 目标 src/index.ts 在磁盘上必须真实存在
  *  5) 根 tsconfig.json 的 references 路径目录必须存在
  *  6) 每个包的 "workspace:*" 依赖目标必须存在于当前 workspace

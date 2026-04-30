@@ -51,10 +51,10 @@
 
 实现以仓库内脚本为准，摘要如下（详见 `scripts/*.js` 文件头注释）：
 
-| 命令                          | 含义                                                                                                                                                                                                                                                             |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                    |
-| `pnpm run check:request-core` | `scripts/check-request-core.js`：在 `packages/shared/src/request-core` 下扫描 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
+| 命令                          | 含义                                                                                                                                                                                                                                                                                               |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                      |
+| `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
 
 在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通这两项。
 
@@ -82,7 +82,7 @@
 ## 8. 对照表速记
 
 - **5 分钟本地反馈**：`typecheck` + 正在改的一端 `dev`。
-- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 shared 加 `check:refs` + `check:request-core`。
+- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 **`@vue3-monorepo/shared`** 或 **`@vue3-monorepo/request-core`** 等 workspace 包时加 `check:refs` + `check:request-core`。
 - **发版/大合并**：`verify:full`（或 CI 要等价的流水线）。
 
 更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新手上路](./onboarding.md)。

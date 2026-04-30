@@ -3,17 +3,17 @@ import type { UserConfig } from '@commitlint/types'
 /**
  * Conventional Commits + monorepo scope
  *
- * scope 表示提交影响面，不都对应独立 pnpm 包。本仓 workspace 仅
- * `apps/pc/*`、`apps/h5/*`、`docs`、`packages/shared`（@vue3-monorepo/shared 单包），
- * 与 shared 子路径导出（如 utils、request-core、components-pc 等）对应关系见
- * `packages/shared/package.json` 的 `exports`。
+ * scope 表示提交影响面，不都对应独立 pnpm 包。Workspace 含 `apps/pc/*`、`apps/h5/*`、`docs`、
+ * `packages/shared`、`packages/request-core`、`packages/web-monitor`、`packages/js-bridge`；
+ * `shared` 子路径导出（如 utils、components-pc）见 `packages/shared/package.json` 的 `exports`。
  *
- * 合法 scope（20 个）：
- *   - 应用级（3）：admin（PC 管理端 app）/ h5 / docs
- *   - 共享单包内 6 类：shared / utils / js-bridge / request / locale / hooks
- *   - PC 子域 4 项：components-pc / hooks-pc / directives-pc / request-pc
- *   - H5 子域 4 项：components-h5 / hooks-h5 / directives-h5 / request-h5
- *   - 工程化（3）：repo / deps / docker
+ * 合法 scope（见下方 `scope-enum`，节选说明）：
+ *   - 应用级：admin / h5 / docs
+ *   - 共享包域：shared / utils / locale / hooks / request（约定）及 js-bridge（亦对应 `@vue3-monorepo/js-bridge` 变更）
+ *   - PC 子域：components-pc / hooks-pc / directives-pc / request-pc
+ *   - H5 子域：components-h5 / hooks-h5 / directives-h5 / request-h5
+ *   - 工程化：repo / deps / docker
+ *   - 另：`packages/request-core`、`packages/web-monitor` 等大改可用 `repo` 或 `request`/`deps` 等与团队约定对齐
  *
  * 示例：
  *   feat(h5): 接入 vconsole

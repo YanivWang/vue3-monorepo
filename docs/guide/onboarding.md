@@ -107,7 +107,7 @@ pnpm run test:run
 
 1. **在子包目录里用 npm install** — 必须在**仓库根**用 `pnpm install`，否则破坏 workspace 与 lockfile。
 2. **从 H5 里 import Admin 的 store/页面** — 禁止；两应用不共享业务状态与页面。
-3. **在 `shared` 里引 Element Plus 或 Vant 做默认 UI** — 会破坏「共享层无强 UI 依赖」的边界；请求层用 `request-core` + 各端 `request-pc` / `request-h5` 注入反馈，见 [HTTP 请求控制，数据 Mock](./http-and-mock.md) 与 [架构说明](./architecture.md)。
+3. **在 `shared` 里引 Element Plus 或 Vant 做默认 UI** — 会破坏「共享层无强 UI 依赖」的边界；请求层用 **`@vue3-monorepo/request-core`** + 各端 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 注入反馈，见 [HTTP 请求控制，数据 Mock](./http-and-mock.md) 与 [架构说明](./architecture.md)。
 4. **在 `pc-admin-template` / `h5-template` 里写业务** — 两目录仅为模板源；应 `pnpm run create-app` 生成应用后在产物目录开发，见 [脚手架一键新增业务应用](./adding-a-new-app.md)。
 5. **随便改 `pnpm-lock.yaml`** — 除非你在做依赖升级且清楚影响；否则只通过正常 `pnpm add` / `pnpm update` 流程变更。
 

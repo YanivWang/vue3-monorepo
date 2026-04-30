@@ -1,0 +1,31 @@
+{
+  "name": "@vue3-monorepo/js-bridge",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "多宿主 H5 Bridge（浏览器 / 小程序 / App WebView）",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./host": {
+      "types": "./src/host.ts",
+      "import": "./src/host.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run -c vitest.config.ts",
+    "test:watch": "vitest -c vitest.config.ts"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:",
+    "happy-dom": "catalog:"
+  }
+}

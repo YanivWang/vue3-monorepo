@@ -1,6 +1,6 @@
 # 全局性能监控
 
-本页说明 **Web Vitals**（尤其 **Core Web Vitals**）的含义，以及 **PC 管理端与 H5 模板**如何在 **`src/main.ts`** 装配并调用 `@vue3-monorepo/shared/web-monitor`。构建分包与首屏优化见 [Vite 构建优化](./performance.md)；错误与可观测整体见 [全局错误监控](./errors-and-observability.md)。
+本页说明 **Web Vitals**（尤其 **Core Web Vitals**）的含义，以及 **PC 管理端与 H5 模板**如何在 **`src/main.ts`** 装配并调用 `@vue3-monorepo/web-monitor`。构建分包与首屏优化见 [Vite 构建优化](./performance.md)；错误与可观测整体见 [全局错误监控](./errors-and-observability.md)。
 
 ## 什么是 Web Vitals
 
@@ -18,11 +18,11 @@
 
 ## 本仓库中的实现（PC Admin 与 H5 共用）
 
-两端均在 **`src/main.ts`**、于 **`createApp` 之后** 调用 `WebMonitor.init({ app, ...webMonitorEnvFromVite() })`（函数名以仓库内实际为准）：内部先挂 Web Vitals，再挂全局错误监听（与单独调用 `collectWebVitals` + `setupClientErrorReporting` 等价，且监听器只挂载一次）。共享包 **`@vue3-monorepo/shared/web-monitor`** 不读取 `VITE_*`，由调用方传入。实现位于：
+两端均在 **`src/main.ts`**、于 **`createApp` 之后** 调用 `WebMonitor.init({ app, ...webMonitorEnvFromVite() })`（函数名以仓库内实际为准）：内部先挂 Web Vitals，再挂全局错误监听（与单独调用 `collectWebVitals` + `setupClientErrorReporting` 等价，且监听器只挂载一次）。**`@vue3-monorepo/web-monitor`** 不读取 `VITE_*`，由调用方传入。实现位于：
 
-- [`packages/shared/src/web-monitor/webVitalsMonitoring.ts`](../../packages/shared/src/web-monitor/webVitalsMonitoring.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）；统一入口见同目录 [`webMonitor.ts`](../../packages/shared/src/web-monitor/webMonitor.ts) 的 `WebMonitor.init`。
+- [`packages/web-monitor/src/webVitalsMonitoring.ts`](../../packages/web-monitor/src/webVitalsMonitoring.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）；统一入口见同目录 [`webMonitor.ts`](../../packages/web-monitor/src/webMonitor.ts) 的 `WebMonitor.init`。
 
-各应用只从 **`@vue3-monorepo/shared/web-monitor`** 导入，并通过 **`WebMonitor.init` 的 `integrations`**（或应用内 `webMonitorEnvFromVite()` 映射的环境变量）单独关闭错误侧或 Web Vitals，勿使用已移除的子路径包导出。
+各应用只从 **`@vue3-monorepo/web-monitor`** 导入，并通过 **`WebMonitor.init` 的 `integrations`**（或应用内 `webMonitorEnvFromVite()` 映射的环境变量）单独关闭错误侧或 Web Vitals。
 
 当前注册采集：**FCP、LCP、CLS、TTFB、INP**。每条指标经 `reportWebVital` 序列化后，在配置了上报地址时 **POST** JSON 到采集端；调试模式下可输出到控制台。
 
@@ -42,7 +42,7 @@
 
 ## 上报载荷（扁平 JSON）
 
-单条指标会包含 `name`、`value`、`rating`、`delta`、`id`、`navigationType`、`page`（pathname + search）、`ts`、`appVersion`、`mode` 等字段，便于接入自建观测或日志管道。字段定义以 `packages/shared/src/web-monitor/webVitalsMonitoring.ts` 中序列化逻辑为准。
+单条指标会包含 `name`、`value`、`rating`、`delta`、`id`、`navigationType`、`page`（pathname + search）、`ts`、`appVersion`、`mode` 等字段，便于接入自建观测或日志管道。字段定义以 **`@vue3-monorepo/web-monitor`** 包内 `packages/web-monitor/src/webVitalsMonitoring.ts` 中序列化逻辑为准。
 
 ## 延伸阅读
 

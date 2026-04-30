@@ -1,13 +1,13 @@
 # H5 观测：Web Vitals 与前端错误
 
-> 实现源码仅在 **`@vue3-monorepo/shared/web-monitor`**；入口为 **`WebMonitor.init`**。本应用在 **`src/main.ts`** 内用 `webMonitorEnvFromVite()` 从 `import.meta.env` 装配参数后调用。
+> 实现源码仅在 **`@vue3-monorepo/web-monitor`**；入口为 **`WebMonitor.init`**。本应用在 **`src/main.ts`** 内用 `webMonitorEnvFromVite()` 从 `import.meta.env` 装配参数后调用。
 
 ## 启动顺序（`main.ts`）
 
 在 **`createApp` 之后尽快** 调用一次：
 
 ```ts
-import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/web-monitor'
 
 function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
   return {
@@ -28,7 +28,7 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
 WebMonitor.init({ app, ...webMonitorEnvFromVite() })
 ```
 
-共享包不读取环境变量；装配方式可与上例不同，由集成方自行决定。
+`@vue3-monorepo/web-monitor` 不读取环境变量；装配方式可与上例不同，由集成方自行决定。
 
 `WebMonitor.init` **内部顺序**：先注册 Web Vitals（`onFCP` / `onLCP` 等），再注册 Vue `errorHandler` 与 `window` 级监听。链式保留创建应用前已存在的 `app.config.errorHandler`（若业务在 `init` 前自行设置过 handler）。
 
@@ -82,7 +82,7 @@ WebMonitor.init({ app, ...webMonitorEnvFromVite() })
 | `appVersion`   | 来自 `WebMonitor.init` 的 `release`（模板中多为 `VITE_APP_VERSION`）         |
 | `mode`         | 来自 `WebMonitor.init` 的 `environment`（模板中多为 `import.meta.env.MODE`） |
 
-手动上报可调用 `reportClientError()` 或 `WebMonitor.reportError()`（从 `@vue3-monorepo/shared/web-monitor` 导入）。共享包另导出 `setAdditionalClientErrorListener`，用于与 HTTP 上报并行的附加消费。
+手动上报可调用 `reportClientError()` 或 `WebMonitor.reportError()`（从 `@vue3-monorepo/web-monitor` 导入）。另导出 `setAdditionalClientErrorListener`，用于与 HTTP 上报并行的附加消费。
 
 开发环境若已配置 `clientErrorDebug` 且存在上报地址，控制台会有一条提示：`上报已启用 → <url>`。
 

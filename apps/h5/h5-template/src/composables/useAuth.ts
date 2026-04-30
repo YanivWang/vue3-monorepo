@@ -1,4 +1,4 @@
-import { useBridge } from '@vue3-monorepo/shared/js-bridge'
+import { useBridge } from '@vue3-monorepo/js-bridge'
 import { useLogin } from '@vue3-monorepo/shared/hooks-h5'
 import { loginApi, type LoginFormParams, type LoginTokenResult, type SmsLoginParams } from '@/api/user'
 import { useUserStore } from '@/stores'

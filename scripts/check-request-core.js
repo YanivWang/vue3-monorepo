@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * P3.4a：@vue3-monorepo/shared/request-core 核心包禁止出现任何 UI 框架 API 字样（防回归）
+ * P3.4a：@vue3-monorepo/request-core 核心包禁止出现任何 UI 框架 API 字样（防回归）
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
-const SRC = join(ROOT, 'packages/shared/src/request-core')
+const SRC = join(ROOT, 'packages/request-core/src')
 
 const BANNED = [
   { re: /\bElMessage\b/, name: 'ElMessage' },
@@ -40,4 +40,4 @@ for (const file of walk(SRC)) {
 }
 
 if (bad) process.exit(1)
-console.log('[check-request-core] OK — packages/shared/src/request-core 无 UI 耦合字样')
+console.log('[check-request-core] OK — @vue3-monorepo/request-core（packages/request-core/src）无 UI 耦合字样')

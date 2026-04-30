@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.pkg.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+    "types": []
+  },
+  "include": ["src/**/*.ts"]
+}

@@ -1,4 +1,4 @@
-import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-monorepo/shared/request-core'
+import { createHttp, type CreateHttpOptions, type HttpRequest } from '@vue3-monorepo/request-core'
 import { createTokenStorage, type TokenStorage } from '@vue3-monorepo/shared/utils'
 import { createElLoadingHandler } from './loading'
 import { createPcHooks, type PcPresetOptions } from './preset'
@@ -70,4 +70,4 @@ export type {
   RequestHooks,
   ErrorHookContext,
   LoadingHandler
-} from '@vue3-monorepo/shared/request-core'
+} from '@vue3-monorepo/request-core'

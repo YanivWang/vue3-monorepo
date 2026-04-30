@@ -30,10 +30,10 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 ## 1. 先定类型：放在 `apps/h5` 还是 `apps/pc`
 
-| 端            | 物理目录                | 包内应使用的 shared 子域                                                   | UI 与典型能力                                 |
-| ------------- | ----------------------- | -------------------------------------------------------------------------- | --------------------------------------------- |
-| **PC 管理端** | `apps/pc/<你的目录名>/` | `request-pc`、`hooks-pc`、`components-pc`、`directives-pc` 等              | Element Plus、动态菜单/权限（若以模板为起点） |
-| **H5 移动端** | `apps/h5/<你的目录名>/` | `request-h5`、`hooks-h5`、`components-h5`、`directives-h5`、`js-bridge` 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
+| 端            | 物理目录                | 包内应使用的 shared 子域                                                                                                                                                                              | UI 与典型能力                                 |
+| ------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| **PC 管理端** | `apps/pc/<你的目录名>/` | **`@vue3-monorepo/shared/request-pc`**、**`@vue3-monorepo/shared/hooks-pc`**、**`@vue3-monorepo/shared/components-pc`**、**`@vue3-monorepo/shared/directives-pc`** 等                                 | Element Plus、动态菜单/权限（若以模板为起点） |
+| **H5 移动端** | `apps/h5/<你的目录名>/` | **`@vue3-monorepo/shared/request-h5`**、**`@vue3-monorepo/shared/hooks-h5`**、**`@vue3-monorepo/shared/components-h5`**、**`@vue3-monorepo/shared/directives-h5`**、**`@vue3-monorepo/js-bridge`** 等 | Vant、PostCSS 移动端稿、`Bridge` 与宿主联调   |
 
 **不要**把两个真实业务端混进同一个 Vite 工程目录；**不要**在 H5 应用里直接 import 另一个 Admin 应用的 store/页面，反之亦然。跨端只走 `@vue3-monorepo/shared` 的 **exports** 已导出路径，规则见 [项目与目录约定](./project-conventions.md)。
 
@@ -125,7 +125,7 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 - 在**新应用**的 `package.json` 的 `dependencies` 中加入：  
   `"@vue3-monorepo/shared": "workspace:*"`（与现有一致）。
 - 业务 import **仅**使用 `packages/shared/package.json` 里 **`exports`** 已列出的子路径；新增对外 API 时改 shared 的 `exports` 并做类型与构建验证。
-- `request-core` 内**禁止**出现 UI 框架 API；PC/H5 的提示、Loading 等通过 `request-pc` / `request-h5` 在应用层装配。详见 [pnpm workspace 日常操作 — 第 5 节](./monorepo-workflow.md#5-新代码放哪决策简表) 与 `scripts/check-request-core.js`。
+- **`@vue3-monorepo/request-core`** 内**禁止**出现 UI 框架 API；PC/H5 的提示、Loading 等通过 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 在应用层装配。详见 [pnpm workspace 日常操作 — 第 5 节](./monorepo-workflow.md#5-新代码放哪决策简表) 与 `scripts/check-request-core.js`。
 
 ---
 

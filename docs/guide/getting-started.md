@@ -86,12 +86,12 @@ pnpm install
 
 ## 8. 全量与专项校验
 
-| 作用                                     | 命令                                                                        |
-| ---------------------------------------- | --------------------------------------------------------------------------- |
-| monorepo 元数据与 tsconfig 一致性等      | `pnpm run check:refs`（见 `scripts/check-refs.js` 头注释）                  |
-| request-core 内禁止 UI 反馈 API 关键字等 | `pnpm run check:request-core`（见 `scripts/check-request-core.js`）         |
-| 大合并/发版前总检                        | `pnpm run verify:full`（**含** `prettier --check .`；链式至 `build`；较慢） |
-| 清 `node_modules` 重装                   | `pnpm run clean:install`（可加 `--` 传 `-y` 跳过确认）                      |
+| 作用                                                      | 命令                                                                        |
+| --------------------------------------------------------- | --------------------------------------------------------------------------- |
+| monorepo 元数据与 tsconfig 一致性等                       | `pnpm run check:refs`（见 `scripts/check-refs.js` 头注释）                  |
+| `@vue3-monorepo/request-core` 内禁止 UI 反馈 API 关键字等 | `pnpm run check:request-core`（见 `scripts/check-request-core.js`）         |
+| 大合并/发版前总检                                         | `pnpm run verify:full`（**含** `prettier --check .`；链式至 `build`；较慢） |
+| 清 `node_modules` 重装                                    | `pnpm run clean:install`（可加 `--` 传 `-y` 跳过确认）                      |
 
 ## 9. Docker（可选）
 

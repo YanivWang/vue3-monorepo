@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { useBridge } from '@vue3-monorepo/shared/js-bridge'
+import { useBridge } from '@vue3-monorepo/js-bridge'
 import { H5Host } from '@vue3-monorepo/shared/enums'
 import { useHistoryStackH5 } from '@vue3-monorepo/shared/hooks-h5'
 import { getToken } from '@/utils/tokenStorage'

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { ElMessage } from 'element-plus'
-import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/web-monitor'
 import App from './App.vue'
 import router from './router'
 import { loadInitialAdminI18n } from '@/locales'

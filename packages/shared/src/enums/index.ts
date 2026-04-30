@@ -50,10 +50,4 @@ export enum TabAction {
   REFRESH = 'refresh'
 }
 
-/** H5 运行宿主 */
-export enum H5Host {
-  BROWSER = 'browser',
-  WECHAT_MINI = 'wx-mini',
-  ALIPAY_MINI = 'ali-mini',
-  NATIVE_APP = 'native-app'
-}
+export { H5Host } from '@vue3-monorepo/js-bridge'

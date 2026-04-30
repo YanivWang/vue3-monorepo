@@ -19,6 +19,9 @@
     { "path": "./apps/h5/h5-template/tsconfig.node.json" },
     { "path": "./docs" },
 
-    { "path": "./packages/shared" }
+    { "path": "./packages/shared" },
+    { "path": "./packages/request-core" },
+    { "path": "./packages/web-monitor" },
+    { "path": "./packages/js-bridge" }
   ]
 }

@@ -36,7 +36,7 @@ Monorepo 用**一个事实来源（single source of truth）** 解决上述问�
 
 - **零发包成本的内部依赖**：`workspace:*` 引用本地包，改完即时被 admin / h5 消费，适合高频迭代的工具、类型、请求内核与业务无关的 hooks。
 - **按需导出**：通过 `package.json#exports` 控制可引用表面，避免「能 import 就能用」导致的隐性耦合。
-- **多端复用而不混淆 UI**：例如请求核心与 PC/H5 的 UI 反馈分层（本仓的 `request-core` 与 `request-pc` / `request-h5` 即是一例），共享逻辑与端差异化可以并存。
+- **多端复用而不混淆 UI**：例如请求核心与 PC/H5 的 UI 反馈分层（本仓的 **`@vue3-monorepo/request-core`** 与 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 即是一例），共享逻辑与端差异化可以并存。
 
 更细的「新代码放哪、怎么加依赖」见 [pnpm workspace 日常操作](./monorepo-workflow.md)。
 

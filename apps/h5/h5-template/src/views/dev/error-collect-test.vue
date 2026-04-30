@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { CellGroup, Cell, showToast } from 'vant'
 import { PageContainer } from '@vue3-monorepo/shared/components-h5'
-import { reportClientError } from '@vue3-monorepo/shared/web-monitor'
+import { reportClientError } from '@vue3-monorepo/web-monitor'
 
 defineOptions({ name: 'DevErrorCollect' })
 

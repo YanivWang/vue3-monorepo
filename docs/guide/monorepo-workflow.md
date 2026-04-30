@@ -57,17 +57,17 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ## 5. 新代码放哪：决策简表
 
-| 问题                                                                                     | 选择                                                                                            |
-| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 只服务 **一个端** 的页面、路由、store、接口封装                                          | 放在**对应** `apps/pc/...` 或 `apps/h5/...` 下，见 [项目与目录约定](./project-conventions.md)。 |
-| **PC 和 H5 都要** 用：纯类型、常量、与 UI 无关的工具、`request-core` 扩展、通用 hooks 等 | 放 `packages/shared/src`，经 `@vue3-monorepo/shared/...` 子路径 **export 出去**。               |
-| 带 **Element** 的组件                                                                    | 放 shared 的 **components-pc** 域（以 `exports` 为准）或先放 admin 内，视团队复用度而定。       |
-| 带 **Vant** 的组件                                                                       | 类似，走 **components-h5** 或 h5 应用内。                                                       |
+| 问题                                                                                                                    | 选择                                                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 只服务 **一个端** 的页面、路由、store、接口封装                                                                         | 放在**对应** `apps/pc/...` 或 `apps/h5/...` 下，见 [项目与目录约定](./project-conventions.md)。                                                                                           |
+| **PC 和 H5 都要** 用：纯类型、常量、与 UI 无关的工具、`@vue3-monorepo/request-core` 的扩展（若在独立包）、通用 hooks 等 | 类型/常量/utils/hooks 等放 `packages/shared/src`；HTTP **内核**改 **`@vue3-monorepo/request-core`**（目录 `packages/request-core`），经 `@vue3-monorepo/shared/...` 或顶层包 **export**。 |
+| 带 **Element** 的组件                                                                                                   | 放 shared 的 **components-pc** 域（以 `exports` 为准）或先放 admin 内，视团队复用度而定。                                                                                                 |
+| 带 **Vant** 的组件                                                                                                      | 类似，走 **components-h5** 或 h5 应用内。                                                                                                                                                 |
 
 **强约束**（与 [项目与目录约定](./project-conventions.md) 一致）：
 
 - **Pinia、路由、按业务划分的 API 不跨 app**。
-- `request-core` **实现**中不得调用 Element / Vant 等 **UI 反馈 API**（仓库有 `check-request-core` 脚本做关键字门禁）；PC/H5 的提示与拦截用 `request-pc` / `request-h5` 在应用里装配。
+- `@vue3-monorepo/request-core` **实现**中不得调用 Element / Vant 等 **UI 反馈 API**（仓库有 `check-request-core` 脚本做关键字门禁）；PC/H5 的提示与拦截用 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 在应用里装配。
 
 ## 6. 怎么查「能 import 什么」
 
@@ -77,7 +77,7 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 
 ```text
 @vue3-monorepo/shared/utils
-@vue3-monorepo/shared/request-core
+@vue3-monorepo/request-core
 @vue3-monorepo/shared/hooks-pc
 ```
 

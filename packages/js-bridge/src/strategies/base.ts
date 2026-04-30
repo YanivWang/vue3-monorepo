@@ -1,4 +1,4 @@
-import type { H5Host } from '@vue3-monorepo/shared/enums'
+import type { H5Host } from '../host'
 import type {
   BridgeAbility,
   BridgeAuth,

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { installComponents as installH5Components } from '@vue3-monorepo/shared/components-h5'
-import { useBridge } from '@vue3-monorepo/shared/js-bridge'
+import { useBridge } from '@vue3-monorepo/js-bridge'
 import { useVConsole } from '@vue3-monorepo/shared/hooks-h5'
 
 import App from './App.vue'
@@ -12,7 +12,7 @@ import { registerDirectives } from './composables/registerDirectives'
 import { startMock } from './mock'
 import { useAppStore } from './stores'
 import { bootstrapUserInfo } from './bootstrap/userInfo'
-import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/shared/web-monitor'
+import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/web-monitor'
 
 function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
   const clientErrors = import.meta.env.VITE_WEB_MONITOR_CLIENT_ERRORS !== 'false'

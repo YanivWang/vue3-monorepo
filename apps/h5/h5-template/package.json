@@ -18,7 +18,9 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@vue3-monorepo/js-bridge": "workspace:*",
     "@vue3-monorepo/shared": "workspace:*",
+    "@vue3-monorepo/web-monitor": "workspace:*",
     "@vueuse/core": "catalog:",
     "axios": "catalog:",
     "dayjs": "catalog:",

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "PC / H5 共享源码（单包：类型、工具、请求、hooks、组件、指令、i18n、js-bridge）",
+  "description": "PC / H5 共享源码（类型、工具、请求 preset、hooks、组件、指令、i18n）；依赖 **`@vue3-monorepo/request-core`**、**`@vue3-monorepo/js-bridge`**；**`@vue3-monorepo/web-monitor`** 由应用直连",
   "sideEffects": [
     "**/*.css",
     "**/*.scss",
@@ -39,21 +39,11 @@
       "types": "./src/utils/index.ts",
       "import": "./src/utils/index.ts"
     },
-    "./js-bridge": {
-      "types": "./src/js-bridge/index.ts",
-      "import": "./src/js-bridge/index.ts"
-    },
-    "./js-bridge/*": "./src/js-bridge/*",
     "./locale": {
       "types": "./src/locale/index.ts",
       "import": "./src/locale/index.ts"
     },
     "./locale/*": "./src/locale/*",
-    "./request-core": {
-      "types": "./src/request-core/index.ts",
-      "import": "./src/request-core/index.ts"
-    },
-    "./request-core/*": "./src/request-core/*",
     "./request-pc": {
       "types": "./src/request-pc/index.ts",
       "import": "./src/request-pc/index.ts"
@@ -99,10 +89,6 @@
       "import": "./src/directives-h5/index.ts"
     },
     "./directives-h5/*": "./src/directives-h5/*",
-    "./web-monitor": {
-      "types": "./src/web-monitor/index.ts",
-      "import": "./src/web-monitor/index.ts"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -112,12 +98,12 @@
     "test:watch": "vitest -c vitest.config.ts"
   },
   "dependencies": {
-    "axios": "catalog:",
+    "@vue3-monorepo/js-bridge": "workspace:*",
+    "@vue3-monorepo/request-core": "workspace:*",
     "dayjs": "catalog:",
     "echarts": "catalog:",
     "js-cookie": "catalog:",
-    "lodash-es": "catalog:",
-    "web-vitals": "catalog:"
+    "lodash-es": "catalog:"
   },
   "peerDependencies": {
     "@element-plus/icons-vue": "catalog:",

@@ -67,7 +67,7 @@ export type WebMonitorInitOptions =
 
 /**
  * 与 `app` 一并传入 `WebMonitor.init` 的字段（不含 `app`）。
- * 监控能力仅通过 **`WebMonitor.init` + `integrations`** 开关；勿直接依赖 `web-monitor` 子模块。
+ * 监控能力仅通过 **`WebMonitor.init` + `integrations`** 开关；业务代码请仅从 **`@vue3-monorepo/web-monitor`** 入口导入，勿绕过入口依赖包内其它源码文件。
  */
 export type WebMonitorInitEnvFields = Omit<WebMonitorInitOptions, 'app'>
 
