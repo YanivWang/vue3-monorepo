@@ -11,7 +11,7 @@
 | 会一点 **Vue 3**（`<script setup>`）         | PC 为 Element Plus，H5 为 Vant 4                                |
 | 可选                                         | TypeScript、pnpm workspace 概念                                 |
 
-若完全不懂 monorepo：先只记住——**一个仓库里装了好几个前端项目，共享代码在 `packages/shared`**；**PC Admin 与 H5** 是两条**同等重要**的成品线，不是「主站 + 附属」。
+若完全不懂 monorepo：先只记住——**一个仓库里装了好几个前端项目，共享与基建代码主要在 `packages/`**（如 **`shared`、`request-core`、`web-monitor`、`js-bridge`**）；**PC Admin 与 H5** 是两条**同等重要**的成品线，不是「主站 + 附属」。
 
 ## 2. 环境一条线装齐
 
@@ -73,11 +73,12 @@ pnpm run docs:dev
 
 ## 5. 改哪里：一张表避免放错地方
 
-| 需求                                          | 放哪里（不要混）                                                                                                                                                               |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 只给 **PC 后台** 用                           | `apps/pc/<你的业务应用>/`（须 `pnpm run create-app` 生成）；**勿**在 `pc-admin-template` 写业务。目录表见 [项目与目录约定](./project-conventions.md)                           |
-| 只给 **H5** 用                                | `apps/h5/<你的业务应用>/`（须 `create-app` 生成）；**勿**在 `h5-template` 写业务。同上                                                                                         |
-| **两端都要** 用的类型、工具、无业务耦合的封装 | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
+| 需求                                                  | 放哪里（不要混）                                                                                                                                                               |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 只给 **PC 后台** 用                                   | `apps/pc/<你的业务应用>/`（须 `pnpm run create-app` 生成）；**勿**在 `pc-admin-template` 写业务。目录表见 [项目与目录约定](./project-conventions.md)                           |
+| 只给 **H5** 用                                        | `apps/h5/<你的业务应用>/`（须 `create-app` 生成）；**勿**在 `h5-template` 写业务。同上                                                                                         |
+| **两端都要** 用的类型、工具、无业务耦合的封装         | `packages/shared/`，子路径**必须**与 `@vue3-monorepo/shared` 的 [package.json#exports](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/shared/package.json) 一致 |
+| **无 UI HTTP 内核 / 多宿主 Bridge**（不进 shared UI） | `@vue3-monorepo/request-core`、`@vue3-monorepo/js-bridge`（目录见根 README）；观测 **`@vue3-monorepo/web-monitor`** 一般由应用在 `main.ts` 直连                                |
 
 更系统的决策见 [pnpm workspace 日常操作](./monorepo-workflow.md)。
 

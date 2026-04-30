@@ -4,15 +4,15 @@
 
 ## 1. 日常开发最常用
 
-| 命令                                                           | 作用                                                                                                                                                       |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` | 单端本地开发，节省资源可只开一个                                                                                                                           |
-| `pnpm run typecheck`                                           | **全 workspace** 并行 `typecheck`；改 shared 后必跑，避免只绿一端                                                                                          |
-| `pnpm run typecheck:packages`                                  | 根脚本为 `pnpm --filter './packages/**' ... typecheck`：当前仓库仅 `packages/shared` 会命中；**不含** `docs`、`apps`（与根 `typecheck` 全 workspace 不同） |
-| `pnpm run lint`                                                | 全仓 ESLint                                                                                                                                                |
-| `pnpm run lint:style`                                          | Stylelint，覆盖 scss/vue/css 等                                                                                                                            |
-| `pnpm run format`                                              | Prettier 全仓**写入**；提交前可配合用                                                                                                                      |
-| `pnpm run test:run`                                            | Vitest 单次跑（与根脚本别名 `test` 一致，见下）                                                                                                            |
+| 命令                                                           | 作用                                                                                                                                                                                                                                                           |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run admin:dev` / `pnpm run h5:dev` / `pnpm run docs:dev` | 单端本地开发，节省资源可只开一个                                                                                                                                                                                                                               |
+| `pnpm run typecheck`                                           | **全 workspace** 并行 `typecheck`；改 shared 后必跑，避免只绿一端                                                                                                                                                                                              |
+| `pnpm run typecheck:packages`                                  | 根脚本为 `pnpm --filter './packages/**' ... typecheck`：当前仓库 **`packages/shared`、`packages/request-core`、`packages/web-monitor`、`packages/js-bridge`** 均声明了 `typecheck` 时会并行执行；**不含** `docs`、`apps`（与根 `typecheck` 全 workspace 不同） |
+| `pnpm run lint`                                                | 全仓 ESLint                                                                                                                                                                                                                                                    |
+| `pnpm run lint:style`                                          | Stylelint，覆盖 scss/vue/css 等                                                                                                                                                                                                                                |
+| `pnpm run format`                                              | Prettier 全仓**写入**；提交前可配合用                                                                                                                                                                                                                          |
+| `pnpm run test:run`                                            | Vitest 单次跑（与根脚本别名 `test` 一致，见下）                                                                                                                                                                                                                |
 
 > 单应用类型检查（更快定位）：`pnpm run admin:typecheck`、`pnpm run h5:typecheck`。
 
@@ -23,6 +23,7 @@
 - `apps/pc/pc-admin-template`（模板包，与业务应用并列进 workspace）
 - `apps/h5/h5-template`（同上）
 - `packages/shared`
+- `packages/js-bridge`（Bridge 策略与 `createBridge` 等单测）
 
 使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进该数组（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。
 
@@ -82,7 +83,7 @@
 ## 8. 对照表速记
 
 - **5 分钟本地反馈**：`typecheck` + 正在改的一端 `dev`。
-- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 **`@vue3-monorepo/shared`** 或 **`@vue3-monorepo/request-core`** 等 workspace 包时加 `check:refs` + `check:request-core`。
+- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 **`@vue3-monorepo/shared`**、**`@vue3-monorepo/request-core`**、**`@vue3-monorepo/js-bridge`**、**`@vue3-monorepo/web-monitor`** 等 workspace 包时加 `check:refs` + `check:request-core`。
 - **发版/大合并**：`verify:full`（或 CI 要等价的流水线）。
 
 更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新手上路](./onboarding.md)。

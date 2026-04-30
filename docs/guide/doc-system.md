@@ -27,16 +27,17 @@
 
 ## 3. 文档资产全景（本仓库里都有啥）
 
-| 资产               | 路径 / 位置                                          | 用途                                                        | 典型读者               |
-| ------------------ | ---------------------------------------------------- | ----------------------------------------------------------- | ---------------------- |
-| **根 README**      | 仓库根 `README.md`                                   | 一句话介绍、**环境/结构/快链/脚本摘录**；长表与长文不放在此 | 所有人；Clone 后第一眼 |
-| **VitePress 站点** | `docs/` 包                                           | 可搜索、多页、可部署的**主文档（企业级展开层）**            | 开发、接需求、查组件   |
-| **贡献与协作**     | 根 `CONTRIBUTING.md`                                 | 分支、Commit、PR、规范与**文档维护义务**                    | 要提 PR 的人           |
-| **H5 宿主协议**    | `apps/h5/h5-template/docs/bridge-protocol.md`        | 与 App WebView/JSBridge 的**协议级**说明                    | 做 H5 与客户端联调     |
-| **各应用内注释**   | `apps/*`、`packages/shared` 源码                     | 实现细节、与单行逻辑绑定                                    | 改具体文件时           |
-| **配置即文档**     | `packages/shared/package.json` 的 `exports`          | **子路径怎么 import**，以 `exports` 为唯一真源              | 从 shared 引用时必查   |
-| **锁与版本**       | `pnpm-lock.yaml`、`pnpm-workspace.yaml` 的 `catalog` | 依赖版本真相来源                                            | 升级依赖、排障         |
-| **Docker**         | `docker/*`、`scripts/docker.sh`                      | 与 [部署与 Docker](./deploy.md) 及仓库内 compose/nginx 配套 | 联调/预发镜像          |
+| 资产               | 路径 / 位置                                                   | 用途                                                                      | 典型读者               |
+| ------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------- |
+| **根 README**      | 仓库根 `README.md`                                            | 一句话介绍、**环境/结构/快链/脚本摘录**；长表与长文不放在此               | 所有人；Clone 后第一眼 |
+| **VitePress 站点** | `docs/` 包                                                    | 可搜索、多页、可部署的**主文档（企业级展开层）**                          | 开发、接需求、查组件   |
+| **贡献与协作**     | 根 `CONTRIBUTING.md`                                          | 分支、Commit、PR、规范与**文档维护义务**                                  | 要提 PR 的人           |
+| **H5 宿主协议**    | `apps/h5/h5-template/docs/bridge-protocol.md`                 | 与 App WebView/JSBridge 的**协议级**说明                                  | 做 H5 与客户端联调     |
+| **各应用内注释**   | `apps/*`、`packages/shared` 源码                              | 实现细节、与单行逻辑绑定                                                  | 改具体文件时           |
+| **配置即文档**     | `packages/shared/package.json` 的 `exports`                   | **子路径怎么 import**，以 `exports` 为唯一真源                            | 从 shared 引用时必查   |
+| **锁与版本**       | `pnpm-lock.yaml`、`pnpm-workspace.yaml` 的 `catalog`          | 依赖版本真相来源                                                          | 升级依赖、排障         |
+| **Workspace 库**   | `packages/request-core`、`web-monitor`、`js-bridge`、`shared` | HTTP 内核、可观测、Bridge、跨端复用；边界见 [架构说明](./architecture.md) | 改基建或共享导出时     |
+| **Docker**         | `docker/*`、`scripts/docker.sh`                               | 与 [部署与 Docker](./deploy.md) 及仓库内 compose/nginx 配套               | 联调/预发镜像          |
 
 **边界约定**（单源、少双改）：
 

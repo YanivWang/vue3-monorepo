@@ -59,6 +59,8 @@ docs/
 └── package.json                # @vue3-monorepo/docs
 ```
 
+Monorepo 内其它 workspace 包（根目录 **`packages/request-core`**、**`web-monitor`**、**`js-bridge`**、**`shared`**）的职责与依赖关系见根 **`README.md`** 与 [架构说明](./guide/architecture.md)。
+
 H5 与宿主的 **JSBridge 协议**在应用内：`../apps/h5/h5-template/docs/bridge-protocol.md`；入口见 [项目与目录约定](./guide/project-conventions.md) 等页。
 
 ## 维护

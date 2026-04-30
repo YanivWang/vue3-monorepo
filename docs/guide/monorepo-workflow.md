@@ -10,7 +10,7 @@
 
 - **根目录**：`package.json` 放**全仓脚本**与公共开发依赖（ESLint、Vitest 等），不是发布 npm 的包。
 - **apps/**：可运行的前端应用，如 `@vue3-monorepo/admin`、`@vue3-monorepo/h5`。
-- **packages/**：库代码，如 `@vue3-monorepo/shared`。
+- **packages/**：库代码，如 `@vue3-monorepo/shared`、`@vue3-monorepo/request-core`、`@vue3-monorepo/web-monitor`、`@vue3-monorepo/js-bridge`（详见根 `README` 目录说明与 [架构说明](./architecture.md)）。
 - **docs/**：VitePress 包 `@vue3-monorepo/docs`。
 
 工作区根列表见 [`pnpm-workspace.yaml`](https://github.com/YanivWang/vue3-monorepo/blob/main/pnpm-workspace.yaml)。在 `apps/pc/*` 或 `apps/h5/*` 下**新增业务应用**时，须用根 `pnpm run create-app`（**勿**在 `pc-admin-template` / `h5-template` 写业务），步骤见 [脚手架一键新增业务应用](./adding-a-new-app.md) 与 [项目与目录约定](./project-conventions.md)。

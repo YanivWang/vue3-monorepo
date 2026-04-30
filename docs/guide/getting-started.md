@@ -65,22 +65,22 @@ pnpm install
 
 ## 6. 类型检查
 
-| 作用              | 命令                                    |
-| ----------------- | --------------------------------------- |
-| 全 workspace 并行 | `pnpm run typecheck`（同 `type-check`） |
-| 仅 `packages/*`   | `pnpm run typecheck:packages`           |
-| 仅 Admin          | `pnpm run admin:typecheck`              |
-| 仅 H5             | `pnpm run h5:typecheck`                 |
+| 作用              | 命令                                                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 全 workspace 并行 | `pnpm run typecheck`（同 `type-check`）                                                                                               |
+| 仅 `packages/*`   | `pnpm run typecheck:packages`（当前会命中含 `typecheck` 脚本的 **`shared`、`request-core`、`web-monitor`、`js-bridge`**，以各包为准） |
+| 仅 Admin          | `pnpm run admin:typecheck`                                                                                                            |
+| 仅 H5             | `pnpm run h5:typecheck`                                                                                                               |
 
 ## 7. 测试
 
-| 作用                | 命令                                                                                                                                                                                                      |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Vitest 单次（根）   | `pnpm run test:run` 或 `pnpm run test`；使用根 `vitest.workspace.ts`，默认含 **admin、h5、shared** 三处 project（`pnpm run create-app` 新增的 **H5 或 PC** 目录也会自动追加到该文件），**不含** `docs` 包 |
-| Watch               | `pnpm run test:watch`                                                                                                                                                                                     |
-| 覆盖率              | `pnpm run test:coverage`                                                                                                                                                                                  |
-| 仅 Admin 子包内测试 | `pnpm run admin:test`                                                                                                                                                                                     |
-| 仅 H5 子包内测试    | `pnpm run h5:test`（须在 H5 包内存在 `test` 脚本；模板已与 admin 对齐）                                                                                                                                   |
+| 作用                | 命令                                                                                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vitest 单次（根）   | `pnpm run test:run` 或 `pnpm run test`；使用根 `vitest.workspace.ts`，默认含 **admin、h5、shared、`js-bridge`** 四处 project（`pnpm run create-app` 新增的 **H5 或 PC** 目录也会自动追加到该文件），**不含** `docs` 包 |
+| Watch               | `pnpm run test:watch`                                                                                                                                                                                                  |
+| 覆盖率              | `pnpm run test:coverage`                                                                                                                                                                                               |
+| 仅 Admin 子包内测试 | `pnpm run admin:test`                                                                                                                                                                                                  |
+| 仅 H5 子包内测试    | `pnpm run h5:test`（须在 H5 包内存在 `test` 脚本；模板已与 admin 对齐）                                                                                                                                                |
 
 `verify:full` 用的是根 `test:run`；检查项、与 `check:refs` 等差异见 [代码质量与规范约束](./quality-gates.md)。
 
@@ -114,6 +114,9 @@ pnpm install
 ├── apps/h5/<业务应用>/          # H5 业务工程（须 create-app 生成）
 ├── docs/                        # @vue3-monorepo/docs
 ├── packages/shared/             # @vue3-monorepo/shared
+├── packages/request-core/       # @vue3-monorepo/request-core
+├── packages/web-monitor/        # @vue3-monorepo/web-monitor
+├── packages/js-bridge/          # @vue3-monorepo/js-bridge
 ├── docker/
 ├── scripts/
 ├── pnpm-workspace.yaml

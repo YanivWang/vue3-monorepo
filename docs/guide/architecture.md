@@ -1,6 +1,6 @@
 # 架构说明
 
-**仓库骨架**以 **pnpm workspace（Monorepo）** 为核心：`packages/shared` 与各应用同仓，**PC 管理端与 H5 模板地位对等**——依赖关系上两条应用线均只指向 `shared`，无主从。
+**仓库骨架**以 **pnpm workspace（Monorepo）** 为核心：`packages/shared`、**`request-core` / `js-bridge` / `web-monitor`** 与各应用同仓，**PC 管理端与 H5 模板地位对等**——应用侧共同依赖 **`shared`** 与 **`@vue3-monorepo/web-monitor`**；H5 另可直接依赖 **`@vue3-monorepo/js-bridge`**，无主从之分。
 
 本文**正文**以 **PC 管理端模板**（`apps/pc/pc-admin-template`）为主描述启动、路由、HTTP 等实现，便于对照（后台能力文档化较深）；若你的工程由 `pnpm run create-app` 生成，**结构相同**，请将路径替换为实际应用目录。**H5** 在 [项目与目录约定](./project-conventions.md) 中有对称路径说明，本文在结构类似处会注明差异。更上层的**仓库与包边界**见下节。
 
@@ -14,23 +14,34 @@ flowchart TB
   end
   subgraph packages [packages]
     shared["@vue3-monorepo/shared"]
+    rc["@vue3-monorepo/request-core"]
+    bridge["@vue3-monorepo/js-bridge"]
+    monitor["@vue3-monorepo/web-monitor"]
   end
   subgraph tooling [工程与文档]
     docsPkg[docs VitePress]
   end
   admin --> shared
+  admin --> monitor
   h5 --> shared
+  h5 --> monitor
+  h5 --> bridge
+  shared --> rc
+  shared --> bridge
 ```
 
-> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，均依赖 `shared`，并各自占用独立 dev 端口（见 [脚手架一键新增业务应用](./adding-a-new-app.md)）。
+> 图中为**开箱默认**的两条模板包；**业务开发**请在 `create-app` 生成的应用目录中进行（见 [项目与目录约定](./project-conventions.md)）。还可在 `apps/pc/*`、`apps/h5/*` 下通过 `pnpm run create-app` 增加更多独立工程，通常依赖 **`shared`** 与 **`@vue3-monorepo/web-monitor`**（H5 另可直接依赖 **`js-bridge`**），并各自占用独立 dev 端口（见 [脚手架一键新增业务应用](./adding-a-new-app.md)）。
 
-| 单元                        | 职责                                                                                                                                                                                                      |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/pc/pc-admin-template` | PC **模板**（`create-app` 蓝本）：Element Plus、动态路由与权限、Mock；业务代码写在生成目录中                                                                                                              |
-| `apps/h5/h5-template`       | H5 **模板**（`create-app` 蓝本）：Vant、Bridge、移动端适配；业务代码写在生成目录中                                                                                                                        |
-| `packages/shared`           | 跨端复用：类型、工具、`@vue3-monorepo/request-core` 的 PC/H5 封装（**`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`**）、hooks、分端组件与指令等；**不**承载业务强耦合 store |
-| `docs`                      | 本文档站 `pnpm run docs:dev` / `docs:build`                                                                                                                                                               |
-| 根 `package.json` 脚本      | 聚合 `typecheck` / `lint` / `test` / `build` / `verify:full` 等                                                                                                                                           |
+| 单元                        | 职责                                                                                                                                                                                                                                                |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/pc/pc-admin-template` | PC **模板**（`create-app` 蓝本）：Element Plus、动态路由与权限、Mock；业务代码写在生成目录中                                                                                                                                                        |
+| `apps/h5/h5-template`       | H5 **模板**（`create-app` 蓝本）：Vant、Bridge、移动端适配；业务代码写在生成目录中                                                                                                                                                                  |
+| `packages/shared`           | 跨端复用：类型、工具、`@vue3-monorepo/request-core` 的 PC/H5 封装（**`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`**）、hooks、分端组件与指令等；依赖 **`request-core`**、**`js-bridge`**；**不**承载业务强耦合 store |
+| `packages/request-core`     | **`@vue3-monorepo/request-core`**：无 UI 的 Axios 客户端内核（注入式 hooks）；由 `shared` 的 `request-*` 装配，门禁见 `check:request-core`                                                                                                          |
+| `packages/js-bridge`        | **`@vue3-monorepo/js-bridge`**：多宿主 Bridge（浏览器 / 小程序 / App WebView）；H5 应用可直接依赖，`shared`（如枚举 `H5Host`）再导出便于统一口径                                                                                                    |
+| `packages/web-monitor`      | **`@vue3-monorepo/web-monitor`**：Web Vitals 与客户端错误上报；**由各应用 `main.ts` 直连**，不经过 `shared`                                                                                                                                         |
+| `docs`                      | 本文档站 `pnpm run docs:dev` / `docs:build`                                                                                                                                                                                                         |
+| 根 `package.json` 脚本      | 聚合 `typecheck` / `lint` / `test` / `build` / `verify:full` 等                                                                                                                                                                                     |
 
 **构建顺序**（根 `pnpm run build`）：默认 `admin:build` → `h5:build` → `docs:build`。若在 `create-app` 时勾选将新应用写入根 `build` 链，或手工改过根 `package.json` 的 `build` 字段，**以当前仓库内脚本为准**。新代码与目录放哪见 [项目与目录约定](./project-conventions.md)。
 
@@ -47,7 +58,7 @@ flowchart TB
 | UI（H5） | Vant 4                                                                                                                                                                                                                        | 见 `pnpm-workspace.yaml` catalog（`h5-template` 等为 `catalog:`）                                                              |
 | 状态管理 | Pinia + pinia-plugin-persistedstate                                                                                                                                                                                           | ^2.1.7 / ^3.2.3（见 `pnpm-workspace.yaml` catalog）                                                                            |
 | 路由     | Vue Router                                                                                                                                                                                                                    | ^4.3.3                                                                                                                         |
-| HTTP     | Axios（`src/utils/http` 封装）                                                                                                                                                                                                | ^1.7.2                                                                                                                         |
+| HTTP     | Axios：**`@vue3-monorepo/request-core`** + **`@vue3-monorepo/shared/request-pc`** / **`request-h5`**，应用内 `src/utils/http` 等装配                                                                                          | ^1.7.2                                                                                                                         |
 | 国际化   | Vue I18n（`src/locales`）                                                                                                                                                                                                     | ^9.14.4                                                                                                                        |
 | 监控     | PC / H5 共用：`WebMonitor.init`（`web-vitals` + `setupClientErrorReporting` 内核，**`@vue3-monorepo/web-monitor`**，源码 `packages/web-monitor/src`）；附加上报使用 `setAdditionalClientErrorListener` + `ClientErrorPayload` | 见 [全局性能监控](./web-vitals.md)、[全局错误监控](./errors-and-observability.md)、`apps/h5/h5-template/docs/observability.md` |
 | 工具     | VueUse、Lodash-ES、Day.js 等                                                                                                                                                                                                  | 见 `dependencies`                                                                                                              |
@@ -104,14 +115,16 @@ afterEach: document.title、tabsStore.addTab、NProgress.done
 | `permission` | 菜单/动态路由/路由加载状态    |
 | `tabs`       | 标签页列表/当前 Tab 操作      |
 
-## HTTP 层（`utils/http/`） {#http-layer}
+## HTTP 层（`request-core` + 应用内装配） {#http-layer}
+
+PC 模板在 `src/utils/http`（或插件）基于 **`@vue3-monorepo/shared/request-pc`** → 内部使用 **`@vue3-monorepo/request-core`** 构建实例；H5 同理走 **`@vue3-monorepo/shared/request-h5`**。行为上与下列抽象一致（取消池、拦截器链以当前模板代码为准）：
 
 ```
-HttpRequest 类
-  ├─ pendingRequests: Map<key, AbortController>   # 请求取消池
+HTTP 实例（createPcHttp / createH5Http）
+  ├─ pendingRequests: Map<key, AbortController>   # 请求取消池（若启用）
   ├─ 请求拦截
   │   ├─ cancelDuplicate → 取消旧请求，注册新 AbortController
-  │   ├─ showLoading → 全局 Loading
+  │   ├─ showLoading → 全局 Loading（端侧 UI）
   │   └─ withToken → 注入 Authorization header
   └─ 响应拦截
       ├─ 成功 → 移出请求池，校验业务 code
