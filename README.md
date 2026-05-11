@@ -6,17 +6,27 @@
 
 一套工程体系同时支撑 **PC 管理后台** 与 **H5 移动端**，内置双端模板、共享能力层与完整工程规范，实现多端复用、可观测、可部署的一站式前端研发方案。
 
-[![MIT License](https://img.shields.io/github/license/YanivWang/vue3-monorepo?label=License&color=blue)](./LICENSE)
-[![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![pnpm workspace](https://img.shields.io/badge/pnpm-workspace-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/workspaces)
+[![MIT License](https://img.shields.io/github/license/YanivWang/vue3-monorepo?label=License&color=blue)](./LICENSE) [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) [![pnpm workspace](https://img.shields.io/badge/pnpm-workspace-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/workspaces)
 
 [**源码仓库**](https://github.com/YanivWang/vue3-monorepo) · [**在线文档**](https://yanivwang.github.io/vue3-monorepo/)
 
 <br />
 
 </div>
+
+---
+
+## 目录
+
+- [核心亮点](#核心亮点)
+- [技术栈](#技术栈)
+- [适用场景与 Monorepo 收益](#适用场景与-monorepo-收益)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [常用命令](#常用命令)
+- [核心目录结构](#核心目录结构)
+- [文档](#文档)
+- [许可证](#许可证)
 
 ---
 
