@@ -135,21 +135,21 @@ const techList = [
   margin-bottom: $spacing-sm;
   font-size: 22px;
   font-weight: 600;
-  color: $text-primary;
+  color: var(--color-text-primary);
 }
 
 .welcome-time {
   font-size: 14px;
   font-variant-numeric: tabular-nums;
-  color: $text-secondary;
+  color: var(--color-text-secondary);
 }
 
 .perm-hint {
   font-size: 13px;
-  color: $text-secondary;
+  color: var(--color-text-secondary);
   code {
     padding: 2px 6px;
-    background: $bg-page;
+    background: var(--color-bg-page);
     border-radius: 4px;
   }
 }
@@ -166,7 +166,7 @@ const techList = [
   &__title {
     margin-bottom: $spacing-sm;
     font-size: 13px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__value {
@@ -180,12 +180,12 @@ const techList = [
     font-size: 28px;
     font-weight: 700;
     line-height: 1;
-    color: $text-primary;
+    color: var(--color-text-primary);
   }
 
   &__unit {
     font-size: 12px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__trend {
@@ -195,13 +195,13 @@ const techList = [
     font-size: 12px;
 
     &.trend-up {
-      color: $success-color;
+      color: var(--color-success);
     }
     &.trend-down {
-      color: $danger-color;
+      color: var(--color-danger);
     }
     &.trend-flat {
-      color: $text-placeholder;
+      color: var(--color-text-placeholder);
     }
   }
 
@@ -218,7 +218,7 @@ const techList = [
 }
 
 .trend-label {
-  color: $text-placeholder;
+  color: var(--color-text-placeholder);
 }
 
 .tech-card {

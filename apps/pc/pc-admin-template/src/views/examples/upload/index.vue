@@ -244,9 +244,9 @@ const statusMap = {
   justify-content: center;
   padding: 40px 20px;
   cursor: pointer;
-  background-color: var(--bg-page);
-  border: 2px dashed var(--border-color);
-  border-radius: $border-radius-large;
+  background-color: var(--color-bg-page);
+  border: 2px dashed var(--color-border-default);
+  border-radius: $radius-large;
   transition: $transition-base;
 
   &:hover,
@@ -263,7 +263,7 @@ const statusMap = {
 
   &__text {
     font-size: 14px;
-    color: var(--text-regular);
+    color: var(--color-text-regular);
 
     em {
       font-style: normal;
@@ -274,7 +274,7 @@ const statusMap = {
   &__hint {
     margin-top: 6px;
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 }
 
@@ -294,7 +294,7 @@ const statusMap = {
 
   &__count {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 }
 
@@ -304,17 +304,17 @@ const statusMap = {
   align-items: flex-start;
   padding: $spacing-md;
   margin-bottom: $spacing-sm;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color-light);
-  border-radius: $border-radius-medium;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: $radius-medium;
 
   &__thumb {
     flex-shrink: 0;
     width: 48px;
     height: 48px;
     overflow: hidden;
-    background-color: var(--bg-page);
-    border-radius: $border-radius-base;
+    background-color: var(--color-bg-page);
+    border-radius: $radius-base;
 
     img {
       width: 100%;
@@ -330,7 +330,7 @@ const statusMap = {
     width: 100%;
     height: 100%;
     font-size: 24px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 
   &__info {
@@ -351,13 +351,13 @@ const statusMap = {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     white-space: nowrap;
   }
 
   &__size {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 
   &__progress {

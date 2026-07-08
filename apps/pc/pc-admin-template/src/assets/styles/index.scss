@@ -1,21 +1,11 @@
-// ────────────────────────────────────────────────────────────
-//  全局样式入口
-//  shared tokens/variables 已通过 vite.config additionalData 注入到各 SFC
-//  在 main.ts 中 import 此文件
-// ────────────────────────────────────────────────────────────
-
-// 所有 @use 须置于文件最前（Sass 要求）
 @use './reset';
-@use '@vue3-monorepo/shared/styles/tokens/root';
-@use '@vue3-monorepo/shared/styles/tokens/brands';
-@use './dark';
+@use '@vue3-monorepo/shared/styles/tokens/index.scss' as shared-tokens;
+@use '@vue3-monorepo/shared/styles/patterns/index.scss' as shared-patterns;
+@use './dark-element';
 
-// Element Plus 主色跟随设计 token（换品牌时一并变化）
 :root {
   --el-color-primary: var(--color-primary);
 }
-
-// ── 布局工具类 ────────────────────────────────────────────────
 
 .full-page {
   width: 100%;
@@ -25,12 +15,10 @@
 
 .page-container {
   padding: $spacing-lg;
-  background-color: var(--bg-card);
-  border-radius: $border-radius-large;
-  box-shadow: var(--box-shadow-base);
+  background-color: var(--color-bg-elevated);
+  border-radius: $radius-large;
+  box-shadow: var(--shadow-base);
 }
-
-// ── 路由 & 通用过渡动画 ────────────────────────────────────────
 
 .page-enter-active,
 .page-leave-active {
@@ -65,8 +53,6 @@
   transform: translateY(20px);
 }
 
-// ── 通用工具类 ────────────────────────────────────────────────
-
 .pointer {
   cursor: pointer;
 }
@@ -95,8 +81,6 @@
   align-items: center;
   justify-content: space-between;
 }
-
-// ── 间距工具 ──────────────────────────────────────────────────
 
 .mt-sm {
   margin-top: $spacing-sm;
@@ -138,28 +122,26 @@
   margin-right: $spacing-md;
 }
 
-// ── 文字颜色工具 ──────────────────────────────────────────────
-
 .text-primary {
-  color: $text-primary;
+  color: var(--color-text-primary);
 }
 
 .text-regular {
-  color: $text-regular;
+  color: var(--color-text-regular);
 }
 
 .text-secondary {
-  color: $text-secondary;
+  color: var(--color-text-secondary);
 }
 
 .text-danger {
-  color: $danger-color;
+  color: var(--color-danger);
 }
 
 .text-success {
-  color: $success-color;
+  color: var(--color-success);
 }
 
 .text-warning {
-  color: $warning-color;
+  color: var(--color-warning);
 }

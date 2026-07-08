@@ -109,7 +109,7 @@ function onClickLeft() {
 .h5-page-container {
   display: flex;
   flex-direction: column;
-  background: var(--bg-page);
+  background: var(--color-bg-page);
 
   &--fill {
     min-height: 100vh;

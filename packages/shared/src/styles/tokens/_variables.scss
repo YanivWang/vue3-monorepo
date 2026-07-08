@@ -1,54 +1,50 @@
-// ────────────────────────────────────────────────────────────
-//  Design Token - 单源默认值（Sass 变量，本文件不直接输出 CSS）
-//  供同目录 _root 映射到 :root 的 --*，供其它 @use 做构建期引用
-//  可随主题/暗黑的语义色以 CSS 变量为准；_root 给出默认，html.dark / data-brand
-//  在运行时覆盖 var(--*)，不覆盖本文件的 $
-// ────────────────────────────────────────────────────────────
+// Design Token — Sass 构建期默认值（不直接输出 CSS）
 
-// 主色
-$primary-color: #409eff;
-$primary-color-light: #79bbff;
-$primary-color-dark: #337ecc;
-$success-color: #67c23a;
-$warning-color: #e6a23c;
-$danger-color: #f56c6c;
-$info-color: #909399;
+// 主色（默认品牌 blue）
+$color-primary: #409eff;
+$color-primary-hover: #79bbff;
+$color-primary-active: #337ecc;
+$color-primary-subtle: #ecf5ff;
+$color-primary-border: #b3d8ff;
+
+// 语义色
+$color-success: #67c23a;
+$color-warning: #e6a23c;
+$color-danger: #f56c6c;
+$color-info: #909399;
 
 // 文字
-$text-primary: #303133;
-$text-regular: #606266;
-$text-secondary: #909399;
-$text-placeholder: #c0c4cc;
+$color-text-primary: #303133;
+$color-text-regular: #606266;
+$color-text-secondary: #909399;
+$color-text-placeholder: #c0c4cc;
 
 // 背景
-$bg-page: #f0f2f5;
-$bg-white: #ffffff;
-$bg-card: #ffffff;
-$bg-overlay: rgba(0, 0, 0, 0.5);
+$color-bg-page: #f0f2f5;
+$color-bg-surface: #ffffff;
+$color-bg-elevated: #ffffff;
+$color-bg-overlay: rgba(0, 0, 0, 0.5);
 
 // 边框
-$border-color: #dcdfe6;
-$border-color-light: #e4e7ed;
-$border-radius-base: 4px;
-$border-radius-medium: 6px;
-$border-radius-large: 8px;
+$color-border-default: #dcdfe6;
+$color-border-subtle: #e4e7ed;
+
+// 布局 — 侧栏
+$layout-sidebar-bg: #001529;
+$layout-sidebar-text: rgba(255, 255, 255, 0.65);
+$layout-sidebar-text-active: #ffffff;
+$layout-sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
+$layout-sidebar-item-active-bg: #409eff;
+
+// 布局 — 头部
+$layout-header-bg: #ffffff;
+$layout-header-border: #e8eaec;
 
 // 布局尺寸
-$header-height: 60px;
-$sidebar-width: 220px;
-$sidebar-width-collapsed: 64px;
-$footer-height: 50px;
-
-// 侧栏
-$sidebar-bg: #001529;
-$sidebar-text: rgba(255, 255, 255, 0.65);
-$sidebar-text-active: #ffffff;
-$sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
-$sidebar-item-active-bg: #1890ff;
-
-// 头部
-$header-bg: #ffffff;
-$header-border: #e8eaec;
+$layout-header-height: 60px;
+$layout-sidebar-width: 220px;
+$layout-sidebar-width-collapsed: 64px;
+$layout-footer-height: 50px;
 
 // 间距
 $spacing-xs: 4px;
@@ -57,12 +53,16 @@ $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
 
+// 圆角
+$radius-base: 4px;
+$radius-medium: 6px;
+$radius-large: 8px;
+
 // 阴影
-$box-shadow-base:
+$shadow-base:
   0 2px 4px rgba(0, 0, 0, 0.12),
   0 0 6px rgba(0, 0, 0, 0.04);
-$box-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
-$box-shadow-dark: 0 2px 16px rgba(0, 0, 0, 0.15);
+$shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
 
 // 过渡
 $transition-base: all 0.3s ease;

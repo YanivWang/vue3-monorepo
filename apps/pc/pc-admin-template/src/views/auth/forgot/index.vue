@@ -14,9 +14,9 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  color: $text-primary;
+  color: var(--color-text-primary);
   a {
-    color: $primary-color;
+    color: var(--color-primary);
   }
 }
 </style>

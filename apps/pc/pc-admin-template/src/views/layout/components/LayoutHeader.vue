@@ -133,11 +133,11 @@ async function handleLogout(): Promise<void> {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: $header-height;
+  height: $layout-header-height;
   padding: 0 $spacing-lg;
-  background-color: $bg-white;
-  border-bottom: 1px solid $border-color-light;
-  box-shadow: $box-shadow-base;
+  background-color: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-base);
 
   &__left {
     display: flex;
@@ -157,22 +157,22 @@ async function handleLogout(): Promise<void> {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: $text-regular;
+  color: var(--color-text-regular);
   cursor: pointer;
   transition: $transition-fast;
 
   &:hover {
-    color: $primary-color;
+    color: var(--color-primary);
   }
 }
 
 .theme-switch {
   height: 32px;
   padding: 0 $spacing-xs;
-  border-radius: $border-radius-medium;
+  border-radius: $radius-medium;
 
   &:hover {
-    background-color: $bg-page;
+    background-color: var(--color-bg-page);
   }
 
   &__item-icon {
@@ -204,11 +204,11 @@ async function handleLogout(): Promise<void> {
   align-items: center;
   padding: $spacing-xs $spacing-sm;
   cursor: pointer;
-  border-radius: $border-radius-medium;
+  border-radius: $radius-medium;
   transition: $transition-fast;
 
   &:hover {
-    background-color: $bg-page;
+    background-color: var(--color-bg-page);
   }
 
   &__name {
@@ -216,7 +216,7 @@ async function handleLogout(): Promise<void> {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
-    color: $text-regular;
+    color: var(--color-text-regular);
     white-space: nowrap;
   }
 }

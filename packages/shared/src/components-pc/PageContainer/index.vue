@@ -63,12 +63,12 @@ defineSlots<{
   &__title {
     font-size: 15px;
     font-weight: 600;
-    color: $text-primary;
+    color: var(--color-text-primary);
   }
 
   &__subtitle {
     font-size: 13px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__extra {

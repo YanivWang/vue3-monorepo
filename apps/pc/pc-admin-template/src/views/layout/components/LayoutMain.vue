@@ -26,6 +26,6 @@ const keepAliveNames = computed<string[]>(() => tabsStore.tabs.filter(t => t.kee
   flex: 1;
   padding: $spacing-lg;
   overflow: hidden auto;
-  background-color: $bg-page;
+  background-color: var(--color-bg-page);
 }
 </style>

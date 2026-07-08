@@ -288,6 +288,6 @@ function getPasswordStrength(pwd: string): { level: number; label: string; color
   align-items: center;
   margin-top: 4px;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 </style>

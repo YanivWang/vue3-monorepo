@@ -1,44 +1,169 @@
 /**
- * 共享包内主题 / 品牌运行时 API（与 `./tokens/*.scss` 中 `data-brand`、`html.dark` 配合）
+ * 共享 Design Token — 运行时主题 API + CSS 变量名 + 设计元数据
  */
+import { brandConfigs, brandPalettes, type BrandId } from './brands.config'
 
-/** 品牌 ID；与 `html[data-brand='xxx']` 一一对应 */
-export type BrandId = 'blue' | 'green' | 'red' | 'orange' | 'purple'
+export type { BrandId, BrandPaletteConfig as BrandPalette } from './brands.config'
+export { brandConfigs, brandPalettes }
 
-/** 深浅模式三态；`system` 时的行为见 `applyThemeMode`（监听 `prefers-color-scheme`） */
+/** 深浅模式三态 */
 export type ThemeModeId = 'light' | 'dark' | 'system'
 
-export interface BrandPalette {
-  id: BrandId
-  primary: string
+/** CSS 自定义属性名（与 tokens/_root.scss 对齐） */
+export const cssVarTokens = {
+  color: {
+    primary: '--color-primary',
+    primaryHover: '--color-primary-hover',
+    primaryActive: '--color-primary-active',
+    primarySubtle: '--color-primary-subtle',
+    primaryBorder: '--color-primary-border',
+    success: '--color-success',
+    warning: '--color-warning',
+    danger: '--color-danger',
+    info: '--color-info',
+    textPrimary: '--color-text-primary',
+    textRegular: '--color-text-regular',
+    textSecondary: '--color-text-secondary',
+    textPlaceholder: '--color-text-placeholder',
+    bgPage: '--color-bg-page',
+    bgSurface: '--color-bg-surface',
+    bgElevated: '--color-bg-elevated',
+    bgOverlay: '--color-bg-overlay',
+    borderDefault: '--color-border-default',
+    borderSubtle: '--color-border-subtle'
+  },
+  layout: {
+    sidebarBg: '--layout-sidebar-bg',
+    sidebarText: '--layout-sidebar-text',
+    sidebarTextActive: '--layout-sidebar-text-active',
+    sidebarItemHoverBg: '--layout-sidebar-item-hover-bg',
+    sidebarItemActiveBg: '--layout-sidebar-item-active-bg',
+    headerBg: '--layout-header-bg',
+    headerBorder: '--layout-header-border',
+    headerHeight: '--layout-header-height',
+    sidebarWidth: '--layout-sidebar-width',
+    sidebarWidthCollapsed: '--layout-sidebar-width-collapsed',
+    footerHeight: '--layout-footer-height'
+  },
+  spacing: {
+    xs: '--spacing-xs',
+    sm: '--spacing-sm',
+    md: '--spacing-md',
+    lg: '--spacing-lg',
+    xl: '--spacing-xl'
+  },
+  radius: {
+    base: '--radius-base',
+    medium: '--radius-medium',
+    large: '--radius-large'
+  },
+  shadow: {
+    base: '--shadow-base',
+    medium: '--shadow-medium'
+  }
+} as const
+
+export const typographyTokens = {
+  fontSize: {
+    xs: '12px',
+    sm: '13px',
+    base: '14px',
+    md: '16px',
+    lg: '18px',
+    xl: '20px',
+    '2xl': '24px',
+    '3xl': '30px',
+    '4xl': '36px'
+  },
+  fontWeight: {
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700'
+  },
+  lineHeight: {
+    tight: '1.25',
+    normal: '1.5',
+    relaxed: '1.75'
+  }
+} as const
+
+export const spacingTokens = {
+  xs: '4px',
+  sm: '8px',
+  md: '16px',
+  lg: '24px',
+  xl: '32px',
+  '2xl': '48px',
+  '3xl': '64px'
+} as const
+
+export const borderRadiusTokens = {
+  none: '0',
+  sm: '2px',
+  base: '4px',
+  medium: '6px',
+  large: '8px',
+  xl: '12px',
+  '2xl': '16px',
+  full: '9999px'
+} as const
+
+export const breakpointTokens = {
+  xs: '480px',
+  sm: '576px',
+  md: '768px',
+  lg: '992px',
+  xl: '1200px',
+  '2xl': '1600px'
+} as const
+
+export const zIndexTokens = {
+  base: 1,
+  dropdown: 1000,
+  sticky: 1020,
+  fixed: 1030,
+  modal: 1040,
+  popover: 1050,
+  tooltip: 1070
+} as const
+
+export const layoutTokens = {
+  headerHeight: '60px',
+  sidebarWidth: '220px',
+  sidebarWidthCollapsed: '64px',
+  footerHeight: '50px',
+  contentMaxWidth: '1440px'
+} as const
+
+export const tokens = {
+  cssVar: cssVarTokens,
+  typography: typographyTokens,
+  spacing: spacingTokens,
+  borderRadius: borderRadiusTokens,
+  breakpoint: breakpointTokens,
+  zIndex: zIndexTokens,
+  layout: layoutTokens
+} as const
+
+export function getCssVar(token: string, el: HTMLElement = document.documentElement): string {
+  return getComputedStyle(el).getPropertyValue(token).trim()
 }
 
-/** 品牌预设；顺序即默认推荐顺序 */
-export const brandPalettes: readonly BrandPalette[] = [
-  { id: 'blue', primary: '#409eff' },
-  { id: 'green', primary: '#07c160' },
-  { id: 'red', primary: '#ee0a24' },
-  { id: 'orange', primary: '#ff8c00' },
-  { id: 'purple', primary: '#722ed1' }
-] as const
+export function setCssVar(token: string, value: string, el: HTMLElement = document.documentElement): void {
+  el.style.setProperty(token, value)
+}
 
-/** 应用品牌：设置 `html[data-brand]`（色值由 _brands.scss 随 data-brand 提供） */
 export function applyBrand(id: BrandId): void {
   if (typeof document === 'undefined') return
   document.documentElement.setAttribute('data-brand', id)
 }
 
-/** 读取当前品牌（未设置时默认 'blue'） */
 export function getAppliedBrand(): BrandId {
   if (typeof document === 'undefined') return 'blue'
   return (document.documentElement.getAttribute('data-brand') as BrandId) ?? 'blue'
 }
 
-/**
- * 应用深浅模式（只操作 `html` 的 `.dark` class）：
- * - `light` / `dark`：固定 class，返回空清理函数
- * - `system`：按 `prefers-color-scheme` 设置 class，并监听变化；返回的函数用于移除该监听
- */
 export function applyThemeMode(mode: ThemeModeId): () => void {
   if (typeof document === 'undefined') return () => {}
   const root = document.documentElement
@@ -57,6 +182,7 @@ export function applyThemeMode(mode: ThemeModeId): () => void {
     setDark(false)
     return () => {}
   }
+
   const mql = window.matchMedia('(prefers-color-scheme: dark)')
   setDark(mql.matches)
   const handler = (e: MediaQueryListEvent) => setDark(e.matches)
@@ -64,10 +190,6 @@ export function applyThemeMode(mode: ThemeModeId): () => void {
   return () => mql.removeEventListener('change', handler)
 }
 
-/**
- * 根据 `html` 是否带有 `.dark` 返回 `light` | `dark`（与当前实际外观一致）
- * 无法区分「用户选了 dark」与「system 且系统当前为暗色」，若需区分应读业务里的 `themeMode`
- */
 export function getAppliedThemeMode(): 'light' | 'dark' {
   if (typeof document === 'undefined') return 'light'
   return document.documentElement.classList.contains('dark') ? 'dark' : 'light'

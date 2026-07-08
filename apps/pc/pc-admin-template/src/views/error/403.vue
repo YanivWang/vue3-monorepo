@@ -33,7 +33,7 @@ function goHome() {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: $bg-page;
+  background-color: var(--color-bg-page);
 }
 
 .error-content {
@@ -44,13 +44,13 @@ function goHome() {
   margin-bottom: $spacing-md;
   font-size: 72px;
   font-weight: 700;
-  color: $text-primary;
+  color: var(--color-text-primary);
 }
 
 .error-msg {
   margin-bottom: $spacing-xl;
   font-size: 16px;
-  color: $text-secondary;
+  color: var(--color-text-secondary);
 }
 
 .error-actions {

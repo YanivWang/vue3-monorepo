@@ -47,7 +47,7 @@ onErrorCaptured((err: unknown) => {
   justify-content: center;
   width: 100%;
   min-height: 300px;
-  background-color: var(--bg-card);
-  border-radius: $border-radius-large;
+  background-color: var(--color-bg-elevated);
+  border-radius: $radius-large;
 }
 </style>

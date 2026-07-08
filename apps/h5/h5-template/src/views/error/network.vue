@@ -52,7 +52,7 @@ function retry() {
 .err-page__hint {
   margin: 0 0 20px;
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .err-page__btn {

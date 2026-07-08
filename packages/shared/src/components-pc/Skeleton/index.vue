@@ -63,7 +63,7 @@ $skeleton-shine: var(--el-fill-color-lighter, #e8eaed);
     height: 16px;
     margin-bottom: 12px;
     background-color: $skeleton-color;
-    border-radius: $border-radius-base;
+    border-radius: $radius-base;
 
     &--title {
       width: 40%;
@@ -83,7 +83,7 @@ $skeleton-shine: var(--el-fill-color-lighter, #e8eaed);
     &--image {
       height: 160px;
       margin-bottom: 16px;
-      border-radius: $border-radius-medium;
+      border-radius: $radius-medium;
     }
   }
 
@@ -106,8 +106,8 @@ $skeleton-shine: var(--el-fill-color-lighter, #e8eaed);
 
   &__card {
     padding: 16px;
-    background-color: var(--bg-card);
-    border-radius: $border-radius-medium;
+    background-color: var(--color-bg-elevated);
+    border-radius: $radius-medium;
   }
 
   // 闪光动画

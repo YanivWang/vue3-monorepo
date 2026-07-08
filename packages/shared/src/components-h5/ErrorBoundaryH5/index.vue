@@ -53,7 +53,7 @@ onErrorCaptured((err: unknown) => {
 .h5-error-boundary__msg {
   margin: 0 0 16px;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   word-break: break-all;
 }
 

@@ -70,7 +70,7 @@ async function onLogout() {
   display: flex;
   align-items: center;
   padding: 24px 16px;
-  background: var(--bg-primary);
+  background: var(--color-bg-page);
 
   &__info {
     flex: 1;
@@ -81,13 +81,13 @@ async function onLogout() {
   &__name {
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
   }
 
   &__meta {
     margin-top: 4px;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 }
 

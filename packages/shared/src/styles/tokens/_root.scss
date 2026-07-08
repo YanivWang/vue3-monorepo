@@ -1,58 +1,76 @@
 // ────────────────────────────────────────────────────────────
-//  Design Token - 运行期 CSS 自定义属性（:root）
-//  默认值与 _variables.scss 单源同步；应用可单独 @use 本文件，或与 brands / dark 一并引入
-//  暗黑（html.dark）、品牌（html[data-brand]）在其它文件中覆盖 var(--*)，本文件只定义映射关系
+//  Design Token — :root CSS 自定义属性（新命名体系）
+//  默认品牌 blue；其它品牌见 _brands.scss；暗黑见 _dark.scss
 // ────────────────────────────────────────────────────────────
 
 @use './variables' as *;
 
-// :root 是 CSS 里的伪类选择器，表示文档根元素
-// 大家喜欢在 :root { --变量名: 值; } 里定义 CSS 自定义属性（--xxx），是因为：
-// 1. 全局作用域：在 :root 中定义的变量在文档中全局可用
-// 2. 可继承性：后代元素可以继承这些变量
-// 3. 可重写性：后代元素可以重写这些变量
-// 4. 可调试性：在浏览器开发者工具中可以方便地查看和调试这些变量
-
 :root {
   // 主色
-  --color-primary: #{$primary-color};
-  --color-primary-light: #{$primary-color-light};
-  --color-primary-dark: #{$primary-color-dark};
-  --color-success: #{$success-color};
-  --color-warning: #{$warning-color};
-  --color-danger: #{$danger-color};
-  --color-info: #{$info-color};
+  --color-primary: #{$color-primary};
+  --color-primary-hover: #{$color-primary-hover};
+  --color-primary-active: #{$color-primary-active};
+  --color-primary-subtle: #{$color-primary-subtle};
+  --color-primary-border: #{$color-primary-border};
+
+  // 主色 alpha 辅助（color-mix）
+  --color-primary-a7: color-mix(in sRGB, var(--color-primary) 7%, transparent);
+  --color-primary-a10: color-mix(in sRGB, var(--color-primary) 10%, transparent);
+  --color-primary-a15: color-mix(in sRGB, var(--color-primary) 15%, transparent);
+  --color-primary-a20: color-mix(in sRGB, var(--color-primary) 20%, transparent);
+
+  // 语义色
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-danger: #{$color-danger};
+  --color-info: #{$color-info};
 
   // 文字
-  --text-primary: #{$text-primary};
-  --text-regular: #{$text-regular};
-  --text-secondary: #{$text-secondary};
-  --text-placeholder: #{$text-placeholder};
+  --color-text-primary: #{$color-text-primary};
+  --color-text-regular: #{$color-text-regular};
+  --color-text-secondary: #{$color-text-secondary};
+  --color-text-placeholder: #{$color-text-placeholder};
 
   // 背景
-  --bg-page: #{$bg-page};
-  --bg-white: #{$bg-white};
-  --bg-card: #{$bg-card};
-  --bg-overlay: #{$bg-overlay};
+  --color-bg-page: #{$color-bg-page};
+  --color-bg-surface: #{$color-bg-surface};
+  --color-bg-elevated: #{$color-bg-elevated};
+  --color-bg-overlay: #{$color-bg-overlay};
 
   // 边框
-  --border-color: #{$border-color};
-  --border-color-light: #{$border-color-light};
+  --color-border-default: #{$color-border-default};
+  --color-border-subtle: #{$color-border-subtle};
 
-  // 侧边栏
-  --sidebar-bg: #{$sidebar-bg};
-  --sidebar-text: #{$sidebar-text};
-  --sidebar-text-active: #{$sidebar-text-active};
-  --sidebar-item-hover-bg: #{$sidebar-item-hover-bg};
-  --sidebar-item-active-bg: #{$sidebar-item-active-bg};
+  // 布局 — 侧栏
+  --layout-sidebar-bg: #{$layout-sidebar-bg};
+  --layout-sidebar-text: #{$layout-sidebar-text};
+  --layout-sidebar-text-active: #{$layout-sidebar-text-active};
+  --layout-sidebar-item-hover-bg: #{$layout-sidebar-item-hover-bg};
+  --layout-sidebar-item-active-bg: #{$layout-sidebar-item-active-bg};
 
-  // 头部
-  --header-bg: #{$header-bg};
-  --header-border: #{$header-border};
+  // 布局 — 头部
+  --layout-header-bg: #{$layout-header-bg};
+  --layout-header-border: #{$layout-header-border};
+
+  // 布局尺寸
+  --layout-header-height: #{$layout-header-height};
+  --layout-sidebar-width: #{$layout-sidebar-width};
+  --layout-sidebar-width-collapsed: #{$layout-sidebar-width-collapsed};
+  --layout-footer-height: #{$layout-footer-height};
+
+  // 间距
+  --spacing-xs: #{$spacing-xs};
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
+
+  // 圆角
+  --radius-base: #{$radius-base};
+  --radius-medium: #{$radius-medium};
+  --radius-large: #{$radius-large};
 
   // 阴影
-  --box-shadow-base: #{$box-shadow-base};
-  --box-shadow-medium: #{$box-shadow-medium};
+  --shadow-base: #{$shadow-base};
+  --shadow-medium: #{$shadow-medium};
 }
-
-$border-width: 2px;

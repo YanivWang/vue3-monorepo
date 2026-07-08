@@ -18,7 +18,7 @@ const router = useRouter()
 <style lang="scss" scoped>
 .not-found {
   padding: 48px 24px;
-  color: var(--text-regular);
+  color: var(--color-text-regular);
   text-align: center;
 
   h2 {

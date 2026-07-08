@@ -39,12 +39,12 @@ const isCollapsed = computed(() => appStore.isCollapsed)
 .layout-right {
   flex: 1;
   flex-direction: column;
-  margin-left: $sidebar-width;
+  margin-left: $layout-sidebar-width;
   overflow: hidden;
   transition: margin-left 0.3s ease;
 
   &--collapsed {
-    margin-left: $sidebar-width-collapsed;
+    margin-left: $layout-sidebar-width-collapsed;
   }
 }
 </style>

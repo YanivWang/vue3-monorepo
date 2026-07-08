@@ -85,32 +85,31 @@ import {
 
 ## CSS 变量体系（源码位置）
 
-亮色默认值与映射来自共享包 **`packages/shared/src/styles/tokens/_root.scss`**（Sass 数值与同目录 **`_variables.scss`**）；品牌覆盖在 **`_brands.scss`**（`html[data-brand='…']`）；**通用业务向**暗黑覆盖在 **`dark.scss`**（`html.dark`，与框架无关的 `--text-*` / `--bg-*` 等）。
+亮色默认值来自 **`tokens/_variables.scss`** → **`_root.scss`**；品牌覆盖在 **`_brands.scss`**（`html[data-brand]`，blue 用 `:root` 默认）；业务暗黑在 **`_dark.scss`**（`html.dark`）。
 
-| 端     | 全局样式入口                   | 引入方式（要点）                                                                                                                                                                                                                             |
-| ------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **PC** | `src/assets/styles/index.scss` | `@use` 包路径 **`@vue3-monorepo/shared/styles/tokens/root`**、**`.../brands`**，再 `@use` 本应用 **`dark.scss`**（在共享业务 token 之外追加 **Element Plus `--el-*`** 等）。**不**经共享 `tokens/index.scss`，因此与 H5 的打包链不同。       |
-| **H5** | `src/styles/index.scss`        | 使用**仓库相对路径** `@use '../../../../../packages/shared/src/styles/tokens/index.scss' as *`（Sass 不解析 package exports，与 Vite 解析一致），一次带入 `root`、`brands`、共享 **`dark.scss`**；其下再将 **Vant** 变量映射到同一套 `--*`。 |
+| 端     | 全局样式入口                   | 引入方式                                                                                                         |
+| ------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| **PC** | `src/assets/styles/index.scss` | `@use` 共享 `tokens/index.scss` + `patterns/index.scss` + 本应用 `dark-element.scss`（仅 Element Plus `--el-*`） |
+| **H5** | `src/styles/index.scss`        | `@use` 共享 `tokens/index.scss` + `patterns/index.scss`；Vant 变量映射到同一套 `--color-*`                       |
 
-各端 `vite.config` 的 **`additionalData`** 另注入 `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`，单文件组件内可直接写 `$spacing-md` 等，无需在每个 `<style lang="scss">` 里重复 `@use variables`。
+各端 `vite.config` 的 **`additionalData`** 注入 `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`，SFC 内可直接使用 `$spacing-md`、`$layout-sidebar-width` 等。
 
-业务模板中的 **`src/assets/styles/variables.scss`**（PC 若仍存在）为可选对照清单；**默认不参与**全局 `@use` 链。
+品牌色单源：**`packages/shared/src/styles/brands.config.ts`**（`brandPalettes` 与 `_brands.scss` 对齐）。
 
 ```scss
-/* 语义与数值以仓库内文件为准；以下为结构示意 */
-/* shared：_root.scss → :root { --bg-page: … } */
+/* shared：_root.scss → :root { --color-bg-page: … } */
 /* shared：_brands.scss → html[data-brand='green'] { --color-primary: … } */
-/* shared：dark.scss → html.dark { --bg-page: …; … }（H5 经 index.scss 打入） */
-/* PC 应用：dark.scss → 业务层与 Element --el-* 一并覆盖 */
+/* shared：_dark.scss → html.dark { --color-bg-page: … } */
+/* PC：dark-element.scss → html.dark { --el-*: … } */
 ```
 
 在组件中使用 CSS 变量：
 
 ```scss
 .my-component {
-  background-color: var(--bg-card);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
 }
 ```
 
@@ -124,18 +123,18 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/styles/index.scss'
 ```
 
-结合 `html.dark` 类与应用内 `dark.scss` 中的 `--el-*` 覆盖，组件与业务变量一并进入暗黑外观。
+结合 `html.dark` 类与 `dark-element.scss` 中的 `--el-*` 覆盖，组件与业务变量一并进入暗黑外观。
 
-## 完整变量列表
+## 完整变量列表（节选）
 
-| 变量名             | 亮色值    | 暗色值    | 说明            |
-| ------------------ | --------- | --------- | --------------- |
-| `--bg-page`        | `#f0f2f5` | `#0d0d0d` | 页面背景        |
-| `--bg-white`       | `#ffffff` | `#141414` | 卡片/内容区背景 |
-| `--bg-card`        | `#ffffff` | `#1d1e20` | 卡片背景        |
-| `--text-primary`   | `#303133` | `#e5eaf3` | 主要文字        |
-| `--text-regular`   | `#606266` | `#cfd3dc` | 常规文字        |
-| `--text-secondary` | `#909399` | `#a3a6ad` | 次要文字        |
-| `--border-color`   | `#dcdfe6` | `#3c3c3c` | 边框颜色        |
-| `--sidebar-bg`     | `#001529` | `#141414` | 侧边栏背景      |
-| `--header-bg`      | `#ffffff` | `#1d1e20` | 顶栏背景        |
+| 变量名                   | 亮色值    | 暗色值    | 说明          |
+| ------------------------ | --------- | --------- | ------------- |
+| `--color-bg-page`        | `#f0f2f5` | `#0d0d0d` | 页面背景      |
+| `--color-bg-surface`     | `#ffffff` | `#141414` | 表面背景      |
+| `--color-bg-elevated`    | `#ffffff` | `#1d1e20` | 卡片/抬升背景 |
+| `--color-text-primary`   | `#303133` | `#e5eaf3` | 主要文字      |
+| `--color-text-regular`   | `#606266` | `#cfd3dc` | 常规文字      |
+| `--color-text-secondary` | `#909399` | `#a3a6ad` | 次要文字      |
+| `--color-border-default` | `#dcdfe6` | `#3c3c3c` | 边框          |
+| `--layout-sidebar-bg`    | `#001529` | `#141414` | 侧栏背景      |
+| `--layout-header-bg`     | `#ffffff` | `#1d1e20` | 顶栏背景      |

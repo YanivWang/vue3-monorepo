@@ -1,57 +1,31 @@
-// Shared tokens：Sass 不解析 package exports，使用仓库相对路径（与 dev/build/Docker 一致）
-
-// as * 取消命名空间，让模块里的所有成员直接暴露到当前作用域
-@use '../../../../../packages/shared/src/styles/tokens/index.scss' as *;
-
-// Vant 基础样式；使用 css 版本避免重复引入编译开销
+@use '@vue3-monorepo/shared/styles/tokens/index.scss' as shared-tokens;
+@use '@vue3-monorepo/shared/styles/patterns/index.scss' as shared-patterns;
 @use 'vant/lib/index.css';
 
-// :root 👉 “整个页面的老大”
-// :host 👉 “组件自己的外壳” 服务 Web Components
-
-// Vant 语义色与 shared design token 对齐（primary / danger）（最小对齐粒度）
 :root {
   --van-primary-color: var(--color-primary);
   --van-danger-color: var(--color-danger);
-}
-
-// Vant ↔ shared tokens：仅保留语义与 _variables / :root 一一对应的项（无推算、无别名「近似」）
-:root {
   --van-success-color: var(--color-success);
   --van-warning-color: var(--color-warning);
-
-  // 文字层级
-  --van-text-color: var(--text-primary);
-  --van-text-color-2: var(--text-regular);
-  --van-text-color-3: var(--text-secondary);
-
-  // 背景层级
-  --van-background: var(--bg-page);
-  --van-background-2: var(--bg-white);
-  --van-background-3: var(--bg-card);
-
-  // 主分割线（与「按压浅底」等非边框语义不作强行对齐）
-  --van-border-color: var(--border-color);
-
-  // 间距：仅映射存在同名档位的 $spacing-*
+  --van-text-color: var(--color-text-primary);
+  --van-text-color-2: var(--color-text-regular);
+  --van-text-color-3: var(--color-text-secondary);
+  --van-background: var(--color-bg-page);
+  --van-background-2: var(--color-bg-surface);
+  --van-background-3: var(--color-bg-elevated);
+  --van-border-color: var(--color-border-default);
   --van-padding-base: #{$spacing-xs};
   --van-padding-xs: #{$spacing-sm};
   --van-padding-md: #{$spacing-md};
   --van-padding-lg: #{$spacing-lg};
   --van-padding-xl: #{$spacing-xl};
-
-  // 遮罩 / 占位（组件变量名与 token 语义一致）
-  --van-overlay-background: var(--bg-overlay);
-  --van-field-placeholder-text-color: var(--text-placeholder);
-
-  // Search：Vant 默认把 content 背景绑到 --van-background（已映射为页面底），与页面同色会「看不见」；
-  // 外槽白底还会在圆角处露出块面。改为浅底 + 透明外层，与页面区分且去掉伪「角标」感。
+  --van-overlay-background: var(--color-bg-overlay);
+  --van-field-placeholder-text-color: var(--color-text-placeholder);
   --van-search-background: transparent;
-  --van-search-content-background: var(--border-color-light);
-  --van-search-left-icon-color: var(--text-regular);
+  --van-search-content-background: var(--color-border-subtle);
+  --van-search-left-icon-color: var(--color-text-regular);
 }
 
-// 全局重置
 html,
 body,
 #app {
@@ -61,8 +35,8 @@ body,
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 14px;
-  color: var(--text-primary);
-  background: var(--bg-page);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }
@@ -74,8 +48,6 @@ body,
 a {
   color: var(--color-primary);
   text-decoration: none;
-
-  // border-color: $primary-color;
 }
 
 img {

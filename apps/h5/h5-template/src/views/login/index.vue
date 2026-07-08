@@ -175,7 +175,7 @@ async function onBridgeLogin() {
 <style lang="scss" scoped>
 .login-page {
   padding: 48px 16px;
-  color: var(--text-regular);
+  color: var(--color-text-regular);
 }
 
 .login-header {
@@ -185,13 +185,13 @@ async function onBridgeLogin() {
   h2 {
     margin: 0 0 8px;
     font-size: 24px;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
   }
 
   p {
     margin: 0;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 }
 
@@ -203,7 +203,7 @@ async function onBridgeLogin() {
   margin: 12px 0 0;
   font-size: 12px;
   line-height: 1.4;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   text-align: center;
 }
 

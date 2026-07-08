@@ -170,8 +170,8 @@ onMounted(async () => {
     padding: $spacing-md;
     font-size: 14px;
     font-weight: 600;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-color-light);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border-subtle);
   }
 }
 

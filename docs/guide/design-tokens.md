@@ -6,18 +6,15 @@ Design Token 是设计与代码之间的**共同语言**，将颜色、字号、
 
 Token 由 **`@vue3-monorepo/shared`** 与各应用样式入口共同组成，跨 PC / H5 对齐：
 
-| 层级                               | 源码位置                                                                                                                                                                                                                                         | 用途                                                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| **Sass 变量（`$*`）**              | `packages/shared/src/styles/tokens/_variables.scss`，经各端 `vite.config` → `css.preprocessorOptions.scss.additionalData` 注入 **`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`**                                                  | `$spacing-md`、`$header-height` 等，无需在每个 SFC 手动 `@use`                                                      |
-| **`:root` CSS 变量**               | `packages/shared/src/styles/tokens/_root.scss`（PC/H5 全局入口 `@use` 包路径 `.../tokens/root` 或经 `tokens/index.scss`）；**品牌**见 `_brands.scss`（`html[data-brand]`）                                                                       | `--color-primary`、`--bg-page` 等                                                                                   |
-| **暗黑覆盖**                       | **共享** `packages/shared/src/styles/tokens/dark.scss`（`html.dark`，通用业务 token）；**PC** 另在 `apps/pc/.../src/assets/styles/dark.scss` 中覆盖 **Element Plus `--el-*`**；**H5** 仅通过入口 `@use` `tokens/index.scss` 拉入共享 `dark.scss` | 暗色下 `--text-*`、`--bg-*`；PC 额外 `--el-*`                                                                       |
-| **TypeScript（CSS 变量名字符串）** | PC 应用 `src/assets/styles/tokens.ts`（`tokens.color.primary` → `'--color-primary'`）                                                                                                                                                            | `getCssVar` / `setCssVar`、图表等脚本读样式                                                                         |
-| **TypeScript（运行时主题 API）**   | `packages/shared/src/styles/tokens.ts`                                                                                                                                                                                                           | `applyBrand`、`getAppliedBrand`、`applyThemeMode`、`getAppliedThemeMode`、`brandPalettes`、`BrandId`、`ThemeModeId` |
-| **Composable（可选）**             | `packages/shared/src/hooks-core/useTheme.ts`、`hooks-h5/useThemeH5.ts`                                                                                                                                                                           | `createUseTheme`、`createUseThemeH5`：自定义 storage 时替代 Pinia 写 DOM                                            |
-
-可选：`apps/pc/pc-admin-template/src/assets/styles/variables.scss` 仅作本地对照清单，**默认不参与** `@use` 链；与 `_variables.scss` 重复时需以共享包与 `index.scss` 为准。
-
-**PC** 模板在逻辑与文档示例中常用**应用内** `tokens.ts`（属性名为 `--*` 字符串）；与 **H5**、hooks 对齐变量名时以 **`@vue3-monorepo/shared/styles/tokens`**（SCSS + TS）为准（两端同级，以共享包为真源）。
+| 层级                   | 源码位置                                                                                                                                                                                        | 用途                                                                     |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Sass 变量（`$*`）**  | `packages/shared/src/styles/tokens/_variables.scss`，经各端 `vite.config` → `css.preprocessorOptions.scss.additionalData` 注入 **`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`** | `$spacing-md`、`$layout-header-height` 等，无需在每个 SFC 手动 `@use`    |
+| **`:root` CSS 变量**   | `packages/shared/src/styles/tokens/_root.scss`；入口 `tokens/index.scss`；品牌见 `_brands.scss`（`html[data-brand]`，blue 用 :root 默认）                                                       | `--color-primary`、`--color-bg-page`、`--layout-sidebar-bg` 等           |
+| **暗黑覆盖**           | **共享** `tokens/_dark.scss`（`html.dark` 业务 token）；**PC** 另在 `dark-element.scss` 覆盖 **Element Plus `--el-*`**                                                                          | 暗色下 `--color-text-*`、`--color-bg-*`；PC 额外 `--el-*`                |
+| **Pattern 层**         | `packages/shared/src/styles/patterns/`（`.ds-panel`、`.ds-surface-card`）                                                                                                                       | 跨端复用页面块样式                                                       |
+| **品牌色单源**         | `packages/shared/src/styles/brands.config.ts`                                                                                                                                                   | `brandPalettes`、`_brands.scss` 与之对齐                                 |
+| **TypeScript**         | `packages/shared/src/styles/tokens.ts`                                                                                                                                                          | `cssVarTokens`、`getCssVar`/`setCssVar`、`applyBrand`、`applyThemeMode`  |
+| **Composable（可选）** | `packages/shared/src/hooks-core/useTheme.ts`、`hooks-h5/useThemeH5.ts`                                                                                                                          | `createUseTheme`、`createUseThemeH5`：自定义 storage 时替代 Pinia 写 DOM |
 
 ## 颜色 Token
 
@@ -33,20 +30,20 @@ Token 由 **`@vue3-monorepo/shared`** 与各应用样式入口共同组成，跨
 
 ### 文字颜色
 
-| Token 名称              | CSS 变量             | 亮色值    | 暗色值    |
-| ----------------------- | -------------------- | --------- | --------- |
-| `color.textPrimary`     | `--text-primary`     | `#303133` | `#e5eaf3` |
-| `color.textRegular`     | `--text-regular`     | `#606266` | `#cfd3dc` |
-| `color.textSecondary`   | `--text-secondary`   | `#909399` | `#a3a6ad` |
-| `color.textPlaceholder` | `--text-placeholder` | `#c0c4cc` | `#6c6e72` |
+| Token 名称              | CSS 变量                   | 亮色值    | 暗色值    |
+| ----------------------- | -------------------------- | --------- | --------- |
+| `color.textPrimary`     | `--color-text-primary`     | `#303133` | `#e5eaf3` |
+| `color.textRegular`     | `--color-text-regular`     | `#606266` | `#cfd3dc` |
+| `color.textSecondary`   | `--color-text-secondary`   | `#909399` | `#a3a6ad` |
+| `color.textPlaceholder` | `--color-text-placeholder` | `#c0c4cc` | `#6c6e72` |
 
 ### 背景颜色
 
-| Token 名称      | CSS 变量     | 亮色值    | 暗色值    |
-| --------------- | ------------ | --------- | --------- |
-| `color.bgPage`  | `--bg-page`  | `#f0f2f5` | `#0d0d0d` |
-| `color.bgWhite` | `--bg-white` | `#ffffff` | `#141414` |
-| `color.bgCard`  | `--bg-card`  | `#ffffff` | `#1d1e20` |
+| Token 名称         | CSS 变量              | 亮色值    | 暗色值    |
+| ------------------ | --------------------- | --------- | --------- |
+| `color.bgPage`     | `--color-bg-page`     | `#f0f2f5` | `#0d0d0d` |
+| `color.bgSurface`  | `--color-bg-surface`  | `#ffffff` | `#141414` |
+| `color.bgElevated` | `--color-bg-elevated` | `#ffffff` | `#1d1e20` |
 
 ## 字体 Token
 
@@ -128,9 +125,9 @@ tokens.breakpoint.xl // '1200px'
 <style lang="scss" scoped>
 .card {
   padding: $spacing-md; // SCSS 变量
-  border-radius: $border-radius-medium;
-  background-color: var(--bg-card); // CSS 变量（支持暗黑模式）
-  box-shadow: var(--box-shadow-base);
+  border-radius: $radius-medium;
+  background-color: var(--color-bg-elevated); // CSS 变量（支持暗黑模式）
+  box-shadow: var(--shadow-base);
 }
 </style>
 ```
@@ -138,13 +135,12 @@ tokens.breakpoint.xl // '1200px'
 ### 在 JavaScript 逻辑中
 
 ```ts
-import { tokens, getCssVar, setCssVar } from '@/assets/styles/tokens'
+import { cssVarTokens, getCssVar, setCssVar } from '@vue3-monorepo/shared/styles/tokens'
 
-// 读取当前主题色
-const primaryColor = getCssVar(tokens.color.primary)
+const primaryColor = getCssVar(cssVarTokens.color.primary)
 
 // 动态修改主题（运行时换肤）
-setCssVar(tokens.color.primary, '#1890ff')
+setCssVar(cssVarTokens.color.primary, '#1890ff')
 
 // 类型安全的 z-index
 const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
@@ -154,8 +150,8 @@ const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
 
 - **新增或调整品牌预设**：编辑 `packages/shared/src/styles/tokens/_brands.scss`（`html[data-brand='…']`）及共享 `tokens.ts` 中的 `BrandId` / `brandPalettes`，并在应用 UI（下拉项等）与 Pinia `persist` 字段中保持一致。
 - **修改全局默认主色（无 `data-brand` 时）**：编辑 `packages/shared/src/styles/tokens/_variables.scss` 与 `_root.scss` 中的 Sass/`--*` 映射。
-- **某应用独占的暗黑或 Element 变量**：在对应应用的 `dark.scss`（或 H5 入口样式）中的 `html.dark` 块追加覆盖。
-- **仅在某页面试验色值**：可用应用内 `tokens.ts` 的 `setCssVar(tokens.color.primary, '#1890ff')`，或在浏览器开发者工具中临时改 `--color-primary`。
+- **某应用独占的 Element 暗黑变量**：在 PC `dark-element.scss` 的 `html.dark` 块追加 `--el-*` 覆盖。
+- **仅在某页面试验色值**：可用应用内 `tokens.ts` 的 `setCssVar(cssVarTokens.color.primary, '#1890ff')`，或在浏览器开发者工具中临时改 `--color-primary`。
 
 ## 与 Figma 对接
 

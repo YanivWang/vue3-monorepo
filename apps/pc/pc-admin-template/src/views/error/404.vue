@@ -26,7 +26,7 @@ function goHome(): void {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: $bg-page;
+  background-color: var(--color-bg-page);
 }
 
 .error-content {
@@ -38,13 +38,13 @@ function goHome(): void {
   font-size: 120px;
   font-weight: 900;
   line-height: 1;
-  color: $primary-color;
+  color: var(--color-primary);
   opacity: 0.6;
 }
 
 .error-msg {
   margin-bottom: $spacing-xl;
   font-size: 18px;
-  color: $text-secondary;
+  color: var(--color-text-secondary);
 }
 </style>

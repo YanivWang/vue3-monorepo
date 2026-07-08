@@ -220,7 +220,7 @@ function handleBrandCommand(cmd: string): void {
     color: rgba(255, 255, 255, 0.92);
     cursor: pointer;
     background: rgba(0, 0, 0, 0.15);
-    border-radius: $border-radius-medium;
+    border-radius: $radius-medium;
     transition: $transition-fast;
 
     &:hover {
@@ -237,9 +237,9 @@ function handleBrandCommand(cmd: string): void {
 .login-card {
   width: 420px;
   padding: $spacing-xl * 1.5;
-  background: $bg-white;
-  border-radius: $border-radius-large * 2;
-  box-shadow: $box-shadow-dark;
+  background: var(--color-bg-surface);
+  border-radius: $radius-large * 2;
+  box-shadow: var(--shadow-medium);
 
   &__header {
     margin-bottom: $spacing-xl;
@@ -256,18 +256,18 @@ function handleBrandCommand(cmd: string): void {
     margin-bottom: $spacing-xs;
     font-size: 24px;
     font-weight: 700;
-    color: $text-primary;
+    color: var(--color-text-primary);
   }
 
   &__subtitle {
     font-size: 14px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__tip {
     margin-top: $spacing-md;
     font-size: 12px;
-    color: $text-placeholder;
+    color: var(--color-text-placeholder);
     text-align: center;
   }
 
@@ -277,13 +277,13 @@ function handleBrandCommand(cmd: string): void {
     text-align: center;
 
     a {
-      color: $primary-color;
+      color: var(--color-primary);
     }
   }
 
   &__sep {
     margin: 0 8px;
-    color: $text-placeholder;
+    color: var(--color-text-placeholder);
   }
 }
 

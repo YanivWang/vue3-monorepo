@@ -175,7 +175,7 @@ function goCreate() {
   }
 
   :deep(.van-field__control::placeholder) {
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     opacity: 1;
   }
 }
@@ -202,6 +202,6 @@ function goCreate() {
 
 .list-card__meta {
   font-size: 12px;
-  color: var(--text-placeholder);
+  color: var(--color-text-placeholder);
 }
 </style>

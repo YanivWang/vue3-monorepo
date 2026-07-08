@@ -1,0 +1,25 @@
+// ────────────────────────────────────────────────────────────
+//  暗黑模式 — 业务层 token 覆盖（不含 Element Plus / Vant）
+// ────────────────────────────────────────────────────────────
+
+html.dark {
+  --color-text-primary: #e5eaf3;
+  --color-text-regular: #cfd3dc;
+  --color-text-secondary: #a3a6ad;
+  --color-text-placeholder: #6c6e72;
+  --color-bg-page: #0d0d0d;
+  --color-bg-surface: #141414;
+  --color-bg-elevated: #1d1e20;
+  --color-bg-overlay: rgba(0, 0, 0, 0.7);
+  --color-border-default: #3c3c3c;
+  --color-border-subtle: #2c2c2c;
+  --layout-sidebar-bg: #141414;
+  --layout-sidebar-text: rgba(255, 255, 255, 0.6);
+  --layout-sidebar-text-active: #ffffff;
+  --layout-sidebar-item-hover-bg: rgba(255, 255, 255, 0.06);
+  --layout-sidebar-item-active-bg: var(--color-primary);
+  --layout-header-bg: #1d1e20;
+  --layout-header-border: #2c2c2c;
+  --shadow-base: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 6px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

@@ -1,27 +1,6 @@
-// Shared design tokens - 应用入口一次性引入（SCSS 变量 + :root + 品牌切换 + 暗黑）
+// Shared design tokens — 应用入口一次性引入
 
-// 把 ./variables 中定义的scss变量，再从这个index.scss中转发出去
-// 效果是：别的文件只要 @use 或 @import 这个 index.scss，也能用到 variables 里导出的变量
-
-// 只把变量转发给下游，不会在当前文件作用域引入变量
 @forward './variables';
-
-// 导入指定css模块并执行
-// Partial（部分文件） 就是那些名字以下划线开头的 SCSS 文件，比如 _root.scss、_variables.scss。
-// 下划线的意思是：“这只是被拆出来的一小段，不要单独编译成一个 .css 文件”，只供别的文件 import / use 进来用。
-// 你写 './root' 时，Sass 会去找 _root.scss 或 root.scss，这是 Sass 的解析规则；编辑器下划线只是帮你点进去看文件。
 @use './root';
-@use './brands' as myBrands; // 自定义命名空间
+@use './brands';
 @use './dark';
-
-// @use：把 root / brands / dark 真正编进样式里，形成完整的 token 输出。
-
-// 以下为演示 @use 默认命名空间（root）与自定义命名空间（myBrands）的示例，业务可删除
-.test-btn {
-  width: root.$border-width; // 默认命名空间
-  // color: $primary-color; //会报错 undefined
-  background-color: myBrands.$brands-color; // 自定义命名空间
-}
-
-// @use 代表我要用这个模块
-// @forward 代表我要把这个模块导出的所有变量都转发出去(我自己不用)

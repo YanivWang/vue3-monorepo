@@ -101,15 +101,13 @@ watch(activeTab, async () => {
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:color' as color;
-
 .layout-tabs {
   display: flex;
   align-items: center;
   height: 44px;
   padding: 0 $spacing-md;
-  background-color: $bg-white;
-  border-bottom: 1px solid $border-color-light;
+  background-color: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
@@ -135,16 +133,16 @@ watch(activeTab, async () => {
   height: 30px;
   padding: 0 10px;
   font-size: 13px;
-  color: $text-regular;
+  color: var(--color-text-regular);
   cursor: pointer;
   user-select: none;
-  background-color: #f0f2f5;
-  border-radius: 4px;
+  background-color: var(--color-bg-page);
+  border-radius: $radius-base;
   transition: all 0.18s ease;
 
   &:hover {
-    color: $primary-color;
-    background-color: rgba(64, 158, 255, 0.08);
+    color: var(--color-primary);
+    background-color: var(--color-primary-a7);
 
     .tab-item__close {
       opacity: 1;
@@ -153,12 +151,12 @@ watch(activeTab, async () => {
 
   &--active {
     color: #fff;
-    background-color: $primary-color;
-    box-shadow: 0 2px 8px rgba(64, 158, 255, 0.35);
+    background-color: var(--color-primary);
+    box-shadow: 0 2px 8px var(--color-primary-a20);
 
     &:hover {
       color: #fff;
-      background-color: color.adjust($primary-color, $lightness: -6%);
+      background-color: var(--color-primary-active);
     }
 
     .tab-item__close {
@@ -195,8 +193,8 @@ watch(activeTab, async () => {
     transition: all 0.15s ease;
 
     &:hover {
-      color: $danger-color;
-      background-color: rgba($danger-color, 0.12);
+      color: var(--color-danger);
+      background-color: color-mix(in sRGB, var(--color-danger) 12%, transparent);
     }
   }
 }

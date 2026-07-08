@@ -35,9 +35,9 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
       :collapse-transition="false"
       router
       class="sidebar-menu"
-      background-color="#001529"
-      text-color="#c0cad8"
-      active-text-color="#ffffff"
+      background-color="var(--layout-sidebar-bg)"
+      text-color="var(--layout-sidebar-text)"
+      active-text-color="var(--layout-sidebar-text-active)"
     >
       <template v-for="menu in menus" :key="menu.id">
         <SidebarItem :menu="menu" :is-collapsed="props.collapsed" />
@@ -56,7 +56,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background-color: #001529;
+  background-color: var(--layout-sidebar-bg);
   transition: width 0.3s ease;
 }
 
@@ -65,7 +65,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
   gap: $spacing-sm;
   align-items: center;
   justify-content: center;
-  height: $header-height;
+  height: $layout-header-height;
   padding: 0 $spacing-md;
   overflow: hidden;
   white-space: nowrap;
@@ -82,7 +82,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
     text-overflow: ellipsis;
     font-size: 16px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--layout-sidebar-text-active);
   }
 }
 
@@ -92,7 +92,7 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
   border-right: none;
 
   &:not(.el-menu--collapse) {
-    width: $sidebar-width;
+    width: $layout-sidebar-width;
   }
 }
 </style>

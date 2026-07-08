@@ -102,7 +102,7 @@ function manualReportResource() {
   margin: 12px 16px 8px;
   font-size: 12px;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   background: var(--van-background-2);
   border-radius: 8px;
 

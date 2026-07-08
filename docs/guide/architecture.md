@@ -152,7 +152,7 @@ onUnmounted(cancelAllRequests)
 
 ## 主题体系
 
-- **CSS 变量**：共享包 `_root.scss` / `_brands.scss`（`html[data-brand]`）；**H5** 全局入口 `@use` 共享 `tokens/index.scss`（内含共享 `dark.scss`）；**PC** 在 `assets/styles/index.scss` 中 `@use` 共享 `tokens/root`、`tokens/brands` 与**本应用** `dark.scss`（业务 token 与 **Element Plus `--el-*`** 一并覆盖，不经共享 `tokens/index.scss`）。
+- **CSS 变量**：共享包 `tokens/index.scss`（`_root` + `_brands` + `_dark`）；**PC** 另 `@use` 本应用 `dark-element.scss`（仅 Element Plus `--el-*`）；**H5** 经 `styles/index.scss` 引入共享 tokens + Vant 映射。
 - **深浅模式**：`useAppStore().setTheme('light' | 'dark' | 'system')`；内部 `applyThemeMode`；`system` 跟随 `prefers-color-scheme`，store 内 `themeTick` 用于 Vue 侧响应式刷新；枚举见 `@vue3-monorepo/shared/enums` 的 `ThemeMode`。
 - **品牌色**：`useAppStore().setBrand(BrandId)`；内部 `applyBrand`；`getAppliedBrand` / `getAppliedThemeMode` 等见 `@vue3-monorepo/shared/styles/tokens`。
 - **无 Pinia 场景**：`createUseTheme`（`@vue3-monorepo/shared/hooks-core`）、`createUseThemeH5`（`@vue3-monorepo/shared/hooks-h5`），详见 [主题与品牌切换](./theme.md)。

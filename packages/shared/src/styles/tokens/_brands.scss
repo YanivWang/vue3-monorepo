@@ -1,64 +1,56 @@
 // ────────────────────────────────────────────────────────────
-//  品牌色预设（PC + H5 共享）
-//  通过 html[data-brand="xxx"] 切换；默认沿用 :root 的初始蓝色
-//  变量命名与 _root.scss 保持一致；覆盖主色及与品牌一致的侧栏激活、边框与 info 等
+//  品牌色预设 — 与 brands.config.ts 同步
+//  blue 使用 :root 默认值，此处仅覆盖 green / red / orange / purple
 // ────────────────────────────────────────────────────────────
-
-// 运行时由 `applyBrand(id)` 设置 `document.documentElement` 的 `data-brand`，覆盖 :root 中对应变量
-
-html[data-brand='blue'] {
-  --color-primary: #409eff;
-  --color-primary-light: #79bbff;
-  --color-primary-dark: #337ecc;
-  --sidebar-item-active-bg: #409eff;
-  --border-color: #d0dae8;
-  --border-color-light: #e4eaf2;
-  --header-border: #eaeff6;
-  --color-info: #909399;
-}
 
 html[data-brand='green'] {
   --color-primary: #07c160;
-  --color-primary-light: #3ecf82;
-  --color-primary-dark: #06a54f;
-  --sidebar-item-active-bg: #07c160;
-  --border-color: #bfddd0;
-  --border-color-light: #e2f3eb;
-  --header-border: #d9eee4;
+  --color-primary-hover: #3ecf82;
+  --color-primary-active: #06a54f;
+  --color-primary-subtle: #e8f8ef;
+  --color-primary-border: #95d9b3;
+  --layout-sidebar-item-active-bg: #07c160;
+  --color-border-default: #bfddd0;
+  --color-border-subtle: #e2f3eb;
+  --layout-header-border: #d9eee4;
   --color-info: #7d8a82;
 }
 
 html[data-brand='red'] {
   --color-primary: #ee0a24;
-  --color-primary-light: #ff4d4f;
-  --color-primary-dark: #c20619;
-  --sidebar-item-active-bg: #ee0a24;
-  --border-color: #e5ced1;
-  --border-color-light: #f7eaea;
-  --header-border: #f0e0e3;
+  --color-primary-hover: #ff4d4f;
+  --color-primary-active: #c20619;
+  --color-primary-subtle: #fff1f0;
+  --color-primary-border: #ffa39e;
+  --layout-sidebar-item-active-bg: #ee0a24;
+  --color-border-default: #e5ced1;
+  --color-border-subtle: #f7eaea;
+  --layout-header-border: #f0e0e3;
   --color-info: #909399;
 }
 
 html[data-brand='orange'] {
   --color-primary: #ff8c00;
-  --color-primary-light: #ffa940;
-  --color-primary-dark: #d77300;
-  --sidebar-item-active-bg: #ff8c00;
-  --border-color: #e5d9c9;
-  --border-color-light: #f5efe6;
-  --header-border: #ede4d6;
+  --color-primary-hover: #ffa940;
+  --color-primary-active: #d77300;
+  --color-primary-subtle: #fff7e6;
+  --color-primary-border: #ffd591;
+  --layout-sidebar-item-active-bg: #ff8c00;
+  --color-border-default: #e5d9c9;
+  --color-border-subtle: #f5efe6;
+  --layout-header-border: #ede4d6;
   --color-info: #968f85;
 }
 
 html[data-brand='purple'] {
   --color-primary: #722ed1;
-  --color-primary-light: #9254de;
-  --color-primary-dark: #531dab;
-  --sidebar-item-active-bg: #722ed1;
-  --border-color: #d6cfe6;
-  --border-color-light: #eae6f5;
-  --header-border: #e3ddf0;
+  --color-primary-hover: #9254de;
+  --color-primary-active: #531dab;
+  --color-primary-subtle: #f9f0ff;
+  --color-primary-border: #d3adf7;
+  --layout-sidebar-item-active-bg: #722ed1;
+  --color-border-default: #d6cfe6;
+  --color-border-subtle: #eae6f5;
+  --layout-header-border: #e3ddf0;
   --color-info: #8a8699;
 }
-
-$brands-color: #001529;
