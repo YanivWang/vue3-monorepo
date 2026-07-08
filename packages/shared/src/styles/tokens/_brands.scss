@@ -1,7 +1,7 @@
-// ────────────────────────────────────────────────────────────
-//  品牌色预设 — 与 brands.config.ts 同步
-//  blue 使用 :root 默认值，此处仅覆盖 green / red / orange / purple
-// ────────────────────────────────────────────────────────────
+// AUTO-GENERATED — 请勿手改。编辑 packages/shared/src/styles/theme-palette.json 后运行 pnpm generate:theme
+
+// 品牌色预设 — 与 brands.config.ts 同步
+// blue 使用 :root 默认值，此处仅覆盖其它品牌
 
 html[data-brand='green'] {
   --color-primary: #07c160;

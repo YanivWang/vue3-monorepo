@@ -186,7 +186,7 @@ function handleBrandCommand(cmd: string): void {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-active) 100%);
 
   &__top-actions {
     position: absolute;

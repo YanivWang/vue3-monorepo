@@ -23,6 +23,7 @@ import {
   ElTag
 } from 'element-plus'
 import { useMessage } from '@/composables/useMessage'
+import { cssVarTokens, getCssVar } from '@vue3-monorepo/shared/styles/tokens'
 
 const { success } = useMessage()
 const formRef = ref<FormInstance>()
@@ -124,9 +125,9 @@ function getPasswordStrength(pwd: string): { level: number; label: string; color
   if (/[A-Z]/.test(pwd)) score++
   if (/[0-9]/.test(pwd)) score++
   if (/[^A-Za-z0-9]/.test(pwd)) score++
-  if (score <= 2) return { level: 1, label: '弱', color: '#f56c6c' }
-  if (score <= 3) return { level: 2, label: '中', color: '#e6a23c' }
-  return { level: 3, label: '强', color: '#67c23a' }
+  if (score <= 2) return { level: 1, label: '弱', color: getCssVar(cssVarTokens.color.danger) }
+  if (score <= 3) return { level: 2, label: '中', color: getCssVar(cssVarTokens.color.warning) }
+  return { level: 3, label: '强', color: getCssVar(cssVarTokens.color.success) }
 }
 </script>
 

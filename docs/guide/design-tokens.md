@@ -6,15 +6,17 @@ Design Token 是设计与代码之间的**共同语言**，将颜色、字号、
 
 Token 由 **`@vue3-monorepo/shared`** 与各应用样式入口共同组成，跨 PC / H5 对齐：
 
-| 层级                   | 源码位置                                                                                                                                                                                        | 用途                                                                     |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Sass 变量（`$*`）**  | `packages/shared/src/styles/tokens/_variables.scss`，经各端 `vite.config` → `css.preprocessorOptions.scss.additionalData` 注入 **`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`** | `$spacing-md`、`$layout-header-height` 等，无需在每个 SFC 手动 `@use`    |
-| **`:root` CSS 变量**   | `packages/shared/src/styles/tokens/_root.scss`；入口 `tokens/index.scss`；品牌见 `_brands.scss`（`html[data-brand]`，blue 用 :root 默认）                                                       | `--color-primary`、`--color-bg-page`、`--layout-sidebar-bg` 等           |
-| **暗黑覆盖**           | **共享** `tokens/_dark.scss`（`html.dark` 业务 token）；**PC** 另在 `dark-element.scss` 覆盖 **Element Plus `--el-*`**                                                                          | 暗色下 `--color-text-*`、`--color-bg-*`；PC 额外 `--el-*`                |
-| **Pattern 层**         | `packages/shared/src/styles/patterns/`（`.ds-panel`、`.ds-surface-card`）                                                                                                                       | 跨端复用页面块样式                                                       |
-| **品牌色单源**         | `packages/shared/src/styles/brands.config.ts`                                                                                                                                                   | `brandPalettes`、`_brands.scss` 与之对齐                                 |
-| **TypeScript**         | `packages/shared/src/styles/tokens.ts`                                                                                                                                                          | `cssVarTokens`、`getCssVar`/`setCssVar`、`applyBrand`、`applyThemeMode`  |
-| **Composable（可选）** | `packages/shared/src/hooks-core/useTheme.ts`、`hooks-h5/useThemeH5.ts`                                                                                                                          | `createUseTheme`、`createUseThemeH5`：自定义 storage 时替代 Pinia 写 DOM |
+| 层级                   | 源码位置                                                                                                                                                                                                | 用途                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **色值单源（JSON）**   | `packages/shared/src/styles/theme-palette.json`                                                                                                                                                         | 品牌色、语义色、暗色覆盖的**唯一编辑入口**                                     |
+| **生成产物**           | `pnpm generate:theme` → `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts`                                                                                       | 自动生成，勿手改                                                               |
+| **Sass 变量（`$*`）**  | `packages/shared/src/styles/tokens/_variables.scss`（生成），经各端 `vite.config` → `css.preprocessorOptions.scss.additionalData` 注入 **`@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`** | `$spacing-md`、`$layout-header-height` 等，无需在每个 SFC 手动 `@use`          |
+| **`:root` CSS 变量**   | `packages/shared/src/styles/tokens/_root.scss`（手写派生）；入口 `tokens/index.scss`；品牌见 `_brands.scss`（生成）                                                                                     | `--color-primary`、`--color-bg-page`、`--layout-sidebar-bg` 等                 |
+| **暗黑覆盖**           | **共享** `tokens/_dark.scss`（生成）；**Element Plus** `tokens/_dark-element.scss`（生成，引用 `--color-*`）                                                                                            | 暗色下 `--color-text-*`、`--color-bg-*`、`--color-fill-*`；PC Element `--el-*` |
+| **Pattern 层**         | `packages/shared/src/styles/patterns/`（`.ds-panel`、`.ds-surface-card`）                                                                                                                               | 跨端复用页面块样式                                                             |
+| **品牌色 TS**          | `packages/shared/src/styles/brands.config.ts`（生成）                                                                                                                                                   | `brandPalettes`、UI 下拉与 `_brands.scss` 对齐                                 |
+| **TypeScript**         | `packages/shared/src/styles/tokens.ts`                                                                                                                                                                  | `cssVarTokens`、`getCssVar`/`setCssVar`、`applyBrand`、`applyThemeMode`        |
+| **Composable（可选）** | `packages/shared/src/hooks-core/useTheme.ts`、`hooks-h5/useThemeH5.ts`                                                                                                                                  | `createUseTheme`、`createUseThemeH5`：自定义 storage 时替代 Pinia 写 DOM       |
 
 ## 颜色 Token
 
@@ -148,21 +150,24 @@ const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
 
 ## 主题扩展
 
-- **新增或调整品牌预设**：编辑 `packages/shared/src/styles/tokens/_brands.scss`（`html[data-brand='…']`）及共享 `tokens.ts` 中的 `BrandId` / `brandPalettes`，并在应用 UI（下拉项等）与 Pinia `persist` 字段中保持一致。
-- **修改全局默认主色（无 `data-brand` 时）**：编辑 `packages/shared/src/styles/tokens/_variables.scss` 与 `_root.scss` 中的 Sass/`--*` 映射。
-- **某应用独占的 Element 暗黑变量**：在 PC `dark-element.scss` 的 `html.dark` 块追加 `--el-*` 覆盖。
-- **仅在某页面试验色值**：可用应用内 `tokens.ts` 的 `setCssVar(cssVarTokens.color.primary, '#1890ff')`，或在浏览器开发者工具中临时改 `--color-primary`。
+**修改色值**：编辑 `packages/shared/src/styles/theme-palette.json`，然后运行：
+
+```bash
+pnpm generate:theme
+```
+
+`admin:build` / `h5:build` 会自动先执行生成。不要手改 `_variables.scss`、`_brands.scss`、`_dark.scss`、`brands.config.ts`。
+
+- **新增品牌预设**：在 `theme-palette.json` 的 `brands` 中追加条目，重新生成；`_root.scss` 中如有品牌相关派生 token 需手写维护。
+- **修改默认主色（blue）**：改 JSON 中 `brands.blue` 与 `light` 区块，重新生成。
+- **某应用独占的 Element 暗黑变量**：在 `theme-palette.json` 的 `dark.element` 中维护，重新生成后写入 `tokens/_dark-element.scss`。
+- **Stylelint**：`apps/**/src` 与共享组件启用 `color-no-hex`；`tokens/`、`patterns/` 豁免。
 
 ## 与 Figma 对接
 
 推荐工作流：
 
 1. 设计师在 Figma 中使用 **Figma Tokens** 插件管理 Token
-2. 导出为 `tokens.json`
-3. 使用 **Style Dictionary** 将 `tokens.json` 转换为 `variables.scss` 和 `tokens.ts`
-4. 提交生成文件，CI 验证 Token 是否同步
-
-```bash
-# 将来集成 Style Dictionary 后的生成命令
-pnpm run gen:tokens
-```
+2. 导出为 JSON，合并进 `theme-palette.json`（或替换该文件结构）
+3. 运行 `pnpm generate:theme` 生成 SCSS / TS
+4. 提交 JSON + 生成文件，CI 验证是否同步

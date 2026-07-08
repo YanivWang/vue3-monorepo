@@ -87,20 +87,20 @@ import {
 
 亮色默认值来自 **`tokens/_variables.scss`** → **`_root.scss`**；品牌覆盖在 **`_brands.scss`**（`html[data-brand]`，blue 用 `:root` 默认）；业务暗黑在 **`_dark.scss`**（`html.dark`）。
 
-| 端     | 全局样式入口                   | 引入方式                                                                                                         |
-| ------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| **PC** | `src/assets/styles/index.scss` | `@use` 共享 `tokens/index.scss` + `patterns/index.scss` + 本应用 `dark-element.scss`（仅 Element Plus `--el-*`） |
-| **H5** | `src/styles/index.scss`        | `@use` 共享 `tokens/index.scss` + `patterns/index.scss`；Vant 变量映射到同一套 `--color-*`                       |
+| 端     | 全局样式入口                   | 引入方式                                                                                   |
+| ------ | ------------------------------ | ------------------------------------------------------------------------------------------ |
+| **PC** | `src/assets/styles/index.scss` | `@use` 共享 `tokens/index.scss`（含 `_dark-element.scss`）+ `patterns/index.scss`          |
+| **H5** | `src/styles/index.scss`        | `@use` 共享 `tokens/index.scss` + `patterns/index.scss`；Vant 变量映射到同一套 `--color-*` |
 
 各端 `vite.config` 的 **`additionalData`** 注入 `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`，SFC 内可直接使用 `$spacing-md`、`$layout-sidebar-width` 等。
 
-品牌色单源：**`packages/shared/src/styles/brands.config.ts`**（`brandPalettes` 与 `_brands.scss` 对齐）。
+品牌色单源：**`packages/shared/src/styles/theme-palette.json`**。运行 `pnpm generate:theme` 生成 `brands.config.ts` 与 `_brands.scss`。
 
 ```scss
 /* shared：_root.scss → :root { --color-bg-page: … } */
 /* shared：_brands.scss → html[data-brand='green'] { --color-primary: … } */
 /* shared：_dark.scss → html.dark { --color-bg-page: … } */
-/* PC：dark-element.scss → html.dark { --el-*: … } */
+/* shared：_dark-element.scss → html.dark { --el-*: var(--color-*) … } */
 ```
 
 在组件中使用 CSS 变量：
@@ -123,7 +123,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/styles/index.scss'
 ```
 
-结合 `html.dark` 类与 `dark-element.scss` 中的 `--el-*` 覆盖，组件与业务变量一并进入暗黑外观。
+结合 `html.dark` 类与共享 `_dark-element.scss` 中的 `--el-*` 覆盖，组件与业务变量一并进入暗黑外观。
 
 ## 完整变量列表（节选）
 

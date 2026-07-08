@@ -18,30 +18,30 @@ interface StatCard {
   value: number
   unit: string
   icon: Component
-  color: string
+  tone: 'primary' | 'success' | 'warning' | 'info'
   trend: number
 }
 
 const statCards = ref<StatCard[]>([
-  { title: '今日访问', value: 1024, unit: '次', icon: markRaw(DataLine), color: '#409eff', trend: 12.5 },
-  { title: '用户总数', value: 8848, unit: '人', icon: markRaw(User), color: '#67c23a', trend: 3.2 },
-  { title: '待处理工单', value: 36, unit: '条', icon: markRaw(Tickets), color: '#e6a23c', trend: -5.1 },
-  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), color: '#909399', trend: 0 }
+  { title: '今日访问', value: 1024, unit: '次', icon: markRaw(DataLine), tone: 'primary', trend: 12.5 },
+  { title: '用户总数', value: 8848, unit: '人', icon: markRaw(User), tone: 'success', trend: 3.2 },
+  { title: '待处理工单', value: 36, unit: '条', icon: markRaw(Tickets), tone: 'warning', trend: -5.1 },
+  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), tone: 'info', trend: 0 }
 ])
 
 const techList = [
-  { name: 'Vue 3.4', color: '#41b88320' },
-  { name: 'Vite 5', color: '#646cff20' },
-  { name: 'TypeScript 5', color: '#3178c620' },
-  { name: 'Pinia', color: '#ffd85920' },
-  { name: 'Vue Router 4', color: '#41b88320' },
-  { name: 'Element Plus', color: '#409eff20' },
-  { name: 'Axios', color: '#5a29e420' },
-  { name: '@VueUse', color: '#41b88320' },
-  { name: 'Sass', color: '#cc669920' },
-  { name: 'dayjs', color: '#ff5f5720' },
-  { name: 'lodash-es', color: '#3492ff20' },
-  { name: 'js-cookie', color: '#f0db4f20' }
+  'Vue 3.4',
+  'Vite 5',
+  'TypeScript 5',
+  'Pinia',
+  'Vue Router 4',
+  'Element Plus',
+  'Axios',
+  '@VueUse',
+  'Sass',
+  'dayjs',
+  'lodash-es',
+  'js-cookie'
 ]
 </script>
 
@@ -81,7 +81,7 @@ const techList = [
                 <span class="trend-label">较昨日</span>
               </div>
             </div>
-            <el-icon class="stat-card__icon" :style="{ color: card.color, backgroundColor: `${card.color}20` }">
+            <el-icon class="stat-card__icon" :class="`stat-card__icon--${card.tone}`">
               <component :is="card.icon" />
             </el-icon>
           </div>
@@ -99,8 +99,8 @@ const techList = [
         <span class="tech-card__title">项目技术栈</span>
       </template>
       <div class="tech-list">
-        <el-tag v-for="tech in techList" :key="tech.name" effect="light" class="tech-tag">
-          {{ tech.name }}
+        <el-tag v-for="tech in techList" :key="tech" effect="light" class="tech-tag">
+          {{ tech }}
         </el-tag>
       </div>
     </el-card>
@@ -115,8 +115,8 @@ const techList = [
 }
 
 .welcome-card {
-  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-  border: 1px solid #667eea30;
+  background: linear-gradient(135deg, var(--color-primary-a15) 0%, var(--color-primary-a7) 100%);
+  border: 1px solid var(--color-primary-border);
 
   &__inner {
     display: flex;
@@ -214,6 +214,26 @@ const techList = [
     height: 52px;
     font-size: 24px;
     border-radius: 12px;
+
+    &--primary {
+      color: var(--color-primary);
+      background-color: var(--color-primary-a15);
+    }
+
+    &--success {
+      color: var(--color-success);
+      background-color: color-mix(in sRGB, var(--color-success) 15%, transparent);
+    }
+
+    &--warning {
+      color: var(--color-warning);
+      background-color: color-mix(in sRGB, var(--color-warning) 15%, transparent);
+    }
+
+    &--info {
+      color: var(--color-info);
+      background-color: color-mix(in sRGB, var(--color-info) 15%, transparent);
+    }
   }
 }
 

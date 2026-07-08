@@ -1,6 +1,8 @@
 /**
+ * AUTO-GENERATED — 请勿手改。编辑 packages/shared/src/styles/theme-palette.json 后运行 pnpm generate:theme
  * 品牌色单源 — 与 tokens/_brands.scss 保持同步（blue 使用 :root 默认值，不在 _brands 中重复）
  */
+
 export type BrandId = 'blue' | 'green' | 'red' | 'orange' | 'purple'
 
 export interface BrandPaletteConfig {

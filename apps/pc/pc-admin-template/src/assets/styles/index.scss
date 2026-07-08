@@ -1,7 +1,6 @@
 @use './reset';
 @use '@vue3-monorepo/shared/styles/tokens/index.scss' as shared-tokens;
 @use '@vue3-monorepo/shared/styles/patterns/index.scss' as shared-patterns;
-@use './dark-element';
 
 :root {
   --el-color-primary: var(--color-primary);

@@ -150,12 +150,12 @@ watch(activeTab, async () => {
   }
 
   &--active {
-    color: #fff;
+    color: var(--layout-sidebar-text-active);
     background-color: var(--color-primary);
     box-shadow: 0 2px 8px var(--color-primary-a20);
 
     &:hover {
-      color: #fff;
+      color: var(--layout-sidebar-text-active);
       background-color: var(--color-primary-active);
     }
 
@@ -164,7 +164,7 @@ watch(activeTab, async () => {
       opacity: 1;
 
       &:hover {
-        color: #fff;
+        color: var(--layout-sidebar-text-active);
         background-color: rgba(255, 255, 255, 0.2);
       }
     }

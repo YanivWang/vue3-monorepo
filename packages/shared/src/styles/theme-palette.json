@@ -1,0 +1,213 @@
+{
+  "defaultBrand": "blue",
+  "brands": {
+    "blue": {
+      "primary": "#409eff",
+      "primaryHover": "#79bbff",
+      "primaryActive": "#337ecc",
+      "primarySubtle": "#ecf5ff",
+      "primaryBorder": "#b3d8ff",
+      "sidebarItemActiveBg": "#409eff",
+      "borderDefault": "#dcdfe6",
+      "borderSubtle": "#e4e7ed",
+      "headerBorder": "#e8eaec",
+      "info": "#909399"
+    },
+    "green": {
+      "primary": "#07c160",
+      "primaryHover": "#3ecf82",
+      "primaryActive": "#06a54f",
+      "primarySubtle": "#e8f8ef",
+      "primaryBorder": "#95d9b3",
+      "sidebarItemActiveBg": "#07c160",
+      "borderDefault": "#bfddd0",
+      "borderSubtle": "#e2f3eb",
+      "headerBorder": "#d9eee4",
+      "info": "#7d8a82"
+    },
+    "red": {
+      "primary": "#ee0a24",
+      "primaryHover": "#ff4d4f",
+      "primaryActive": "#c20619",
+      "primarySubtle": "#fff1f0",
+      "primaryBorder": "#ffa39e",
+      "sidebarItemActiveBg": "#ee0a24",
+      "borderDefault": "#e5ced1",
+      "borderSubtle": "#f7eaea",
+      "headerBorder": "#f0e0e3",
+      "info": "#909399"
+    },
+    "orange": {
+      "primary": "#ff8c00",
+      "primaryHover": "#ffa940",
+      "primaryActive": "#d77300",
+      "primarySubtle": "#fff7e6",
+      "primaryBorder": "#ffd591",
+      "sidebarItemActiveBg": "#ff8c00",
+      "borderDefault": "#e5d9c9",
+      "borderSubtle": "#f5efe6",
+      "headerBorder": "#ede4d6",
+      "info": "#968f85"
+    },
+    "purple": {
+      "primary": "#722ed1",
+      "primaryHover": "#9254de",
+      "primaryActive": "#531dab",
+      "primarySubtle": "#f9f0ff",
+      "primaryBorder": "#d3adf7",
+      "sidebarItemActiveBg": "#722ed1",
+      "borderDefault": "#d6cfe6",
+      "borderSubtle": "#eae6f5",
+      "headerBorder": "#e3ddf0",
+      "info": "#8a8699"
+    }
+  },
+  "light": {
+    "semantic": {
+      "success": "#67c23a",
+      "warning": "#e6a23c",
+      "danger": "#f56c6c"
+    },
+    "text": {
+      "primary": "#303133",
+      "regular": "#606266",
+      "secondary": "#909399",
+      "placeholder": "#c0c4cc"
+    },
+    "background": {
+      "page": "#f0f2f5",
+      "surface": "#ffffff",
+      "elevated": "#ffffff",
+      "overlay": "rgba(0, 0, 0, 0.5)"
+    },
+    "border": {
+      "default": "#dcdfe6",
+      "subtle": "#e4e7ed"
+    },
+    "layout": {
+      "sidebarBg": "#001529",
+      "sidebarText": "rgba(255, 255, 255, 0.65)",
+      "sidebarTextActive": "#ffffff",
+      "sidebarItemHoverBg": "rgba(255, 255, 255, 0.08)",
+      "headerBg": "#ffffff",
+      "headerHeight": "60px",
+      "sidebarWidth": "220px",
+      "sidebarWidthCollapsed": "64px",
+      "footerHeight": "50px"
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px"
+    },
+    "radius": {
+      "base": "4px",
+      "medium": "6px",
+      "large": "8px"
+    },
+    "shadow": {
+      "base": "0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04)",
+      "medium": "0 4px 12px rgba(0, 0, 0, 0.1)"
+    },
+    "zIndex": {
+      "base": 1,
+      "dropdown": 1000,
+      "sticky": 1020,
+      "fixed": 1030,
+      "modal": 1040,
+      "popover": 1050,
+      "tooltip": 1070
+    },
+    "typography": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      "fontSize": {
+        "xs": "12px",
+        "sm": "13px",
+        "base": "14px",
+        "md": "16px",
+        "lg": "18px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+        "4xl": "36px"
+      },
+      "fontWeight": {
+        "normal": "400",
+        "medium": "500",
+        "semibold": "600",
+        "bold": "700"
+      },
+      "lineHeight": {
+        "tight": "1.25",
+        "normal": "1.5",
+        "relaxed": "1.75"
+      }
+    }
+  },
+  "dark": {
+    "text": {
+      "primary": "#e5eaf3",
+      "regular": "#cfd3dc",
+      "secondary": "#a3a6ad",
+      "placeholder": "#6c6e72"
+    },
+    "background": {
+      "page": "#0d0d0d",
+      "surface": "#141414",
+      "elevated": "#1d1e20",
+      "overlay": "rgba(0, 0, 0, 0.7)"
+    },
+    "border": {
+      "default": "#3c3c3c",
+      "subtle": "#2c2c2c"
+    },
+    "layout": {
+      "sidebarBg": "#141414",
+      "sidebarText": "rgba(255, 255, 255, 0.6)",
+      "sidebarTextActive": "#ffffff",
+      "sidebarItemHoverBg": "rgba(255, 255, 255, 0.06)",
+      "headerBg": "#1d1e20",
+      "headerBorder": "#2c2c2c"
+    },
+    "shadow": {
+      "base": "0 2px 4px rgba(0, 0, 0, 0.4), 0 0 6px rgba(0, 0, 0, 0.2)",
+      "medium": "0 4px 12px rgba(0, 0, 0, 0.4)"
+    },
+    "fill": {
+      "default": "#1c1c1c",
+      "light": "#262626",
+      "lighter": "#2c2c2c",
+      "extraLight": "#1f1f1f",
+      "dark": "#282828",
+      "darker": "#323232"
+    },
+    "element": {
+      "textDisabled": "#555555",
+      "borderLighter": "#262626",
+      "borderExtraLight": "#212121",
+      "borderDark": "#4c4c4c",
+      "borderDarker": "#5c5c5c",
+      "boxShadow": "0 2px 4px rgba(0, 0, 0, 0.6), 0 0 6px rgba(0, 0, 0, 0.3)",
+      "boxShadowLight": "0 0 12px rgba(0, 0, 0, 0.5)",
+      "boxShadowLighter": "0 0 6px rgba(0, 0, 0, 0.4)",
+      "boxShadowDark": "0 16px 48px rgba(0, 0, 0, 0.8)",
+      "overlayColor": "rgba(0, 0, 0, 0.8)",
+      "overlayColorLight": "rgba(0, 0, 0, 0.7)",
+      "overlayColorLighter": "rgba(0, 0, 0, 0.5)"
+    }
+  },
+  "brandCssVarMap": {
+    "primary": "--color-primary",
+    "primaryHover": "--color-primary-hover",
+    "primaryActive": "--color-primary-active",
+    "primarySubtle": "--color-primary-subtle",
+    "primaryBorder": "--color-primary-border",
+    "sidebarItemActiveBg": "--layout-sidebar-item-active-bg",
+    "borderDefault": "--color-border-default",
+    "borderSubtle": "--color-border-subtle",
+    "headerBorder": "--layout-header-border",
+    "info": "--color-info"
+  }
+}

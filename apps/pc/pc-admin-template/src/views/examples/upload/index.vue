@@ -251,14 +251,14 @@ const statusMap = {
 
   &:hover,
   &--active {
-    background-color: var(--el-color-primary-light-9, #ecf5ff);
-    border-color: var(--el-color-primary, #409eff);
+    background-color: var(--color-primary-subtle);
+    border-color: var(--color-primary);
   }
 
   &__icon {
     margin-bottom: 12px;
     font-size: 48px;
-    color: var(--el-color-primary, #409eff);
+    color: var(--color-primary);
   }
 
   &__text {
@@ -267,7 +267,7 @@ const statusMap = {
 
     em {
       font-style: normal;
-      color: var(--el-color-primary, #409eff);
+      color: var(--color-primary);
     }
   }
 
@@ -367,7 +367,7 @@ const statusMap = {
   &__error {
     margin-top: 4px;
     font-size: 12px;
-    color: var(--el-color-danger, #f56c6c);
+    color: var(--color-danger);
   }
 
   &__actions {

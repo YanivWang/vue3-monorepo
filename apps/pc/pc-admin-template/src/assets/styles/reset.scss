@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────
-//  CSS Reset & 基础样式重置（不依赖 SCSS 变量）
+//  CSS Reset & 基础样式重置
 // ────────────────────────────────────────────────────────────
 
 *,
@@ -17,19 +17,17 @@ html {
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #303133;
-  background-color: #f0f2f5;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  color: #409eff;
+  color: var(--color-primary);
   text-decoration: none;
 
   &:hover {

@@ -1,3 +1,5 @@
+// AUTO-GENERATED — 请勿手改。编辑 packages/shared/src/styles/theme-palette.json 后运行 pnpm generate:theme
+
 // Design Token — Sass 构建期默认值（不直接输出 CSS）
 
 // 主色（默认品牌 blue）
@@ -76,3 +78,24 @@ $z-index-fixed: 1030;
 $z-index-modal: 1040;
 $z-index-popover: 1050;
 $z-index-tooltip: 1070;
+
+// 排版
+$font-family-base:
+  -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+  Helvetica, Arial, sans-serif;
+$font-size-xs: 12px;
+$font-size-sm: 13px;
+$font-size-base: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+$font-size-4xl: 36px;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;

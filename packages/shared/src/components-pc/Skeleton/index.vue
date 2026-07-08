@@ -53,8 +53,8 @@ withDefaults(defineProps<Props>(), {
 <style lang="scss" scoped>
 @use '@vue3-monorepo/shared/styles/tokens/variables' as *;
 
-$skeleton-color: var(--el-fill-color-light, #f2f3f5);
-$skeleton-shine: var(--el-fill-color-lighter, #e8eaed);
+$skeleton-color: var(--el-fill-color-light, var(--color-fill-light, var(--color-bg-page)));
+$skeleton-shine: var(--el-fill-color-lighter, var(--color-fill-lighter, var(--color-border-subtle)));
 
 .skeleton {
   width: 100%;

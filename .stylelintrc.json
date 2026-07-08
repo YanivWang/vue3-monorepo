@@ -45,5 +45,33 @@
     "**/*.js",
     "**/*.ts",
     "**/.vitepress/dist/**"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "apps/**/src/**/*.{vue,scss}",
+        "packages/shared/src/components-pc/**/*.{vue,scss}",
+        "packages/shared/src/components-h5/**/*.{vue,scss}"
+      ],
+      "rules": {
+        "color-no-hex": [
+          true,
+          {
+            "message": "Use var(--color-*) design tokens instead of hex colors in app UI code."
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "packages/shared/src/styles/tokens/**",
+        "packages/shared/src/styles/patterns/**"
+      ],
+      "rules": {
+        "color-no-hex": null,
+        "value-keyword-case": null,
+        "prettier/prettier": null
+      }
+    }
   ]
 }

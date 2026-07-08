@@ -1,6 +1,6 @@
-// ────────────────────────────────────────────────────────────
-//  暗黑模式 — 业务层 token 覆盖（不含 Element Plus / Vant）
-// ────────────────────────────────────────────────────────────
+// AUTO-GENERATED — 请勿手改。编辑 packages/shared/src/styles/theme-palette.json 后运行 pnpm generate:theme
+
+// 暗黑模式 — 业务层 token 覆盖（不含 Element Plus / Vant）
 
 html.dark {
   --color-text-primary: #e5eaf3;
@@ -20,6 +20,12 @@ html.dark {
   --layout-sidebar-item-active-bg: var(--color-primary);
   --layout-header-bg: #1d1e20;
   --layout-header-border: #2c2c2c;
+  --color-fill-default: #1c1c1c;
+  --color-fill-light: #262626;
+  --color-fill-lighter: #2c2c2c;
+  --color-fill-extra-light: #1f1f1f;
+  --color-fill-dark: #282828;
+  --color-fill-darker: #323232;
   --shadow-base: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 6px rgba(0, 0, 0, 0.2);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
 }

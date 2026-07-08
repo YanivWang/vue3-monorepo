@@ -60,31 +60,51 @@ export const cssVarTokens = {
   shadow: {
     base: '--shadow-base',
     medium: '--shadow-medium'
+  },
+  typography: {
+    fontFamily: '--font-family-base',
+    fontSizeXs: '--font-size-xs',
+    fontSizeSm: '--font-size-sm',
+    fontSizeBase: '--font-size-base',
+    fontSizeMd: '--font-size-md',
+    fontSizeLg: '--font-size-lg',
+    fontSizeXl: '--font-size-xl',
+    fontSize2xl: '--font-size-2xl',
+    fontSize3xl: '--font-size-3xl',
+    fontSize4xl: '--font-size-4xl',
+    fontWeightNormal: '--font-weight-normal',
+    fontWeightMedium: '--font-weight-medium',
+    fontWeightSemibold: '--font-weight-semibold',
+    fontWeightBold: '--font-weight-bold',
+    lineHeightTight: '--line-height-tight',
+    lineHeightNormal: '--line-height-normal',
+    lineHeightRelaxed: '--line-height-relaxed'
   }
 } as const
 
 export const typographyTokens = {
+  fontFamily: 'var(--font-family-base)',
   fontSize: {
-    xs: '12px',
-    sm: '13px',
-    base: '14px',
-    md: '16px',
-    lg: '18px',
-    xl: '20px',
-    '2xl': '24px',
-    '3xl': '30px',
-    '4xl': '36px'
+    xs: 'var(--font-size-xs)',
+    sm: 'var(--font-size-sm)',
+    base: 'var(--font-size-base)',
+    md: 'var(--font-size-md)',
+    lg: 'var(--font-size-lg)',
+    xl: 'var(--font-size-xl)',
+    '2xl': 'var(--font-size-2xl)',
+    '3xl': 'var(--font-size-3xl)',
+    '4xl': 'var(--font-size-4xl)'
   },
   fontWeight: {
-    normal: '400',
-    medium: '500',
-    semibold: '600',
-    bold: '700'
+    normal: 'var(--font-weight-normal)',
+    medium: 'var(--font-weight-medium)',
+    semibold: 'var(--font-weight-semibold)',
+    bold: 'var(--font-weight-bold)'
   },
   lineHeight: {
-    tight: '1.25',
-    normal: '1.5',
-    relaxed: '1.75'
+    tight: 'var(--line-height-tight)',
+    normal: 'var(--line-height-normal)',
+    relaxed: 'var(--line-height-relaxed)'
   }
 } as const
 

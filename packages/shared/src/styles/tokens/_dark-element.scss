@@ -1,0 +1,43 @@
+// AUTO-GENERATED — 请勿手改。编辑 packages/shared/src/styles/theme-palette.json 后运行 pnpm generate:theme
+
+// Element Plus 暗黑变量 — 优先引用业务 token，Element 专有项来自 palette.dark.element
+
+html.dark {
+  --el-color-white: var(--color-bg-surface);
+  --el-color-black: var(--layout-sidebar-text-active);
+  --el-bg-color: var(--color-bg-surface);
+  --el-bg-color-page: var(--color-bg-page);
+  --el-bg-color-overlay: var(--color-bg-elevated);
+  --el-text-color-primary: var(--color-text-primary);
+  --el-text-color-regular: var(--color-text-regular);
+  --el-text-color-secondary: var(--color-text-secondary);
+  --el-text-color-placeholder: var(--color-text-placeholder);
+  --el-text-color-disabled: #555555;
+  --el-border-color: var(--color-border-default);
+  --el-border-color-light: var(--color-border-subtle);
+  --el-border-color-lighter: #262626;
+  --el-border-color-extra-light: #212121;
+  --el-border-color-dark: #4c4c4c;
+  --el-border-color-darker: #5c5c5c;
+  --el-fill-color: var(--color-fill-default);
+  --el-fill-color-light: var(--color-fill-light);
+  --el-fill-color-lighter: var(--color-fill-lighter);
+  --el-fill-color-extra-light: var(--color-fill-extra-light);
+  --el-fill-color-dark: var(--color-fill-dark);
+  --el-fill-color-darker: var(--color-fill-darker);
+  --el-fill-color-blank: transparent;
+  --el-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 6px rgba(0, 0, 0, 0.3);
+  --el-box-shadow-light: 0 0 12px rgba(0, 0, 0, 0.5);
+  --el-box-shadow-lighter: 0 0 6px rgba(0, 0, 0, 0.4);
+  --el-box-shadow-dark: 0 16px 48px rgba(0, 0, 0, 0.8);
+  --el-overlay-color: rgba(0, 0, 0, 0.8);
+  --el-overlay-color-light: var(--color-bg-overlay);
+  --el-overlay-color-lighter: rgba(0, 0, 0, 0.5);
+  --el-disabled-bg-color: var(--color-fill-default);
+  --el-disabled-text-color: #555555;
+  --el-disabled-border-color: var(--color-border-subtle);
+  --el-menu-bg-color: var(--layout-sidebar-bg);
+  --el-menu-text-color: var(--layout-sidebar-text);
+  --el-menu-active-color: var(--layout-sidebar-text-active);
+  --el-menu-hover-bg-color: var(--layout-sidebar-item-hover-bg);
+}

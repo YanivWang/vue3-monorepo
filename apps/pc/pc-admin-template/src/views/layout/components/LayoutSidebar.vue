@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { ElAside, ElMenu } from 'element-plus'
 import { useRoute } from 'vue-router'
+import { layoutTokens } from '@vue3-monorepo/shared/styles/tokens'
 import { usePermissionStore } from '@/stores/modules/permission'
 import SidebarItem from './SidebarItem.vue'
 
@@ -16,10 +17,11 @@ const permissionStore = usePermissionStore()
 const activeMenu = computed(() => route.path)
 const menus = computed(() => permissionStore.menus.filter(m => !m.meta?.hidden))
 const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
+const sidebarWidth = computed(() => (props.collapsed ? layoutTokens.sidebarWidthCollapsed : layoutTokens.sidebarWidth))
 </script>
 
 <template>
-  <el-aside class="layout-sidebar" :width="props.collapsed ? '64px' : '220px'">
+  <el-aside class="layout-sidebar" :width="sidebarWidth">
     <!-- Logo 区域 -->
     <div class="sidebar-logo">
       <img src="/favicon.svg" alt="logo" class="sidebar-logo__img" />
@@ -80,8 +82,8 @@ const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
   &__title {
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
     color: var(--layout-sidebar-text-active);
   }
 }
