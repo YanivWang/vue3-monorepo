@@ -29,7 +29,7 @@ export interface HistoryStackApi {
   pop(toName?: string): void
   /** 替换栈顶（router.replace 场景） */
   replace(item: Omit<HistoryStackItem, 'ts'>): void
-  /** 根据路径判断是否已在栈中 */
+  /** 根据路由 name 判断是否已在栈中 */
   has(name: string): boolean
   /** 清空 */
   clear(): void

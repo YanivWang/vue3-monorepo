@@ -1,3 +1,11 @@
+#!/usr/bin/env node
+/**
+ * check-theme：校验主题生成产物与 theme-palette.json 是否同步。
+ *
+ * 做法：重新执行 `scripts/generate-theme.mjs`，再用 `git status --porcelain` 检查
+ * 下列 AUTO-GENERATED 文件是否产生 diff；有 diff 即说明有人手改了产物或忘了重新生成。
+ * 由根 `verify:full` 调用（`pnpm run check:theme`）。
+ */
 import { execSync } from 'node:child_process'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

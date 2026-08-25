@@ -16,8 +16,9 @@ import {
  * - navigation 使用 history.go / document.title
  * - storage 使用 localStorage
  * - auth 无原生登录，login 抛 BridgeError（要求业务侧走表单登录）
- * - ui 使用 window.alert 作为最低保障；真实项目一般由 Vant/Element 覆盖
- * - payment / device 标记未实现
+ * - ui.toast / previewImage / vibrate 用原生 DOM、window.open、navigator.vibrate 兜底；
+ *   loading / hideLoading / chooseImage / scanCode 未实现，真实项目一般由 Vant/Element 覆盖
+ * - device 用 navigator.userAgent / geolocation 实现；payment 标记未实现
  */
 export function createBrowserStrategy(): BridgeStrategy {
   const host = H5Host.BROWSER

@@ -55,14 +55,17 @@
 
 ## 与数据加载配合
 
+组件自带 `loading` 开关，加载完成后渲染默认插槽：
+
 ```vue
 <script setup lang="ts">
 const { data, loading } = useRequest(() => getUserInfo())
 </script>
 
 <template>
-  <Skeleton v-if="loading" variant="avatar" />
-  <UserCard v-else :user="data" />
+  <Skeleton :loading="loading" variant="avatar">
+    <UserCard :user="data" />
+  </Skeleton>
 </template>
 ```
 
@@ -80,11 +83,12 @@ const { data, loading } = useRequest(() => getUserInfo())
 
 ## Props
 
-| 属性       | 类型                           | 默认值   | 说明             |
-| ---------- | ------------------------------ | -------- | ---------------- |
-| `variant`  | `'list' \| 'card' \| 'avatar'` | `'list'` | 骨架屏样式变体   |
-| `rows`     | `number`                       | `3`      | list 变体行数    |
-| `animated` | `boolean`                      | `true`   | 是否开启呼吸动画 |
+| 属性       | 类型                           | 默认值   | 说明                                  |
+| ---------- | ------------------------------ | -------- | ------------------------------------- |
+| `loading`  | `boolean`                      | `true`   | `true` 显示骨架，`false` 渲染默认插槽 |
+| `variant`  | `'list' \| 'card' \| 'avatar'` | `'list'` | 骨架屏样式变体                        |
+| `rows`     | `number`                       | `3`      | list 变体行数                         |
+| `animated` | `boolean`                      | `true`   | 是否开启闪光动画                      |
 
 ## 在线示例
 

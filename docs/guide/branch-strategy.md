@@ -107,9 +107,13 @@ git commit -m "fix: resolve critical xxx issue"
 | `refactor` | 重构                   | `refactor(api): extract request interceptor` |
 | `perf`     | 性能优化               | `perf: lazy load echarts`                    |
 | `test`     | 测试相关               | `test(store): add user store unit tests`     |
-| `chore`    | 工程化变更             | `chore: upgrade vite to 5.x`                 |
+| `build`    | 构建系统或依赖变更     | `build: bump vite to 5.x`                    |
 | `ci`       | CI/CD 配置             | `ci: add security audit step`                |
+| `chore`    | 其他杂项               | `chore: tidy editorconfig`                   |
 | `revert`   | 回滚提交               | `revert: feat(auth): add OAuth2 login`       |
+| `wip`      | 进行中（不建议进主干） | `wip(h5): draft list filter`                 |
+
+完整白名单（含 `scope-enum`）以根 `commitlint.config.ts` 为准。
 
 ### 破坏性变更
 

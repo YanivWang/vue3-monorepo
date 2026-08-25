@@ -9,7 +9,7 @@ import { i18n } from '@/locales'
  * formatCurrency(1234.56)          // '¥1,234.56'（zh-CN）或 '$1,234.56'（en-US）
  * formatDate(new Date(), 'short')  // '2024/01/15'（zh-CN）或 'Jan 15, 2024'（en-US）
  * formatPercent(0.856)             // '85.6%'
- * formatFileSize(1024 * 1024)      // '1.00 MB'
+ * formatFileSize(1024 * 1024)      // '1 MB'（尾部 0 会被 parseFloat 去掉）
  */
 
 /** 取 Composer 模式下的 i18n global（legacy: false 时必为 Composer） */

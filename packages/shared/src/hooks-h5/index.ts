@@ -8,6 +8,7 @@
  * - useHistoryStackH5：栈式 keep-alive 路由绑定
  * - createUseThemeH5：主题 + Vant Locale 联动工厂
  * - useLogin：多宿主登录策略（bridge + form 双路）
+ * - useProListFilters：ProList 的关键词 / ID 区间筛选状态
  * - useSmsCodeGate：短信验证码发送节流（自 @vue3-monorepo/shared/hooks-core 再导出，便于 H5 侧单一入口）
  */
 

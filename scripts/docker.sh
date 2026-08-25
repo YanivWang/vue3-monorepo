@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# 参照 deer-flow-vue3：统一从 scripts/ 调度 docker/ 下 compose
+# docker.sh：统一从 scripts/ 调度 docker/docker-compose.yaml
+# 由根 package.json 的 docker:* 脚本包装（docker:up / docker:down / docker:logs 及各服务专用别名）
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -29,7 +30,7 @@ case "${1:-}" in
     compose build "${@:2}"
     ;;
   *)
-    echo "Usage: $0 {up|stop|logs|build} [extra docker compose args]"
+    echo "Usage: $0 {up|start|stop|down|logs|build} [service or extra docker compose args]"
     echo "  Environment: COMPOSE_PROJECT, ADMIN_PORT, H5_PORT, DOCS_PORT (see docker/docker-compose.yaml)"
     exit 1
     ;;

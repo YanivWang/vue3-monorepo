@@ -49,29 +49,33 @@ Token 由 **`@vue3-monorepo/shared`** 与各应用样式入口共同组成，跨
 
 ## 字体 Token
 
+`tokens.typography.*` 里存的是 **CSS 变量引用串**（`var(--font-size-base)` 等），直接写进内联样式即可，实际取值由 `_root.scss` 决定：
+
 ```ts
-import { tokens } from '@/assets/styles/tokens'
+import { tokens } from '@vue3-monorepo/shared/styles/tokens'
 
 // 字号
-tokens.typography.fontSize.base // '14px'
-tokens.typography.fontSize.lg // '18px'
+tokens.typography.fontSize.base // 'var(--font-size-base)' → 14px
+tokens.typography.fontSize.lg // 'var(--font-size-lg)'   → 18px
 
 // 字重
-tokens.typography.fontWeight.medium // '500'
-tokens.typography.fontWeight.bold // '700'
+tokens.typography.fontWeight.medium // 'var(--font-weight-medium)' → 500
+tokens.typography.fontWeight.bold // 'var(--font-weight-bold)'   → 700
 ```
 
 ### 字号规范
 
-| Token  | 值   | 典型场景       |
-| ------ | ---- | -------------- |
-| `xs`   | 12px | 辅助文字、标签 |
-| `sm`   | 13px | 次要信息       |
-| `base` | 14px | 正文（默认）   |
-| `md`   | 16px | 小标题         |
-| `lg`   | 18px | 卡片标题       |
-| `xl`   | 20px | 页面标题       |
-| `2xl`  | 24px | 大标题         |
+| Token  | 值   | 典型场景           |
+| ------ | ---- | ------------------ |
+| `xs`   | 12px | 辅助文字、标签     |
+| `sm`   | 13px | 次要信息           |
+| `base` | 14px | 正文（默认）       |
+| `md`   | 16px | 小标题             |
+| `lg`   | 18px | 卡片标题           |
+| `xl`   | 20px | 页面标题           |
+| `2xl`  | 24px | 大标题             |
+| `3xl`  | 30px | 数据大屏、统计数值 |
+| `4xl`  | 36px | 首屏主标题         |
 
 ## 间距 Token
 
@@ -96,6 +100,8 @@ tokens.typography.fontWeight.bold // '700'
 | `borderRadius.full`   | 9999px | 标签、头像   |
 
 ## 断点 Token
+
+`tokens.breakpoint`、`tokens.spacing`、`tokens.borderRadius`、`tokens.zIndex`、`tokens.layout` 是**字面量**（非 CSS 变量），可直接参与 JS 计算：
 
 ```ts
 tokens.breakpoint.sm // '576px'
@@ -144,7 +150,8 @@ const primaryColor = getCssVar(cssVarTokens.color.primary)
 // 动态修改主题（运行时换肤）
 setCssVar(cssVarTokens.color.primary, '#1890ff')
 
-// 类型安全的 z-index
+// 类型安全的 z-index（同样来自 @vue3-monorepo/shared/styles/tokens）
+import { tokens } from '@vue3-monorepo/shared/styles/tokens'
 const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
 ```
 
@@ -156,7 +163,7 @@ const modalZ = tokens.zIndex.modal // 1040（TypeScript 可推断具体数值）
 pnpm generate:theme
 ```
 
-`admin:build` / `h5:build` 会自动先执行生成。不要手改 `_variables.scss`、`_brands.scss`、`_dark.scss`、`brands.config.ts`。
+`admin:build` / `h5:build` 会自动先执行生成（根脚本里前置了 `pnpm generate:theme`）。不要手改 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts`——`pnpm run check:theme`（`verify:full` 的一环）会重跑生成并比对 diff，手改会导致门禁失败。
 
 - **新增品牌预设**：在 `theme-palette.json` 的 `brands` 中追加条目，重新生成；`_root.scss` 中如有品牌相关派生 token 需手写维护。
 - **修改默认主色（blue）**：改 JSON 中 `brands.blue` 与 `light` 区块，重新生成。

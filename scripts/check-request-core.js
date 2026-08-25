@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * P3.4a：@vue3-monorepo/request-core 核心包禁止出现任何 UI 框架 API 字样（防回归）
+ * check-request-core：@vue3-monorepo/request-core 源码禁止出现 Element Plus / Vant 等
+ * UI 反馈类 API 关键字（防回归），保证 HTTP 内核与 UI 解耦。由 pre-commit 与 verify:full 调用。
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'

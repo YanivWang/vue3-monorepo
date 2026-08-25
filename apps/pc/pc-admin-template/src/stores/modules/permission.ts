@@ -78,8 +78,8 @@ export const usePermissionStore = defineStore('permission', () => {
   const isRoutesLoaded = ref(false)
 
   /**
-   * 拉取菜单、生成并注册动态路由
-   * 注意：路由实际 addRoute 操作在 guards.ts 中完成，此处只做数据生成
+   * 拉取菜单并生成动态路由对象（只做数据生成，不注册）
+   * 注意：实际 `router.addRoute` 在 guards.ts 的 beforeEach 中完成
    */
   async function generateRoutes(): Promise<RouteRecordRaw[]> {
     const menuData = await getMenuRoutes()
@@ -90,7 +90,7 @@ export const usePermissionStore = defineStore('permission', () => {
     return routes
   }
 
-  /** 登出时重置，调用方（guards/user store）负责 router.removeRoute */
+  /** 登出时重置本 store；清理已注册路由由调用方负责（user store 的 resetState 调 `resetRouter()` 换 matcher） */
   function resetRoutes(): void {
     menus.value = []
     dynamicRoutes.value = []

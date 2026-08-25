@@ -1,9 +1,9 @@
 /**
  * OpenAPI TypeScript 类型生成脚本
  *
- * 用法：
- *   pnpm run gen:api              # 从本地 openapi/api.yaml 生成
- *   pnpm run gen:api --remote     # 从远程 API 文档地址生成（需设置 OPENAPI_URL）
+ * 用法（在本包内，或在仓库根加 `pnpm --filter @vue3-monorepo/admin run …`）：
+ *   pnpm run gen:api          # 从本地 openapi/api.yaml 生成
+ *   pnpm run gen:api:remote   # 从远程 API 文档地址生成（须先设置环境变量 OPENAPI_URL）
  *
  * 生成产物：src/types/api-schema.d.ts
  */
@@ -39,8 +39,10 @@ async function generate() {
   }
 
   const ast = await openapiTS(source, {
+    // 自定义类型映射的扩展点：返回 undefined 表示沿用 openapi-typescript 默认行为。
+    // 当前对 nullable 字段不做特殊处理（openapi-typescript 7 已原生产出 `T | null`），
+    // 保留此钩子便于后续按 schema 定制（如把 format: date-time 映射成 Date）。
     transform(schemaObject) {
-      // 将 nullable: true 的字段转换为 T | null
       if ('nullable' in schemaObject && schemaObject.nullable) {
         return undefined
       }

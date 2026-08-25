@@ -25,7 +25,11 @@ export interface UseRequestReturn<T, P extends unknown[]> {
   error: ReturnType<typeof ref<Error | null>>
   /** 手动触发请求 */
   run: (...args: P) => Promise<T | undefined>
-  /** 取消当前请求 */
+  /**
+   * 取消：清掉尚未触发的防抖定时器并把 loading 置回 false。
+   * requestFn 由调用方提供、不接收 signal，因此**已发出**的请求不会被真正中断，
+   * 需要中断请传入自带取消能力的 requestFn（如 request-core 的 `cancelDuplicate`）。
+   */
   cancel: () => void
   /** 重置状态 */
   reset: () => void
@@ -33,6 +37,10 @@ export interface UseRequestReturn<T, P extends unknown[]> {
 
 /**
  * 异步请求 Composable，UI 无关：封装 loading/error/data 状态。
+ *
+ * - `run` 支持防抖；`cancel` 取消的是**待触发的防抖**，不中断已发出的请求（见 {@link UseRequestReturn.cancel}）
+ * - 组件卸载时自动 `cancel`
+ * - `AbortError` / `CanceledError` 被视为「已取消」，不写入 `error`
  */
 export function useRequest<T, P extends unknown[] = unknown[]>(
   requestFn: (...args: P) => Promise<T>,

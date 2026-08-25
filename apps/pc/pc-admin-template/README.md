@@ -36,6 +36,11 @@ apps/pc/pc-admin-template/
 ├── src/
 ├── mock/
 ├── public/
+├── openapi/api.yaml                 # OpenAPI spec（配合 scripts/gen-api.ts）
+├── scripts/gen-api.ts               # openapi-typescript → src/types/api-schema.d.ts
+├── .env / .env.development / .env.staging / .env.production
+├── .env.docker                      # compose 默认构建模式（同源 /api，nginx 反代）
+├── .env.example                     # 变量清单样例
 ├── vite.config.ts
 ├── vitest.config.ts
 ├── tsconfig.json

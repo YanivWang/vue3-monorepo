@@ -7,10 +7,12 @@
 在 **`createApp` 之后尽快** 调用一次：
 
 ```ts
-import { WebMonitor, type WebMonitorInitEnvFields } from '@vue3-monorepo/web-monitor'
+import { WebMonitor, buildWebMonitorInit, type WebMonitorInitEnvFields } from '@vue3-monorepo/web-monitor'
 
 function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
-  return {
+  const clientErrors = import.meta.env.VITE_WEB_MONITOR_CLIENT_ERRORS !== 'false'
+  const webVitals = import.meta.env.VITE_WEB_MONITOR_WEB_VITALS !== 'false'
+  const shared = {
     errorReportUrl: import.meta.env.VITE_ERROR_REPORT_URL,
     webVitalsReportUrl: import.meta.env.VITE_WEB_VITALS_REPORT_URL,
     release: import.meta.env.VITE_APP_VERSION,
@@ -22,13 +24,21 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
       import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
       (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
   }
+  // 两侧都开时不传 integrations；否则按需关闭其中一侧（保持联合类型可判别）
+  if (clientErrors && webVitals) return shared
+  if (!clientErrors && !webVitals) return { ...shared, integrations: { webVitals: false, clientErrors: false } }
+  if (!webVitals) return { ...shared, integrations: { webVitals: false, clientErrors: true } }
+  return { ...shared, integrations: { clientErrors: false, webVitals: true } }
 }
 
 // …
-WebMonitor.init({ app, ...webMonitorEnvFromVite() })
+const app = createApp(App)
+WebMonitor.init(buildWebMonitorInit(app, webMonitorEnvFromVite()))
 ```
 
 `@vue3-monorepo/web-monitor` 不读取环境变量；装配方式可与上例不同，由集成方自行决定。
+
+> `WebMonitorInitOptions` 是**可判别联合**（按 `integrations` 区分哪几个 URL 必填），直接写 `WebMonitor.init({ app, ...fields })` 会让 TS 推断失准，因此统一用包导出的 `buildWebMonitorInit(app, fields)` 合成入参。
 
 `WebMonitor.init` **内部顺序**：先注册 Web Vitals（`onFCP` / `onLCP` 等），再注册 Vue `errorHandler` 与 `window` 级监听。链式保留创建应用前已存在的 `app.config.errorHandler`（若业务在 `init` 前自行设置过 handler）。
 
@@ -38,7 +48,7 @@ WebMonitor.init({ app, ...webMonitorEnvFromVite() })
 - `clientErrorDebug` / `webVitalsDebug`：`true` 时打印 `[ClientError]` / `[Web Vitals]` 及「上报已启用」日志
 - `environment` / `release`：写入上报 JSON 中的 `mode` / `appVersion`
 - `beforeErrorReport` / `beforeWebVitalReport`：返回 `null` 则丢弃该条
-- `integrations`：`{ webVitals?: boolean; clientErrors?: boolean }` 可关闭子能力
+- `integrations`：`{ webVitals?: boolean; clientErrors?: boolean }` 可关闭子能力；本模板由 `VITE_WEB_MONITOR_WEB_VITALS` / `VITE_WEB_MONITOR_CLIENT_ERRORS` 置为 `'false'` 时触发（见 `src/types/env.d.ts`）
 
 底层仍会调用 `collectWebVitals` 与 `setupClientErrorReporting`（仅首次挂载监听器；重复 `init` 会刷新运行时配置）。
 

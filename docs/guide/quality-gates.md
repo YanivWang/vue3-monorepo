@@ -40,7 +40,7 @@
 
 根 `package.json` 中**一字不差**的链为：
 
-`check:refs` → `check:request-core` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:run` → `build`
+`check:refs` → `check:request-core` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:run` → `build`
 
 其中 `build` 即 `admin:build` → `h5:build` → `docs:build`。
 
@@ -48,25 +48,46 @@
 
 **注意**：`build` 会构建三端，耗时较长；日常只改文档时可用 `pnpm run docs:build` 等分段命令代替，不必每次 `verify:full`。
 
-## 4. 仓库特有两项检查
+## 4. 仓库特有三项检查
 
-实现以仓库内脚本为准，摘要如下（详见 `scripts/*.js` 文件头注释）：
+实现以仓库内脚本为准，摘要如下（详见 `scripts/` 下对应脚本的文件头注释）：
 
 | 命令                          | 含义                                                                                                                                                                                                                                                                                               |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                      |
 | `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
+| `pnpm run check:theme`        | `scripts/check-theme.mjs`：重跑 `generate:theme` 后用 `git status --porcelain` 比对 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts` 五个 AUTO-GENERATED 产物；有 diff 说明产物被手改或忘了重新生成（见 [Design Token](./design-tokens.md)）              |
 
-在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通这两项。
+在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通前两项；改 `theme-palette.json` 或主题产物时补跑 `check:theme`。
+
+> `.husky/pre-commit` 只跑 `check:refs` + `check:request-core` + `lint-staged`；`check:theme` 仅在 `verify:full` 中执行。
+
+## 4.1 ESLint 里的依赖边界门禁
+
+除了上面的脚本，根 `eslint.config.mjs` 还用 `import/no-restricted-paths` 与 `no-restricted-imports` 把**分层边界**做成了 lint 错误（`pnpm run lint` 即可发现）：
+
+| 规则                                                                             | 约束                                                            |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `components-pc` ⇄ `components-h5`（`directives-*`、`hooks-*`、`request-*` 同理） | 端侧同类型包**互相禁止** import                                 |
+| `packages/request-core` ← `shared/request-pc`、`request-h5`                      | 内核**禁止反依赖**端侧 preset                                   |
+| `shared/hooks-core` ← 任意端侧包                                                 | 通用 hooks **禁止依赖**端侧 UI 层                               |
+| `packages/shared` ← `apps/**`                                                    | 共享包**禁止反依赖**应用                                        |
+| `pc-admin-template` ⇄ `h5-template`                                              | 两端**禁止互引源码**（store / 页面不共享）                      |
+| `packages/request-core/**`                                                       | 禁止 `import` `element-plus` / `vant`                           |
+| `shared/request-pc`、`request-h5`                                                | 禁止直接 `import axios`，必须走 `@vue3-monorepo/request-core`   |
+| `shared/hooks-core/**`                                                           | 禁止 `import` `element-plus` / `vant`                           |
+| `packages/js-bridge/**`                                                          | 禁止 `import` `@vue3-monorepo/shared`（保持 bridge 无上层依赖） |
+
+也就是说，[项目与目录约定](./project-conventions.md) 与 [pnpm workspace 日常操作](./monorepo-workflow.md) 里的「强约束」不只是文字规范，越界会在 `lint` 阶段直接报错。
 
 ## 5. 构建与预览
 
-| 命令                                            | 作用                                               |
-| ----------------------------------------------- | -------------------------------------------------- |
-| `pnpm run build`                                | 顺序 build admin → h5 → docs                       |
-| `pnpm run admin:build` 等                       | 单端 build                                         |
-| `pnpm run docs:preview`                         | 文档先 `docs:build` 后本地静态预览                 |
-| `pnpm --filter @vue3-monorepo/admin preview` 等 | 各 app 的 `vite preview`；命令清单见上表与本页上文 |
+| 命令                                            | 作用                                                                               |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `pnpm run build`                                | 顺序 build admin → h5 → docs（`admin:build` / `h5:build` 会先跑 `generate:theme`） |
+| `pnpm run admin:build` 等                       | 单端 build                                                                         |
+| `pnpm run docs:preview`                         | 文档先 `docs:build` 后本地静态预览                                                 |
+| `pnpm --filter @vue3-monorepo/admin preview` 等 | 各 app 的 `vite preview`；命令清单见上表与本页上文                                 |
 
 ## 6. 依赖重装与排障
 
@@ -83,7 +104,7 @@
 ## 8. 对照表速记
 
 - **5 分钟本地反馈**：`typecheck` + 正在改的一端 `dev`。
-- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 **`@vue3-monorepo/shared`**、**`@vue3-monorepo/request-core`**、**`@vue3-monorepo/js-bridge`**、**`@vue3-monorepo/web-monitor`** 等 workspace 包时加 `check:refs` + `check:request-core`。
+- **提 PR 前**：至少 `typecheck` + `lint` + `test:run`；改 **`@vue3-monorepo/shared`**、**`@vue3-monorepo/request-core`**、**`@vue3-monorepo/js-bridge`**、**`@vue3-monorepo/web-monitor`** 等 workspace 包时加 `check:refs` + `check:request-core`；改主题色板时加 `check:theme`。
 - **发版/大合并**：`verify:full`（或 CI 要等价的流水线）。
 
 更上层的学习路径见 [文档体系总览](./doc-system.md)；新人步骤见 [新手上路](./onboarding.md)。

@@ -69,12 +69,15 @@ function afterCreate() {
 
 ## fetchFn 接口规范
 
-`fetchFn` 接收分页参数，必须返回 `PaginationResult<T>`：
+`fetchFn` 接收分页参数（`page`、`pageSize` 与调用方通过 `handleSearch` 传入的搜索项），必须返回 `PaginationResult<T>`：
 
 ```ts
+// packages/shared/src/types/common.ts
 interface PaginationResult<T> {
   list: T[]
   total: number
+  page: number
+  pageSize: number
 }
 
 // 示例
@@ -83,18 +86,21 @@ async function getUserList(params: Record<string, unknown>): Promise<PaginationR
 }
 ```
 
+组件内部只消费 `list` 与 `total`（见 `@vue3-monorepo/shared/hooks-core` 的 `useTable`），`page` / `pageSize` 由类型契约保留给调用方回显。
+
 ## Props
 
-| 属性         | 类型            | 默认值  | 说明                   |
-| ------------ | --------------- | ------- | ---------------------- |
-| `fetchFn`    | `Function`      | —       | **必填**，数据请求函数 |
-| `columns`    | `TableColumn[]` | —       | **必填**，列配置       |
-| `rowKey`     | `string`        | `'id'`  | 行数据唯一键           |
-| `showSearch` | `boolean`       | `false` | 是否显示搜索区         |
-| `showAction` | `boolean`       | `false` | 是否显示工具栏         |
-| `pageSize`   | `number`        | `10`    | 默认每页条数           |
-| `immediate`  | `boolean`       | `true`  | 是否立即发起请求       |
-| `selection`  | `boolean`       | `false` | 是否开启多选           |
+| 属性         | 类型            | 默认值       | 说明                                       |
+| ------------ | --------------- | ------------ | ------------------------------------------ |
+| `fetchFn`    | `Function`      | —            | **必填**，数据请求函数                     |
+| `columns`    | `TableColumn[]` | —            | **必填**，列配置                           |
+| `rowKey`     | `string`        | `'id'`       | 行数据唯一键                               |
+| `showSearch` | `boolean`       | `false`      | 是否显示搜索区                             |
+| `showAction` | `boolean`       | `false`      | 是否显示工具栏                             |
+| `pageSize`   | `number`        | `10`         | 默认每页条数                               |
+| `immediate`  | `boolean`       | `true`       | 是否立即发起请求                           |
+| `selection`  | `boolean`       | `false`      | 是否开启多选                               |
+| `emptyText`  | `string`        | `'暂无数据'` | 空数据文案；需要多语言时传入已翻译好的文案 |
 
 ## TableColumn 配置
 

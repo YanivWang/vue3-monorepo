@@ -67,7 +67,9 @@ pnpm add -D <包名> --filter @vue3-monorepo/admin
 **强约束**（与 [项目与目录约定](./project-conventions.md) 一致）：
 
 - **Pinia、路由、按业务划分的 API 不跨 app**。
-- `@vue3-monorepo/request-core` **实现**中不得调用 Element / Vant 等 **UI 反馈 API**（仓库有 `check-request-core` 脚本做关键字门禁）；PC/H5 的提示与拦截用 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 在应用里装配。
+- `@vue3-monorepo/request-core` **实现**中不得调用 Element / Vant 等 **UI 反馈 API**；PC/H5 的提示与拦截用 **`@vue3-monorepo/shared/request-pc`** / **`@vue3-monorepo/shared/request-h5`** 在应用里装配。
+
+上述边界**有机器约束**，不是口头约定：根 `eslint.config.mjs` 的 `import/no-restricted-paths` 与 `no-restricted-imports` 会让越界 import 直接 lint 报错，`scripts/check-request-core.js` 再对内核做一次关键字扫描。清单见 [代码质量与规范约束 §4.1](./quality-gates.md)。
 
 ## 6. 怎么查「能 import 什么」
 

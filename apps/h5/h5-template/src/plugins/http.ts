@@ -2,7 +2,7 @@ import { createH5Http } from '@vue3-monorepo/shared/request-h5'
 import { tokenStorage } from '@/utils/tokenStorage'
 
 /**
- * H5 HTTP 单例（计划约定：`apps/h5/src/plugins/http.ts` 为唯一装配点）
+ * H5 HTTP 单例：本文件是 H5 侧唯一的 http 装配点，`@/api/http` 仅做再导出
  */
 export const http = createH5Http({
   baseURL: (import.meta.env.VITE_API_PREFIX as string) || '/api',

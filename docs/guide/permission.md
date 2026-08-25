@@ -19,18 +19,24 @@ usePermissionStore.generateRoutes()
 ## 路由 Meta 字段
 
 ```ts
-// src/types/router.d.ts
+// apps/pc/pc-admin-template/src/types/router.d.ts（declare module 'vue-router'）
 interface RouteMeta {
   title?: string // 页面标题
-  icon?: string // 菜单图标
-  hidden?: boolean // 是否在菜单隐藏
-  keepAlive?: boolean // 是否缓存页面
-  requiresAuth?: boolean // 是否需要登录
-  permissions?: string[] // 需要的权限码（满足其一）
-  roles?: string[] // 需要的角色（满足其一）
-  affix?: boolean // Tab 是否固定不可关闭
+  icon?: string // 菜单图标（Element Plus 图标名）
+  hidden?: boolean // 是否在菜单隐藏，默认 false
+  keepAlive?: boolean // 是否开启 keep-alive，默认 false
+  requiresAuth?: boolean // 为 false 时无需登录，默认 true
+  permissions?: string[] // 访问所需权限码，非空时须至少具备其中一项
+  roles?: string[] // 访问所需角色，非空时须至少具备其中一项
+  breadcrumb?: string // 面包屑名称，默认取 title
+  affix?: boolean // Tab 是否固定不可关闭，默认 false
+  alwaysShow?: boolean // 仅一个子路由时是否仍显示父级，默认 false
 }
 ```
+
+> **`roles` 目前不由路由守卫校验**：`router/guards.ts` 只收集 `to.matched` 上的 `meta.permissions` 并做 `hasPermission` 判断（命中其一即放行，否则跳 `/403`）。角色维度请用 `v-role` 指令或 `usePermission().hasRole()` 在页面/元素级控制；若需要按角色拦路由，请在守卫中自行补充。
+
+> H5 模板的 `meta` 字段是另一套约定（`titleKey`、`tab`、`transition` 等），见 `apps/h5/h5-template/src/router/routes.ts` 头注释；H5 守卫只校验 `requiresAuth`。
 
 ## v-permission 指令
 

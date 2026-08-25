@@ -17,8 +17,8 @@ export interface TabItem {
 /**
  * 底部 TabBar 状态 store（独立于 admin 的 tabsViews）。
  *
- * - tabs 列表由业务层在 App 启动时调用 setTabs 注册
- * - activeName 由当前路由同步（在 App.vue 或 layout 中 watch route）
+ * - tabs 默认内置模板的 4 个入口，业务层可调用 setTabs 整体覆盖
+ * - activeName 由 `layouts/TabLayout.vue` watch 当前路由 name 后调用 setActive 同步
  */
 export const useTabsStore = defineStore('h5-tabs', () => {
   /** `label` 为 vue-i18n 文案 key（如 nav.home），由布局层 `t(label)` 渲染 */

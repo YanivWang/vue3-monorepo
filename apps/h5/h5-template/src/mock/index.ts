@@ -4,7 +4,7 @@ import { H5Host } from '@vue3-monorepo/shared/enums'
 /**
  * H5 运行时 Mock 启动：
  *
- * - `apps/h5/mock/**` 下的文件由 vite-plugin-mock 在 **dev server 层** 拦截请求，
+ * - 本应用 `mock/**` 下的文件由 vite-plugin-mock 在 **dev server 层** 拦截请求，
  *   适用于浏览器宿主；小程序 / Native WebView 走宿主代理到真实接口时不会命中。
  *
  * - 如需"非浏览器宿主 + 本地 mock"的组合（例如在 APP WebView 里调试），

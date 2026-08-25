@@ -18,9 +18,9 @@
 
 ## 本仓库中的实现（PC Admin 与 H5 共用）
 
-两端均在 **`src/main.ts`**、于 **`createApp` 之后** 调用 `WebMonitor.init({ app, ...webMonitorEnvFromVite() })`（函数名以仓库内实际为准）：内部先挂 Web Vitals，再挂全局错误监听（与单独调用 `collectWebVitals` + `setupClientErrorReporting` 等价，且监听器只挂载一次）。**`@vue3-monorepo/web-monitor`** 不读取 `VITE_*`，由调用方传入。实现位于：
+两端均在 **`src/main.ts`**、于 **`createApp` 之后** 调用 `WebMonitor.init(buildWebMonitorInit(app, webMonitorEnvFromVite()))`（`webMonitorEnvFromVite` 为各应用自定义的装配函数，`buildWebMonitorInit` 由包导出，用于避免对联合类型 `WebMonitorInitOptions` 做对象展开时推断失准）：内部先挂 Web Vitals，再挂全局错误监听（与单独调用 `collectWebVitals` + `setupClientErrorReporting` 等价，且监听器只挂载一次）。**`@vue3-monorepo/web-monitor`** 不读取 `VITE_*`，由调用方传入。实现位于：
 
-- [`packages/web-monitor/src/webVitalsMonitoring.ts`](../../packages/web-monitor/src/webVitalsMonitoring.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）；统一入口见同目录 [`webMonitor.ts`](../../packages/web-monitor/src/webMonitor.ts) 的 `WebMonitor.init`。
+- [`packages/web-monitor/src/webVitalsMonitoring.ts`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/web-monitor/src/webVitalsMonitoring.ts)（依赖 [`web-vitals`](https://github.com/GoogleChrome/web-vitals)）；统一入口见同目录 [`webMonitor.ts`](https://github.com/YanivWang/vue3-monorepo/blob/main/packages/web-monitor/src/webMonitor.ts) 的 `WebMonitor.init`。
 
 各应用只从 **`@vue3-monorepo/web-monitor`** 导入，并通过 **`WebMonitor.init` 的 `integrations`**（或应用内 `webMonitorEnvFromVite()` 映射的环境变量）单独关闭错误侧或 Web Vitals。
 

@@ -30,7 +30,7 @@ export interface CreateBridgeOptions {
  *   import { createBridge } from '@vue3-monorepo/js-bridge'
  *   const bridge = createBridge({ wxMini: { loginPath: '/pages/login' } })
  *   await bridge.ui.toast({ message: 'hi' })
- *   const token = await bridge.auth.login()
+ *   const { credential } = await bridge.auth.login()
  */
 export function createBridge(options: CreateBridgeOptions = {}): Bridge {
   const host = options.host ?? detectHost()

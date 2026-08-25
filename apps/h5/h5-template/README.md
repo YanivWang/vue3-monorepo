@@ -12,7 +12,9 @@ apps/h5/h5-template/
 ├── docs/                   # 协议与观测说明（如 WebView Bridge、前端观测）
 ├── mock/
 ├── public/
-├── .env / .env.development / .env.production / .env.staging
+├── .env.development        # 本地开发（默认开 mock）
+├── .env.docker             # compose 默认构建模式（同源 /api，nginx 反代）
+├── .env.example            # 变量清单样例，按需复制为 .env.production 等
 ├── index.html
 ├── vite.config.ts
 ├── vitest.config.ts

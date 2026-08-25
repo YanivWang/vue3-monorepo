@@ -65,19 +65,22 @@ flowchart TB
 
 ## 启动流程
 
-与 `src/main.ts` 中 `bootstrap()` 一致（Element Plus 与全局样式在 `bootstrap` 之前通过 `import` 注入）：
+与 `apps/pc/pc-admin-template/src/main.ts` 中 `bootstrap()` 一致（Element Plus 的 CSS 与全局样式在 `bootstrap` 之前通过顶层 `import` 注入）：
 
 ```
 bootstrap()
-  1. setupStore(app)           # Pinia + persistedstate 插件
-  2. registerDirectives(app)   # v-permission / v-role
-  3. app.use(router)           # 先注册路由（部分插件或守卫依赖 Router）
-  4. setupPlugins(app)         # 顺序：ClientErrorReporting → Element Plus → I18n
-  5. await router.isReady()
-  6. app.mount('#app')
+  0. createApp(App) → WebMonitor.init(buildWebMonitorInit(app, …))  # 尽早接管错误/性能采集
+  1. setupStore(app)              # Pinia + persistedstate 插件（须最先，其它模块依赖它）
+  2. await loadInitialAdminI18n() # 懒加载当前语言 + fallback 的 shared 词条
+  3. registerDirectives(app)      # v-permission / v-role / v-copy（依赖 Pinia）
+  4. installComponents(app)       # @vue3-monorepo/shared/components-pc 全局组件
+  5. app.use(router)              # 先注册路由（须在 setupPlugins 前）
+  6. setupPlugins(app)            # 顺序：Element Plus 图标 → vue-i18n
+  7. await router.isReady()
+  8. app.mount('#app')
 ```
 
-（Admin 与 H5 均在 `createApp` 后于各端 `src/main.ts` 调用 `WebMonitor.init`，并从 Vite 环境装配参数。）
+H5（`apps/h5/h5-template/src/main.ts`）顺序略有差异：`startMock()` → `useBridge()` → `loadInitialH5I18n()` → `createApp` + `WebMonitor.init` → Pinia → router → i18n → `useAppStore().init()` → 组件与指令 → `router.isReady()` → `bootstrapUserInfo()` → `mount`。两端均在 `createApp` 之后调用 `WebMonitor.init`，参数由各自的 `webMonitorEnvFromVite()` 从 Vite 环境装配。
 
 ## 路由体系
 
@@ -101,7 +104,7 @@ beforeEach（含 NProgress）:
   有 token 访问 /login：重定向 /
   有 token 但无 userInfo：fetchUserInfo，失败则登出
   动态路由未加载：generateRoutes 后对每段 router.addRoute('Layout', route)，并 replace 重匹配
-  已加载：仅合并 meta.permissions 做 hasPermission 校验，不通过 → /403
+  已加载：合并 to.matched 上的 meta.permissions，非空时须命中其一（some + hasPermission），否则 → /403
   （RouteMeta.roles 已声明，当前守卫不校验；角色请用 v-role / usePermission().hasRole()）
 afterEach: document.title、tabsStore.addTab、NProgress.done
 ```
@@ -120,26 +123,41 @@ afterEach: document.title、tabsStore.addTab、NProgress.done
 PC 模板在 `src/utils/http`（或插件）基于 **`@vue3-monorepo/shared/request-pc`** → 内部使用 **`@vue3-monorepo/request-core`** 构建实例；H5 同理走 **`@vue3-monorepo/shared/request-h5`**。行为上与下列抽象一致（取消池、拦截器链以当前模板代码为准）：
 
 ```
-HTTP 实例（createPcHttp / createH5Http）
-  ├─ pendingRequests: Map<key, AbortController>   # 请求取消池（若启用）
+HTTP 实例（createPcHttp / createH5Http → request-core 的 HttpRequest）
+  ├─ pendingRequests: Map<key, AbortController>   # key 默认 `${METHOD}:${url}`，可用 requestKey 覆盖
   ├─ 请求拦截
-  │   ├─ cancelDuplicate → 取消旧请求，注册新 AbortController
-  │   ├─ showLoading → 全局 Loading（端侧 UI）
-  │   └─ withToken → 注入 Authorization header
+  │   ├─ cancelDuplicate → abort 同 key 旧请求，注册新 AbortController
+  │   ├─ showLoading → loading.onStart()（PC=ElLoading，H5=Vant Toast，均带计数器）
+  │   ├─ withToken !== false → 注入 Authorization: Bearer <token>
+  │   └─ GET → 追加 `_t=Date.now()` 破缓存（同名 params 会覆盖它）
   └─ 响应拦截
-      ├─ 成功 → 移出请求池，校验业务 code
-      └─ 失败 → 移出请求池 / 取消静默 / 401 自动刷新 / 重试
+      ├─ 成功 → 移出池 / onEnd()，校验 code === successCode，否则抛 type:'business'
+      └─ 失败 → 移出池 / onEnd()
+          ├─ canceled       → type:'canceled'，静默（不触发 onError）
+          ├─ ECONNABORTED   → type:'timeout'
+          ├─ 无 response    → type:'network'
+          ├─ 401            → skipAuthRefresh 或无 refreshToken 时直接 onUnauthorized；
+          │                   否则走单例 refreshToken() 后带新 token 重放；刷新失败则清 token + onUnauthorized
+          ├─ status >= 500  → 按 retryCount / retryDelay 指数退避重试（仅 5xx）
+          └─ 其余           → type:'http'，403/404/500 有内置文案
 ```
 
-**请求取消用法：**
+`showError !== false` 时上述错误会回调 `hooks.onError`（PC=`ElMessage.error`，H5=`showFailToast`）；`canceled` 恒不提示。可用配置项见 `packages/request-core/src/types.ts` 的 `RequestConfig`。
+
+**请求取消用法**（`cancelRequest` / `cancelAllRequests` 是 `HttpRequest` 实例方法，应用侧从自己的 http 单例上调用）：
 
 ```ts
-// 防重复请求
+import http from '@/utils/http' // H5 为 `import { http } from '@/plugins/http'`
+
+// 防重复请求：同 key 的旧请求会被 abort
 http.get('/search', { keyword }, { cancelDuplicate: true })
 
-// 页面离开时取消所有请求
-import { cancelAllRequests } from '@/utils/http'
-onUnmounted(cancelAllRequests)
+// 自定义 key
+http.get('/search', { keyword }, { cancelDuplicate: true, requestKey: 'search' })
+http.cancelRequest('search')
+
+// 页面离开 / 退出登录时取消全部
+onUnmounted(() => http.cancelAllRequests())
 ```
 
 ## 权限体系 {#permission-arch}
@@ -162,17 +180,19 @@ onUnmounted(cancelAllRequests)
 
 ## 异常处理 {#error-handling}
 
-| 层级                     | 处理方式                                        |
-| ------------------------ | ----------------------------------------------- |
-| HTTP 错误                | Axios 响应拦截 + ElMessage                      |
-| Vue 组件错误（可降级）   | ErrorBoundary 组件                              |
-| Vue 组件错误（全局兜底） | `app.config.errorHandler`                       |
-| 全局 JS 错误             | `window.onerror`                                |
-| 未捕获 Promise           | `window.addEventListener('unhandledrejection')` |
+> 全局 JS / Promise / 资源错误与 `app.config.errorHandler` 均由 `@vue3-monorepo/web-monitor` 的 `WebMonitor.init` 统一注册（见 `packages/web-monitor/src/clientErrorMonitoring.ts`）。
+
+| 层级                     | 处理方式                                                                      |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| HTTP 错误                | Axios 响应拦截 + `shared/request-pc` 预设的 ElMessage / ElMessageBox          |
+| Vue 组件错误（可降级）   | ErrorBoundary 组件                                                            |
+| Vue 组件错误（全局兜底） | `app.config.errorHandler`（链式保留已有 handler）                             |
+| 全局 JS 错误             | `window.addEventListener('error', …, true)`（捕获阶段，同时识别资源加载失败） |
+| 未捕获 Promise           | `window.addEventListener('unhandledrejection')`                               |
 
 ## 构建优化 {#build-optimization}
 
-- **分包**：element-plus / vue-vendor / vue-i18n / utils 独立 chunk
+- **分包**：见各应用 `vite.config.ts` 的 `manualChunks`。PC 产出 `element-plus` / `vue-i18n` / `vue-vendor` / `utils`，H5 产出 `vant` / `vconsole` / `vue-i18n` / `vue-vendor` / `utils`。匹配只作用于「最后一个 `node_modules/` 之后」的包路径（仓库目录名含 `vue`，直接匹配绝对路径会把所有依赖吸进 `vue-vendor`），且更具体的判断排在 `vue` 之前。未列出的三方库（如 `echarts`）交给 Rollup 自动归入按需加载的路由 chunk
 - **压缩**：Gzip + Brotli 双格式（nginx 预读压缩文件）
 - **懒加载**：所有页面路由组件均为动态导入
 - **按需加载**：在页面/组件内显式 `import` Element Plus 与 `@element-plus/icons-vue`；Vite `manualChunks` 将 `element-plus` 等打入独立 chunk

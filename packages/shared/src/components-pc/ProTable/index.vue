@@ -37,7 +37,7 @@ interface Props {
   immediate?: boolean
   /** 是否开启多选 */
   selection?: boolean
-  /** 空数据文案（默认使用 i18n 的 common.noData，未注入 i18n 时回退此值） */
+  /** 空数据文案，默认「暂无数据」；需要多语言时由调用方传入已翻译好的文案 */
   emptyText?: string
 }
 

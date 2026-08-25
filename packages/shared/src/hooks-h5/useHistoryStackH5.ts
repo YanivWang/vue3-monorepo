@@ -33,7 +33,8 @@ const native = {
 }
 
 /**
- * 安装全局 History 打点：记录 push / replace（用于调试）；后退仅依赖 popstate。
+ * 安装全局 History 打点：patch `pushState` / `replaceState` 记录本次导航动作，
+ * 并在捕获阶段监听 `popstate` 标记后退；三者写入的 `pendingNavAction` 由 `afterEach` 消费。
  * 须在 createRouter 之后、首次导航前调用一次（由 bind() 触发）
  */
 function ensureHistoryInstrumentation(): void {
@@ -85,7 +86,7 @@ function inferPopFromStack(stack: readonly { name: string }[], fromName: string,
 }
 
 /**
- * H5 栈式 keep-alive：严格区分 push / replace / pop，与计划 §5.7 一致。
+ * H5 栈式 keep-alive：严格区分 push / replace / pop。
  *
  * 说明：Vue Router 4 在 **beforeEach 之后**才调用 `pushState`/`replaceState`，
  * 若在 beforeEach 里读 History 打点会混入「上一次导航」的残留，导致误判。

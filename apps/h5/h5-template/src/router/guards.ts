@@ -9,10 +9,10 @@ import { i18n } from '@/composables/useI18n'
  * H5 路由守卫：
  * 1. 栈式 keep-alive 入/出栈（依赖 @vue3-monorepo/shared/hooks-h5）
  * 2. requiresAuth 校验 token；缺失时按宿主不同走差异化登录入口：
- *      - browser  → 跳转 /login
- *      - wx-mini  → 拉起小程序登录页（通过 bridge.navigation.openExternal）
- *      - ali-mini → 同上
- *      - native-app → 调 bridge.auth.login 让原生处理
+ *      - browser    → 跳转 /login
+ *      - wx-mini    → 调 bridge.auth.login（策略内部 navigateTo 小程序登录页）；失败则中止本次导航
+ *      - ali-mini   → 同上
+ *      - native-app → 调 bridge.auth.login 让原生处理；失败回落 /login
  * 3. 动态设置 document.title / native setTitle（通过 bridge）
  */
 export function setupRouterGuards(router: Router): void {

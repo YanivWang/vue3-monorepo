@@ -4,7 +4,7 @@ import { ref } from 'vue'
 /**
  * H5 端权限 store（简化版，不做动态路由，直接以可见菜单 + 权限码表驱动 UI）
  *
- * - 如业务需要"动态菜单接口 → 扁平化 → 守卫匹配"，参考 admin/src/stores/modules/permission.ts
+ * - 如业务需要"动态菜单接口 → 扁平化 → 守卫匹配"，参考 apps/pc/pc-admin-template/src/stores/modules/permission.ts
  * - 当前场景下 H5 页面数有限，固定声明于 router/routes.ts
  */
 export const usePermissionStore = defineStore('h5-permission', () => {

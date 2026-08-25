@@ -14,7 +14,15 @@
 pnpm run create-app
 ```
 
-按提示选择 **H5** 或 **PC Admin**、目录名、包名、根脚本前缀、Vite 开发端口等；脚本会从 `h5-template` / `pc-admin-template` 复制目录，并自动改根 `package.json` 脚本、`tsconfig.json` references、`vite.config.ts` 端口、`vitest.workspace.ts` 等。
+按提示选择 **H5** 或 **PC Admin**、目录名、包名、根脚本前缀、Vite 开发端口等。脚本会（见 `scripts/create-app.mjs`）：
+
+1. 从 `h5-template` / `pc-admin-template` 复制目录（跳过 `node_modules`、`dist`、`coverage`、`.git`、`.turbo`）；
+2. 改新包 `package.json` 的 `name` / `description`，替换 `vite.config.ts` 里的 `server.port`，并把 README 中的模板路径与标题换成新应用；
+3. 在根 `package.json` 追加 `<前缀>:dev`、`<前缀>:build`、`<前缀>:typecheck`、`<前缀>:test`（两种模板都带 `test` 脚本，故对称生成）；
+4. 在根 `tsconfig.json` 的 `references` 中插入应用与其 `tsconfig.node.json` 两条（插在 `{ "path": "./docs" }` 之前）；
+5. 在 `vitest.workspace.ts` 的数组首位插入新应用目录。
+
+脚本**不会**改的：`pnpm-workspace.yaml`（`apps/pc/*`、`apps/h5/*` 已通配）、`commitlint.config.ts` 的 `scope-enum`、`docker/` 与 CI。
 
 **非交互**（CI 或脚本）可一次传齐参数，例如：
 

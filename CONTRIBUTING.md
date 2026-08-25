@@ -29,8 +29,12 @@ pnpm run admin:dev
 | `develop`         | 集成分支，功能开发完成后合并到此 |
 | `feature/xxx`     | 功能开发分支                     |
 | `fix/xxx`         | Bug 修复分支                     |
+| `hotfix/xxx`      | 从 `main` 切出的生产紧急修复     |
+| `release/xxx`     | 版本发布准备                     |
 | `docs/xxx`        | 文档更新分支                     |
 | `chore/xxx`       | 构建/依赖/配置等杂项             |
+
+分支模型全貌与 hotfix / release 的合并流程见文档站 [分支策略](docs/guide/branch-strategy.md)。
 
 ## 提交规范
 
@@ -46,18 +50,20 @@ pnpm run admin:dev
 
 **type 类型：**
 
-| type       | 说明                   |
-| ---------- | ---------------------- |
-| `feat`     | 新功能                 |
-| `fix`      | Bug 修复               |
-| `docs`     | 文档变更               |
-| `style`    | 代码格式（不影响功能） |
-| `refactor` | 重构（非 feat/fix）    |
-| `perf`     | 性能优化               |
-| `test`     | 测试相关               |
-| `chore`    | 构建/依赖/工具配置     |
-| `ci`       | CI/CD 相关             |
-| `wip`      | 进行中（临时提交）     |
+| type       | 说明                             |
+| ---------- | -------------------------------- |
+| `feat`     | 新功能                           |
+| `fix`      | Bug 修复                         |
+| `docs`     | 文档变更                         |
+| `style`    | 代码格式（不影响功能）           |
+| `refactor` | 重构（非 feat/fix）              |
+| `perf`     | 性能优化                         |
+| `test`     | 测试相关                         |
+| `build`    | 构建系统或依赖变更               |
+| `ci`       | CI/CD 相关                       |
+| `chore`    | 其他杂项（不改 src / test）      |
+| `revert`   | 回滚提交                         |
+| `wip`      | 进行中（临时提交，不建议进主干） |
 
 **示例：**
 
@@ -67,7 +73,9 @@ git commit -m "fix(http): 修复并发请求时 token 刷新死循环"
 git commit -m "docs: 更新 ProTable 组件文档"
 ```
 
-> Husky 已配置 `commit-msg` 钩子，不符合规范的提交会被拒绝。
+`scope` 也有白名单（`admin`、`h5`、`docs`、`shared`、`js-bridge`、`request-pc` 等），完整清单与说明见根目录 `commitlint.config.ts` 的 `scope-enum`。
+
+> Husky 已配置 `commit-msg` 钩子（commitlint）与 `pre-commit` 钩子（`check:refs` → `check:request-core` → `lint-staged`），不符合规范的提交会被拒绝。
 
 ## Pull Request 流程
 
@@ -80,6 +88,7 @@ git commit -m "docs: 更新 ProTable 组件文档"
    pnpm test:run
    pnpm build
    ```
+   大改共享包或发版前，可直接跑一次 `pnpm run verify:full`（在上述基础上还含 `check:refs`、`check:request-core`、`check:theme` 与 `prettier --check .`）。
 3. 推送分支并创建 PR，目标分支为 `develop`
 4. PR 描述中说明变更内容、影响范围、测试方式
 5. 团队流水线/门禁通过后（若已配置），Code Review 完成后合并
