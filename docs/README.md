@@ -65,4 +65,4 @@ H5 与宿主的 **JSBridge 协议**在应用内：`../apps/h5/h5-template/docs/b
 
 ## 维护
 
-组件或对外能力变更时，请同步更新本包相应页面（含 `guide/` 与 `components/`），并遵守仓库根目录 [`CONTRIBUTING.md`](../CONTRIBUTING.md)。
+组件或对外能力变更时，请同步更新本包相应页面（含 `guide/` 与 `components/`），并遵守仓库根目录 [`CONTRIBUTING.md`](https://github.com/YanivWang/vue3-monorepo/blob/main/CONTRIBUTING.md)。

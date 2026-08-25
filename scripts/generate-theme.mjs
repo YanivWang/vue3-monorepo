@@ -1,8 +1,23 @@
+/**
+ * generate-theme：由 packages/shared/src/styles/theme-palette.json 生成主题产物。
+ *
+ * 产物（均带 AUTO-GENERATED 头，请勿手改）：
+ *   tokens/_variables.scss     Sass 构建期默认值
+ *   tokens/_brands.scss        html[data-brand=…] 品牌覆盖（默认品牌用 :root，不重复）
+ *   tokens/_dark.scss          html.dark 业务 token 覆盖
+ *   tokens/_dark-element.scss  html.dark 下的 Element Plus --el-* 覆盖
+ *   brands.config.ts           运行时可用的 brandConfigs / brandPalettes
+ *
+ * 由 `pnpm generate:theme` 手动调用，并被 admin:build / h5:build 前置执行；
+ * `pnpm run check:theme` 会重跑本脚本比对 diff。
+ */
+import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+const root = join(__dirname, '..')
 const stylesDir = join(__dirname, '../packages/shared/src/styles')
 const tokensDir = join(stylesDir, 'tokens')
 const palette = JSON.parse(readFileSync(join(stylesDir, 'theme-palette.json'), 'utf8'))
@@ -219,10 +234,7 @@ const brandIdUnion = brandIds.map(id => `'${id}'`).join(' | ')
 const brandConfigEntries = brandIds
   .map(id => {
     const brand = brands[id]
-    const fields = [
-      `id: '${id}'`,
-      ...Object.keys(brandCssVarMap).map(key => `${key}: '${brand[key]}'`)
-    ]
+    const fields = [`id: '${id}'`, ...Object.keys(brandCssVarMap).map(key => `${key}: '${brand[key]}'`)]
 
     return `  ${id}: {\n    ${fields.join(',\n    ')}\n  }`
   })
@@ -252,10 +264,26 @@ ${brandConfigEntries}
 export const brandPalettes = Object.values(brandConfigs)
 `
 
-writeFileSync(join(tokensDir, '_variables.scss'), variables)
-writeFileSync(join(tokensDir, '_brands.scss'), brandsScss)
-writeFileSync(join(tokensDir, '_dark.scss'), darkScss)
-writeFileSync(join(tokensDir, '_dark-element.scss'), darkElementScss)
-writeFileSync(join(stylesDir, 'brands.config.ts'), brandsConfigTs)
+const written = [
+  join(tokensDir, '_variables.scss'),
+  join(tokensDir, '_brands.scss'),
+  join(tokensDir, '_dark.scss'),
+  join(tokensDir, '_dark-element.scss'),
+  join(stylesDir, 'brands.config.ts')
+]
+
+writeFileSync(written[0], variables)
+writeFileSync(written[1], brandsScss)
+writeFileSync(written[2], darkScss)
+writeFileSync(written[3], darkElementScss)
+writeFileSync(written[4], brandsConfigTs)
+
+// 产物同样受根 prettier 约束（长的 $font-family-base 等会被折行）。
+// 这里直接格式化一遍，保证「生成结果」与「仓库里已格式化的文件」逐字节一致，
+// 否则 `pnpm run check:theme` / `prettier --check .` 会互相打架。
+execFileSync('node', [join(root, 'node_modules/prettier/bin/prettier.cjs'), '--write', ...written], {
+  cwd: root,
+  stdio: 'ignore'
+})
 
 console.log('Generated theme files from theme-palette.json')

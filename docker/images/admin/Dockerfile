@@ -15,7 +15,7 @@ WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 
-RUN pnpm --filter @vue3-mono/admin build --mode ${BUILD_MODE}
+RUN pnpm --filter @vue3-monorepo/admin build --mode ${BUILD_MODE}
 
 # ─────────────────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS runner

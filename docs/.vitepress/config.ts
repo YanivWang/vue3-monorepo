@@ -22,17 +22,18 @@ export default defineConfig({
     }
   },
 
-  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+  // 站点图标 / Logo：需要时在 docs/public/ 放置资源后再打开下面两处（当前仓库未提供，故不引用避免 404）
+  // head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 
   themeConfig: {
-    logo: '/logo.svg',
+    // logo: '/logo.svg',
     siteTitle: 'vue3-monorepo',
 
     nav: [
       { text: '文档体系', link: '/guide/doc-system' },
       { text: '新手上路', link: '/guide/onboarding' },
       { text: '指南', link: '/guide/getting-started' },
-      // { text: '组件', link: '/components/page-container' },
+      { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
       { text: '贡献', link: '/guide/contributing' }
     ],

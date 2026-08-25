@@ -87,14 +87,16 @@ export default defineConfig(async ({ mode }) => {
       chunkSizeWarningLimit: 1500,
       rollupOptions: {
         output: {
+          // 同 admin：仓库目录名含 "vue"，必须先切到最后一个 node_modules 之后再匹配；
+          // 且 vconsole / vue-i18n 等更具体的判断要排在 'vue' 之前。
           manualChunks(id: string) {
-            if (id.includes('node_modules')) {
-              if (id.includes('vant')) return 'vant'
-              if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router')) return 'vue-vendor'
-              if (id.includes('vue-i18n')) return 'vue-i18n'
-              if (id.includes('axios') || id.includes('dayjs') || id.includes('lodash-es')) return 'utils'
-              if (id.includes('vconsole')) return 'vconsole'
-            }
+            if (!id.includes('node_modules')) return
+            const pkgPath = id.split('node_modules/').pop() ?? ''
+            if (pkgPath.includes('vant')) return 'vant'
+            if (pkgPath.includes('vconsole')) return 'vconsole'
+            if (pkgPath.includes('vue-i18n') || pkgPath.includes('@intlify')) return 'vue-i18n'
+            if (pkgPath.includes('vue') || pkgPath.includes('pinia')) return 'vue-vendor'
+            if (pkgPath.includes('axios') || pkgPath.includes('dayjs') || pkgPath.includes('lodash-es')) return 'utils'
           },
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',

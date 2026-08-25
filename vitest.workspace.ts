@@ -3,9 +3,4 @@
  *
  * 参考：https://vitest.dev/guide/workspace.html
  */
-export default [
-  './apps/pc/pc-admin-template',
-  './apps/h5/h5-template',
-  './packages/shared',
-  './packages/js-bridge'
-]
+export default ['./apps/pc/pc-admin-template', './apps/h5/h5-template', './packages/shared', './packages/js-bridge']

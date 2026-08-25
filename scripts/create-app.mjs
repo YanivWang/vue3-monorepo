@@ -254,12 +254,13 @@ async function main() {
   const rootPkg = JSON.parse(readFileSync(rootPkgPath, 'utf8'))
   const scripts = rootPkg.scripts ?? {}
 
-  const newScriptKeys = []
-  if (type === 'admin') {
-    newScriptKeys.push(`${shortPrefix}:dev`, `${shortPrefix}:build`, `${shortPrefix}:typecheck`, `${shortPrefix}:test`)
-  } else {
-    newScriptKeys.push(`${shortPrefix}:dev`, `${shortPrefix}:build`, `${shortPrefix}:typecheck`)
-  }
+  // 两个模板都带 test 脚本，根别名对称生成
+  const newScriptKeys = [
+    `${shortPrefix}:dev`,
+    `${shortPrefix}:build`,
+    `${shortPrefix}:typecheck`,
+    `${shortPrefix}:test`
+  ]
 
   for (const k of newScriptKeys) {
     if (k in scripts) {
@@ -307,9 +308,7 @@ async function main() {
   scripts[`${shortPrefix}:dev`] = filterArg(pkgName) + 'dev'
   scripts[`${shortPrefix}:build`] = filterArg(pkgName) + 'build'
   scripts[`${shortPrefix}:typecheck`] = filterArg(pkgName) + 'typecheck'
-  if (type === 'admin') {
-    scripts[`${shortPrefix}:test`] = filterArg(pkgName) + 'test'
-  }
+  scripts[`${shortPrefix}:test`] = filterArg(pkgName) + 'test'
   rootPkg.scripts = scripts
 
   if (appendBuild) {
@@ -354,7 +353,13 @@ async function main() {
   if (vws.includes(`'${vwsPathRel}'`)) {
     console.warn('vitest.workspace.ts 已含该路径，跳过')
   } else {
-    vws = vws.replace(`, './packages/shared']`, `, '${vwsPathRel}', './packages/shared']`)
+    // 数组可能被 prettier 折成单行或多行，两种写法都插到 `export default [` 之后的首位
+    const multiline = /export default \[[^\S\n]*\n([^\S\n]*)/
+    if (multiline.test(vws)) {
+      vws = vws.replace(multiline, (match, indent) => `${match}'${vwsPathRel}',\n${indent}`)
+    } else {
+      vws = vws.replace('export default [', `export default ['${vwsPathRel}', `)
+    }
     if (!vws.includes(vwsPathRel)) {
       console.error('未能自动写入 vitest.workspace.ts，请手改: export default 数组中增加 ' + vwsPathRel)
     } else {

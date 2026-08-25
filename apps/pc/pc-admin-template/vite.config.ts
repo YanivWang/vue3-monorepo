@@ -76,14 +76,22 @@ export default defineConfig(async ({ mode }) => {
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
+          // 只在「最后一个 node_modules 之后」的包路径上匹配：仓库目录名本身含 "vue"（vue3-monorepo），
+          // 直接对绝对路径 id 做 includes('vue') 会把所有依赖都吸进 vue-vendor。
+          // 另：更具体的判断必须排在 'vue' 之前，否则 vue-i18n 等永远命不中。
           manualChunks(id: string) {
-            if (id.includes('node_modules')) {
-              if (id.includes('element-plus')) return 'element-plus'
-              if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router')) return 'vue-vendor'
-              if (id.includes('vue-i18n')) return 'vue-i18n'
-              if (id.includes('axios') || id.includes('dayjs') || id.includes('lodash-es') || id.includes('js-cookie'))
-                return 'utils'
-            }
+            if (!id.includes('node_modules')) return
+            const pkgPath = id.split('node_modules/').pop() ?? ''
+            if (pkgPath.includes('element-plus')) return 'element-plus'
+            if (pkgPath.includes('vue-i18n') || pkgPath.includes('@intlify')) return 'vue-i18n'
+            if (pkgPath.includes('vue') || pkgPath.includes('pinia')) return 'vue-vendor'
+            if (
+              pkgPath.includes('axios') ||
+              pkgPath.includes('dayjs') ||
+              pkgPath.includes('lodash-es') ||
+              pkgPath.includes('js-cookie')
+            )
+              return 'utils'
           },
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',

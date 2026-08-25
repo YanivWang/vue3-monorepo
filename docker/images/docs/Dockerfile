@@ -15,7 +15,7 @@ RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 # 构建上下文无 .git 且无需在镜像内装 git；关闭 lastUpdated 的 git 元数据（见 docs/.vitepress/config.ts）
 ENV VITEPRESS_NO_GIT=1
 
-RUN pnpm --filter @vue3-mono/docs build
+RUN pnpm --filter @vue3-monorepo/docs build
 
 # ─────────────────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS runner

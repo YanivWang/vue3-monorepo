@@ -59,9 +59,10 @@ function toPayload(metric: Metric): WebVitalPayload {
 
 export function reportWebVital(metric: Metric): void {
   const built = toPayload(metric)
-  const afterBefore = sdkWebVitalsConfig.beforeWebVitalReport?.(built) ?? built
-  if (afterBefore === null) return
-  const payload = afterBefore
+  // 注意用三元而非 `?? built`：`beforeWebVitalReport` 返回 null 表示「丢弃该条」，`??` 会把 null 换回 built
+  const beforeHook = sdkWebVitalsConfig.beforeWebVitalReport
+  const payload = beforeHook ? beforeHook(built) : built
+  if (payload === null) return
   if (sdkWebVitalsConfig.debug) {
     console.info(`[Web Vitals] ${metric.name}`, payload)
   }

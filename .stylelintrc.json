@@ -63,10 +63,7 @@
       }
     },
     {
-      "files": [
-        "packages/shared/src/styles/tokens/**",
-        "packages/shared/src/styles/patterns/**"
-      ],
+      "files": ["packages/shared/src/styles/tokens/**", "packages/shared/src/styles/patterns/**"],
       "rules": {
         "color-no-hex": null,
         "value-keyword-case": null,

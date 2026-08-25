@@ -108,9 +108,10 @@ function buildPayload(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' |
 
 export function reportClientError(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' | 'appVersion'>): void {
   const built = buildPayload(partial)
-  const afterBefore = sdkClientErrorConfig.beforeErrorReport?.(built) ?? built
-  if (afterBefore === null) return
-  const payload = afterBefore
+  // 注意用三元而非 `?? built`：`beforeErrorReport` 返回 null 表示「丢弃该条」，`??` 会把 null 换回 built
+  const beforeHook = sdkClientErrorConfig.beforeErrorReport
+  const payload = beforeHook ? beforeHook(built) : built
+  if (payload === null) return
   if (sdkClientErrorConfig.debug) {
     console.error('[ClientError]', payload)
   }
