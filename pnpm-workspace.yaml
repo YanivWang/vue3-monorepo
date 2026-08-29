@@ -37,7 +37,7 @@ catalog:
   axios: ^1.18.0
   vue-i18n: ^9.14.4
   '@vueuse/core': ^10.11.0
-  dayjs: ^1.11.11
+  dayjs: ^1.11.23
   lodash-es: ^4.17.21
   js-cookie: ^3.0.5
   nprogress: ^0.2.0
