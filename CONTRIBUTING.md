@@ -89,7 +89,7 @@ git commit -m "docs: 更新 ProTable 组件文档"
    pnpm test:run
    pnpm build
    ```
-   大改共享包或发版前，可直接跑一次 `pnpm run verify:full`（在上述基础上还含 `check:refs`、`check:request-core`、`check:workspace`、`check:theme`、`prettier --check .` 与覆盖率阈值）——这与 CI 跑的是同一条命令。
+   大改共享包或发版前，可直接跑一次 `pnpm run verify:full`（在上述基础上还含 `check:refs`、`check:request-core`、`check:workspace`、`check:audit`、`check:theme`、`prettier --check .` 与覆盖率阈值）——这与 CI 跑的是同一条命令。
 3. 推送分支并创建 PR，目标分支为 `develop`
 4. PR 描述中说明变更内容、影响范围、测试方式
 5. CI（`.github/workflows/ci.yml`，在 PR 上跑 `verify:full`）通过后，Code Review 完成后合并

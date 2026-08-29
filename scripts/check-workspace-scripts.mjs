@@ -9,8 +9,8 @@
  * 1. 根 `typecheck` 是 `pnpm -r --parallel run --if-present typecheck`。`--if-present`
  *    的语义是「没有这个脚本就跳过」——**不报错**。新建的包忘了写 typecheck 脚本，
  *    门禁会安安静静地不检查它，输出里连一行提示都没有。
- * 2. `vitest.workspace.ts` 是一份**显式清单**。不在清单里的包，`pnpm test` 不会
- *    发现它的测试文件，同样没有任何报错——测试写了等于没写。
+ * 2. 根 `vitest.config.ts` 的 `test.projects` 是一份**显式清单**。不在清单里的包，
+ *    `pnpm test` 不会发现它的测试文件，同样没有任何报错——测试写了等于没写。
  *
  * 这两个洞的共性是「失败时表现为通过」，比直接报错危险得多。本脚本把它们变成
  * 显式失败：新增包时要么补上脚本/清单，要么在这里被拦住。
@@ -19,8 +19,8 @@
  *
  *  1) 每个 workspace 包都必须声明 `typecheck` 脚本
  *  2) 含 *.spec.ts / *.test.ts 的包必须声明 `test` 脚本
- *  3) 含测试文件的包必须出现在 vitest.workspace.ts 的清单里
- *  4) vitest.workspace.ts 里列出的路径必须真实存在且是 workspace 包
+ *  3) 含测试文件的包必须出现在 vitest.config.ts 的 test.projects 里
+ *  4) test.projects 里列出的路径必须真实存在且是 workspace 包
  */
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
@@ -83,18 +83,18 @@ function hasTestFile(dir) {
   return false
 }
 
-// ---------- vitest.workspace.ts 的清单 ----------
-const vitestWorkspaceFile = join(ROOT, 'vitest.workspace.ts')
-const vitestWorkspaceSrc = readFileSync(vitestWorkspaceFile, 'utf8')
-const listed = [...vitestWorkspaceSrc.matchAll(/['"]\.\/([^'"]+)['"]/g)].map((m) => m[1])
+// ---------- vitest.config.ts 里 test.projects 的清单 ----------
+const vitestConfigSrc = readFileSync(join(ROOT, 'vitest.config.ts'), 'utf8')
+const projectsBlock = /projects:\s*\[([\s\S]*?)\]/.exec(vitestConfigSrc)?.[1] ?? ''
+const listed = [...projectsBlock.matchAll(/['"]\.\/([^'"]+)['"]/g)].map((m) => m[1])
 
 if (listed.length === 0) {
-  fail('vitest.workspace.ts 里没解析出任何项目路径 —— 格式变了？本脚本按 "./路径" 字面量匹配。')
+  fail('vitest.config.ts 的 test.projects 里没解析出任何路径 —— 格式变了？本脚本按 "./路径" 字面量匹配。')
 }
 
 for (const dir of listed) {
   if (!existsSync(join(ROOT, dir, 'package.json'))) {
-    fail(`vitest.workspace.ts 列了 ./${dir}，但它不是一个 workspace 包（找不到 package.json）`)
+    fail(`test.projects 列了 ./${dir}，但它不是一个 workspace 包（找不到 package.json）`)
   }
 }
 
@@ -118,7 +118,7 @@ for (const ws of workspaces) {
   }
   if (!listed.includes(ws.dir)) {
     fail(
-      `${label} 有测试文件，但不在 vitest.workspace.ts 的清单里 —— ` +
+      `${label} 有测试文件，但不在 vitest.config.ts 的 test.projects 里 —— ` +
         `\`pnpm test\` 根本不会跑它，且不会报错。把 './${ws.dir}' 加进去。`,
     )
   }
@@ -134,5 +134,5 @@ if (errors.length > 0) {
 
 console.log(
   `✅ check-workspace-scripts 通过：${workspaces.length} 个 workspace 均声明 typecheck；` +
-    `${listed.length} 个项目已挂在 vitest.workspace.ts 上。`,
+    `${listed.length} 个项目已挂在 vitest.config.ts 的 test.projects 上。`,
 )

@@ -1,0 +1,45 @@
+# 依赖更新：catalog 把版本锁死在 pnpm-workspace.yaml 一处，锁得住漂移，
+# 但锁不住「一直旧下去」。dependabot 负责把升级变成可 review 的 PR，
+# 而 PR 会跑 ci.yml 的 verify:full——升级有没有把仓库跑挂，机器先告诉你。
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Shanghai
+    open-pull-requests-limit: 5
+    commit-message:
+      # 与 commitlint 的 type-enum / scope-enum 对齐，否则 PR 的提交信息过不了门禁
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps)'
+    groups:
+      # 分组降噪：工程化工具链一起升，业务运行时依赖单独看
+      tooling:
+        patterns:
+          - 'eslint*'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - 'prettier'
+          - 'stylelint*'
+          - 'vitest'
+          - '@vitest/*'
+          - 'husky'
+          - 'lint-staged'
+          - '@commitlint/*'
+      types:
+        patterns:
+          - '@types/*'
+    ignore:
+      # 主版本升级往往含破坏性变更，交给人主动发起，不由机器人推
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'ci'

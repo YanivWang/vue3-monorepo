@@ -18,7 +18,7 @@
 
 ## 2. 测试
 
-在**仓库根**执行时，Vitest 读取根目录的 **`vitest.workspace.ts`（projects 模式）**。默认至少包含：
+在**仓库根**执行时，Vitest 读取根 `vitest.config.ts` 的 **`test.projects`**（vitest 3 起取代已弃用的 `vitest.workspace.ts`）。默认至少包含：
 
 - `apps/pc/pc-admin-template`（模板包，与业务应用并列进 workspace）
 - `apps/h5/h5-template`（同上）
@@ -27,7 +27,7 @@
 - `packages/request-core`（`utils` 纯函数单测）
 - `packages/web-monitor`（监控投递 `postJsonReport` 的降级链路单测）
 
-使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进该数组（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。
+使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进 `test.projects`（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。
 
 | 命令                                       | 作用                                                                                                                                                                                                                                                        |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -42,7 +42,7 @@
 
 根 `package.json` 中**一字不差**的链为：
 
-`check:refs` → `check:request-core` → `check:workspace` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:coverage` → `build`
+`check:refs` → `check:request-core` → `check:workspace` → `check:audit` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:coverage` → `build`
 
 其中 `build` 即 `admin:build` → `h5:build` → `docs:build`。
 
@@ -50,7 +50,7 @@
 
 **注意**：`build` 会构建三端，耗时较长；日常只改文档时可用 `pnpm run docs:build` 等分段命令代替，不必每次 `verify:full`。
 
-## 4. 仓库特有四项检查
+## 4. 仓库特有五项检查
 
 实现以仓库内脚本为准，摘要如下（详见 `scripts/` 下对应脚本的文件头注释）：
 
@@ -59,6 +59,7 @@
 | `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                      |
 | `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
 | `pnpm run check:workspace`    | `scripts/check-workspace-scripts.mjs`：堵「门禁静默跳过」的两个洞——① 根 `typecheck` 带 `--if-present`，新包漏写 `typecheck` 脚本会被**无声跳过**；② `vitest.workspace.ts` 是显式清单，不在其中的包写了测试也**不会被 `pnpm test` 发现**。两者的失败表现都是「通过」，本脚本把它们变成显式失败      |
+| `pnpm run check:audit`        | `scripts/check-audit.mjs`：依赖安全公告的**棘轮门禁**。按 GHSA ID 记基线，基线外的一律失败；`critical` 级不入基线（`--update` 拒绝写入），必须当场处理。固定查询官方 registry（私有源/镜像没有 audit 端点）。离线时用 `SKIP_AUDIT=1` 显式跳过——查不到公告会**直接失败**，不会「查不动就当通过」    |
 | `pnpm run check:theme`        | `scripts/check-theme.mjs`：重跑 `generate:theme` 后用 `git status --porcelain` 比对 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts` 五个 AUTO-GENERATED 产物；有 diff 说明产物被手改或忘了重新生成（见 [Design Token](./design-tokens.md)）              |
 
 在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通前两项；改 `theme-palette.json` 或主题产物时补跑 `check:theme`。

@@ -32,7 +32,9 @@ catalog:
   vue-router: ^4.3.3
   pinia: ^2.1.7
   pinia-plugin-persistedstate: ^3.2.3
-  axios: ^1.7.2
+  # 下限锁在 1.18.0：1.18.0 以下有 7 条 high 级公告（含 config.proxy 的
+  # 原型污染 MITM），axios 是生产依赖，不接受基线豁免
+  axios: ^1.18.0
   vue-i18n: ^9.14.4
   '@vueuse/core': ^10.11.0
   dayjs: ^1.11.11
@@ -86,8 +88,8 @@ catalog:
   husky: ^9.1.7
   lint-staged: ^16.4.0
   # ---------- 测试 ----------
-  vitest: ^2.1.9
-  '@vitest/coverage-v8': ^2.1.9
+  vitest: ^3.2.6
+  '@vitest/coverage-v8': ^3.2.6
   '@vue/test-utils': ^2.4.6
   happy-dom: ^20.9.0
   # ---------- 文档站 ----------

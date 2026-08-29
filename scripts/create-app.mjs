@@ -346,22 +346,22 @@ async function main() {
     }
   }
 
-  // vitest.workspace.ts
-  const vwsPath = join(ROOT, 'vitest.workspace.ts')
+  // vitest.config.ts 的 test.projects（vitest 3 起取代 vitest.workspace.ts）
+  const vwsPath = join(ROOT, 'vitest.config.ts')
   let vws = readFileSync(vwsPath, 'utf8')
   const vwsPathRel = './' + targetRel.replace(/\\/g, '/')
   if (vws.includes(`'${vwsPathRel}'`)) {
-    console.warn('vitest.workspace.ts 已含该路径，跳过')
+    console.warn('vitest.config.ts 的 test.projects 已含该路径，跳过')
   } else {
-    // 数组可能被 prettier 折成单行或多行，两种写法都插到 `export default [` 之后的首位
-    const multiline = /export default \[[^\S\n]*\n([^\S\n]*)/
+    // 数组可能被 prettier 折成单行或多行，两种写法都插到 `projects: [` 之后的首位
+    const multiline = /projects:\s*\[[^\S\n]*\n([^\S\n]*)/
     if (multiline.test(vws)) {
       vws = vws.replace(multiline, (match, indent) => `${match}'${vwsPathRel}',\n${indent}`)
     } else {
-      vws = vws.replace('export default [', `export default ['${vwsPathRel}', `)
+      vws = vws.replace('projects: [', `projects: ['${vwsPathRel}', `)
     }
     if (!vws.includes(vwsPathRel)) {
-      console.error('未能自动写入 vitest.workspace.ts，请手改: export default 数组中增加 ' + vwsPathRel)
+      console.error('未能自动写入 vitest.config.ts，请手改: test.projects 数组中增加 ' + vwsPathRel)
     } else {
       writeFileSync(vwsPath, vws, 'utf8')
     }

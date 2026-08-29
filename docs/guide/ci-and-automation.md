@@ -9,6 +9,8 @@
 | [`.github/workflows/ci.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/ci.yml)                               | 任意 `pull_request`；`push` 到 `main`/`master`；亦可 `workflow_dispatch`                                                    | 单 job 跑 `pnpm run verify:full`（全量约 30s），并把 `coverage/` 作为 artifact 上传（保留 7 天）                                   |
 | [`.github/workflows/docs-github-pages.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/docs-github-pages.yml) | `push` 到 `main`/`master` 且路径含 `docs/**`、`pnpm-lock.yaml`、`package.json` 或本 workflow 文件；亦可 `workflow_dispatch` | 在 `docs` 目录执行 `pnpm run build`（带 `VITEPRESS_BASE` / `VITEPRESS_NO_GIT`），将 `docs/.vitepress/dist` 发布到 **GitHub Pages** |
 
+| [`.github/dependabot.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/dependabot.yml) | 每周一 09:00（Asia/Shanghai）扫 npm；每月扫 github-actions | 把依赖升级变成可 review 的 PR。catalog 锁得住版本漂移，锁不住「一直旧下去」；PR 会跑 `ci.yml` 的 `verify:full`，升级有没有跑挂机器先告诉你。major 升级不由机器人推 |
+
 **说明**：
 
 - 构建步骤使用 pnpm 与 lockfile 安装依赖（`pnpm install --frozen-lockfile`），与本地一致。
