@@ -98,11 +98,14 @@ export function uniqueBy<T>(arr: T[], key: keyof T): T[] {
   })
 }
 
+/** 树节点：children 里放的仍然是树节点，而不是原始的平铺项 */
+export type TreeNode<T> = T & { children?: TreeNode<T>[] }
+
 /** 将平铺数组转换为树形结构 */
 export function arrayToTree<T extends { id: number | string; parentId: number | string | null }>(
   list: T[],
   rootId: number | string | null = null,
-): (T & { children?: T[] })[] {
+): TreeNode<T>[] {
   return list
     .filter((item) => item.parentId === rootId)
     .map((item) => ({

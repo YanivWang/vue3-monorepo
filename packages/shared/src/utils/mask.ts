@@ -24,5 +24,8 @@ export function maskIdCard(id: string): string {
 /** 通用字符串脱敏 */
 export function maskSecret(input: string, keepStart = 3, keepEnd = 3): string {
   if (input.length <= keepStart + keepEnd) return '*'.repeat(input.length)
-  return `${input.slice(0, keepStart)}${'*'.repeat(input.length - keepStart - keepEnd)}${input.slice(-keepEnd)}`
+  // keepEnd 为 0 时不能用 slice(-0)：它等价于 slice(0)，会把整个原文接在星号后面，
+  // 一个「全部打码」的调用反而把密钥完整吐出来。
+  const tail = keepEnd > 0 ? input.slice(-keepEnd) : ''
+  return `${input.slice(0, keepStart)}${'*'.repeat(input.length - keepStart - keepEnd)}${tail}`
 }

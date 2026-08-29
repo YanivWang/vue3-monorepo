@@ -30,15 +30,16 @@ export default defineConfig({
       // 只统计真正参与运行时的源码：构建脚本、mock、类型声明、入口 barrel 不计入
       include: ['apps/*/*/src/**/*.{ts,vue}', 'packages/*/src/**/*.{ts,vue}'],
       exclude: ['**/*.spec.ts', '**/*.test.ts', '**/*.d.ts', '**/types/**', '**/mock/**', '**/index.ts'],
-      // 2026-08-29 实测水位（vitest 3 口径）：
-      //   stmts 17.17 / branch 75.46 / funcs 42.44 / lines 17.17
-      // 向下取整作为阈值。这个水位仍然很低，阈值的作用是「不许再掉」，
-      // 不代表覆盖率已经合格。补了测试就跑 pnpm run test:coverage 把数字往上抬。
+      // 2026-08-29 补完 shared/utils 单测后实测（vitest 3 口径）：
+      //   stmts 18.89 / branch 79.26 / funcs 52.73 / lines 18.89
+      // 向下取整作为阈值，只上不下。行覆盖率仍被大量未测的 .vue 视图拖着，
+      // 但函数与分支覆盖已经有实际约束力。补了测试就跑 pnpm run test:coverage
+      // 看新水位，再把下面的数字往上抬。
       thresholds: {
-        lines: 17,
-        statements: 17,
-        functions: 42,
-        branches: 75,
+        lines: 18,
+        statements: 18,
+        functions: 52,
+        branches: 79,
       },
     },
   },
