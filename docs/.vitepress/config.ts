@@ -62,6 +62,7 @@ export default defineConfig({
             { text: 'pnpm workspace 日常操作', link: '/guide/monorepo-workflow' },
             { text: '脚手架一键新增业务应用', link: '/guide/adding-a-new-app' },
             { text: '代码质量与规范约束', link: '/guide/quality-gates' },
+            { text: '可推广的工程化基线', link: '/guide/portable-baseline' },
             { text: '项目与目录约定', link: '/guide/project-conventions' },
             { text: '排障与 FAQ', link: '/guide/troubleshooting' },
             { text: '环境变量', link: '/guide/environment-variables' },
