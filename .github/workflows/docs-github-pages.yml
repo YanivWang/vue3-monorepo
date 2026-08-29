@@ -30,7 +30,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 不显式写 version，与根 package.json 的 packageManager 字段一致，避免 ERR_PNPM_BAD_PM_VERSION
       - name: Install pnpm
