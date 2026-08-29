@@ -34,7 +34,7 @@ jobs:
 
       # 不显式写 version，与根 package.json 的 packageManager 字段一致，避免 ERR_PNPM_BAD_PM_VERSION
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node
         uses: actions/setup-node@v4
