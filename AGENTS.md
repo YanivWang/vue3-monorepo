@@ -73,6 +73,15 @@ pnpm run verify:full   # 统一门禁，提交前跑这个；CI 跑的是同一�
 - commit 走 Conventional Commits，`type` 与 `scope` 都有白名单（见 `commitlint.config.ts`），正文每行 ≤100 字符。**scope 用不在白名单里的值会被 `commit-msg` 钩子直接拒绝。**
 - `pre-commit` 跑 `check:refs` + `check:request-core` + `check:workspace` + `lint-staged`。lint-staged 里 eslint 带 `--fix`、prettier 带 `--write`。
 
+## 引入新方案时：主流优先，不要自创
+
+需要引入基线里没有的工具或写法时，按这个优先级找依据：该技术栈的官方推荐 →
+主流脚手架的默认产物 → 工具自身的默认值 → 生态里的成熟工具。**偏离工具默认值必须
+写得出理由**；确实要自己写脚本时，在文件头写明「为什么现有工具不够用」。
+
+不要采用已弃用或即将移除的 API，也不要为了对齐某个参考项目而硬套用不上的结构。
+完整判断顺序见 [可推广的工程化基线](docs/guide/portable-baseline.md) 的第零节。
+
 ## 给门禁写反例
 
 新增或修改门禁时，**必须实测它会红**：构造一个应当被拦的输入，确认命令以非零码退出，再还原。没做过反例验证的门禁只能算配置——最贵的洞不是报错的门禁，是失败时表现为「通过」的门禁（本仓库已修掉两处这样的洞，见 `scripts/check-workspace-scripts.mjs` 的文件头）。
