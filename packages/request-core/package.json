@@ -13,12 +13,18 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run -c vitest.config.ts",
+    "test:watch": "vitest -c vitest.config.ts"
   },
   "dependencies": {
     "axios": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "happy-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
   }
 }

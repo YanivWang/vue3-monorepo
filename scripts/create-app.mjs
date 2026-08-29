@@ -371,6 +371,7 @@ async function main() {
   console.log('\n完成。请执行（install 不可省，否则新包无 node_modules 链接）:')
   console.log(`  pnpm install`)
   console.log(`  pnpm run check:refs`)
+  console.log(`  pnpm run check:workspace`)
   console.log(`  pnpm --filter ${pkgName} typecheck`)
   console.log(`  pnpm run ${shortPrefix}:dev`)
   console.log('\n提交信息 scope 可继续用 h5 或 admin，或在 commitlint.config.ts 中扩展。')

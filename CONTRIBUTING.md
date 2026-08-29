@@ -75,7 +75,7 @@ git commit -m "docs: 更新 ProTable 组件文档"
 
 `scope` 也有白名单（`admin`、`h5`、`docs`、`shared`、`js-bridge`、`request-pc` 等），完整清单与说明见根目录 `commitlint.config.ts` 的 `scope-enum`。
 
-> Husky 已配置 `commit-msg` 钩子（commitlint）与 `pre-commit` 钩子（`check:refs` → `check:request-core` → `lint-staged`），不符合规范的提交会被拒绝。
+> Husky 已配置 `commit-msg` 钩子（commitlint）与 `pre-commit` 钩子（`check:refs` → `check:request-core` → `check:workspace` → `lint-staged`），不符合规范的提交会被拒绝。
 
 ## Pull Request 流程
 
@@ -88,10 +88,10 @@ git commit -m "docs: 更新 ProTable 组件文档"
    pnpm test:run
    pnpm build
    ```
-   大改共享包或发版前，可直接跑一次 `pnpm run verify:full`（在上述基础上还含 `check:refs`、`check:request-core`、`check:theme` 与 `prettier --check .`）。
+   大改共享包或发版前，可直接跑一次 `pnpm run verify:full`（在上述基础上还含 `check:refs`、`check:request-core`、`check:workspace`、`check:theme`、`prettier --check .` 与覆盖率阈值）——这与 CI 跑的是同一条命令。
 3. 推送分支并创建 PR，目标分支为 `develop`
 4. PR 描述中说明变更内容、影响范围、测试方式
-5. 团队流水线/门禁通过后（若已配置），Code Review 完成后合并
+5. CI（`.github/workflows/ci.yml`，在 PR 上跑 `verify:full`）通过后，Code Review 完成后合并
 
 ## 代码规范
 

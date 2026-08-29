@@ -1,0 +1,62 @@
+# 全仓质量门禁：PR 与 main/master 推送上跑一次 `verify:full`。
+#
+# 为什么是一个 job 跑全部：本仓库 `verify:full` 全量约 30s（引用检查 → 类型 →
+# lint → stylelint → prettier → 测试+覆盖率 → admin/h5/docs 三个构建）。拆成多
+# job 省下的墙钟时间还不如各自 `pnpm install` 的开销，反而让「哪一步红了」要
+# 跨 job 找。等它涨到分钟级再拆。
+#
+# 这个仓库在此之前只有文档站发布工作流，typecheck / 测试 / 架构边界规则全靠本地
+# 自觉——配置很完备，但没有任何东西在合并前强制执行它们。
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify:full
+    runs-on: ubuntu-latest
+    # 与 docs-github-pages.yml 保持一致，避免 Node 20 runner 的弃用告警
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 不显式写 version，与根 package.json 的 packageManager 字段一致，避免 ERR_PNPM_BAD_PM_VERSION
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify
+        run: pnpm run verify:full
+
+      # 覆盖率阈值在 vitest.config.ts 里，跌破会直接让上一步失败；
+      # 这里只是把报告留下来，方便 PR 上点开看是哪些文件掉的。
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 7

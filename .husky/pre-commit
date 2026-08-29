@@ -1,2 +1,7 @@
-pnpm run check:refs && pnpm run check:request-core
+# 三个都是毫秒级的纯元数据校验，放在 pre-commit 不影响手感：
+# - check:refs        workspace / tsconfig paths / references 是否自洽
+# - check:request-core 核心包是否被 UI 依赖污染
+# - check:workspace   新包是否漏了 typecheck 脚本、漏挂 vitest.workspace.ts
+#                     （这两个洞的失败表现是「静默通过」，必须在源头拦）
+pnpm run check:refs && pnpm run check:request-core && pnpm run check:workspace
 pnpm exec lint-staged

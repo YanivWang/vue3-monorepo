@@ -6,6 +6,7 @@
 
 | 文件                                                                                                                                      | 触发                                                                                                                        | 作用                                                                                                                               |
 | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| [`.github/workflows/ci.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/ci.yml)                               | 任意 `pull_request`；`push` 到 `main`/`master`；亦可 `workflow_dispatch`                                                    | 单 job 跑 `pnpm run verify:full`（全量约 30s），并把 `coverage/` 作为 artifact 上传（保留 7 天）                                   |
 | [`.github/workflows/docs-github-pages.yml`](https://github.com/YanivWang/vue3-monorepo/blob/main/.github/workflows/docs-github-pages.yml) | `push` 到 `main`/`master` 且路径含 `docs/**`、`pnpm-lock.yaml`、`package.json` 或本 workflow 文件；亦可 `workflow_dispatch` | 在 `docs` 目录执行 `pnpm run build`（带 `VITEPRESS_BASE` / `VITEPRESS_NO_GIT`），将 `docs/.vitepress/dist` 发布到 **GitHub Pages** |
 
 **说明**：
@@ -15,10 +16,14 @@
 
 ## 与本地脚本的对应关系
 
-| 场景              | 本地                                                                                    | CI（当前）                                                                                  |
-| ----------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 文档站生产构建    | 根执行 `pnpm run docs:build` 或在 `docs` 下 `pnpm run build`                            | `docs` 工作目录下 `pnpm run build`                                                          |
-| 全量预检 / 发版前 | `pnpm run verify:full`                                                                  | **无**全仓统一 job；若团队需要，可新增 workflow 在 PR 上跑 `verify:full` 子集（与成本权衡） |
-| 贡献基线          | 见 [CONTRIBUTING](https://github.com/YanivWang/vue3-monorepo/blob/main/CONTRIBUTING.md) | 可按团队策略增加 `ci.yml` 跑 `lint` / `typecheck` / `test` 等                               |
+| 场景              | 本地                                                                                    | CI（当前）                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 文档站生产构建    | 根执行 `pnpm run docs:build` 或在 `docs` 下 `pnpm run build`                            | `docs` 工作目录下 `pnpm run build`                                                      |
+| 全量预检 / 发版前 | `pnpm run verify:full`                                                                  | `ci.yml` 的 `verify` job 跑**同一条** `verify:full`，PR 与 `main`/`master` 推送都会触发 |
+| 贡献基线          | 见 [CONTRIBUTING](https://github.com/YanivWang/vue3-monorepo/blob/main/CONTRIBUTING.md) | 已由 `ci.yml` 覆盖（`verify:full` 内含 lint / typecheck / test / 构建）                 |
 
-若后续增加「PR 上跑 eslint + test」等工作流，请在本页与 [代码质量与规范约束](./quality-gates.md) 中同步**命令清单**，避免描述与 `package.json` 漂移。
+因为 CI 跑的就是根 `package.json` 里的 `verify:full` 一条命令，**本地与远端不会漂**：改门禁只需改那一条脚本，不必同时改 workflow。新增其他工作流时，仍请在本页与 [代码质量与规范约束](./quality-gates.md) 中同步命令清单。
+
+## 为什么单 job 跑全部
+
+`verify:full` 全量约 30 秒（引用检查 → 类型 → lint → stylelint → prettier → 测试+覆盖率 → admin/h5/docs 三个构建）。拆成多 job 并行省下的墙钟时间，还不如各 job 各自 `pnpm install` 的开销，反而让「哪一步红了」要跨 job 找。等它涨到分钟级再拆。

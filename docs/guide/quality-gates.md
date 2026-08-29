@@ -24,31 +24,33 @@
 - `apps/h5/h5-template`（同上）
 - `packages/shared`
 - `packages/js-bridge`（Bridge 策略与 `createBridge` 等单测）
+- `packages/request-core`（`utils` 纯函数单测）
+- `packages/web-monitor`（监控投递 `postJsonReport` 的降级链路单测）
 
 使用 `pnpm run create-app` 时，脚本会把**新应用目录**追加进该数组（与根 `pnpm test` 一致；新包内测试脚本与用例仍以模板为准）。**不包含** 文档包 `@vue3-monorepo/docs`（文档站不进该 workspace）。因此 `pnpm run test:run` 跑的是 **workspace 文件里列出的 project** 的测试，而不是「全 monorepo 每个包各跑一遍」。
 
-| 命令                                       | 作用                                                                                                                                                                                                                                          |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述 `vitest.workspace.ts`                                                                                                                                                                                      |
-| `pnpm run test:watch`                      | 交互/watch，适合 TDD                                                                                                                                                                                                                          |
-| `pnpm run test:coverage`                   | 覆盖率；对接 CI 时打开阈值策略                                                                                                                                                                                                                |
-| `pnpm run admin:test` / `pnpm run h5:test` | `pnpm --filter` 在**单包目录**内执行各 app 的 `test` 脚本；配置以各应用自己的 `vitest.config.ts` 为准。若某包**未**声明 `test`，pnpm 会提示无脚本且**仍以 0 退出**，容易误以为跑过测试——模板中 admin / h5 已提供 `test`，新增应用请自行对齐。 |
+| 命令                                       | 作用                                                                                                                                                                                                                                                        |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述 `vitest.workspace.ts`                                                                                                                                                                                                    |
+| `pnpm run test:watch`                      | 交互/watch，适合 TDD                                                                                                                                                                                                                                        |
+| `pnpm run test:coverage`                   | 覆盖率，**阈值已开**（`vitest.config.ts` 的 `test.coverage.thresholds`）。数值取自接入当天实测水位，作用是**防退化**而非达标；跌破即失败，`verify:full` 与 CI 跑的都是这条                                                                                  |
+| `pnpm run admin:test` / `pnpm run h5:test` | `pnpm --filter` 在**单包目录**内执行各 app 的 `test` 脚本；配置以各应用自己的 `vitest.config.ts` 为准。若某包**未**声明 `test`，pnpm 会提示无脚本且**仍以 0 退出**，容易误以为跑过测试——现在这一类「静默通过」由 `pnpm run check:workspace` 兜住（见 §4）。 |
 
-根 `verify:full` 里串联的是**根** `test:run`；若只关心某一 app，可在该 app 下单独跑 `admin:test` / `h5:test`。
+根 `verify:full` 里串联的是**根** `test:coverage`（同一批用例，额外校验覆盖率阈值）；若只关心某一 app，可在该 app 下单独跑 `admin:test` / `h5:test`。
 
 ## 3. 全量校验 `verify:full`
 
 根 `package.json` 中**一字不差**的链为：
 
-`check:refs` → `check:request-core` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:run` → `build`
+`check:refs` → `check:request-core` → `check:workspace` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:coverage` → `build`
 
 其中 `build` 即 `admin:build` → `h5:build` → `docs:build`。
 
-**适合**：合并前、发版前、大改 `shared` 后做一次「接近 CI」的完整体检。
+**适合**：合并前、发版前、大改 `shared` 后做一次完整体检。**CI 上跑的就是这一条**（`.github/workflows/ci.yml`，PR 与 `main`/`master` 推送触发），所以它不再是「接近 CI」，而是**与 CI 同一条命令**。
 
 **注意**：`build` 会构建三端，耗时较长；日常只改文档时可用 `pnpm run docs:build` 等分段命令代替，不必每次 `verify:full`。
 
-## 4. 仓库特有三项检查
+## 4. 仓库特有四项检查
 
 实现以仓库内脚本为准，摘要如下（详见 `scripts/` 下对应脚本的文件头注释）：
 
@@ -56,11 +58,12 @@
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                      |
 | `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
+| `pnpm run check:workspace`    | `scripts/check-workspace-scripts.mjs`：堵「门禁静默跳过」的两个洞——① 根 `typecheck` 带 `--if-present`，新包漏写 `typecheck` 脚本会被**无声跳过**；② `vitest.workspace.ts` 是显式清单，不在其中的包写了测试也**不会被 `pnpm test` 发现**。两者的失败表现都是「通过」，本脚本把它们变成显式失败      |
 | `pnpm run check:theme`        | `scripts/check-theme.mjs`：重跑 `generate:theme` 后用 `git status --porcelain` 比对 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts` 五个 AUTO-GENERATED 产物；有 diff 说明产物被手改或忘了重新生成（见 [Design Token](./design-tokens.md)）              |
 
 在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通前两项；改 `theme-palette.json` 或主题产物时补跑 `check:theme`。
 
-> `.husky/pre-commit` 只跑 `check:refs` + `check:request-core` + `lint-staged`；`check:theme` 仅在 `verify:full` 中执行。
+> `.husky/pre-commit` 跑 `check:refs` + `check:request-core` + `check:workspace` + `lint-staged`（三个检查都是毫秒级的纯元数据校验）；`check:theme` 仅在 `verify:full` 与 CI 中执行。
 
 ## 4.1 ESLint 里的依赖边界门禁
 
