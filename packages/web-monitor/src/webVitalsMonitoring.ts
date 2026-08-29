@@ -53,7 +53,7 @@ function toPayload(metric: Metric): WebVitalPayload {
     page: getCurrentPagePath(),
     ts: Date.now(),
     appVersion: sdkWebVitalsConfig.release || undefined,
-    mode: sdkWebVitalsConfig.environment ?? ''
+    mode: sdkWebVitalsConfig.environment ?? '',
   }
 }
 

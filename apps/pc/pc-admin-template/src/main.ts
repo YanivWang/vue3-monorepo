@@ -29,7 +29,7 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
       (import.meta.env.DEV && import.meta.env.VITE_ERROR_REPORT_DEBUG !== 'false'),
     webVitalsDebug:
       import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
-      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
+      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false'),
   }
   if (clientErrors && webVitals) {
     return shared
@@ -48,13 +48,13 @@ async function bootstrap(): Promise<void> {
   WebMonitor.init(
     buildWebMonitorInit(app, {
       ...webMonitorEnvFromVite(),
-      afterVueError: err => {
+      afterVueError: (err) => {
         if (import.meta.env.DEV) {
           const message = err instanceof Error ? err.message : String(err)
           ElMessage.error(`[Vue 错误] ${message}`)
         }
-      }
-    })
+      },
+    }),
   )
 
   // 1. 注册 Pinia（须最先，其他模块依赖它）
@@ -81,4 +81,7 @@ async function bootstrap(): Promise<void> {
   app.mount('#app')
 }
 
-bootstrap()
+bootstrap().catch((err) => {
+  // 入口启动失败若不接住，只会变成一个没有任何线索的白屏
+  console.error('[bootstrap] 应用启动失败', err)
+})

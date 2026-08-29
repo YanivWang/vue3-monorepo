@@ -56,7 +56,7 @@ describe('useAppStore', () => {
     const mockMQ = {
       matches: true,
       addEventListener: vi.fn(),
-      removeEventListener: vi.fn()
+      removeEventListener: vi.fn(),
     }
     vi.spyOn(window, 'matchMedia').mockReturnValue(mockMQ as unknown as MediaQueryList)
 

@@ -75,7 +75,7 @@ export const vLongpress: Directive<HTMLElement, Payload> = {
           window.clearTimeout(s.timer)
           s.timer = null
         }
-      }
+      },
     }
     store.set(el, s)
 
@@ -101,5 +101,5 @@ export const vLongpress: Directive<HTMLElement, Payload> = {
     el.removeEventListener('mouseleave', s.onEnd)
     if (s.timer) window.clearTimeout(s.timer)
     store.delete(el)
-  }
+  },
 }

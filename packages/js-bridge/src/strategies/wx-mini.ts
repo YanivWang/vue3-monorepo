@@ -8,7 +8,7 @@ import {
   createMemoryEvent,
   createUnimplementedAuth,
   createUnimplementedDevice,
-  notImplemented
+  notImplemented,
 } from './base'
 
 /**
@@ -85,7 +85,7 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
     'event.emit',
     'payment.pay',
     'clipboard.write',
-    'clipboard.read'
+    'clipboard.read',
   ])
 
   const wx = getWx()
@@ -103,7 +103,7 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
           throw new BridgeError('微信 JSSDK 未加载，无法触发小程序登录', {
             method: 'auth.login',
             host,
-            code: 'WX_SDK_MISSING'
+            code: 'WX_SDK_MISSING',
           })
         }
         sdk.miniProgram.navigateTo({ url: loginPath })
@@ -111,10 +111,10 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
           new BridgeError('已跳转小程序登录页，H5 侧需监听 postMessage 回传 code', {
             method: 'auth.login',
             host,
-            code: 'NAVIGATE_TO_MINI'
-          })
+            code: 'NAVIGATE_TO_MINI',
+          }),
         )
-      }
+      },
     },
     ui: {
       async toast({ message, duration = 2000 }) {
@@ -131,10 +131,10 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
           padding: '8px 16px',
           borderRadius: '4px',
           fontSize: '14px',
-          zIndex: '9999'
+          zIndex: '9999',
         })
         document.body.appendChild(el)
-        await new Promise(r => setTimeout(r, duration))
+        await new Promise((r) => setTimeout(r, duration))
         el.remove()
       },
       loading: notImplemented('ui.loading', host),
@@ -146,15 +146,15 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
               new BridgeError('wx.chooseImage 不可用', {
                 method: 'ui.chooseImage',
                 host,
-                code: 'WX_SDK_MISSING'
-              })
+                code: 'WX_SDK_MISSING',
+              }),
             )
           wx.chooseImage({
             count: opts.count ?? 1,
             sizeType: opts.sizeType ?? ['compressed'],
             sourceType: opts.sourceType ?? ['album', 'camera'],
-            success: res => resolve({ tempFilePaths: res.localIds }),
-            fail: err => reject(new BridgeError('选择图片失败', { method: 'ui.chooseImage', host, cause: err }))
+            success: (res) => resolve({ tempFilePaths: res.localIds }),
+            fail: (err) => reject(new BridgeError('选择图片失败', { method: 'ui.chooseImage', host, cause: err })),
           })
         })
       },
@@ -162,7 +162,7 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
         if (wx?.previewImage) {
           wx.previewImage({
             urls: opts.urls,
-            current: typeof opts.current === 'string' ? opts.current : opts.urls[opts.current ?? 0]
+            current: typeof opts.current === 'string' ? opts.current : opts.urls[opts.current ?? 0],
           })
           return
         }
@@ -179,20 +179,20 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
               new BridgeError('wx.scanQRCode 不可用', {
                 method: 'ui.scanCode',
                 host,
-                code: 'WX_SDK_MISSING'
-              })
+                code: 'WX_SDK_MISSING',
+              }),
             )
           wx.scanQRCode({
             needResult: 1,
             scanType: ['qrCode', 'barCode'],
-            success: res => resolve({ result: res.resultStr }),
-            fail: err => reject(new BridgeError('扫码失败', { method: 'ui.scanCode', host, cause: err }))
+            success: (res) => resolve({ result: res.resultStr }),
+            fail: (err) => reject(new BridgeError('扫码失败', { method: 'ui.scanCode', host, cause: err })),
           })
         })
       },
       async vibrate() {
         if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(15)
-      }
+      },
     },
     event: createMemoryEvent(),
     payment: {
@@ -203,18 +203,19 @@ export function createWxMiniStrategy(options: WxMiniStrategyOptions = {}): Bridg
               new BridgeError('wx.chooseWXPay 不可用', {
                 method: 'payment.pay',
                 host,
-                code: 'WX_SDK_MISSING'
-              })
+                code: 'WX_SDK_MISSING',
+              }),
             )
           wx.chooseWXPay({
             ...params,
             success: (raw: unknown) => resolve({ success: true, raw }),
-            fail: (err: unknown) => reject(new BridgeError('微信支付失败', { method: 'payment.pay', host, cause: err }))
+            fail: (err: unknown) =>
+              reject(new BridgeError('微信支付失败', { method: 'payment.pay', host, cause: err })),
           })
         })
-      }
+      },
     },
     device: createUnimplementedDevice(host),
-    clipboard: createClipboardBridge(host)
+    clipboard: createClipboardBridge(host),
   }
 }

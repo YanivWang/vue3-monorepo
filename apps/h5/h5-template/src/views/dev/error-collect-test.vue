@@ -35,7 +35,7 @@ function manualReportVue() {
     kind: 'vue',
     message: '[错误采集测试] 手动 reportClientError · vue',
     stack: new Error().stack,
-    vueInfo: 'manual'
+    vueInfo: 'manual',
   })
   showToast('已调用 reportClientError(vue)')
 }
@@ -45,7 +45,7 @@ function manualReportJs() {
     kind: 'js',
     message: '[错误采集测试] 手动 reportClientError · js',
     stack: new Error().stack,
-    source: 'error-collect-test.vue'
+    source: 'error-collect-test.vue',
   })
   showToast('已调用 reportClientError(js)')
 }
@@ -54,7 +54,7 @@ function manualReportRejection() {
   reportClientError({
     kind: 'unhandledrejection',
     message: '[错误采集测试] 手动 reportClientError · unhandledrejection',
-    stack: new Error().stack
+    stack: new Error().stack,
   })
   showToast('已调用 reportClientError(unhandledrejection)')
 }
@@ -64,7 +64,7 @@ function manualReportResource() {
     kind: 'resource',
     message: '[错误采集测试] 手动 reportClientError · resource',
     source: brokenImgUrl,
-    tagName: 'IMG'
+    tagName: 'IMG',
   })
   showToast('已调用 reportClientError(resource)')
 }

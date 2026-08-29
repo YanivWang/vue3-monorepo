@@ -54,14 +54,14 @@ export function createH5Http(options: CreateH5HttpOptions = {}): HttpRequest {
     onLogout,
     authDialog,
     errorDuration,
-    redirectLogin
+    redirectLogin,
   })
 
   return createHttp({
     ...rest,
     tokenProvider: storage,
     loading: enableLoading ? createVantLoadingHandler(loadingOptions) : undefined,
-    hooks: { ...presetHooks, ...userHooks }
+    hooks: { ...presetHooks, ...userHooks },
   })
 }
 
@@ -76,5 +76,5 @@ export type {
   TokenProvider,
   RequestHooks,
   ErrorHookContext,
-  LoadingHandler
+  LoadingHandler,
 } from '@vue3-monorepo/request-core'

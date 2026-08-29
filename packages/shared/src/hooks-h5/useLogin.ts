@@ -47,7 +47,7 @@ export interface UseLoginReturn<TFormResult, TCodeResult> {
  * - loginAuto 提供"宿主优先 + 回落表单"的默认流程
  */
 export function useLogin<TFormResult = unknown, TCodeResult = unknown>(
-  options: UseLoginOptions<TFormResult, TCodeResult>
+  options: UseLoginOptions<TFormResult, TCodeResult>,
 ): UseLoginReturn<TFormResult, TCodeResult> {
   const loading = ref(false)
 
@@ -74,7 +74,7 @@ export function useLogin<TFormResult = unknown, TCodeResult = unknown>(
     loading.value = true
     try {
       const { credential } = await options.bridge.auth.login()
-      const result = await options.api.exchangeCode(credential, options.bridge.host as H5Host)
+      const result = await options.api.exchangeCode(credential, options.bridge.host)
       await options.onSuccess?.(result)
       return result
     } catch (e) {

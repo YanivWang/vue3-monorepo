@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   pageSize: 10,
   immediate: true,
   selection: false,
-  emptyText: '暂无数据'
+  emptyText: '暂无数据',
 })
 
 const emit = defineEmits<{
@@ -59,9 +59,9 @@ const emit = defineEmits<{
 const searchParams = ref<Record<string, unknown>>({})
 
 const { loading, tableData, total, pagination, fetchData, handlePageChange, handleSizeChange } = useTable<AnyRow>({
-  fetchFn: params => props.fetchFn({ ...params, ...searchParams.value }),
+  fetchFn: (params) => props.fetchFn({ ...params, ...searchParams.value }),
   defaultPageSize: props.pageSize,
-  immediate: props.immediate
+  immediate: props.immediate,
 })
 
 function handleSearch(params: Record<string, unknown>): void {

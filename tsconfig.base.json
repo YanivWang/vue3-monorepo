@@ -7,10 +7,16 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    // 与 isolatedModules 配套：type-only import 必须显式写 `import type`，
+    // 保证打包器逐文件转译时能正确擦除类型、不会把纯类型模块留到运行时
+    "verbatimModuleSyntax": true,
     "noEmit": true,
     "jsx": "preserve",
 
     "strict": true,
+    // 索引访问带上 undefined：arr[0] / map[key] 必须先判空，杜绝越界读到 undefined
+    // 却当成有值继续用（接入时全仓仅 1 处不合规，成本极低）
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

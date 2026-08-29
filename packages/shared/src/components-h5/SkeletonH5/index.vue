@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
   rows: 3,
   avatar: false,
   title: true,
-  animate: true
+  animate: true,
 })
 
 defineSlots<{

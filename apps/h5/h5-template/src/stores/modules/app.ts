@@ -7,7 +7,7 @@ import {
   applyThemeMode,
   getAppliedThemeMode,
   type BrandId,
-  type ThemeModeId
+  type ThemeModeId,
 } from '@vue3-monorepo/shared/styles/tokens'
 import { detectHost } from '@vue3-monorepo/shared/utils'
 import { i18n, ensureH5LocaleReady } from '@/composables/useI18n'
@@ -105,12 +105,12 @@ export const useAppStore = defineStore(
       setBrand,
       setLanguage,
       setPageLoading,
-      init
+      init,
     }
   },
   {
     persist: {
-      paths: ['themeMode', 'brand', 'language']
-    }
-  }
+      paths: ['themeMode', 'brand', 'language'],
+    },
+  },
 )

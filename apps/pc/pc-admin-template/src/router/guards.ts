@@ -45,7 +45,7 @@ export function setupRouterGuards(router: Router): void {
       try {
         const dynamicRoutes = await permissionStore.generateRoutes()
         // 将动态路由挂到 Layout 子路由下
-        dynamicRoutes.forEach(route => {
+        dynamicRoutes.forEach((route) => {
           router.addRoute('Layout', route)
         })
         // 重定向以匹配刚注册的新路由
@@ -57,10 +57,10 @@ export function setupRouterGuards(router: Router): void {
     }
 
     // 5. 权限校验（路由级）
-    const required = to.matched.flatMap(r => r.meta?.permissions ?? []).filter((p): p is string => Boolean(p))
+    const required = to.matched.flatMap((r) => r.meta?.permissions ?? []).filter((p): p is string => Boolean(p))
 
     if (required.length > 0) {
-      const allowed = required.some(p => userStore.hasPermission(p))
+      const allowed = required.some((p) => userStore.hasPermission(p))
       if (!allowed) return { path: '/403' }
     }
 
@@ -68,7 +68,7 @@ export function setupRouterGuards(router: Router): void {
   })
 
   // ── 全局后置钩子 ──────────────────────────────────────────────────────────
-  router.afterEach(to => {
+  router.afterEach((to) => {
     const appTitle = import.meta.env.VITE_APP_TITLE || 'vue3-monorepo'
     document.title = to.meta?.title ? `${to.meta.title} - ${appTitle}` : appTitle
 
@@ -80,7 +80,7 @@ export function setupRouterGuards(router: Router): void {
   })
 
   // ── 路由错误处理 ──────────────────────────────────────────────────────────
-  router.onError(error => {
+  router.onError((error) => {
     NProgress.done()
     console.error('路由错误：', error)
   })

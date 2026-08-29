@@ -36,12 +36,12 @@ export function useVConsole(options: UseVConsoleOptions = {}): { destroy: () => 
 
   if (!installed) {
     import('vconsole')
-      .then(mod => {
+      .then((mod) => {
         if (installed) return
         const VConsole = (mod.default ?? mod) as VConsoleCtor
         installed = new VConsole({ theme, ...rest })
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn('[useVConsole] failed to load vconsole:', err)
       })
   }

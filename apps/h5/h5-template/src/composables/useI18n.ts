@@ -9,7 +9,7 @@ import {
   setLocale as _setLocale,
   getLocale as _getLocale,
   BASE_LOCALES,
-  type BaseLocale
+  type BaseLocale,
 } from '@vue3-monorepo/shared/locale'
 
 const PINIA_H5_APP_KEY = 'h5-app'
@@ -30,7 +30,7 @@ async function mergeH5AppBundle(i18n: I18n, locale: BaseLocale): Promise<void> {
   if (set.has(locale)) return
   const mod = locale === 'zh-CN' ? await import('@/locales/bundles/zh-CN') : await import('@/locales/bundles/en-US')
   const composer = i18n.global as Composer
-  composer.mergeLocaleMessage(locale, mod.default as Record<string, unknown>)
+  composer.mergeLocaleMessage(locale, mod.default)
   set.add(locale)
 }
 
@@ -68,7 +68,7 @@ const initialLocale = resolveInitialLocale()
 
 export const i18n = createI18nLazyShell({
   locale: initialLocale,
-  fallbackLocale: 'zh-CN'
+  fallbackLocale: 'zh-CN',
 })
 
 /** 合并 shared 词条 + H5 业务 bundle（幂等） */
@@ -80,7 +80,7 @@ export async function ensureH5LocaleReady(locale: BaseLocale): Promise<void> {
 export async function preloadH5I18nMessages(locale: BaseLocale, fallbackLocale: BaseLocale = 'zh-CN'): Promise<void> {
   const need = new Set<BaseLocale>([locale])
   if (fallbackLocale !== locale) need.add(fallbackLocale)
-  await Promise.all([...need].map(l => ensureH5LocaleReady(l)))
+  await Promise.all([...need].map((l) => ensureH5LocaleReady(l)))
   await applyVantLocale(locale)
 }
 
@@ -92,10 +92,10 @@ export async function loadInitialH5I18n(): Promise<void> {
 const composer = i18n.global as unknown as Composer
 watch(
   () => composer.locale.value,
-  lang => {
+  (lang) => {
     void applyVantLocale(String(lang))
   },
-  { immediate: false }
+  { immediate: false },
 )
 
 export function setupI18n(app: App): void {

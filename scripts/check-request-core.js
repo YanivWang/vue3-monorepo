@@ -17,7 +17,7 @@ const BANNED = [
   { re: /\bshowDialog\b/, name: 'showDialog' },
   { re: /\bshowConfirmDialog\b/, name: 'showConfirmDialog' },
   { re: /\bshowNotify\b/, name: 'showNotify' },
-  { re: /\bMessage\.(success|error|warning|info)\b/, name: 'Message.*' }
+  { re: /\bMessage\.(success|error|warning|info)\b/, name: 'Message.*' },
 ]
 
 function walk(dir, acc = []) {

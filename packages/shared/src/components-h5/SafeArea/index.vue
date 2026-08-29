@@ -12,7 +12,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   position: 'bottom',
-  color: 'transparent'
+  color: 'transparent',
 })
 
 const style = computed<Record<string, string>>(() => {

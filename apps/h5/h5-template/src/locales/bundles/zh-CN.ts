@@ -8,7 +8,7 @@ export default {
     tip: '提示',
     noData: '暂无数据',
     notLoggedIn: '未登录',
-    goLogin: '去登录'
+    goLogin: '去登录',
   },
   nav: { home: '首页', list: '长列表', theme: '主题', mine: '我的' },
   theme: {
@@ -24,7 +24,7 @@ export default {
     statusMode: '模式',
     statusLanguage: '语言',
     langZh: '简体中文',
-    langEn: 'English'
+    langEn: 'English',
   },
   home: {
     notice: '欢迎使用 Vue3 Monorepo H5 模板 —— 支持浏览器 / 小程序 / APP 多宿主',
@@ -41,7 +41,7 @@ export default {
     bannerCoupon: '优惠券',
     bannerService: '客服',
     bannerSettings: '设置',
-    bannerMsg: '消息'
+    bannerMsg: '消息',
   },
   mine: {
     account: '账户',
@@ -52,8 +52,8 @@ export default {
     themeSettings: '主题设置',
     listLink: '长列表',
     errorReportTest: '测试错误上报',
-    logoutConfirm: '确定退出登录？'
+    logoutConfirm: '确定退出登录？',
   },
   list: { detail: '条目详情', create: '新建条目', edit: '编辑条目' },
-  error: { server: '服务异常', network: '网络异常', notFound: '页面不存在' }
+  error: { server: '服务异常', network: '网络异常', notFound: '页面不存在' },
 }

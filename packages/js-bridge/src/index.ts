@@ -57,7 +57,7 @@ export function createBridge(options: CreateBridgeOptions = {}): Bridge {
     event: strategy.event,
     payment: strategy.payment,
     device: strategy.device,
-    clipboard: strategy.clipboard
+    clipboard: strategy.clipboard,
   }
 }
 

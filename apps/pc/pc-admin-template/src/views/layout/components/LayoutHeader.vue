@@ -10,7 +10,7 @@ import {
   ElDropdownMenu,
   ElHeader,
   ElIcon,
-  ElMessageBox
+  ElMessageBox,
 } from 'element-plus'
 import { Fold, Expand, User, SwitchButton, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
 import { ThemeMode } from '@vue3-monorepo/shared/enums'
@@ -37,7 +37,7 @@ function handleThemeCommand(cmd: string): void {
 }
 
 function handleBrandCommand(cmd: string): void {
-  if (brandPalettes.some(p => p.id === cmd)) {
+  if (brandPalettes.some((p) => p.id === cmd)) {
     appStore.setBrand(cmd as BrandId)
   }
 }
@@ -46,7 +46,7 @@ async function handleLogout(): Promise<void> {
   await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   })
   await userStore.logoutAction()
   router.push('/login')
@@ -71,7 +71,10 @@ async function handleLogout(): Promise<void> {
     <div class="layout-header__right">
       <el-dropdown trigger="click" @command="handleBrandCommand">
         <span class="theme-switch" title="品牌色">
-          <span class="brand-dot" :style="{ background: brandPalettes.find(p => p.id === appStore.brand)?.primary }" />
+          <span
+            class="brand-dot"
+            :style="{ background: brandPalettes.find((p) => p.id === appStore.brand)?.primary }"
+          />
         </span>
         <template #dropdown>
           <el-dropdown-menu>

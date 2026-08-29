@@ -22,11 +22,11 @@ describe('retryDelay', () => {
     vi.useFakeTimers()
     try {
       const seen: number[] = []
-      vi.spyOn(globalThis, 'setTimeout').mockImplementation(((fn: () => void, ms?: number) => {
+      vi.spyOn(globalThis, 'setTimeout').mockImplementation((fn: () => void, ms?: number) => {
         seen.push(ms ?? 0)
         fn()
         return 0 as unknown as ReturnType<typeof setTimeout>
-      }) as typeof setTimeout)
+      })
 
       await retryDelay(1, 1000)
       await retryDelay(2, 1000)

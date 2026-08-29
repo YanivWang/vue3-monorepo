@@ -6,19 +6,19 @@ export type {
   WebMonitorInitOptionsBothOff,
   WebMonitorInitOptionsErrorsOff,
   WebMonitorInitOptionsVitalsOff,
-  WebMonitorIntegrations
+  WebMonitorIntegrations,
 } from './webMonitor'
 export {
   configureClientErrorSdk,
   reportClientError,
   setAdditionalClientErrorListener,
-  setupClientErrorReporting
+  setupClientErrorReporting,
 } from './clientErrorMonitoring'
 export type {
   ClientErrorKind,
   ClientErrorPayload,
   ClientErrorSdkConfig,
-  SetupClientErrorReportingOptions
+  SetupClientErrorReportingOptions,
 } from './clientErrorMonitoring'
 export { collectWebVitals, configureWebVitalsSdk, reportWebVital } from './webVitalsMonitoring'
 export type { WebVitalPayload, WebVitalsSdkConfig } from './webVitalsMonitoring'

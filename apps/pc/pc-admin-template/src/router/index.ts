@@ -11,8 +11,8 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       title: '登录',
       hidden: true,
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: '/register',
@@ -21,8 +21,8 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       title: '注册',
       hidden: true,
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: '/forgot-password',
@@ -31,8 +31,8 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       title: '忘记密码',
       hidden: true,
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: '/403',
@@ -41,8 +41,8 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       title: '无权限',
       hidden: true,
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/',
@@ -51,7 +51,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     redirect: '/home',
     meta: {
       title: '主布局',
-      requiresAuth: true
+      requiresAuth: true,
     },
     children: [
       {
@@ -63,8 +63,8 @@ export const constantRoutes: RouteRecordRaw[] = [
           icon: 'HomeFilled',
           keepAlive: true,
           requiresAuth: true,
-          permissions: ['dashboard:view']
-        }
+          permissions: ['dashboard:view'],
+        },
       },
 
       // ── 示例页（开发 / 演示用）────────────────────────────────
@@ -75,7 +75,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: '示例',
           icon: 'Grid',
-          requiresAuth: true
+          requiresAuth: true,
         },
         children: [
           {
@@ -86,8 +86,8 @@ export const constantRoutes: RouteRecordRaw[] = [
               title: 'CRUD 示例',
               icon: 'List',
               keepAlive: true,
-              requiresAuth: true
-            }
+              requiresAuth: true,
+            },
           },
           {
             path: 'form',
@@ -97,8 +97,8 @@ export const constantRoutes: RouteRecordRaw[] = [
               title: '表单验证',
               icon: 'Document',
               keepAlive: true,
-              requiresAuth: true
-            }
+              requiresAuth: true,
+            },
           },
           {
             path: 'upload',
@@ -108,8 +108,8 @@ export const constantRoutes: RouteRecordRaw[] = [
               title: '文件上传',
               icon: 'Upload',
               keepAlive: true,
-              requiresAuth: true
-            }
+              requiresAuth: true,
+            },
           },
           {
             path: 'charts',
@@ -119,12 +119,12 @@ export const constantRoutes: RouteRecordRaw[] = [
               title: '图表',
               icon: 'TrendCharts',
               keepAlive: true,
-              requiresAuth: true
-            }
-          }
-        ]
-      }
-    ]
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+    ],
   },
 
   // 404 兜底路由，必须放在最后
@@ -134,9 +134,9 @@ export const constantRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/error/404.vue'),
     meta: {
       title: '404',
-      hidden: true
-    }
-  }
+      hidden: true,
+    },
+  },
 ]
 
 const router = createRouter({
@@ -146,7 +146,7 @@ const router = createRouter({
   scrollBehavior: (_to, _from, savedPosition) => {
     if (savedPosition) return savedPosition
     return { top: 0 }
-  }
+  },
 })
 
 // 注册路由守卫
@@ -158,7 +158,7 @@ setupRouterGuards(router)
 export function resetRouter(): void {
   const newRouter = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: constantRoutes
+    routes: constantRoutes,
   })
   // 替换 matcher，等效于重置所有动态路由
   ;(router as unknown as { matcher: unknown }).matcher = (newRouter as unknown as { matcher: unknown }).matcher

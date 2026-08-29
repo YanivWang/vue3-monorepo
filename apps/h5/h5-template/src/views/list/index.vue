@@ -20,7 +20,7 @@ const {
   clearSearch,
   syncDraftFromQuery,
   commitRange,
-  clearRange
+  clearRange,
 } = useProListFilters()
 
 const filterOpen = ref(false)
@@ -38,7 +38,7 @@ async function loader(params: ProListPageParams) {
     pageSize,
     keyword: (kw as string) || undefined,
     minId: minId != null && minId !== '' ? Number(minId) : undefined,
-    maxId: maxId != null && maxId !== '' ? Number(maxId) : undefined
+    maxId: maxId != null && maxId !== '' ? Number(maxId) : undefined,
   }) as unknown as {
     list: Array<ListItem & Record<string, unknown>>
     total: number
@@ -71,7 +71,7 @@ function onFilterConfirm() {
   }
   commitRange(
     minId != null && !Number.isNaN(minId) ? minId : undefined,
-    maxId != null && !Number.isNaN(maxId) ? maxId : undefined
+    maxId != null && !Number.isNaN(maxId) ? maxId : undefined,
   )
   filterOpen.value = false
 }

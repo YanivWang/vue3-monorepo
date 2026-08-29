@@ -44,7 +44,7 @@ export interface UseRequestReturn<T, P extends unknown[]> {
  */
 export function useRequest<T, P extends unknown[] = unknown[]>(
   requestFn: (...args: P) => Promise<T>,
-  options: UseRequestOptions<T> = {}
+  options: UseRequestOptions<T> = {},
 ): UseRequestReturn<T, P> {
   const { immediate = false, initialData, onSuccess, onError, debounce: debounceMs = 0 } = options
 
@@ -101,10 +101,11 @@ export function useRequest<T, P extends unknown[] = unknown[]>(
 
   function run(...args: P): Promise<T | undefined> {
     if (debounceMs > 0) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (debounceTimer) clearTimeout(debounceTimer)
         debounceTimer = setTimeout(() => {
-          execute(...args).then(resolve)
+          // execute 内部已吞掉所有异常并 return undefined，不会 reject
+          void execute(...args).then(resolve)
         }, debounceMs)
       })
     }
@@ -114,7 +115,7 @@ export function useRequest<T, P extends unknown[] = unknown[]>(
   onUnmounted(cancel)
 
   if (immediate) {
-    run(...([] as unknown as P))
+    void run(...([] as unknown as P))
   }
 
   return { data, loading, error, run, cancel, reset }

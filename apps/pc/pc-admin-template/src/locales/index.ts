@@ -6,7 +6,7 @@ import {
   setLocale as _setLocale,
   getLocale as _getLocale,
   BASE_LOCALES,
-  type BaseLocale
+  type BaseLocale,
 } from '@vue3-monorepo/shared/locale'
 
 /** 与 Pinia `app` store 持久化字段对齐（插件在 store 之后 hydrate） */
@@ -32,7 +32,7 @@ const initialLocale = resolveInitialPcLocale()
 
 export const i18n = createI18nLazyShell({
   locale: initialLocale,
-  fallbackLocale: 'zh-CN'
+  fallbackLocale: 'zh-CN',
 })
 
 /** 须在 `app.use(i18n)` 之前调用（bootstrap） */

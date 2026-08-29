@@ -21,17 +21,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 
 const errors = []
-const log = msg => console.log(msg)
-const fail = msg => errors.push(msg)
+const log = (msg) => console.log(msg)
+const fail = (msg) => errors.push(msg)
 
 // ---------- 加载 pnpm-workspace packages 行 ----------
 const workspaceYaml = readFileSync(join(ROOT, 'pnpm-workspace.yaml'), 'utf8')
 const inPackages = workspaceYaml.split(/^packages:\s*$/m).slice(1)[0] ?? ''
 const entryLines = inPackages
   .split('\n')
-  .map(l => l.trim())
-  .filter(l => /^-\s+['"]/.test(l))
-  .map(l => l.replace(/^-\s+(['"])([^'"\n]+)\1.*$/, '$2'))
+  .map((l) => l.trim())
+  .filter((l) => /^-\s+['"]/.test(l))
+  .map((l) => l.replace(/^-\s+(['"])([^'"\n]+)\1.*$/, '$2'))
 
 // ---------- 枚举 workspace：foo/* 扫描子目录；无 * 的视为单包目录（如 docs） ----------
 const workspaces = []
@@ -39,7 +39,7 @@ function addWorkspaceIfPkg(dir) {
   const full = join(ROOT, dir)
   const pkgJson = join(full, 'package.json')
   if (!existsSync(full) || !statSync(full).isDirectory() || !existsSync(pkgJson)) return
-  if (workspaces.some(w => w.dir === dir)) return
+  if (workspaces.some((w) => w.dir === dir)) return
   workspaces.push({ dir, path: full, pkgJson })
 }
 
@@ -62,12 +62,12 @@ for (const entry of entryLines) {
 log(`[check-refs] 发现 ${workspaces.length} 个 workspace`)
 
 // ---------- 读取各 workspace 的 name ----------
-const pkgs = workspaces.map(ws => {
+const pkgs = workspaces.map((ws) => {
   const pkg = JSON.parse(readFileSync(ws.pkgJson, 'utf8'))
   return {
     ...ws,
     name: pkg.name,
-    deps: { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}), ...(pkg.peerDependencies || {}) }
+    deps: { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}), ...(pkg.peerDependencies || {}) },
   }
 })
 
@@ -88,9 +88,9 @@ for (const p of pkgs) {
 // ---------- 3) package name 与 tsconfig.base paths 一一对应 ----------
 const tsconfigBase = JSON.parse(readFileSync(join(ROOT, 'tsconfig.base.json'), 'utf8').replace(/\/\/.*$/gm, ''))
 const paths = tsconfigBase.compilerOptions?.paths ?? {}
-const pathKeys = Object.keys(paths).filter(k => !k.endsWith('/*'))
+const pathKeys = Object.keys(paths).filter((k) => !k.endsWith('/*'))
 
-const packageNames = pkgs.filter(p => !p.dir.startsWith('apps/') && p.dir !== 'docs').map(p => p.name)
+const packageNames = pkgs.filter((p) => !p.dir.startsWith('apps/') && p.dir !== 'docs').map((p) => p.name)
 
 for (const name of packageNames) {
   if (!pathKeys.includes(name)) {
@@ -127,7 +127,7 @@ for (const ref of tsconfigRoot.references ?? []) {
 }
 
 // ---------- 6) workspace:* 依赖目标必须存在 ----------
-const nameSet = new Set(pkgs.map(p => p.name))
+const nameSet = new Set(pkgs.map((p) => p.name))
 for (const p of pkgs) {
   for (const [dep, version] of Object.entries(p.deps)) {
     if (typeof version === 'string' && version.startsWith('workspace:')) {

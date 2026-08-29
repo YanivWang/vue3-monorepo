@@ -56,7 +56,7 @@ const columns = [
   { type: 'index', label: '#', width: 60 },
   { prop: 'username', label: '用户名', minWidth: 120 },
   { prop: 'nickname', label: '昵称', minWidth: 120 },
-  { label: '操作', slot: 'action', width: 160, fixed: 'right' }
+  { label: '操作', slot: 'action', width: 160, fixed: 'right' },
 ]
 
 const tableRef = ref()

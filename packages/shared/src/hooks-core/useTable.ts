@@ -18,7 +18,7 @@ export interface UseTableOptions<T, P extends Record<string, unknown> = Record<s
  * 通用表格 Composable：封装分页 / loading / 数据获取逻辑，UI 无关。
  */
 export function useTable<T, P extends Record<string, unknown> = Record<string, unknown>>(
-  options: UseTableOptions<T, P>
+  options: UseTableOptions<T, P>,
 ) {
   const { fetchFn, immediate = true, defaultPageSize = 10, defaultParams = {}, onError } = options
 
@@ -27,7 +27,7 @@ export function useTable<T, P extends Record<string, unknown> = Record<string, u
   const total = ref(0)
   const pagination = reactive<PaginationParams>({
     page: 1,
-    pageSize: defaultPageSize
+    pageSize: defaultPageSize,
   })
 
   async function fetchData(extraParams?: Partial<P>): Promise<void> {
@@ -36,7 +36,7 @@ export function useTable<T, P extends Record<string, unknown> = Record<string, u
       const params = {
         ...pagination,
         ...defaultParams,
-        ...extraParams
+        ...extraParams,
       } as PaginationParams & P
       const result = await fetchFn(params)
       tableData.value = result.list
@@ -75,6 +75,6 @@ export function useTable<T, P extends Record<string, unknown> = Record<string, u
     handlePageChange,
     handleSizeChange,
     resetPage,
-    refresh
+    refresh,
   }
 }

@@ -91,8 +91,8 @@ function createNativeCaller(host: H5Host): (method: string, payload?: unknown) =
         new BridgeError('未检测到 native 桥接通道（__nativeBridge__ / webkit / AndroidBridge）', {
           method,
           host,
-          code: 'NO_CHANNEL'
-        })
+          code: 'NO_CHANNEL',
+        }),
       )
     })
   }
@@ -134,7 +134,7 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
     'device.getInfo',
     'device.getLocation',
     'clipboard.write',
-    'clipboard.read'
+    'clipboard.read',
   ])
 
   return {
@@ -153,7 +153,7 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
       async setTitle(title: string) {
         await call('navigation.setTitle', { title })
         if (typeof document !== 'undefined') document.title = title
-      }
+      },
     },
     storage: createLocalStorageBridge(host),
     auth: {
@@ -166,7 +166,7 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
           throw new BridgeError('native 返回缺少 credential', {
             method: 'auth.login',
             host,
-            code: 'INVALID_RESPONSE'
+            code: 'INVALID_RESPONSE',
           })
         }
         return { credential: raw.credential, openId: raw.openId, raw }
@@ -176,7 +176,7 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
       },
       async logout() {
         await call('auth.logout')
-      }
+      },
     },
     ui: {
       async toast(opts) {
@@ -204,21 +204,21 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
       },
       async vibrate(short = true) {
         await call('ui.vibrate', { short })
-      }
+      },
     },
     event: createMemoryEvent(),
     payment: {
       async pay(params) {
         const raw = await call('payment.pay', params)
         return { success: true, raw }
-      }
+      },
     },
     device: {
       async getInfo() {
         const r = (await call('device.getInfo')) as Record<string, unknown> | null
         return {
           platform: ((r?.platform as 'ios' | 'android' | 'web') ?? 'unknown') as 'ios' | 'android' | 'web' | 'unknown',
-          ...r
+          ...r,
         }
       },
       async getLocation() {
@@ -231,12 +231,12 @@ export function createNativeAppStrategy(options: NativeAppStrategyOptions = {}):
           throw new BridgeError('native 返回位置信息不完整', {
             method: 'device.getLocation',
             host,
-            code: 'INVALID_RESPONSE'
+            code: 'INVALID_RESPONSE',
           })
         }
         return { latitude: r.latitude, longitude: r.longitude, accuracy: r.accuracy }
-      }
+      },
     },
-    clipboard: createClipboardBridge(host)
+    clipboard: createClipboardBridge(host),
   }
 }

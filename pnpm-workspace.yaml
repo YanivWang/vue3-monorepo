@@ -11,6 +11,19 @@ packages:
   - 'packages/web-monitor'
   - 'packages/js-bridge'
 
+# ---------- 依赖的 postinstall 放行清单（pnpm 10+ 默认全部拦截） ----------
+# pnpm 11 起该设置名为 allowBuilds（pnpm 10 时叫 onlyBuiltDependencies）。
+# 用白名单而非全放行：依赖的安装脚本是供应链攻击的主要入口，只放「不跑就坏」的。
+allowBuilds:
+  # postinstall 负责落地平台二进制，不跑则 vite / vitest 直接起不来
+  esbuild: true
+  # postinstall 按当前 Vue 版本切换入口，@vueuse 依赖它
+  vue-demi: true
+  # 只打印赞助信息，不影响功能
+  core-js: false
+  # 有预编译产物；不跑构建脚本时 chokidar 回落到轮询，仅影响 dev 体验
+  '@parcel/watcher': false
+
 # ---------- catalog（全仓锁版本，单点维护） ----------
 # 各包在 package.json 里用 "vue": "catalog:" 引用，版本以此处为准。
 catalog:
@@ -46,7 +59,8 @@ catalog:
   # ---------- mock / 压缩 / 可视化 ----------
   vite-plugin-mock: ^3.0.2
   vite-plugin-compression2: ^2.5.3
-  # v7 起依赖 rollup@4.60+ 且要求 Node >=22；锁在 v6 以兼容 Node 20 LTS
+  # v7 起依赖 rollup@4.60+ 且要求 Node >=22。基线已提到 Node 22（见 .nvmrc / engines），
+  # 这条限制不再成立，保持 v6 只是没做升级验证——可作为独立改动上 v7。
   rollup-plugin-visualizer: ^6.0.11
   # ---------- 工程化 ----------
   eslint: ^9.39.4
@@ -64,7 +78,6 @@ catalog:
   stylelint-config-standard: ^40.0.0
   stylelint-config-standard-scss: ^17.0.0
   stylelint-order: ^8.1.1
-  stylelint-prettier: ^5.0.3
   stylelint-scss: ^6.14.0
   postcss-html: ^1.8.1
   '@commitlint/cli': ^20.5.0

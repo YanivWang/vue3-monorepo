@@ -30,7 +30,7 @@ const users = [
     nickname: '超级管理员',
     avatar: 'https://avatars.githubusercontent.com/u/100000000?v=4',
     roles: ['admin'],
-    permissions: ['*:*:*']
+    permissions: ['*:*:*'],
   },
   {
     id: 2,
@@ -39,8 +39,8 @@ const users = [
     nickname: '普通用户',
     avatar: 'https://avatars.githubusercontent.com/u/200000000?v=4',
     roles: ['user'],
-    permissions: ['home:view']
-  }
+    permissions: ['home:view'],
+  },
 ]
 
 export default mockOnlyBrowser([
@@ -52,7 +52,7 @@ export default mockOnlyBrowser([
       const code = '123456'
       smsCodeByPhone.set(body.phone, code)
       return ok({ expiresIn: 60 })
-    }
+    },
   },
   {
     url: '/api/auth/sms/login',
@@ -66,28 +66,28 @@ export default mockOnlyBrowser([
         accessToken: `h5-sms-mock-token-${u.id}`,
         refreshToken: `h5-sms-mock-refresh-${u.id}`,
         expiresIn: 7200,
-        tokenType: 'Bearer'
+        tokenType: 'Bearer',
       })
-    }
+    },
   },
   {
     url: '/api/auth/login',
     method: 'post',
     response: ({ body }: { body: LoginBody }) => {
-      const u = users.find(x => x.username === body.username && x.password === body.password)
+      const u = users.find((x) => x.username === body.username && x.password === body.password)
       if (!u) return fail(401, '用户名或密码错误')
       return ok({
         accessToken: `h5-mock-token-${u.id}`,
         refreshToken: `h5-mock-refresh-${u.id}`,
         expiresIn: 7200,
-        tokenType: 'Bearer'
+        tokenType: 'Bearer',
       })
-    }
+    },
   },
   {
     url: '/api/auth/logout',
     method: 'post',
-    response: () => ok(null)
+    response: () => ok(null),
   },
   {
     url: '/api/auth/exchange',
@@ -98,9 +98,9 @@ export default mockOnlyBrowser([
         accessToken: `h5-${body.host}-token`,
         refreshToken: `h5-${body.host}-refresh`,
         expiresIn: 7200,
-        tokenType: 'Bearer'
+        tokenType: 'Bearer',
       })
-    }
+    },
   },
   {
     url: '/api/user/info',
@@ -108,9 +108,9 @@ export default mockOnlyBrowser([
     response: ({ headers }: { headers: Record<string, string> }) => {
       const auth = headers['authorization'] || ''
       const userId = auth.includes('-2') ? 2 : 1
-      const u = users.find(x => x.id === userId) ?? users[0]!
+      const u = users.find((x) => x.id === userId) ?? users[0]!
       const { password: _p, ...info } = u
       return ok(info)
-    }
-  }
+    },
+  },
 ] satisfies MockMethod[])

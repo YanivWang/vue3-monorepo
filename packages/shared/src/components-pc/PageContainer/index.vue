@@ -13,7 +13,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   title: undefined,
   subtitle: undefined,
-  shadow: 'never'
+  shadow: 'never',
 })
 
 defineSlots<{

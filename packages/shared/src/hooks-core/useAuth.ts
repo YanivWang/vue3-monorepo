@@ -18,7 +18,7 @@ export interface AuthLoginResult {
 export interface AuthContext<
   TLoginParams extends Record<string, unknown> = Record<string, unknown>,
   TLoginResult extends AuthLoginResult = AuthLoginResult,
-  TProfile = unknown
+  TProfile = unknown,
 > {
   loginStrategies: Record<string, (params: TLoginParams) => Promise<TLoginResult>>
   getToken(): string | null | undefined
@@ -68,7 +68,7 @@ export interface UseAuthReturn<TLoginParams, TLoginResult, TProfile> {
 export function createUseAuth<
   TLoginParams extends Record<string, unknown> = Record<string, unknown>,
   TLoginResult extends AuthLoginResult = AuthLoginResult,
-  TProfile = unknown
+  TProfile = unknown,
 >(ctx: AuthContext<TLoginParams, TLoginResult, TProfile>) {
   const token = ref<string | null>(ctx.getToken() ?? null)
   const profile = ref<TProfile | null>(null) as Ref<TProfile | null>

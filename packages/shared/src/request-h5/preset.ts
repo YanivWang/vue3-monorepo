@@ -33,7 +33,7 @@ export function createH5Hooks(tokenProvider: TokenProvider, options: H5PresetOpt
     title = '提示',
     message = '登录状态已过期，请重新登录',
     confirmText = '重新登录',
-    cancelText = '取消'
+    cancelText = '取消',
   } = authDialog
 
   let isAuthDialogOpen = false
@@ -47,7 +47,7 @@ export function createH5Hooks(tokenProvider: TokenProvider, options: H5PresetOpt
         message,
         showCancelButton: true,
         confirmButtonText: confirmText,
-        cancelButtonText: cancelText
+        cancelButtonText: cancelText,
       })
       tokenProvider.removeToken()
       tokenProvider.removeRefreshToken()
@@ -75,6 +75,6 @@ export function createH5Hooks(tokenProvider: TokenProvider, options: H5PresetOpt
     onBusinessError: showError,
     onUnauthorized: () => {
       void showLoginExpired()
-    }
+    },
   }
 }

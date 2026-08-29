@@ -22,7 +22,7 @@ function webMonitorEnvFromVite(): WebMonitorInitEnvFields {
       (import.meta.env.DEV && import.meta.env.VITE_ERROR_REPORT_DEBUG !== 'false'),
     webVitalsDebug:
       import.meta.env.VITE_WEB_VITALS_DEBUG === 'true' ||
-      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false')
+      (import.meta.env.DEV && import.meta.env.VITE_WEB_VITALS_DEBUG !== 'false'),
   }
   // 两侧都开时不传 integrations；否则按需关闭其中一侧（保持联合类型可判别）
   if (clientErrors && webVitals) return shared

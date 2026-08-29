@@ -17,9 +17,9 @@ function sharedLoadedSet(i18n: I18n): Set<BaseLocale> {
 async function fetchSharedLocaleMessages(locale: BaseLocale): Promise<Record<string, unknown>> {
   switch (locale) {
     case 'zh-CN':
-      return (await import('./messages/zh-CN')).default as unknown as Record<string, unknown>
+      return (await import('./messages/zh-CN')).default
     case 'en-US':
-      return (await import('./messages/en-US')).default as unknown as Record<string, unknown>
+      return (await import('./messages/en-US')).default
     default: {
       const _exhaustive: never = locale
       return _exhaustive
@@ -48,12 +48,12 @@ export function createI18nLazyShell(options: CreateI18nLazyShellOptions): I18n {
     legacy: false,
     locale,
     fallbackLocale,
-    messages: {} as I18nOptions['messages'],
-    numberFormats: defaultNumberFormats as unknown as I18nOptions['numberFormats'],
-    datetimeFormats: defaultDatetimeFormats as unknown as I18nOptions['datetimeFormats'],
+    messages: {},
+    numberFormats: defaultNumberFormats,
+    datetimeFormats: defaultDatetimeFormats,
     missing,
     silentTranslationWarn,
-    silentFallbackWarn
+    silentFallbackWarn,
   })
 }
 
@@ -73,9 +73,9 @@ export async function mergeSharedLocaleMessage(i18n: I18n, locale: BaseLocale): 
 export async function preloadSharedLocales(
   i18n: I18n,
   locale: BaseLocale,
-  fallbackLocale: BaseLocale = 'zh-CN'
+  fallbackLocale: BaseLocale = 'zh-CN',
 ): Promise<void> {
   const need = new Set<BaseLocale>([locale])
   if (fallbackLocale !== locale) need.add(fallbackLocale)
-  await Promise.all([...need].map(l => mergeSharedLocaleMessage(i18n, l)))
+  await Promise.all([...need].map((l) => mergeSharedLocaleMessage(i18n, l)))
 }

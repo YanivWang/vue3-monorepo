@@ -5,7 +5,7 @@ import { createTokenStorage } from '@vue3-monorepo/shared/utils'
  */
 export const tokenStorage = createTokenStorage({
   tokenKey: import.meta.env.VITE_TOKEN_KEY || 'access_token',
-  refreshTokenKey: import.meta.env.VITE_REFRESH_TOKEN_KEY || 'refresh_token'
+  refreshTokenKey: import.meta.env.VITE_REFRESH_TOKEN_KEY || 'refresh_token',
 })
 
 export const getToken = () => tokenStorage.getToken() ?? ''

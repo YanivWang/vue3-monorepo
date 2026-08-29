@@ -25,7 +25,7 @@ export function createUseThemeH5(options: UseThemeH5Options): () => UseThemeRetu
     storage: options.storage,
     defaultBrand: options.defaultBrand,
     defaultMode: options.defaultMode,
-    storageKeyPrefix: options.storageKeyPrefix
+    storageKeyPrefix: options.storageKeyPrefix,
   })
 
   return function useThemeH5(): UseThemeReturn {
@@ -33,11 +33,11 @@ export function createUseThemeH5(options: UseThemeH5Options): () => UseThemeRetu
     if (options.locale) {
       watch(
         () => options.locale!.value,
-        lang => {
+        (lang) => {
           if (lang?.startsWith('zh')) VantLocale.use('zh-CN', zhCN)
           else VantLocale.use('en-US', enUS)
         },
-        { immediate: true }
+        { immediate: true },
       )
     }
     return ctx

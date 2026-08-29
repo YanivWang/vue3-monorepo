@@ -55,7 +55,7 @@ import {
   brandPalettes,
   getAppliedBrand,
   getAppliedThemeMode,
-  type BrandId
+  type BrandId,
 } from '@vue3-monorepo/shared/styles/tokens'
 ```
 

@@ -36,7 +36,7 @@ export const listApi = {
       pageSize: params.pageSize,
       keyword: params.keyword,
       minId: params.minId,
-      maxId: params.maxId
+      maxId: params.maxId,
     })
   },
 
@@ -54,5 +54,5 @@ export const listApi = {
 
   remove(id: number): Promise<{ id: number }> {
     return http.delete(`/list/${id}`)
-  }
+  },
 }

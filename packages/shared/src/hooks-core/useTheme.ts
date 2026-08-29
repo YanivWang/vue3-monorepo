@@ -8,7 +8,7 @@ import {
   getAppliedThemeMode,
   type BrandId,
   type BrandPalette,
-  type ThemeModeId
+  type ThemeModeId,
 } from '@vue3-monorepo/shared/styles/tokens'
 
 export interface ThemeStorage {
@@ -94,7 +94,7 @@ export function createUseTheme(ctx: UseThemeContext) {
   }
 
   function cycleBrand(): void {
-    const idx = brandPalettes.findIndex(p => p.id === brand.value)
+    const idx = brandPalettes.findIndex((p) => p.id === brand.value)
     const next = brandPalettes[(idx + 1) % brandPalettes.length]!
     setBrand(next.id)
   }
@@ -126,7 +126,7 @@ export function createUseTheme(ctx: UseThemeContext) {
       setBrand,
       setMode,
       cycleBrand,
-      toggleMode
+      toggleMode,
     }
   }
 }

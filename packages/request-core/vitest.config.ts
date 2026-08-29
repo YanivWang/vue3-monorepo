@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     name: 'request-core',
     environment: 'happy-dom',
-    include: ['src/**/*.spec.ts', 'src/**/*.test.ts']
-  }
+    include: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
+  },
 })

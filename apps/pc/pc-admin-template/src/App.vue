@@ -17,9 +17,9 @@ const elLocale = shallowRef(elementLocaleFor(appStore.language))
 
 watch(
   () => appStore.language,
-  lang => {
+  (lang) => {
     elLocale.value = elementLocaleFor(lang)
-  }
+  },
 )
 </script>
 

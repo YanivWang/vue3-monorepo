@@ -8,7 +8,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  title: '页面出现错误'
+  title: '页面出现错误',
 })
 
 const hasError = ref(false)

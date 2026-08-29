@@ -11,7 +11,7 @@ export function createVantLoadingHandler(options: Parameters<typeof showLoadingT
     forbidClick: true,
     message: '加载中...',
     loadingType: 'spinner' as const,
-    duration: 0
+    duration: 0,
   }
 
   return {
@@ -26,6 +26,6 @@ export function createVantLoadingHandler(options: Parameters<typeof showLoadingT
       if (loadingCount === 0) {
         closeToast()
       }
-    }
+    },
   }
 }

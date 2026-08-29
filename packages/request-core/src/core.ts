@@ -8,7 +8,7 @@ import type {
   TokenProvider,
   LoadingHandler,
   RequestHooks,
-  RefreshTokenResult
+  RefreshTokenResult,
 } from './types'
 import { HttpCode } from './types'
 import { createNormalizedError, getRequestKey, isSuccessPayload, retryDelay } from './utils'
@@ -46,7 +46,7 @@ export class HttpRequest {
       refreshPath = '/auth/refresh',
       tokenProvider,
       loading,
-      hooks = {}
+      hooks = {},
     } = options
 
     this.baseURL = baseURL
@@ -88,7 +88,7 @@ export class HttpRequest {
 
   /** 取消所有进行中的请求（页面跳转、退出登录等场景） */
   cancelAllRequests(): void {
-    this.pendingRequests.forEach(controller => controller.abort())
+    this.pendingRequests.forEach((controller) => controller.abort())
     this.pendingRequests.clear()
   }
 
@@ -123,20 +123,15 @@ export class HttpRequest {
       { refreshToken },
       {
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-        timeout: 15000
-      }
+        timeout: 15000,
+      },
     )
     if (status !== 200) throw createNormalizedError('Token 刷新失败', { type: 'auth' })
-    if (
-      !isSuccessPayload<RefreshTokenResult>(data) ||
-      (data as ResponseData<RefreshTokenResult>).code !== this.successCode
-    ) {
-      const msg = isSuccessPayload<RefreshTokenResult>(data)
-        ? (data as ResponseData<RefreshTokenResult>).message
-        : 'Token 刷新失败'
+    if (!isSuccessPayload<RefreshTokenResult>(data) || data.code !== this.successCode) {
+      const msg = isSuccessPayload<RefreshTokenResult>(data) ? data.message : 'Token 刷新失败'
       throw createNormalizedError(msg, { type: 'auth' })
     }
-    return (data as ResponseData<RefreshTokenResult>).data
+    return data.data
   }
 
   private setupInterceptors(): void {
@@ -162,12 +157,15 @@ export class HttpRequest {
         }
 
         if (config.method?.toUpperCase() === 'GET') {
-          config.params = { _t: Date.now(), ...config.params }
+          config.params = { _t: Date.now(), ...(config.params as Record<string, unknown> | undefined) }
         }
 
         return config
       },
-      (error: unknown) => Promise.reject(error)
+      // 请求拦截器必须把原始错误（通常是 AxiosError）原样传下去，
+      // 包成 Error 会让下游 isAxiosError / 状态码判断全部失效
+      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+      (error: unknown) => Promise.reject(error),
     )
 
     this.instance.interceptors.response.use(
@@ -178,12 +176,12 @@ export class HttpRequest {
         if (customConfig.cancelDuplicate) this.removePending(customConfig)
         if (customConfig.showLoading) this.loading?.onEnd()
 
-        if (!isSuccessPayload(data) || (data as ResponseData).code !== this.successCode) {
-          const msg = isSuccessPayload(data) ? (data as ResponseData).message : '请求失败'
+        if (!isSuccessPayload(data) || data.code !== this.successCode) {
+          const msg = isSuccessPayload(data) ? data.message : '请求失败'
           const err = createNormalizedError(msg || '请求失败', {
             type: 'business',
-            code: isSuccessPayload(data) ? (data as ResponseData).code : undefined,
-            config: customConfig
+            code: isSuccessPayload(data) ? data.code : undefined,
+            config: customConfig,
           })
           if (customConfig.showError !== false) {
             this.hooks.onBusinessError?.({ error: err, config: customConfig, response })
@@ -211,7 +209,7 @@ export class HttpRequest {
           const canceled = createNormalizedError('请求已取消', {
             type: 'canceled',
             config: customConfig,
-            original: error
+            original: error,
           })
           return Promise.reject(canceled)
         }
@@ -220,7 +218,7 @@ export class HttpRequest {
           const timeout = createNormalizedError('请求超时，请稍后重试', {
             type: 'timeout',
             config: customConfig,
-            original: error
+            original: error,
           })
           if (customConfig.showError !== false) {
             this.hooks.onError?.({ error: timeout, config: customConfig, response })
@@ -232,7 +230,7 @@ export class HttpRequest {
           const network = createNormalizedError('网络异常，请检查您的网络连接', {
             type: 'network',
             config: customConfig,
-            original: error
+            original: error,
           })
           if (customConfig.showError !== false) {
             this.hooks.onError?.({ error: network, config: customConfig })
@@ -248,7 +246,7 @@ export class HttpRequest {
               type: 'auth',
               status,
               config: customConfig,
-              original: error
+              original: error,
             })
             this.hooks.onUnauthorized?.({ error: authErr, config: customConfig, response })
             return Promise.reject(authErr)
@@ -273,7 +271,7 @@ export class HttpRequest {
                 type: 'auth',
                 status,
                 config: customConfig,
-                original: e
+                original: e,
               })
               this.hooks.onUnauthorized?.({ error: authErr, config: customConfig, response })
               return Promise.reject(authErr)
@@ -283,7 +281,7 @@ export class HttpRequest {
               type: 'auth',
               status,
               config: customConfig,
-              original: error
+              original: error,
             })
             this.hooks.onUnauthorized?.({ error: authErr, config: customConfig, response })
             return Promise.reject(authErr)
@@ -301,7 +299,7 @@ export class HttpRequest {
         const msgMap: Record<number, string> = {
           [HttpCode.FORBIDDEN]: '没有权限访问该资源',
           [HttpCode.NOT_FOUND]: '请求的资源不存在',
-          [HttpCode.SERVER_ERROR]: '服务器内部错误，请稍后重试'
+          [HttpCode.SERVER_ERROR]: '服务器内部错误，请稍后重试',
         }
         const message = msgMap[status] || (response.data as { message?: string })?.message || `请求失败（${status}）`
 
@@ -309,18 +307,18 @@ export class HttpRequest {
           type: 'http',
           status,
           config: customConfig,
-          original: error
+          original: error,
         })
         if (customConfig.showError !== false) {
           this.hooks.onError?.({ error: httpErr, config: customConfig, response })
         }
         return Promise.reject(httpErr)
-      }
+      },
     )
   }
 
   request<T = unknown>(config: RequestConfig): Promise<T> {
-    return this.instance.request<ResponseData<T>>(config).then(res => (res.data as ResponseData<T>).data)
+    return this.instance.request<ResponseData<T>>(config).then((res) => res.data.data)
   }
 
   get<T = unknown>(url: string, params?: Record<string, unknown>, config?: RequestConfig): Promise<T> {

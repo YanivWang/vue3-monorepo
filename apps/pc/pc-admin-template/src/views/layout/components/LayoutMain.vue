@@ -6,7 +6,7 @@ import { useTabsStore } from '@/stores/modules/tabs'
 const tabsStore = useTabsStore()
 
 /** 从 tabs 中收集需要缓存的路由名称 */
-const keepAliveNames = computed<string[]>(() => tabsStore.tabs.filter(t => t.keepAlive && t.name).map(t => t.name))
+const keepAliveNames = computed<string[]>(() => tabsStore.tabs.filter((t) => t.keepAlive && t.name).map((t) => t.name))
 </script>
 
 <template>

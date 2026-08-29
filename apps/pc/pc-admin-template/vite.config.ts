@@ -28,31 +28,31 @@ export default defineConfig(async ({ mode }) => {
       // Mock 服务（开发环境在 vite devServer 层拦截，业务代码无感知）
       viteMockServe({
         mockPath: 'mock',
-        enable: isMock
+        enable: isMock,
       }),
 
       // 单实例多算法，避免对 generateBundle 重复挂钩导致同路径资源被多次 emit
       compression({
         algorithms: ['gzip', 'brotliCompress'],
-        exclude: [/\.(br)$/, /\.(gz)$/]
+        exclude: [/\.(br)$/, /\.(gz)$/],
       }),
 
-      ...analyzePlugins
+      ...analyzePlugins,
     ].filter(Boolean),
 
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src')
-      }
+        '@': resolve(__dirname, 'src'),
+      },
     },
 
     css: {
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
-          additionalData: `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`
-        }
-      }
+          additionalData: `@use "@vue3-monorepo/shared/styles/tokens/variables" as *;`,
+        },
+      },
     },
 
     server: {
@@ -63,9 +63,9 @@ export default defineConfig(async ({ mode }) => {
         [env.VITE_API_PREFIX || '/api']: {
           target: env.VITE_API_BASE_URL || 'http://localhost:3000',
           changeOrigin: true,
-          rewrite: (path: string) => path.replace(new RegExp(`^${env.VITE_API_PREFIX || '/api'}`), '')
-        }
-      }
+          rewrite: (path: string) => path.replace(new RegExp(`^${env.VITE_API_PREFIX || '/api'}`), ''),
+        },
+      },
     },
 
     build: {
@@ -95,9 +95,9 @@ export default defineConfig(async ({ mode }) => {
           },
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
-          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
-        }
-      }
-    }
+          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        },
+      },
+    },
   }
 })

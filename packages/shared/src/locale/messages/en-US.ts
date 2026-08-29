@@ -28,7 +28,7 @@ const enUS: typeof zhCN = {
     status: 'Status',
     remark: 'Remark',
     createdAt: 'Created At',
-    updatedAt: 'Updated At'
+    updatedAt: 'Updated At',
   },
   menu: {
     home: 'Home',
@@ -38,7 +38,7 @@ const enUS: typeof zhCN = {
     permission: 'Permission Management',
     menu: 'Menu Management',
     dept: 'Department Management',
-    log: 'Operation Log'
+    log: 'Operation Log',
   },
   auth: {
     login: 'Login',
@@ -55,7 +55,7 @@ const enUS: typeof zhCN = {
     logoutConfirm: 'Are you sure you want to logout?',
     loginExpired: 'Your session has expired, please login again.',
     reLogin: 'Re-Login',
-    noPermission: 'Please login first'
+    noPermission: 'Please login first',
   },
   error: {
     '403': 'You do not have permission to access this page',
@@ -64,19 +64,19 @@ const enUS: typeof zhCN = {
     network: 'Network error, please check your connection',
     timeout: 'Request timeout, please try again later',
     unknown: 'Unknown error',
-    dataFormat: 'Response data format error'
+    dataFormat: 'Response data format error',
   },
   tabs: {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All',
-    refresh: 'Refresh Current'
+    refresh: 'Refresh Current',
   },
   http: {
     noPermission: 'No permission to access this resource',
     notFound: 'The requested resource does not exist',
-    serverError: 'Internal server error, please try again later'
-  }
+    serverError: 'Internal server error, please try again later',
+  },
 }
 
 export default enUS

@@ -12,11 +12,11 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: 16,
-  color: 'currentColor'
+  color: 'currentColor',
 })
 
 const isExternalUrl = computed(
-  () => props.name.startsWith('http') || props.name.startsWith('https') || props.name.startsWith('/')
+  () => props.name.startsWith('http') || props.name.startsWith('https') || props.name.startsWith('/'),
 )
 
 const symbolId = computed(() => `#icon-${props.name}`)
@@ -24,7 +24,7 @@ const symbolId = computed(() => `#icon-${props.name}`)
 const style = computed(() => ({
   width: `${props.size}px`,
   height: `${props.size}px`,
-  color: props.color
+  color: props.color,
 }))
 </script>
 

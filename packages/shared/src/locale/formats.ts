@@ -6,13 +6,13 @@ export const defaultNumberFormats = {
   'zh-CN': {
     decimal: { style: 'decimal', minimumFractionDigits: 2 },
     currency: { style: 'currency', currency: 'CNY', currencyDisplay: 'symbol' },
-    percent: { style: 'percent', minimumFractionDigits: 1 }
+    percent: { style: 'percent', minimumFractionDigits: 1 },
   },
   'en-US': {
     decimal: { style: 'decimal', minimumFractionDigits: 2 },
     currency: { style: 'currency', currency: 'USD', currencyDisplay: 'symbol' },
-    percent: { style: 'percent', minimumFractionDigits: 1 }
-  }
+    percent: { style: 'percent', minimumFractionDigits: 1 },
+  },
 } as const
 
 export const defaultDatetimeFormats = {
@@ -24,9 +24,9 @@ export const defaultDatetimeFormats = {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
     },
-    relative: { year: 'numeric', month: 'long', day: 'numeric' }
+    relative: { year: 'numeric', month: 'long', day: 'numeric' },
   },
   'en-US': {
     short: { year: 'numeric', month: 'short', day: 'numeric' },
@@ -36,8 +36,8 @@ export const defaultDatetimeFormats = {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
     },
-    relative: { year: 'numeric', month: 'long', day: 'numeric' }
-  }
+    relative: { year: 'numeric', month: 'long', day: 'numeric' },
+  },
 } as const

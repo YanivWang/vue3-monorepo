@@ -11,7 +11,7 @@ export interface UseHistoryStackH5Options {
   detectNavigationAction?: (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
-    hint: HistoryNavAction
+    hint: HistoryNavAction,
   ) => HistoryNavAction
   autoBind?: boolean
   router?: Router
@@ -29,7 +29,7 @@ let instrumented = false
 let popListener: (() => void) | null = null
 const native = {
   pushState: null as typeof history.pushState | null,
-  replaceState: null as typeof history.replaceState | null
+  replaceState: null as typeof history.replaceState | null,
 }
 
 /**
@@ -80,8 +80,8 @@ function hintFromPendingOrState(raw: HistoryNavAction | null): HistoryNavAction 
 function inferPopFromStack(stack: readonly { name: string }[], fromName: string, toName: string): boolean {
   if (!fromName || stack.length < 2) return false
   const top = stack[stack.length - 1]?.name
-  const toIdx = stack.findIndex(s => s.name === toName)
-  const fromIdx = stack.findIndex(s => s.name === fromName)
+  const toIdx = stack.findIndex((s) => s.name === toName)
+  const fromIdx = stack.findIndex((s) => s.name === fromName)
   return top === fromName && toIdx !== -1 && fromIdx !== -1 && toIdx < fromIdx
 }
 

@@ -8,5 +8,5 @@ export const usePermission = createUsePermission({
   permissions: () => useUserStore().permissions,
   roles: () => useUserStore().roles,
   hasPermission: (key: string) => useUserStore().hasPermission(key),
-  hasRole: (key: string) => useUserStore().hasRole(key)
+  hasRole: (key: string) => useUserStore().hasRole(key),
 })

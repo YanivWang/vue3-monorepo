@@ -7,7 +7,7 @@ import {
   applyThemeMode,
   getAppliedThemeMode,
   type BrandId,
-  type ThemeModeId
+  type ThemeModeId,
 } from '@vue3-monorepo/shared/styles/tokens'
 import { i18n, ensureAdminLocaleLoaded } from '@/locales'
 
@@ -119,12 +119,12 @@ export const useAppStore = defineStore(
       setBrand,
       setLanguage,
       setPageLoading,
-      init
+      init,
     }
   },
   {
     persist: {
-      paths: ['sidebarCollapsed', 'themeMode', 'brand', 'language']
-    }
-  }
+      paths: ['sidebarCollapsed', 'themeMode', 'brand', 'language'],
+    },
+  },
 )

@@ -11,7 +11,7 @@ import { useUserStore } from '@/stores'
 export function registerDirectives(app: App): void {
   const user = useUserStore()
   registerH5Directives(app, {
-    hasPermission: k => user.hasPermission(k),
-    hasRole: k => user.hasRole(k)
+    hasPermission: (k) => user.hasPermission(k),
+    hasRole: (k) => user.hasRole(k),
   })
 }

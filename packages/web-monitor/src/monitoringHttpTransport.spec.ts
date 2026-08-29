@@ -13,7 +13,7 @@ describe('postJsonReport', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => Promise.resolve(new Response(null, { status: 204 })))
+      vi.fn(() => Promise.resolve(new Response(null, { status: 204 }))),
     )
   })
 
@@ -47,7 +47,7 @@ describe('postJsonReport', () => {
     postJsonReport('{"a":1}', URL_)
 
     expect(fetch).toHaveBeenCalledOnce()
-    const [url, init] = vi.mocked(fetch).mock.calls[0]
+    const [url, init] = vi.mocked(fetch).mock.calls[0]!
     expect(url).toBe(URL_)
     expect(init).toMatchObject({ method: 'POST', keepalive: true, body: '{"a":1}' })
   })
@@ -67,11 +67,11 @@ describe('postJsonReport', () => {
     process.on('unhandledRejection', rejection)
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => Promise.reject(new Error('offline')))
+      vi.fn(() => Promise.reject(new Error('offline'))),
     )
 
     expect(() => postJsonReport('{"a":1}', URL_)).not.toThrow()
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await new Promise((resolve) => setTimeout(resolve, 0))
 
     expect(rejection).not.toHaveBeenCalled()
     process.off('unhandledRejection', rejection)

@@ -18,8 +18,8 @@ export default defineConfig({
   /** 与 admin(5173)、h5(5174) 错开，便于 `pnpm dev` 三端同启（走 Vite 的 server 配置） */
   vite: {
     server: {
-      port: 5175
-    }
+      port: 5175,
+    },
   },
 
   // 站点图标 / Logo：需要时在 docs/public/ 放置资源后再打开下面两处（当前仓库未提供，故不引用避免 404）
@@ -35,7 +35,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: '组件', link: '/components/page-container' },
       { text: '架构', link: '/guide/architecture' },
-      { text: '贡献', link: '/guide/contributing' }
+      { text: '贡献', link: '/guide/contributing' },
     ],
 
     sidebar: {
@@ -47,9 +47,9 @@ export default defineConfig({
             { text: 'PageContainer', link: '/components/page-container' },
             { text: 'ProTable', link: '/components/pro-table' },
             { text: 'Skeleton', link: '/components/skeleton' },
-            { text: 'SvgIcon', link: '/components/svg-icon' }
-          ]
-        }
+            { text: 'SvgIcon', link: '/components/svg-icon' },
+          ],
+        },
       ],
       '/guide/': [
         {
@@ -65,8 +65,8 @@ export default defineConfig({
             { text: '项目与目录约定', link: '/guide/project-conventions' },
             { text: '排障与 FAQ', link: '/guide/troubleshooting' },
             { text: '环境变量', link: '/guide/environment-variables' },
-            { text: '贡献与协作', link: '/guide/contributing' }
-          ]
+            { text: '贡献与协作', link: '/guide/contributing' },
+          ],
         },
         {
           text: '应用架构与工程实践',
@@ -80,32 +80,32 @@ export default defineConfig({
             { text: '全局错误监控', link: '/guide/errors-and-observability' },
             { text: '全局性能监控', link: '/guide/web-vitals' },
             { text: 'Vite 构建优化', link: '/guide/performance' },
-            { text: '安全', link: '/guide/security' }
-          ]
+            { text: '安全', link: '/guide/security' },
+          ],
         },
         {
           text: '发布、CI 与分支',
           items: [
             { text: '分支策略', link: '/guide/branch-strategy' },
             { text: '部署与 Docker', link: '/guide/deploy' },
-            { text: 'CI 与自动化', link: '/guide/ci-and-automation' }
-          ]
-        }
-      ]
+            { text: 'CI 与自动化', link: '/guide/ci-and-automation' },
+          ],
+        },
+      ],
     },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/YanivWang/vue3-monorepo' }],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2026'
+      copyright: 'Copyright © 2026',
     },
 
     search: { provider: 'local' },
 
     editLink: {
       pattern: 'https://github.com/YanivWang/vue3-monorepo/edit/main/docs/:path',
-      text: '在 GitHub 上编辑此页'
+      text: '在 GitHub 上编辑此页',
     },
 
     ...(vitePressNoGit ? {} : { lastUpdated: { text: '最后更新' } }),
@@ -114,11 +114,11 @@ export default defineConfig({
 
     docFooter: {
       prev: '上一页',
-      next: '下一页'
-    }
+      next: '下一页',
+    },
   },
 
   markdown: {
-    lineNumbers: true
-  }
+    lineNumbers: true,
+  },
 })

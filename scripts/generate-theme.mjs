@@ -229,12 +229,12 @@ html.dark {
 `
 
 const brandIds = Object.keys(brands)
-const brandIdUnion = brandIds.map(id => `'${id}'`).join(' | ')
+const brandIdUnion = brandIds.map((id) => `'${id}'`).join(' | ')
 
 const brandConfigEntries = brandIds
-  .map(id => {
+  .map((id) => {
     const brand = brands[id]
-    const fields = [`id: '${id}'`, ...Object.keys(brandCssVarMap).map(key => `${key}: '${brand[key]}'`)]
+    const fields = [`id: '${id}'`, ...Object.keys(brandCssVarMap).map((key) => `${key}: '${brand[key]}'`)]
 
     return `  ${id}: {\n    ${fields.join(',\n    ')}\n  }`
   })
@@ -269,7 +269,7 @@ const written = [
   join(tokensDir, '_brands.scss'),
   join(tokensDir, '_dark.scss'),
   join(tokensDir, '_dark-element.scss'),
-  join(stylesDir, 'brands.config.ts')
+  join(stylesDir, 'brands.config.ts'),
 ]
 
 writeFileSync(written[0], variables)
@@ -283,7 +283,7 @@ writeFileSync(written[4], brandsConfigTs)
 // 否则 `pnpm run check:theme` / `prettier --check .` 会互相打架。
 execFileSync('node', [join(root, 'node_modules/prettier/bin/prettier.cjs'), '--write', ...written], {
   cwd: root,
-  stdio: 'ignore'
+  stdio: 'ignore',
 })
 
 console.log('Generated theme files from theme-palette.json')

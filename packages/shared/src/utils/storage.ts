@@ -18,7 +18,7 @@ import Cookies from 'js-cookie'
 export const cookie = {
   get: (key: string) => Cookies.get(key),
   set: (key: string, value: string, expires = 1) => Cookies.set(key, value, { expires }),
-  remove: (key: string) => Cookies.remove(key)
+  remove: (key: string) => Cookies.remove(key),
 }
 
 // ────────────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ export function lsSet<T>(key: string, value: T, ttl?: number): void {
   if (typeof localStorage === 'undefined') return
   const item: StorageItem<T> = {
     value,
-    expire: ttl ? Date.now() + ttl * 1000 : undefined
+    expire: ttl ? Date.now() + ttl * 1000 : undefined,
   }
   localStorage.setItem(key, JSON.stringify(item))
 }
@@ -137,6 +137,6 @@ export function createTokenStorage(options: CreateTokenStorageOptions): TokenSto
     removeToken: () => cookie.remove(tokenKey),
     getRefreshToken: () => cookie.get(refreshTokenKey),
     setRefreshToken: (token, expires = refreshExpires) => cookie.set(refreshTokenKey, token, expires),
-    removeRefreshToken: () => cookie.remove(refreshTokenKey)
+    removeRefreshToken: () => cookie.remove(refreshTokenKey),
   }
 }

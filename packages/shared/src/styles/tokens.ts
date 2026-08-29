@@ -30,7 +30,7 @@ export const cssVarTokens = {
     bgElevated: '--color-bg-elevated',
     bgOverlay: '--color-bg-overlay',
     borderDefault: '--color-border-default',
-    borderSubtle: '--color-border-subtle'
+    borderSubtle: '--color-border-subtle',
   },
   layout: {
     sidebarBg: '--layout-sidebar-bg',
@@ -43,23 +43,23 @@ export const cssVarTokens = {
     headerHeight: '--layout-header-height',
     sidebarWidth: '--layout-sidebar-width',
     sidebarWidthCollapsed: '--layout-sidebar-width-collapsed',
-    footerHeight: '--layout-footer-height'
+    footerHeight: '--layout-footer-height',
   },
   spacing: {
     xs: '--spacing-xs',
     sm: '--spacing-sm',
     md: '--spacing-md',
     lg: '--spacing-lg',
-    xl: '--spacing-xl'
+    xl: '--spacing-xl',
   },
   radius: {
     base: '--radius-base',
     medium: '--radius-medium',
-    large: '--radius-large'
+    large: '--radius-large',
   },
   shadow: {
     base: '--shadow-base',
-    medium: '--shadow-medium'
+    medium: '--shadow-medium',
   },
   typography: {
     fontFamily: '--font-family-base',
@@ -78,8 +78,8 @@ export const cssVarTokens = {
     fontWeightBold: '--font-weight-bold',
     lineHeightTight: '--line-height-tight',
     lineHeightNormal: '--line-height-normal',
-    lineHeightRelaxed: '--line-height-relaxed'
-  }
+    lineHeightRelaxed: '--line-height-relaxed',
+  },
 } as const
 
 export const typographyTokens = {
@@ -93,19 +93,19 @@ export const typographyTokens = {
     xl: 'var(--font-size-xl)',
     '2xl': 'var(--font-size-2xl)',
     '3xl': 'var(--font-size-3xl)',
-    '4xl': 'var(--font-size-4xl)'
+    '4xl': 'var(--font-size-4xl)',
   },
   fontWeight: {
     normal: 'var(--font-weight-normal)',
     medium: 'var(--font-weight-medium)',
     semibold: 'var(--font-weight-semibold)',
-    bold: 'var(--font-weight-bold)'
+    bold: 'var(--font-weight-bold)',
   },
   lineHeight: {
     tight: 'var(--line-height-tight)',
     normal: 'var(--line-height-normal)',
-    relaxed: 'var(--line-height-relaxed)'
-  }
+    relaxed: 'var(--line-height-relaxed)',
+  },
 } as const
 
 export const spacingTokens = {
@@ -115,7 +115,7 @@ export const spacingTokens = {
   lg: '24px',
   xl: '32px',
   '2xl': '48px',
-  '3xl': '64px'
+  '3xl': '64px',
 } as const
 
 export const borderRadiusTokens = {
@@ -126,7 +126,7 @@ export const borderRadiusTokens = {
   large: '8px',
   xl: '12px',
   '2xl': '16px',
-  full: '9999px'
+  full: '9999px',
 } as const
 
 export const breakpointTokens = {
@@ -135,7 +135,7 @@ export const breakpointTokens = {
   md: '768px',
   lg: '992px',
   xl: '1200px',
-  '2xl': '1600px'
+  '2xl': '1600px',
 } as const
 
 export const zIndexTokens = {
@@ -145,7 +145,7 @@ export const zIndexTokens = {
   fixed: 1030,
   modal: 1040,
   popover: 1050,
-  tooltip: 1070
+  tooltip: 1070,
 } as const
 
 export const layoutTokens = {
@@ -153,7 +153,7 @@ export const layoutTokens = {
   sidebarWidth: '220px',
   sidebarWidthCollapsed: '64px',
   footerHeight: '50px',
-  contentMaxWidth: '1440px'
+  contentMaxWidth: '1440px',
 } as const
 
 export const tokens = {
@@ -163,7 +163,7 @@ export const tokens = {
   borderRadius: borderRadiusTokens,
   breakpoint: breakpointTokens,
   zIndex: zIndexTokens,
-  layout: layoutTokens
+  layout: layoutTokens,
 } as const
 
 export function getCssVar(token: string, el: HTMLElement = document.documentElement): string {

@@ -31,15 +31,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 
 const errors = []
-const fail = msg => errors.push(msg)
+const fail = (msg) => errors.push(msg)
 
 // ---------- 枚举 workspace（与 check-refs.js 同一套解析）----------
 const workspaceYaml = readFileSync(join(ROOT, 'pnpm-workspace.yaml'), 'utf8')
 const entryLines = (workspaceYaml.split(/^packages:\s*$/m).slice(1)[0] ?? '')
   .split('\n')
-  .map(l => l.trim())
-  .filter(l => /^-\s+['"]/.test(l))
-  .map(l => l.replace(/^-\s+(['"])([^'"\n]+)\1.*$/, '$2'))
+  .map((l) => l.trim())
+  .filter((l) => /^-\s+['"]/.test(l))
+  .map((l) => l.replace(/^-\s+(['"])([^'"\n]+)\1.*$/, '$2'))
 
 /** @type {{ dir: string, path: string }[]} */
 const workspaces = []
@@ -47,7 +47,7 @@ function addWorkspaceIfPkg(dir) {
   const full = join(ROOT, dir)
   if (!existsSync(full) || !statSync(full).isDirectory()) return
   if (!existsSync(join(full, 'package.json'))) return
-  if (workspaces.some(w => w.dir === dir)) return
+  if (workspaces.some((w) => w.dir === dir)) return
   workspaces.push({ dir, path: full })
 }
 
@@ -86,7 +86,7 @@ function hasTestFile(dir) {
 // ---------- vitest.workspace.ts 的清单 ----------
 const vitestWorkspaceFile = join(ROOT, 'vitest.workspace.ts')
 const vitestWorkspaceSrc = readFileSync(vitestWorkspaceFile, 'utf8')
-const listed = [...vitestWorkspaceSrc.matchAll(/['"]\.\/([^'"]+)['"]/g)].map(m => m[1])
+const listed = [...vitestWorkspaceSrc.matchAll(/['"]\.\/([^'"]+)['"]/g)].map((m) => m[1])
 
 if (listed.length === 0) {
   fail('vitest.workspace.ts 里没解析出任何项目路径 —— 格式变了？本脚本按 "./路径" 字面量匹配。')
@@ -107,7 +107,7 @@ for (const ws of workspaces) {
   if (!scripts.typecheck) {
     fail(
       `${label} 没有 typecheck 脚本。根 typecheck 带 --if-present，会静默跳过它 —— ` +
-        `这个包等于没有类型检查。补一条 "typecheck": "tsc --noEmit -p tsconfig.json"。`
+        `这个包等于没有类型检查。补一条 "typecheck": "tsc --noEmit -p tsconfig.json"。`,
     )
   }
 
@@ -119,7 +119,7 @@ for (const ws of workspaces) {
   if (!listed.includes(ws.dir)) {
     fail(
       `${label} 有测试文件，但不在 vitest.workspace.ts 的清单里 —— ` +
-        `\`pnpm test\` 根本不会跑它，且不会报错。把 './${ws.dir}' 加进去。`
+        `\`pnpm test\` 根本不会跑它，且不会报错。把 './${ws.dir}' 加进去。`,
     )
   }
 }
@@ -134,5 +134,5 @@ if (errors.length > 0) {
 
 console.log(
   `✅ check-workspace-scripts 通过：${workspaces.length} 个 workspace 均声明 typecheck；` +
-    `${listed.length} 个项目已挂在 vitest.workspace.ts 上。`
+    `${listed.length} 个项目已挂在 vitest.workspace.ts 上。`,
 )

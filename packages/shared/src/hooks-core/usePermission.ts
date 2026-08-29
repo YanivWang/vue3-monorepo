@@ -12,7 +12,7 @@ export interface PermissionContext {
 }
 
 function unwrap<T>(source: Ref<T> | ComputedRef<T> | (() => T)): T {
-  if (typeof source === 'function') return (source as () => T)()
+  if (typeof source === 'function') return source()
   return (source as Ref<T>).value
 }
 
@@ -38,17 +38,17 @@ export function createUsePermission(ctx: PermissionContext) {
 
     function hasPermission(permission: string | string[]): boolean {
       const keys = Array.isArray(permission) ? permission : [permission]
-      return keys.some(k => hasPermissionFn(k))
+      return keys.some((k) => hasPermissionFn(k))
     }
     function hasAllPermissions(permissions: string[]): boolean {
-      return permissions.every(p => hasPermissionFn(p))
+      return permissions.every((p) => hasPermissionFn(p))
     }
     function hasRole(role: string | string[]): boolean {
       const keys = Array.isArray(role) ? role : [role]
-      return keys.some(k => hasRoleFn(k))
+      return keys.some((k) => hasRoleFn(k))
     }
     function hasAllRoles(roles: string[]): boolean {
-      return roles.every(r => hasRoleFn(r))
+      return roles.every((r) => hasRoleFn(r))
     }
 
     return {
@@ -57,7 +57,7 @@ export function createUsePermission(ctx: PermissionContext) {
       hasPermission,
       hasAllPermissions,
       hasRole,
-      hasAllRoles
+      hasAllRoles,
     }
   }
 }

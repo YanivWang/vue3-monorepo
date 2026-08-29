@@ -26,7 +26,7 @@ export const components = [
   NavBar,
   ErrorBoundaryH5,
   FilterDrawer,
-  TabBarLayout
+  TabBarLayout,
 ] as const
 
 /**

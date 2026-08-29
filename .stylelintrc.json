@@ -3,8 +3,7 @@
     "stylelint-config-standard",
     "stylelint-config-standard-scss",
     "stylelint-config-recess-order",
-    "stylelint-config-html/vue",
-    "stylelint-prettier/recommended"
+    "stylelint-config-html/vue"
   ],
   "plugins": ["stylelint-scss", "stylelint-order"],
   "rules": {
@@ -17,7 +16,12 @@
     "color-function-alias-notation": null,
     "color-hex-length": null,
     "property-no-vendor-prefix": null,
-    "value-keyword-case": ["lower", { "camelCaseSvgKeywords": true }],
+    "value-keyword-case": [
+      "lower",
+      {
+        "camelCaseSvgKeywords": true
+      }
+    ],
     "scss/load-partial-extension": ["never"],
     "rule-empty-line-before": [
       "always",
@@ -26,7 +30,12 @@
         "ignore": ["after-comment", "inside-block"]
       }
     ],
-    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep", "slotted", "global"] }],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["deep", "slotted", "global"]
+      }
+    ],
     "selector-class-pattern": [
       "^([a-z][a-z0-9]*)(-[a-z0-9]+)*(__[a-z][a-z0-9]*(-[a-z0-9]+)*)?(--[a-z][a-z0-9]*(-[a-z0-9]+)*)?$",
       {
@@ -66,8 +75,7 @@
       "files": ["packages/shared/src/styles/tokens/**", "packages/shared/src/styles/patterns/**"],
       "rules": {
         "color-no-hex": null,
-        "value-keyword-case": null,
-        "prettier/prettier": null
+        "value-keyword-case": null
       }
     }
   ]

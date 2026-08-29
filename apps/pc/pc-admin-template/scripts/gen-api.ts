@@ -46,7 +46,7 @@ async function generate() {
       if ('nullable' in schemaObject && schemaObject.nullable) {
         return undefined
       }
-    }
+    },
   })
 
   const content = [
@@ -55,7 +55,7 @@ async function generate() {
     ' * 修改 openapi/api.yaml 后执行 pnpm run gen:api 重新生成',
     ' */',
     '',
-    astToString(ast)
+    astToString(ast),
   ].join('\n')
 
   writeFileSync(OUTPUT, content, 'utf-8')
@@ -66,7 +66,7 @@ async function generate() {
   console.log(`   共 ${lines} 行`)
 }
 
-generate().catch(err => {
+generate().catch((err) => {
   console.error('❌  生成失败：', err)
   process.exit(1)
 })

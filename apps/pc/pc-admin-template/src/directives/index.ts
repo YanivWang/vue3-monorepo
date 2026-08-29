@@ -8,11 +8,11 @@ import { useUserStore } from '@/stores/modules/user'
  */
 export function registerDirectives(app: App): void {
   registerPcDirectives(app, {
-    hasPermission: key => useUserStore().hasPermission(key),
-    hasRole: key => useUserStore().hasRole(key),
+    hasPermission: (key) => useUserStore().hasPermission(key),
+    hasRole: (key) => useUserStore().hasRole(key),
     copy: {
       onSuccess: () => ElMessage.success('已复制'),
-      onError: () => ElMessage.error('复制失败')
-    }
+      onError: () => ElMessage.error('复制失败'),
+    },
   })
 }

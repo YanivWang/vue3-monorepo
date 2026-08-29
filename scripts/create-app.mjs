@@ -16,12 +16,12 @@ const ROOT = join(__dirname, '..')
 const TEMPLATES = {
   h5: {
     rel: 'apps/h5/h5-template',
-    defaultPort: 5174
+    defaultPort: 5174,
   },
   admin: {
     rel: 'apps/pc/pc-admin-template',
-    defaultPort: 5173
-  }
+    defaultPort: 5173,
+  },
 }
 
 const RESERVED_PREFIXES = new Set([
@@ -42,7 +42,7 @@ const RESERVED_PREFIXES = new Set([
   'docs',
   'type-check',
   'test:run',
-  'create-app'
+  'create-app',
 ])
 
 function shouldCopyPath(src) {
@@ -113,11 +113,11 @@ async function main() {
         message: '选择应用类型',
         choices: [
           { title: 'H5（Vant、Bridge 等，基于 h5-template）', value: 'h5' },
-          { title: 'PC Admin（Element Plus 等，基于 pc-admin-template）', value: 'admin' }
+          { title: 'PC Admin（Element Plus 等，基于 pc-admin-template）', value: 'admin' },
         ],
-        initial: 0
+        initial: 0,
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     if (!t.type) process.exit(1)
     type = t.type
@@ -132,14 +132,14 @@ async function main() {
         name: 'dirName',
         message: `新应用目录名（${dirHint}）`,
         initial: dirInitial,
-        validate: s => {
+        validate: (s) => {
           if (!/^[a-z][a-z0-9-]*$/.test(String(s).trim())) {
             return '仅小写字母、数字、连字符，且以字母开头'
           }
           return true
-        }
+        },
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     if (!d.dirName) process.exit(1)
     dirName = String(d.dirName).trim()
@@ -152,14 +152,14 @@ async function main() {
         name: 'packageName',
         message: 'npm 包名（name 字段）',
         initial: sensibleName,
-        validate: s => {
+        validate: (s) => {
           if (!/^@vue3-monorepo\/[a-z0-9-]+$/.test(String(s).trim())) {
             return '须匹配 @vue3-monorepo/小写连字符名'
           }
           return true
-        }
+        },
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     if (!n.packageName) process.exit(1)
     packageName = String(n.packageName).trim()
@@ -170,14 +170,14 @@ async function main() {
         name: 'shortPrefix',
         message: '根 package.json 脚本前缀（将生成 前缀:dev、前缀:build 等）',
         initial: dirName,
-        validate: s => {
+        validate: (s) => {
           if (!/^[a-z][a-z0-9-]*$/.test(String(s).trim())) {
             return '仅小写字母、数字、连字符，且以字母开头'
           }
           return true
-        }
+        },
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     if (!pr.shortPrefix) process.exit(1)
     shortPrefix = String(pr.shortPrefix).trim()
@@ -190,9 +190,9 @@ async function main() {
         message: 'Vite dev 端口（勿与 5173/5174/5175 等冲突）',
         initial: defPort,
         min: 1024,
-        max: 65535
+        max: 65535,
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     if (p.port == null) process.exit(1)
     port = Number(p.port)
@@ -202,9 +202,9 @@ async function main() {
         type: 'confirm',
         name: 'appendBuild',
         message: '将新应用加入根 build 链（在 docs:build 之前执行 :build）？',
-        initial: false
+        initial: false,
       },
-      { onCancel: () => process.exit(1) }
+      { onCancel: () => process.exit(1) },
     )
     appendBuild = Boolean(ab.appendBuild)
   } else {
@@ -259,7 +259,7 @@ async function main() {
     `${shortPrefix}:dev`,
     `${shortPrefix}:build`,
     `${shortPrefix}:typecheck`,
-    `${shortPrefix}:test`
+    `${shortPrefix}:test`,
   ]
 
   for (const k of newScriptKeys) {
@@ -276,7 +276,7 @@ async function main() {
   console.log(`复制模板 ${TEMPLATES[type].rel} → ${targetRel} ...`)
   cpSync(srcAbs, targetAbs, {
     recursive: true,
-    filter: src => shouldCopyPath(src)
+    filter: (src) => shouldCopyPath(src),
   })
 
   const pkgPath = join(targetAbs, 'package.json')
@@ -378,7 +378,7 @@ async function main() {
   console.log(`\n新应用路径: ${rel}`)
 }
 
-main().catch(e => {
+main().catch((e) => {
   console.error(e)
   process.exit(1)
 })

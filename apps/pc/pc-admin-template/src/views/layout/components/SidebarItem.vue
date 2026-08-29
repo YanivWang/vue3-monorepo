@@ -10,7 +10,7 @@ interface Props {
 const props = defineProps<Props>()
 
 /** 只有一个可见子菜单时，是否直接展开（省略一层目录） */
-const visibleChildren = props.menu.children?.filter(c => !c.meta?.hidden) ?? []
+const visibleChildren = props.menu.children?.filter((c) => !c.meta?.hidden) ?? []
 const isSingleChild = !props.menu.meta?.alwaysShow && visibleChildren.length === 1
 
 /** 当只有一个子菜单时，直接渲染子菜单 */

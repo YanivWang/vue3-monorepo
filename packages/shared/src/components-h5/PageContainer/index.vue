@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   fill: true,
   safeAreaTop: false,
   safeAreaBottom: true,
-  backFallback: () => ({ name: 'Home' })
+  backFallback: () => ({ name: 'Home' }),
 })
 
 const emit = defineEmits<{
@@ -76,7 +76,7 @@ function onClickLeft() {
     :class="{
       'h5-page-container--fill': props.fill,
       'h5-page-container--safe-top': props.safeAreaTop,
-      'h5-page-container--safe-bottom': props.safeAreaBottom
+      'h5-page-container--safe-bottom': props.safeAreaBottom,
     }"
   >
     <slot name="header">

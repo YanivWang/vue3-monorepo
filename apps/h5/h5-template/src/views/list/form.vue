@@ -16,7 +16,7 @@ const id = computed(() => (isEdit.value ? Number(route.params.id) : NaN))
 const form = ref({
   title: '',
   summary: '',
-  cover: ''
+  cover: '',
 })
 
 const loading = ref(false)
@@ -30,7 +30,7 @@ async function loadDetail() {
     form.value = {
       title: row.title,
       summary: row.summary,
-      cover: row.cover
+      cover: row.cover,
     }
   } catch {
     Toast.fail('加载失败')
@@ -51,7 +51,7 @@ async function onSubmit() {
       await listApi.update(id.value, {
         title: form.value.title.trim(),
         summary: form.value.summary.trim(),
-        cover: form.value.cover.trim() || undefined
+        cover: form.value.cover.trim() || undefined,
       })
       Toast.success('已保存')
       router.replace({ name: 'ListDetail', params: { id: String(id.value) } })
@@ -59,7 +59,7 @@ async function onSubmit() {
       const row = await listApi.create({
         title: form.value.title.trim(),
         summary: form.value.summary.trim(),
-        cover: form.value.cover.trim() || undefined
+        cover: form.value.cover.trim() || undefined,
       })
       Toast.success('已创建')
       router.replace({ name: 'ListDetail', params: { id: String(row.id) } })

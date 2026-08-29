@@ -41,21 +41,21 @@ export function useMessage() {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
-      ...options
+      ...options,
     })
   }
 
   /** 危险操作二次确认（按钮样式为红色） */
   async function confirmDelete(
     message = '此操作不可撤销，确认继续？',
-    options?: Partial<ElMessageBoxOptions>
+    options?: Partial<ElMessageBoxOptions>,
   ): Promise<void> {
     await ElMessageBox.confirm(message, options?.title ?? '危险操作', {
       confirmButtonText: '确认删除',
       cancelButtonText: '取消',
       type: 'error',
       confirmButtonClass: 'el-button--danger',
-      ...options
+      ...options,
     })
   }
 
@@ -64,7 +64,7 @@ export function useMessage() {
     const { value } = await ElMessageBox.prompt(message, title, {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
-      ...options
+      ...options,
     })
     return value
   }
@@ -81,6 +81,6 @@ export function useMessage() {
     confirm,
     confirmDelete,
     prompt,
-    notify
+    notify,
   }
 }

@@ -14,7 +14,7 @@ export interface UseEChartsOptions {
 
 function unwrapDark(source: Ref<boolean> | ComputedRef<boolean> | (() => boolean) | undefined): boolean {
   if (!source) return false
-  if (typeof source === 'function') return (source as () => boolean)()
+  if (typeof source === 'function') return source()
   return (source as Ref<boolean>).value
 }
 
@@ -86,6 +86,6 @@ export function useECharts(options: UseEChartsOptions = {}) {
     setOption,
     resize,
     dispose,
-    getInstance: () => instance
+    getInstance: () => instance,
   }
 }

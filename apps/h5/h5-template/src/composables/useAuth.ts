@@ -32,16 +32,16 @@ export function useAuth() {
       /* 拉用户信息失败不阻塞登录成功体验 */
     }
     const redirect = router.currentRoute.value.query.redirect as string | undefined
-    router.replace(redirect || '/home')
+    await router.replace(redirect || '/home')
   }
 
   const { loading, loginAuto, loginByForm, loginByBridge } = useLogin<LoginTokenResult, LoginTokenResult>({
     bridge,
     api: {
       formLogin: loginApi.formLogin,
-      exchangeCode: (credential, host) => loginApi.exchangeCode(credential, host)
+      exchangeCode: (credential, host) => loginApi.exchangeCode(credential, host),
     },
-    onSuccess: applyLoginSuccess
+    onSuccess: applyLoginSuccess,
   })
 
   async function logout() {
@@ -56,11 +56,11 @@ export function useAuth() {
       /* 浏览器宿主本身就没有 native 会话可登出 */
     }
     user.reset()
-    router.replace('/login')
+    await router.replace('/login')
   }
 
   async function loginAutoWithForm(params?: LoginFormParams): Promise<LoginTokenResult> {
-    return loginAuto(params) as Promise<LoginTokenResult>
+    return loginAuto(params)
   }
 
   async function loginBySms(params: SmsLoginParams): Promise<LoginTokenResult> {
@@ -80,6 +80,6 @@ export function useAuth() {
     loginByForm,
     loginByBridge,
     loginBySms,
-    logout
+    logout,
   }
 }

@@ -12,21 +12,21 @@ const tabsStore = useTabsStore()
 const { t } = useI18n()
 
 const tabsWithLabels = computed(() =>
-  tabsStore.tabs.map(tab => ({
+  tabsStore.tabs.map((tab) => ({
     ...tab,
-    label: t(tab.label)
-  }))
+    label: t(tab.label),
+  })),
 )
 
 /** 与 vue-router 同步底部高亮（供非 Tab 页或其它逻辑读取 activeName） */
 watch(
   () => route.name,
-  name => {
-    if (name && tabsStore.tabs.some(t => t.name === name)) {
+  (name) => {
+    if (name && tabsStore.tabs.some((t) => t.name === name)) {
       tabsStore.setActive(String(name))
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 

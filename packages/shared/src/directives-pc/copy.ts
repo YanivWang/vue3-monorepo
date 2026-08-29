@@ -44,7 +44,9 @@ export function createCopyDirective(options: CopyDirectiveOptions = {}): Directi
   return {
     mounted(el: CopyEl, binding: DirectiveBinding<string>) {
       el.__copyValue__ = binding.value ?? ''
-      el.__copyHandler__ = async () => {
+      // 复制本身是异步的，但事件监听器必须同步返回 void：
+      // 直接把 async 函数当 listener 会让异常无处可去（no-misused-promises）
+      const copy = async () => {
         const value = el.__copyValue__ ?? ''
         if (!value) return
         try {
@@ -53,6 +55,9 @@ export function createCopyDirective(options: CopyDirectiveOptions = {}): Directi
         } catch (err) {
           onError?.(err)
         }
+      }
+      el.__copyHandler__ = () => {
+        void copy()
       }
       el.addEventListener('click', el.__copyHandler__)
     },
@@ -65,6 +70,6 @@ export function createCopyDirective(options: CopyDirectiveOptions = {}): Directi
         el.__copyHandler__ = undefined
       }
       el.__copyValue__ = undefined
-    }
+    },
   }
 }

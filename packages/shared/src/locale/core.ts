@@ -27,7 +27,7 @@ export interface CreateI18nOptions {
 /** 合并两层对象（浅合并 root，深合并 key → messages） */
 function mergeMessages(
   base: Record<string, Record<string, unknown>>,
-  extra: Record<string, Record<string, unknown>> = {}
+  extra: Record<string, Record<string, unknown>> = {},
 ): Record<string, Record<string, unknown>> {
   const merged: Record<string, Record<string, unknown>> = { ...base }
   for (const lang of Object.keys(extra)) {
@@ -51,7 +51,7 @@ export function createI18nInstance(options: CreateI18nOptions = {}): I18n {
     datetimeFormats,
     missing = (_l, key) => key,
     silentTranslationWarn = true,
-    silentFallbackWarn = true
+    silentFallbackWarn = true,
   } = options
 
   const baseMessages = mergeDefaults ? (defaultMessages as unknown as Record<string, Record<string, unknown>>) : {}
@@ -64,15 +64,15 @@ export function createI18nInstance(options: CreateI18nOptions = {}): I18n {
     messages: finalMessages as I18nOptions['messages'],
     numberFormats: {
       ...(defaultNumberFormats as unknown as I18nOptions['numberFormats']),
-      ...(numberFormats || {})
-    } as I18nOptions['numberFormats'],
+      ...(numberFormats || {}),
+    },
     datetimeFormats: {
       ...(defaultDatetimeFormats as unknown as I18nOptions['datetimeFormats']),
-      ...(datetimeFormats || {})
-    } as I18nOptions['datetimeFormats'],
+      ...(datetimeFormats || {}),
+    },
     missing,
     silentTranslationWarn,
-    silentFallbackWarn
+    silentFallbackWarn,
   })
 }
 

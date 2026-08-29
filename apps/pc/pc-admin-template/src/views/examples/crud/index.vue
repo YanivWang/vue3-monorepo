@@ -26,15 +26,15 @@ const mockUsers: User[] = Array.from({ length: 28 }, (_, i) => ({
   email: `user${i + 1}@example.com`,
   role: i % 3 === 0 ? 'admin' : 'editor',
   status: (i % 4 === 0 ? 0 : 1) as 0 | 1,
-  createdAt: new Date(Date.now() - i * 86400000).toLocaleDateString('zh-CN')
+  createdAt: new Date(Date.now() - i * 86400000).toLocaleDateString('zh-CN'),
 }))
 
 async function fetchUsers(params: Record<string, unknown>) {
-  await new Promise(r => setTimeout(r, 300))
+  await new Promise((r) => setTimeout(r, 300))
   let list = [...mockUsers]
-  if (params.username) list = list.filter(u => u.username.includes(String(params.username)))
+  if (params.username) list = list.filter((u) => u.username.includes(String(params.username)))
   if (params.status !== undefined && params.status !== '') {
-    list = list.filter(u => u.status === Number(params.status))
+    list = list.filter((u) => u.status === Number(params.status))
   }
   const page = Number(params.page) || 1
   const pageSize = Number(params.pageSize) || 10
@@ -42,7 +42,7 @@ async function fetchUsers(params: Record<string, unknown>) {
     list: list.slice((page - 1) * pageSize, page * pageSize) as unknown as Record<string, unknown>[],
     total: list.length,
     page,
-    pageSize
+    pageSize,
   }
 }
 
@@ -55,7 +55,7 @@ const columns: TableColumn[] = [
   { prop: 'role', label: '角色', width: 90, align: 'center', slot: 'role' },
   { prop: 'status', label: '状态', width: 90, align: 'center', slot: 'status' },
   { prop: 'createdAt', label: '创建时间', width: 130, align: 'center' },
-  { label: '操作', slot: 'action', width: 160, fixed: 'right', align: 'center' }
+  { label: '操作', slot: 'action', width: 160, fixed: 'right', align: 'center' },
 ]
 
 // ── 搜索表单 ──────────────────────────────────────────────────
@@ -74,20 +74,20 @@ const form = reactive({
   nickname: '',
   email: '',
   role: 'editor',
-  status: 1 as 0 | 1
+  status: 1 as 0 | 1,
 })
 
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '长度 3~20 个字符', trigger: 'blur' }
+    { min: 3, max: 20, message: '长度 3~20 个字符', trigger: 'blur' },
   ],
   nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email' as const, message: '请输入有效邮箱', trigger: 'blur' }
+    { type: 'email' as const, message: '请输入有效邮箱', trigger: 'blur' },
   ],
-  role: [{ required: true, message: '请选择角色', trigger: 'change' }]
+  role: [{ required: true, message: '请选择角色', trigger: 'change' }],
 }
 
 function openAdd() {
@@ -110,10 +110,12 @@ async function handleSubmit() {
   await formRef.value.validate()
   submitting.value = true
   try {
-    await new Promise(r => setTimeout(r, 500))
+    await new Promise((r) => setTimeout(r, 500))
     if (isEdit.value) {
-      const idx = mockUsers.findIndex(u => u.id === form.id)
-      if (idx !== -1) Object.assign(mockUsers[idx], { ...form })
+      // 直接拿对象引用，省掉 findIndex → 下标回查这一步（下标访问在
+      // noUncheckedIndexedAccess 下必然带 undefined，回查本身也是多余的）
+      const target = mockUsers.find((u) => u.id === form.id)
+      if (target) Object.assign(target, { ...form })
       success('编辑成功')
     } else {
       mockUsers.unshift({ ...form, id: ++idSeq, createdAt: new Date().toLocaleDateString('zh-CN') })
@@ -129,8 +131,8 @@ async function handleSubmit() {
 async function handleDelete(row: User) {
   try {
     await confirmDelete(`确认删除用户「${row.nickname}」？`)
-    await new Promise(r => setTimeout(r, 300))
-    const idx = mockUsers.findIndex(u => u.id === row.id)
+    await new Promise((r) => setTimeout(r, 300))
+    const idx = mockUsers.findIndex((u) => u.id === row.id)
     if (idx !== -1) mockUsers.splice(idx, 1)
     success('删除成功')
     tableRef.value?.fetchData()
@@ -140,7 +142,7 @@ async function handleDelete(row: User) {
 }
 
 async function handleToggleStatus(row: User) {
-  await new Promise(r => setTimeout(r, 200))
+  await new Promise((r) => setTimeout(r, 200))
   row.status = row.status === 1 ? 0 : 1
   success(row.status === 1 ? '已启用' : '已禁用')
   tableRef.value?.fetchData()

@@ -8,7 +8,7 @@ import {
   createMemoryEvent,
   createUnimplementedAuth,
   createUnimplementedDevice,
-  notImplemented
+  notImplemented,
 } from './base'
 
 /**
@@ -59,7 +59,7 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
     'event.emit',
     'payment.pay',
     'clipboard.write',
-    'clipboard.read'
+    'clipboard.read',
   ])
 
   return {
@@ -75,7 +75,7 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
           throw new BridgeError('支付宝 JSSDK 未加载，无法触发小程序登录', {
             method: 'auth.login',
             host,
-            code: 'AP_SDK_MISSING'
+            code: 'AP_SDK_MISSING',
           })
         }
         sdk.navigateTo({ url: loginPath })
@@ -83,10 +83,10 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
           new BridgeError('已跳转小程序登录页，H5 侧需监听 postMessage 回传', {
             method: 'auth.login',
             host,
-            code: 'NAVIGATE_TO_MINI'
-          })
+            code: 'NAVIGATE_TO_MINI',
+          }),
         )
-      }
+      },
     },
     ui: {
       async toast({ message, duration = 2000 }) {
@@ -103,10 +103,10 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
           padding: '8px 16px',
           borderRadius: '4px',
           fontSize: '14px',
-          zIndex: '9999'
+          zIndex: '9999',
         })
         document.body.appendChild(el)
-        await new Promise(r => setTimeout(r, duration))
+        await new Promise((r) => setTimeout(r, duration))
         el.remove()
       },
       loading: notImplemented('ui.loading', host),
@@ -122,7 +122,7 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
       scanCode: notImplemented('ui.scanCode', host),
       async vibrate() {
         if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(15)
-      }
+      },
     },
     event: createMemoryEvent(),
     payment: {
@@ -134,19 +134,19 @@ export function createAlipayMiniStrategy(options: AlipayMiniStrategyOptions = {}
               new BridgeError('my.tradePay 不可用', {
                 method: 'payment.pay',
                 host,
-                code: 'AP_SDK_MISSING'
-              })
+                code: 'AP_SDK_MISSING',
+              }),
             )
           sdk.tradePay({
             tradeNO: (params.tradeNO as string | undefined) ?? params.orderId,
             success: (raw: unknown) => resolve({ success: true, raw }),
             fail: (err: unknown) =>
-              reject(new BridgeError('支付宝支付失败', { method: 'payment.pay', host, cause: err }))
+              reject(new BridgeError('支付宝支付失败', { method: 'payment.pay', host, cause: err })),
           })
         })
-      }
+      },
     },
     device: createUnimplementedDevice(host),
-    clipboard: createClipboardBridge(host)
+    clipboard: createClipboardBridge(host),
   }
 }

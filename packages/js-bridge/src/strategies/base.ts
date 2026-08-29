@@ -9,7 +9,7 @@ import type {
   BridgePayment,
   BridgeStorage,
   BridgeStrategy,
-  BridgeUI
+  BridgeUI,
 } from '../types'
 import { BridgeError } from '../types'
 
@@ -20,7 +20,7 @@ import { BridgeError } from '../types'
 export function notImplemented(method: string, host: H5Host): (...args: unknown[]) => Promise<never> {
   return () =>
     Promise.reject(
-      new BridgeError(`[bridge] ${method} 在宿主 ${host} 下未实现`, { method, host, code: 'NOT_IMPLEMENTED' })
+      new BridgeError(`[bridge] ${method} 在宿主 ${host} 下未实现`, { method, host, code: 'NOT_IMPLEMENTED' }),
     )
 }
 
@@ -40,8 +40,8 @@ export function createMemoryEvent(): BridgeEvent {
       map.get(event)?.delete(handler as (p: unknown) => void)
     },
     emit(event, payload) {
-      map.get(event)?.forEach(h => h(payload))
-    }
+      map.get(event)?.forEach((h) => h(payload))
+    },
   }
 }
 
@@ -75,7 +75,7 @@ export function createDefaultNavigation(host: H5Host): BridgeNavigation {
         return Promise.resolve()
       }
       return notImplemented('navigation.setTitle', host)()
-    }
+    },
   }
 }
 
@@ -100,7 +100,7 @@ export function createLocalStorageBridge(host: H5Host): BridgeStorage {
     async remove(key: string) {
       if (!available) throw new BridgeError('localStorage 不可用', { method: 'storage.remove', host })
       localStorage.removeItem(key)
-    }
+    },
   }
 }
 
@@ -109,7 +109,7 @@ export function createUnimplementedAuth(host: H5Host): BridgeAuth {
   return {
     login: notImplemented('auth.login', host),
     getUserProfile: notImplemented('auth.getUserProfile', host),
-    logout: notImplemented('auth.logout', host)
+    logout: notImplemented('auth.logout', host),
   }
 }
 
@@ -121,7 +121,7 @@ export function createUnimplementedUI(host: H5Host): BridgeUI {
     chooseImage: notImplemented('ui.chooseImage', host),
     previewImage: notImplemented('ui.previewImage', host),
     scanCode: notImplemented('ui.scanCode', host),
-    vibrate: notImplemented('ui.vibrate', host)
+    vibrate: notImplemented('ui.vibrate', host),
   }
 }
 
@@ -132,7 +132,7 @@ export function createUnimplementedPayment(host: H5Host): BridgePayment {
 export function createUnimplementedDevice(host: H5Host): BridgeDevice {
   return {
     getInfo: notImplemented('device.getInfo', host),
-    getLocation: notImplemented('device.getLocation', host)
+    getLocation: notImplemented('device.getLocation', host),
   }
 }
 
@@ -151,7 +151,7 @@ export function createClipboardBridge(host: H5Host): BridgeClipboard {
         return navigator.clipboard.readText()
       }
       throw new BridgeError('剪贴板不可用', { method: 'clipboard.read', host, code: 'UNAVAILABLE' })
-    }
+    },
   }
 }
 
@@ -186,6 +186,6 @@ export function listAllAbilities(): BridgeAbility[] {
     'device.getInfo',
     'device.getLocation',
     'clipboard.write',
-    'clipboard.read'
+    'clipboard.read',
   ]
 }

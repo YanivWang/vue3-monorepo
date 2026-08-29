@@ -19,7 +19,7 @@ export function setupRouterGuards(router: Router): void {
   const bridge = useBridge()
 
   /** 鉴权先于栈更新，避免未授权目标页错误入栈（Vue Router 在 redirect 时会中止后续守卫） */
-  router.beforeEach(async to => {
+  router.beforeEach(async (to) => {
     const requiresAuth = Boolean(to.meta?.requiresAuth)
     const token = getToken()
 
@@ -56,7 +56,7 @@ export function setupRouterGuards(router: Router): void {
   const stack = useHistoryStackH5({ autoBind: false })
   stack.bind(router)
 
-  router.afterEach(to => {
+  router.afterEach((to) => {
     const titleKey = to.meta?.titleKey as string | undefined
     const title = titleKey
       ? (i18n.global as { t: (k: string) => string }).t(titleKey)

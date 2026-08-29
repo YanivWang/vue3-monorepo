@@ -8,7 +8,7 @@ export default {
     tip: 'Notice',
     noData: 'No data',
     notLoggedIn: 'Not signed in',
-    goLogin: 'Sign in'
+    goLogin: 'Sign in',
   },
   nav: { home: 'Home', list: 'List', theme: 'Theme', mine: 'Profile' },
   theme: {
@@ -24,7 +24,7 @@ export default {
     statusMode: 'Mode',
     statusLanguage: 'Language',
     langZh: '简体中文',
-    langEn: 'English'
+    langEn: 'English',
   },
   home: {
     notice: 'Vue3 Monorepo H5 template — browser, mini-programs, and native app ready.',
@@ -41,7 +41,7 @@ export default {
     bannerCoupon: 'Coupons',
     bannerService: 'Support',
     bannerSettings: 'Settings',
-    bannerMsg: 'Messages'
+    bannerMsg: 'Messages',
   },
   mine: {
     account: 'Account',
@@ -52,8 +52,8 @@ export default {
     themeSettings: 'Theme',
     listLink: 'Long list',
     errorReportTest: 'Test error reporting',
-    logoutConfirm: 'Sign out?'
+    logoutConfirm: 'Sign out?',
   },
   list: { detail: 'Detail', create: 'New item', edit: 'Edit item' },
-  error: { server: 'Server error', network: 'Network error', notFound: 'Not found' }
+  error: { server: 'Server error', network: 'Network error', notFound: 'Not found' },
 }

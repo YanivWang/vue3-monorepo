@@ -20,7 +20,7 @@ const http = createPcHttp({
   refreshPath: import.meta.env.VITE_REFRESH_PATH || '/auth/refresh',
   tokenKey: import.meta.env.VITE_TOKEN_KEY || 'access_token',
   refreshTokenKey: import.meta.env.VITE_REFRESH_TOKEN_KEY || 'refresh_token',
-  loginPath: '/login'
+  loginPath: '/login',
 })
 
 export default http

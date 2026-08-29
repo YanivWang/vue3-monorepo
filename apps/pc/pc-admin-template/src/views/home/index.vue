@@ -26,7 +26,7 @@ const statCards = ref<StatCard[]>([
   { title: '今日访问', value: 1024, unit: '次', icon: markRaw(DataLine), tone: 'primary', trend: 12.5 },
   { title: '用户总数', value: 8848, unit: '人', icon: markRaw(User), tone: 'success', trend: 3.2 },
   { title: '待处理工单', value: 36, unit: '条', icon: markRaw(Tickets), tone: 'warning', trend: -5.1 },
-  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), tone: 'info', trend: 0 }
+  { title: '系统配置', value: 128, unit: '项', icon: markRaw(Setting), tone: 'info', trend: 0 },
 ])
 
 const techList = [
@@ -41,7 +41,7 @@ const techList = [
   'Sass',
   'dayjs',
   'lodash-es',
-  'js-cookie'
+  'js-cookie',
 ]
 </script>
 

@@ -31,13 +31,21 @@ export interface ResponseData<T = unknown> {
   data: T
 }
 
-/** HTTP 状态码（供核心逻辑/绑定层共享） */
-export const enum HttpCode {
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-  SERVER_ERROR = 500
-}
+/**
+ * HTTP 状态码（供核心逻辑/绑定层共享）
+ *
+ * 用 `as const` 对象而非 `const enum`：后者与 isolatedModules / verbatimModuleSyntax
+ * 天生冲突（逐文件转译时拿不到常量表），且拿它和 axios 给的原始 number 比较会触发
+ * no-unsafe-enum-comparison。对象形式的用法完全一致（HttpCode.UNAUTHORIZED）。
+ */
+export const HttpCode = {
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500,
+} as const
+
+export type HttpCode = (typeof HttpCode)[keyof typeof HttpCode]
 
 /** 统一的错误类型（核心层抛出） */
 export interface NormalizedError extends Error {

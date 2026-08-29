@@ -50,7 +50,7 @@ function addFiles(files: FileList | File[]) {
       type: raw.type,
       raw,
       status: 'pending',
-      progress: 0
+      progress: 0,
     })
   }
 }
@@ -123,7 +123,7 @@ async function uploadFile(item: UploadFile) {
 }
 
 function uploadAll() {
-  const pending = fileList.value.filter(f => f.status === 'pending' || f.status === 'error')
+  const pending = fileList.value.filter((f) => f.status === 'pending' || f.status === 'error')
   pending.forEach(uploadFile)
 }
 
@@ -134,7 +134,7 @@ function cancelUpload(item: UploadFile) {
 
 function removeFile(item: UploadFile) {
   if (item.status === 'uploading') cancelUpload(item)
-  fileList.value = fileList.value.filter(f => f.uid !== item.uid)
+  fileList.value = fileList.value.filter((f) => f.uid !== item.uid)
 }
 
 function retryUpload(item: UploadFile) {
@@ -151,7 +151,7 @@ const statusMap = {
   uploading: { label: '上传中', type: 'warning' as const },
   success: { label: '成功', type: 'success' as const },
   error: { label: '失败', type: 'danger' as const },
-  cancelled: { label: '已取消', type: 'info' as const }
+  cancelled: { label: '已取消', type: 'info' as const },
 }
 </script>
 
@@ -179,7 +179,7 @@ const statusMap = {
         <el-button
           type="primary"
           size="small"
-          :disabled="!fileList.some(f => f.status === 'pending' || f.status === 'error')"
+          :disabled="!fileList.some((f) => f.status === 'pending' || f.status === 'error')"
           @click="uploadAll"
         >
           全部上传

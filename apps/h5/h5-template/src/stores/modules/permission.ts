@@ -37,6 +37,6 @@ export const usePermissionStore = defineStore('h5-permission', () => {
     setPermissions,
     setVisibleMenus,
     markReady,
-    reset
+    reset,
   }
 })

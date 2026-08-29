@@ -20,7 +20,7 @@ const PlaceholderView = () =>
           'div',
           {
             style:
-              'display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:#909399'
+              'display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:#909399',
           },
           [
             h('svg', {
@@ -31,12 +31,12 @@ const PlaceholderView = () =>
               fill: 'none',
               stroke: 'currentColor',
               'stroke-width': '1.5',
-              innerHTML: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
+              innerHTML: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
             }),
-            h('p', { style: 'font-size:14px;margin:0' }, '页面正在开发中...')
-          ]
+            h('p', { style: 'font-size:14px;margin:0' }, '页面正在开发中...'),
+          ],
         )
-    }
+    },
   })
 
 function resolveComponent(component: string): () => Promise<unknown> {
@@ -45,12 +45,12 @@ function resolveComponent(component: string): () => Promise<unknown> {
 }
 
 function menuToRoutes(menus: MenuRoute[]): RouteRecordRaw[] {
-  return menus.map(menu => {
+  return menus.map((menu) => {
     const route: RouteRecordRaw = {
       path: menu.path,
       name: menu.name,
       meta: { ...menu.meta },
-      children: menu.children ? menuToRoutes(menu.children) : []
+      children: menu.children ? menuToRoutes(menu.children) : [],
     }
 
     if (menu.component) {
@@ -102,6 +102,6 @@ export const usePermissionStore = defineStore('permission', () => {
     dynamicRoutes,
     isRoutesLoaded,
     generateRoutes,
-    resetRoutes
+    resetRoutes,
   }
 })

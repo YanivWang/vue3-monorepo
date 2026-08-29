@@ -13,5 +13,5 @@ export default [
   './packages/shared',
   './packages/js-bridge',
   './packages/request-core',
-  './packages/web-monitor'
+  './packages/web-monitor',
 ]

@@ -31,13 +31,13 @@ export const useTabsStore = defineStore('tabs', () => {
     const tab: TabItem = {
       name: route.name as string,
       path: route.fullPath,
-      title: route.meta.title as string,
-      icon: route.meta.icon as string | undefined,
+      title: route.meta.title,
+      icon: route.meta.icon,
       affix: route.meta.affix,
-      keepAlive: route.meta.keepAlive
+      keepAlive: route.meta.keepAlive,
     }
 
-    if (!tabs.value.some(t => t.path === tab.path)) {
+    if (!tabs.value.some((t) => t.path === tab.path)) {
       tabs.value.push(tab)
     }
     activeTab.value = tab.path
@@ -45,16 +45,18 @@ export const useTabsStore = defineStore('tabs', () => {
 
   /** 关闭指定 tab（affix 不可关闭） */
   function removeTab(path: string): string {
-    const index = tabs.value.findIndex(t => t.path === path)
-    if (index < 0 || tabs.value[index].affix) return activeTab.value
+    const index = tabs.value.findIndex((t) => t.path === path)
+    if (index < 0 || tabs.value[index]?.affix) return activeTab.value
 
     tabs.value.splice(index, 1)
 
     // 如果关闭的是当前激活 tab，激活相邻 tab
     if (activeTab.value === path && tabs.value.length > 0) {
       const next = tabs.value[Math.min(index, tabs.value.length - 1)]
-      activeTab.value = next.path
-      return next.path
+      if (next) {
+        activeTab.value = next.path
+        return next.path
+      }
     }
 
     return activeTab.value
@@ -62,13 +64,13 @@ export const useTabsStore = defineStore('tabs', () => {
 
   /** 关闭其他 tab（保留 affix） */
   function removeOtherTabs(path: string): void {
-    tabs.value = tabs.value.filter(t => t.path === path || t.affix)
+    tabs.value = tabs.value.filter((t) => t.path === path || t.affix)
     activeTab.value = path
   }
 
   /** 关闭所有 tab（保留 affix） */
   function removeAllTabs(): string {
-    tabs.value = tabs.value.filter(t => t.affix)
+    tabs.value = tabs.value.filter((t) => t.affix)
     const first = tabs.value[0]
     if (first) {
       activeTab.value = first.path
@@ -96,6 +98,6 @@ export const useTabsStore = defineStore('tabs', () => {
     removeOtherTabs,
     removeAllTabs,
     setActiveTab,
-    resetTabs
+    resetTabs,
   }
 })

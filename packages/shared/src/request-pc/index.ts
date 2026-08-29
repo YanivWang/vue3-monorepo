@@ -54,7 +54,7 @@ export function createPcHttp(options: CreatePcHttpOptions = {}): HttpRequest {
     ...rest,
     tokenProvider: storage,
     loading: enableLoading ? createElLoadingHandler(loadingOptions) : undefined,
-    hooks: { ...presetHooks, ...userHooks }
+    hooks: { ...presetHooks, ...userHooks },
   })
 }
 
@@ -69,5 +69,5 @@ export type {
   TokenProvider,
   RequestHooks,
   ErrorHookContext,
-  LoadingHandler
+  LoadingHandler,
 } from '@vue3-monorepo/request-core'

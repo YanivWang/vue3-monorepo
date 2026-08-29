@@ -58,10 +58,10 @@ export function useHistoryStack(options: UseHistoryStackOptions = {}): HistorySt
   const { max = 20 } = options
 
   const stack = ref<HistoryStackItem[]>([])
-  const include = computed(() => Array.from(new Set(stack.value.map(s => s.name))))
+  const include = computed(() => Array.from(new Set(stack.value.map((s) => s.name))))
 
   function push(item: Omit<HistoryStackItem, 'ts'>): void {
-    const existIdx = stack.value.findIndex(s => s.name === item.name)
+    const existIdx = stack.value.findIndex((s) => s.name === item.name)
     if (existIdx !== -1) {
       const exist = stack.value.splice(existIdx, 1)[0]!
       stack.value.push({ ...exist, fullPath: item.fullPath, ts: Date.now() })
@@ -76,7 +76,7 @@ export function useHistoryStack(options: UseHistoryStackOptions = {}): HistorySt
       stack.value.pop()
       return
     }
-    const idx = stack.value.findIndex(s => s.name === toName)
+    const idx = stack.value.findIndex((s) => s.name === toName)
     if (idx === -1) return
     stack.value.splice(idx + 1)
   }
@@ -90,7 +90,7 @@ export function useHistoryStack(options: UseHistoryStackOptions = {}): HistorySt
   }
 
   function has(name: string): boolean {
-    return stack.value.some(s => s.name === name)
+    return stack.value.some((s) => s.name === name)
   }
 
   function clear(): void {

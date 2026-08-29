@@ -14,7 +14,7 @@ const columns: TableColumn[] = [
   { prop: 'username', label: '用户名', minWidth: 120 },
   { prop: 'nickname', label: '昵称', minWidth: 120 },
   { prop: 'roles', label: '角色', minWidth: 100 },
-  { label: '操作', slot: 'action', width: 160, fixed: 'right' }
+  { label: '操作', slot: 'action', width: 160, fixed: 'right' },
 ]
 </script>
 

@@ -83,6 +83,29 @@
 
 也就是说，[项目与目录约定](./project-conventions.md) 与 [pnpm workspace 日常操作](./monorepo-workflow.md) 里的「强约束」不只是文字规范，越界会在 `lint` 阶段直接报错。
 
+## 4.2 类型感知 lint（type-aware linting）
+
+`apps/*/*/src/**/*.ts` 与 `packages/*/src/**/*.ts` 额外启用了 `typescript-eslint` 的
+`recommendedTypeChecked`（`parserOptions.projectService: true`）。这一档规则要读类型信息才能判断，
+是 `tsc` **不会**报、普通 lint 也**看不见**的一类问题：
+
+| 规则                        | 拦什么                                                         |
+| --------------------------- | -------------------------------------------------------------- |
+| `no-floating-promises`      | 漏 `await` 的 Promise——失败被静默吞掉，最常见的线上问题之一    |
+| `no-misused-promises`       | 把 async 函数传给只接受同步回调的地方（事件监听器、`forEach`） |
+| `no-unsafe-*`               | 对 `any` 值的不安全赋值/调用                                   |
+| `no-base-to-string`         | 把对象拼进字符串，得到 `[object Object]`                       |
+| `no-unsafe-enum-comparison` | 枚举与裸 number 比较                                           |
+
+**作用域刻意不铺满**：配置文件（`vite.config.ts` 等）不在业务 tsconfig 的 include 里，开了会报
+`not found by the project service`；`.vue` 走 `vue-eslint-parser`，类型感知开销大且噪声高。
+两者都等有明确需要时再单独开一档。
+
+有三条规则被显式关掉（理由写在 `eslint.config.mjs` 对应位置）：`require-await`（js-bridge 各宿主
+策略要实现同一套异步契约，同步实现也必须是 `async`）、`unbound-method`（命中的全是组合式函数返回的
+闭包，没有 `this` 可丢）、`no-unused-vars`（全仓已约定交给 tsc 的 `noUnusedLocals` /
+`noUnusedParameters`，两边都开会重复报）。
+
 ## 5. 构建与预览
 
 | 命令                                            | 作用                                                                               |

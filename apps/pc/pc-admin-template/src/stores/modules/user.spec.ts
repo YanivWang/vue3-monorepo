@@ -12,8 +12,8 @@ vi.mock('@/api/modules/user', () => ({
     nickname: '管理员',
     avatar: '',
     roles: ['admin'],
-    permissions: ['*:*:*']
-  })
+    permissions: ['*:*:*'],
+  }),
 }))
 
 vi.mock('@/utils/storage', () => ({
@@ -22,11 +22,11 @@ vi.mock('@/utils/storage', () => ({
   removeToken: vi.fn(),
   setRefreshToken: vi.fn(),
   removeRefreshToken: vi.fn(),
-  getRefreshToken: vi.fn()
+  getRefreshToken: vi.fn(),
 }))
 
 vi.mock('@/router', () => ({
-  resetRouter: vi.fn()
+  resetRouter: vi.fn(),
 }))
 
 describe('useUserStore', () => {
@@ -71,7 +71,7 @@ describe('useUserStore', () => {
       email: '',
       phone: '',
       roles: ['editor'],
-      permissions: ['user:list', 'user:create']
+      permissions: ['user:list', 'user:create'],
     }
     expect(store.hasPermission('user:list')).toBe(true)
     expect(store.hasPermission('user:delete')).toBe(false)
@@ -87,7 +87,7 @@ describe('useUserStore', () => {
       email: '',
       phone: '',
       roles: ['admin'],
-      permissions: []
+      permissions: [],
     }
     expect(store.hasRole('admin')).toBe(true)
     expect(store.hasRole('guest')).toBe(false)

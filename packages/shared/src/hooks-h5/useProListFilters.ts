@@ -31,16 +31,22 @@ export function useProListFilters(): {
     query.value = next
   }
 
+  function toDraftValue(raw: unknown): string {
+    return typeof raw === 'number' || typeof raw === 'string' ? String(raw) : ''
+  }
+
   function syncDraftFromQuery() {
-    draftMinId.value = query.value.minId != null ? String(query.value.minId) : ''
-    draftMaxId.value = query.value.maxId != null ? String(query.value.maxId) : ''
+    // query 是 Record<string, unknown>：只有数字/字符串才回填，
+    // 否则 String(对象) 会把 '[object Object]' 塞进输入框
+    draftMinId.value = toDraftValue(query.value.minId)
+    draftMaxId.value = toDraftValue(query.value.maxId)
   }
 
   function commitRange(minId?: number, maxId?: number) {
     query.value = {
       ...query.value,
       minId,
-      maxId
+      maxId,
     }
   }
 
@@ -60,6 +66,6 @@ export function useProListFilters(): {
     clearSearch,
     syncDraftFromQuery,
     commitRange,
-    clearRange
+    clearRange,
   }
 }

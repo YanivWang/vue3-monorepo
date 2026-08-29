@@ -31,7 +31,7 @@ export function useVantMessage(): UseVantMessageReturn {
   }
   function loading(message: string | ToastOptions): void {
     showLoadingToast(
-      typeof message === 'string' ? { message, forbidClick: true, duration: 0 } : { forbidClick: true, ...message }
+      typeof message === 'string' ? { message, forbidClick: true, duration: 0 } : { forbidClick: true, ...message },
     )
   }
 
@@ -61,6 +61,6 @@ export function useVantMessage(): UseVantMessageReturn {
     closeToast,
     dialog,
     confirm,
-    notify
+    notify,
   }
 }

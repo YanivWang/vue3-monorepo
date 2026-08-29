@@ -26,7 +26,7 @@ const zhCN = {
     status: '状态',
     remark: '备注',
     createdAt: '创建时间',
-    updatedAt: '更新时间'
+    updatedAt: '更新时间',
   },
   menu: {
     home: '首页',
@@ -36,7 +36,7 @@ const zhCN = {
     permission: '权限管理',
     menu: '菜单管理',
     dept: '部门管理',
-    log: '操作日志'
+    log: '操作日志',
   },
   auth: {
     login: '登录',
@@ -53,7 +53,7 @@ const zhCN = {
     logoutConfirm: '确定要退出登录吗？',
     loginExpired: '登录状态已过期，请重新登录',
     reLogin: '重新登录',
-    noPermission: '请先登录'
+    noPermission: '请先登录',
   },
   error: {
     '403': '您没有访问该页面的权限',
@@ -62,19 +62,19 @@ const zhCN = {
     network: '网络异常，请检查您的网络连接',
     timeout: '请求超时，请稍后重试',
     unknown: '未知错误',
-    dataFormat: '响应数据格式错误'
+    dataFormat: '响应数据格式错误',
   },
   tabs: {
     close: '关闭',
     closeOthers: '关闭其他',
     closeAll: '关闭所有',
-    refresh: '刷新当前'
+    refresh: '刷新当前',
   },
   http: {
     noPermission: '没有权限访问该资源',
     notFound: '请求的资源不存在',
-    serverError: '服务器内部错误，请稍后重试'
-  }
+    serverError: '服务器内部错误，请稍后重试',
+  },
 }
 
 export default zhCN

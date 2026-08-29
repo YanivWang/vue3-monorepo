@@ -8,7 +8,7 @@ import {
   createMemoryEvent,
   createUnimplementedAuth,
   createUnimplementedPayment,
-  notImplemented
+  notImplemented,
 } from './base'
 
 /**
@@ -40,7 +40,7 @@ export function createBrowserStrategy(): BridgeStrategy {
     'clipboard.write',
     'clipboard.read',
     'device.getInfo',
-    'device.getLocation'
+    'device.getLocation',
   ])
 
   return {
@@ -55,10 +55,10 @@ export function createBrowserStrategy(): BridgeStrategy {
           new BridgeError('浏览器宿主不支持原生登录，请使用表单登录', {
             method: 'auth.login',
             host,
-            code: 'NO_NATIVE_AUTH'
-          })
+            code: 'NO_NATIVE_AUTH',
+          }),
         )
-      }
+      },
     },
     ui: {
       async toast({ message, duration = 2000, icon }) {
@@ -77,10 +77,10 @@ export function createBrowserStrategy(): BridgeStrategy {
           borderRadius: '4px',
           fontSize: '14px',
           zIndex: '9999',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         } satisfies Partial<CSSStyleDeclaration>)
         document.body.appendChild(el)
-        await new Promise(r => setTimeout(r, duration))
+        await new Promise((r) => setTimeout(r, duration))
         el.remove()
       },
       loading: notImplemented('ui.loading', host),
@@ -97,7 +97,7 @@ export function createBrowserStrategy(): BridgeStrategy {
         if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
           navigator.vibrate(short ? 15 : 400)
         }
-      }
+      },
     },
     event: createMemoryEvent(),
     payment: createUnimplementedPayment(host),
@@ -117,31 +117,31 @@ export function createBrowserStrategy(): BridgeStrategy {
             new BridgeError('geolocation 不可用', {
               method: 'device.getLocation',
               host,
-              code: 'UNAVAILABLE'
-            })
+              code: 'UNAVAILABLE',
+            }),
           )
         }
         return new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(
-            pos =>
+            (pos) =>
               resolve({
                 latitude: pos.coords.latitude,
                 longitude: pos.coords.longitude,
-                accuracy: pos.coords.accuracy
+                accuracy: pos.coords.accuracy,
               }),
-            err =>
+            (err) =>
               reject(
                 new BridgeError(err.message || '定位失败', {
                   method: 'device.getLocation',
                   host,
                   code: err.code,
-                  cause: err
-                })
-              )
+                  cause: err,
+                }),
+              ),
           )
         })
-      }
+      },
     },
-    clipboard: createClipboardBridge(host)
+    clipboard: createClipboardBridge(host),
   }
 }

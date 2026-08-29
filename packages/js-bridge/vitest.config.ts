@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     name: 'js-bridge',
     environment: 'happy-dom',
-    include: ['src/**/*.spec.ts', 'src/**/*.test.ts']
-  }
+    include: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
+  },
 })

@@ -11,7 +11,7 @@ import {
   ElFormItem,
   ElIcon,
   ElInput,
-  ElMessage
+  ElMessage,
 } from 'element-plus'
 import { User, Lock, Sunny, Moon, Monitor } from '@element-plus/icons-vue'
 import { ThemeMode } from '@vue3-monorepo/shared/enums'
@@ -30,18 +30,18 @@ const loading = ref<boolean>(false)
 
 const formData = reactive<LoginParams>({
   username: '',
-  password: ''
+  password: '',
 })
 
 const rules: FormRules<LoginParams> = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 20, message: '用户名长度 2-20 个字符', trigger: 'blur' }
+    { min: 2, max: 20, message: '用户名长度 2-20 个字符', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 30, message: '密码长度 6-30 个字符', trigger: 'blur' }
-  ]
+    { min: 6, max: 30, message: '密码长度 6-30 个字符', trigger: 'blur' },
+  ],
 }
 
 async function handleLogin(): Promise<void> {
@@ -69,7 +69,7 @@ function handleThemeCommand(cmd: string): void {
 }
 
 function handleBrandCommand(cmd: string): void {
-  if (brandPalettes.some(p => p.id === cmd)) {
+  if (brandPalettes.some((p) => p.id === cmd)) {
     appStore.setBrand(cmd as BrandId)
   }
 }
@@ -82,7 +82,7 @@ function handleBrandCommand(cmd: string): void {
         <span class="login-page__theme-trigger" title="品牌色">
           <span
             class="login-page__brand-dot"
-            :style="{ background: brandPalettes.find(p => p.id === appStore.brand)?.primary }"
+            :style="{ background: brandPalettes.find((p) => p.id === appStore.brand)?.primary }"
           />
         </span>
         <template #dropdown>

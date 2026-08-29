@@ -53,7 +53,7 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
       loaded: false,
       onError() {
         el.src = s.error
-      }
+      },
     }
 
     el.src = s.placeholder
@@ -67,7 +67,7 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
     }
 
     s.observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting && !s.loaded) {
             el.src = s.src
@@ -77,7 +77,7 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
           }
         }
       },
-      { rootMargin: opts.rootMargin ?? '50px' }
+      { rootMargin: opts.rootMargin ?? '50px' },
     )
     s.observer.observe(el)
   },
@@ -91,7 +91,7 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
       el.src = s.placeholder
       if (s.observer) s.observer.disconnect()
       s.observer = new IntersectionObserver(
-        entries => {
+        (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting && !s.loaded) {
               el.src = s.src
@@ -101,7 +101,7 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
             }
           }
         },
-        { rootMargin: opts.rootMargin ?? '50px' }
+        { rootMargin: opts.rootMargin ?? '50px' },
       )
       s.observer.observe(el)
     }
@@ -112,5 +112,5 @@ export const vLazy: Directive<HTMLImageElement, Payload> = {
     s.observer?.disconnect()
     el.removeEventListener('error', s.onError)
     store.delete(el)
-  }
+  },
 }

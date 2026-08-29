@@ -22,7 +22,7 @@ const banners = ref([
   { id: 'coupon', icon: 'coupon-o', labelKey: 'home.bannerCoupon' as const },
   { id: 'service', icon: 'chat-o', labelKey: 'home.bannerService' as const },
   { id: 'settings', icon: 'setting-o', labelKey: 'home.bannerSettings' as const },
-  { id: 'msg', icon: 'envelop-o', labelKey: 'home.bannerMsg' as const }
+  { id: 'msg', icon: 'envelop-o', labelKey: 'home.bannerMsg' as const },
 ])
 
 function onBannerClick(id: string) {

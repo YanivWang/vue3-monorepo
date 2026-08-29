@@ -6,7 +6,7 @@ export function isSuccessPayload<T>(data: unknown): data is ResponseData<T> {
 
 /** 指数退避延迟 */
 export function retryDelay(times: number, baseDelay = 1000): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, baseDelay * Math.pow(2, times - 1)))
+  return new Promise((resolve) => setTimeout(resolve, baseDelay * Math.pow(2, times - 1)))
 }
 
 /** 创建统一的 NormalizedError */

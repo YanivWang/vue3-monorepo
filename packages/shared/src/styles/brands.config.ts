@@ -31,7 +31,7 @@ export const brandConfigs = {
     borderDefault: '#dcdfe6',
     borderSubtle: '#e4e7ed',
     headerBorder: '#e8eaec',
-    info: '#909399'
+    info: '#909399',
   },
   green: {
     id: 'green',
@@ -44,7 +44,7 @@ export const brandConfigs = {
     borderDefault: '#bfddd0',
     borderSubtle: '#e2f3eb',
     headerBorder: '#d9eee4',
-    info: '#7d8a82'
+    info: '#7d8a82',
   },
   red: {
     id: 'red',
@@ -57,7 +57,7 @@ export const brandConfigs = {
     borderDefault: '#e5ced1',
     borderSubtle: '#f7eaea',
     headerBorder: '#f0e0e3',
-    info: '#909399'
+    info: '#909399',
   },
   orange: {
     id: 'orange',
@@ -70,7 +70,7 @@ export const brandConfigs = {
     borderDefault: '#e5d9c9',
     borderSubtle: '#f5efe6',
     headerBorder: '#ede4d6',
-    info: '#968f85'
+    info: '#968f85',
   },
   purple: {
     id: 'purple',
@@ -83,8 +83,8 @@ export const brandConfigs = {
     borderDefault: '#d6cfe6',
     borderSubtle: '#eae6f5',
     headerBorder: '#e3ddf0',
-    info: '#8a8699'
-  }
+    info: '#8a8699',
+  },
 } as const satisfies Record<BrandId, BrandPaletteConfig>
 
 export const brandPalettes = Object.values(brandConfigs)

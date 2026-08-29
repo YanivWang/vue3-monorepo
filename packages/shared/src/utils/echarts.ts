@@ -14,7 +14,7 @@ import {
   ToolboxComponent,
   TitleComponent,
   MarkLineComponent,
-  MarkPointComponent
+  MarkPointComponent,
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 
@@ -32,7 +32,7 @@ echarts.use([
   TitleComponent,
   MarkLineComponent,
   MarkPointComponent,
-  CanvasRenderer
+  CanvasRenderer,
 ])
 
 export { echarts }

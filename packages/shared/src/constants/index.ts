@@ -8,7 +8,7 @@ export const EMPTY_STRING = ''
 /** 默认分页参数 */
 export const DEFAULT_PAGINATION = Object.freeze({
   page: 1,
-  pageSize: 10
+  pageSize: 10,
 })
 
 /** 默认请求超时时间（毫秒） */
@@ -31,5 +31,5 @@ export const HTTP_STATUS = Object.freeze({
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
-  SERVER_ERROR: 500
+  SERVER_ERROR: 500,
 })

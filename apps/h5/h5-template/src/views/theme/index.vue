@@ -16,19 +16,19 @@ const app = useAppStore()
 
 const brand = computed({
   get: () => app.brand,
-  set: (v: BrandId) => app.setBrand(v)
+  set: (v: BrandId) => app.setBrand(v),
 })
 
 const mode = computed({
   get: () => app.themeMode,
-  set: (v: ThemeModeId) => app.setTheme(v)
+  set: (v: ThemeModeId) => app.setTheme(v),
 })
 
 const language = computed({
   get: () => getLocale() as BaseLocale,
   set: (v: BaseLocale) => {
     void app.setLanguage(v)
-  }
+  },
 })
 </script>
 

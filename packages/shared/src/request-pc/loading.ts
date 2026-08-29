@@ -11,7 +11,7 @@ export function createElLoadingHandler(options: Partial<Parameters<typeof ElLoad
   const defaults = {
     fullscreen: true,
     text: '加载中...',
-    background: 'rgba(0, 0, 0, 0.35)'
+    background: 'rgba(0, 0, 0, 0.35)',
   }
 
   return {
@@ -27,6 +27,6 @@ export function createElLoadingHandler(options: Partial<Parameters<typeof ElLoad
         loadingInstance.close()
         loadingInstance = null
       }
-    }
+    },
   }
 }

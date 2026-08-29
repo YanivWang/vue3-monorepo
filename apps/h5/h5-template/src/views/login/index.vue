@@ -141,7 +141,7 @@ async function onBridgeLogin() {
                 clearable
                 :rules="[
                   { required: true, message: '请填写手机号' },
-                  { pattern: /^1\d{10}$/, message: '手机号格式错误' }
+                  { pattern: /^1\d{10}$/, message: '手机号格式错误' },
                 ]"
               />
               <Field

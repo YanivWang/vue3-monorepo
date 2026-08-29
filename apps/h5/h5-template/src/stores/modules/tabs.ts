@@ -26,11 +26,11 @@ export const useTabsStore = defineStore('h5-tabs', () => {
     { name: 'Home', path: '/home', label: 'nav.home', icon: 'home-o', requiresAuth: true },
     { name: 'List', path: '/list', label: 'nav.list', icon: 'todo-list-o', requiresAuth: true },
     { name: 'Theme', path: '/theme', label: 'nav.theme', icon: 'brush-o' },
-    { name: 'Mine', path: '/mine', label: 'nav.mine', icon: 'user-o', requiresAuth: true }
+    { name: 'Mine', path: '/mine', label: 'nav.mine', icon: 'user-o', requiresAuth: true },
   ])
   const activeName = ref<string>('Home')
 
-  const active = computed(() => tabs.value.find(t => t.name === activeName.value) ?? tabs.value[0])
+  const active = computed(() => tabs.value.find((t) => t.name === activeName.value) ?? tabs.value[0])
 
   function setTabs(items: TabItem[]): void {
     tabs.value = items

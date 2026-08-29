@@ -85,6 +85,6 @@ export const useUserStore = defineStore('user', () => {
     fetchUserInfo,
     logoutAction,
     logout,
-    resetState
+    resetState,
   }
 })

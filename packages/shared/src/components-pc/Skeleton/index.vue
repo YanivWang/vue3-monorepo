@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(), {
   loading: true,
   rows: 3,
   variant: 'list',
-  animated: true
+  animated: true,
 })
 </script>
 

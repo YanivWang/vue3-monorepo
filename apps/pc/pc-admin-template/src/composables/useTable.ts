@@ -6,7 +6,7 @@ import { useTable as useTableBase, type UseTableOptions } from '@vue3-monorepo/s
  */
 export function useTable<T = Record<string, unknown>>(options: UseTableOptions<T>): ReturnType<typeof useTableBase<T>> {
   return useTableBase<T>({
-    onError: err => ElMessage.error(err instanceof Error ? err.message : String(err)),
-    ...options
+    onError: (err) => ElMessage.error(err instanceof Error ? err.message : String(err)),
+    ...options,
   })
 }

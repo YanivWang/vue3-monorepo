@@ -13,5 +13,5 @@ export type BaseLocale = (typeof BASE_LOCALES)[number]
 /** 默认消息集合（语言 → messages） */
 export const defaultMessages: Record<BaseLocale, BaseMessages> = {
   'zh-CN': zhCN,
-  'en-US': enUS
+  'en-US': enUS,
 }

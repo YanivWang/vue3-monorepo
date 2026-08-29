@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   finishedText: '没有更多了',
   query: () => ({}),
   immediate: true,
-  errorText: '请求失败，点击重试'
+  errorText: '请求失败，点击重试',
 })
 
 const emit = defineEmits<{
@@ -77,7 +77,7 @@ async function load() {
     const { list: rows, total: t } = await props.loader({
       pageNum: pageNum.value,
       pageSize: props.pageSize,
-      ...props.query
+      ...props.query,
     })
     const hasValidTotal = typeof t === 'number' && !Number.isNaN(t) && t >= 0
     total.value = hasValidTotal ? t : 0
@@ -127,7 +127,7 @@ watch(
     reset()
     if (props.immediate) load()
   },
-  { deep: true }
+  { deep: true },
 )
 
 if (props.immediate) load()

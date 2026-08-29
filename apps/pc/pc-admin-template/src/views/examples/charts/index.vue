@@ -20,7 +20,7 @@ onMounted(async () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
     },
     yAxis: { type: 'value' },
     series: [
@@ -33,18 +33,18 @@ onMounted(async () => {
         markPoint: {
           data: [
             { type: 'max', name: '最大值' },
-            { type: 'min', name: '最小值' }
-          ]
-        }
+            { type: 'min', name: '最小值' },
+          ],
+        },
       },
       {
         name: '注册量',
         type: 'line',
         smooth: true,
         data: [120, 282, 191, 134, 290, 330, 310],
-        areaStyle: { opacity: 0.1 }
-      }
-    ]
+        areaStyle: { opacity: 0.1 },
+      },
+    ],
   })
 
   // ── 柱状图 ────────────────────────────────────────────────
@@ -54,14 +54,14 @@ onMounted(async () => {
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
     xAxis: {
       type: 'category',
-      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
     },
     yAxis: { type: 'value' },
     series: [
       { name: '直接访问', type: 'bar', data: [320, 332, 301, 334, 390, 330, 320], barMaxWidth: 40 },
       { name: '邮件营销', type: 'bar', data: [120, 132, 101, 134, 90, 230, 210], barMaxWidth: 40 },
-      { name: '联盟广告', type: 'bar', data: [220, 182, 191, 234, 290, 330, 310], barMaxWidth: 40 }
-    ]
+      { name: '联盟广告', type: 'bar', data: [220, 182, 191, 234, 290, 330, 310], barMaxWidth: 40 },
+    ],
   })
 
   // ── 饼图 ──────────────────────────────────────────────────
@@ -77,17 +77,17 @@ onMounted(async () => {
         itemStyle: { borderRadius: 6, borderColor: 'transparent', borderWidth: 2 },
         label: { show: false, position: 'center' },
         emphasis: {
-          label: { show: true, fontSize: 14, fontWeight: 'bold' }
+          label: { show: true, fontSize: 14, fontWeight: 'bold' },
         },
         data: [
           { value: 1048, name: '搜索引擎' },
           { value: 735, name: '直接访问' },
           { value: 580, name: '邮件营销' },
           { value: 484, name: '联盟广告' },
-          { value: 300, name: '视频广告' }
-        ]
-      }
-    ]
+          { value: 300, name: '视频广告' },
+        ],
+      },
+    ],
   })
 
   // ── 雷达图 ────────────────────────────────────────────────
@@ -101,8 +101,8 @@ onMounted(async () => {
         { name: '技术', max: 30000 },
         { name: '客服', max: 38000 },
         { name: '研发', max: 52000 },
-        { name: '市场', max: 25000 }
-      ]
+        { name: '市场', max: 25000 },
+      ],
     },
     series: [
       {
@@ -110,10 +110,10 @@ onMounted(async () => {
         type: 'radar',
         data: [
           { value: [4200, 3000, 20000, 35000, 50000, 18000], name: '预算分配' },
-          { value: [5000, 14000, 28000, 26000, 42000, 21000], name: '实际支出' }
-        ]
-      }
-    ]
+          { value: [5000, 14000, 28000, 26000, 42000, 21000], name: '实际支出' },
+        ],
+      },
+    ],
   })
 })
 </script>

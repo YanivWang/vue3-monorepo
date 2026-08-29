@@ -7,7 +7,7 @@ export enum H5Host {
   BROWSER = 'browser',
   WECHAT_MINI = 'wx-mini',
   ALIPAY_MINI = 'ali-mini',
-  NATIVE_APP = 'native-app'
+  NATIVE_APP = 'native-app',
 }
 
 export interface HostDetection {

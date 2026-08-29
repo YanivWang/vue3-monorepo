@@ -18,15 +18,15 @@ export default defineConfig({
         lines: 50,
         functions: 50,
         branches: 40,
-        statements: 50
+        statements: 50,
       },
       include: ['src/**/*.ts', 'src/**/*.vue'],
-      exclude: ['src/types/**', 'src/main.ts', 'src/**/*.d.ts', 'src/views/examples/**']
-    }
+      exclude: ['src/types/**', 'src/main.ts', 'src/**/*.d.ts', 'src/views/examples/**'],
+    },
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
-    }
-  }
+      '@': resolve(__dirname, 'src'),
+    },
+  },
 })

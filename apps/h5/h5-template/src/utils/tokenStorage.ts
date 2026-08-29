@@ -11,7 +11,7 @@ export const tokenStorage = createTokenStorage({
   tokenKey: 'H5_TOKEN',
   refreshTokenKey: 'H5_REFRESH_TOKEN',
   tokenExpires: 1,
-  refreshExpires: 7
+  refreshExpires: 7,
 })
 
 export const getToken = () => tokenStorage.getToken()

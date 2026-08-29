@@ -49,5 +49,5 @@ export const loginApi = {
   },
   getUserInfo(): Promise<UserInfo> {
     return http.get('/user/info')
-  }
+  },
 }

@@ -13,7 +13,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   title: '筛选',
   confirmText: '确定',
-  cancelText: '重置'
+  cancelText: '重置',
 })
 
 const visible = defineModel<boolean>('show', { default: false })

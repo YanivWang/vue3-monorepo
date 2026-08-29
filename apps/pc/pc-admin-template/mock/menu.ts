@@ -15,8 +15,8 @@ const adminMenus: MenuRoute[] = [
       affix: true,
       keepAlive: true,
       requiresAuth: true,
-      permissions: ['dashboard:view']
-    }
+      permissions: ['dashboard:view'],
+    },
   },
   {
     id: 20,
@@ -27,7 +27,7 @@ const adminMenus: MenuRoute[] = [
     meta: {
       title: '示例页面',
       icon: 'Grid',
-      requiresAuth: true
+      requiresAuth: true,
     },
     children: [
       {
@@ -40,8 +40,8 @@ const adminMenus: MenuRoute[] = [
           title: 'CRUD 示例',
           icon: 'List',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 22,
@@ -53,8 +53,8 @@ const adminMenus: MenuRoute[] = [
           title: '表单验证',
           icon: 'Document',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 23,
@@ -66,8 +66,8 @@ const adminMenus: MenuRoute[] = [
           title: '文件上传',
           icon: 'Upload',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 24,
@@ -79,10 +79,10 @@ const adminMenus: MenuRoute[] = [
           title: '图表',
           icon: 'TrendCharts',
           keepAlive: true,
-          requiresAuth: true
-        }
-      }
-    ]
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     id: 10,
@@ -94,7 +94,7 @@ const adminMenus: MenuRoute[] = [
       title: '系统管理',
       icon: 'Setting',
       requiresAuth: true,
-      roles: ['admin']
+      roles: ['admin'],
     },
     children: [
       {
@@ -108,8 +108,8 @@ const adminMenus: MenuRoute[] = [
           icon: 'User',
           keepAlive: true,
           requiresAuth: true,
-          permissions: ['system:user:list']
-        }
+          permissions: ['system:user:list'],
+        },
       },
       {
         id: 12,
@@ -122,8 +122,8 @@ const adminMenus: MenuRoute[] = [
           icon: 'UserFilled',
           keepAlive: true,
           requiresAuth: true,
-          permissions: ['system:role:list']
-        }
+          permissions: ['system:role:list'],
+        },
       },
       {
         id: 13,
@@ -136,11 +136,11 @@ const adminMenus: MenuRoute[] = [
           icon: 'Menu',
           keepAlive: true,
           requiresAuth: true,
-          permissions: ['system:menu:list']
-        }
-      }
-    ]
-  }
+          permissions: ['system:menu:list'],
+        },
+      },
+    ],
+  },
 ]
 
 /** editor 有首页 + 示例页 */
@@ -157,8 +157,8 @@ const editorMenus: MenuRoute[] = [
       affix: true,
       keepAlive: true,
       requiresAuth: true,
-      permissions: ['dashboard:view']
-    }
+      permissions: ['dashboard:view'],
+    },
   },
   {
     id: 20,
@@ -169,7 +169,7 @@ const editorMenus: MenuRoute[] = [
     meta: {
       title: '示例页面',
       icon: 'Grid',
-      requiresAuth: true
+      requiresAuth: true,
     },
     children: [
       {
@@ -182,8 +182,8 @@ const editorMenus: MenuRoute[] = [
           title: 'CRUD 示例',
           icon: 'List',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 22,
@@ -195,8 +195,8 @@ const editorMenus: MenuRoute[] = [
           title: '表单验证',
           icon: 'Document',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 23,
@@ -208,8 +208,8 @@ const editorMenus: MenuRoute[] = [
           title: '文件上传',
           icon: 'Upload',
           keepAlive: true,
-          requiresAuth: true
-        }
+          requiresAuth: true,
+        },
       },
       {
         id: 24,
@@ -221,11 +221,11 @@ const editorMenus: MenuRoute[] = [
           title: '图表',
           icon: 'TrendCharts',
           keepAlive: true,
-          requiresAuth: true
-        }
-      }
-    ]
-  }
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
 ]
 
 export default [
@@ -238,8 +238,8 @@ export default [
       return {
         code: 200,
         message: 'success',
-        data: isAdmin ? adminMenus : editorMenus
+        data: isAdmin ? adminMenus : editorMenus,
       }
-    }
-  }
+    },
+  },
 ] as MockMethod[]

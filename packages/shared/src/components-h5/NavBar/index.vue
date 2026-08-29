@@ -25,7 +25,7 @@ withDefaults(defineProps<Props>(), {
   rightText: undefined,
   fixed: false,
   placeholder: false,
-  safeAreaInsetTop: true
+  safeAreaInsetTop: true,
 })
 
 const emit = defineEmits<{

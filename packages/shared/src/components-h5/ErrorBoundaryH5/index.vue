@@ -11,7 +11,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   title: '页面出现异常',
-  onCapture: undefined
+  onCapture: undefined,
 })
 
 const hasError = ref(false)

@@ -20,7 +20,7 @@ import {
   ElSelect,
   ElSlider,
   ElSwitch,
-  ElTag
+  ElTag,
 } from 'element-plus'
 import { useMessage } from '@/composables/useMessage'
 import { cssVarTokens, getCssVar } from '@vue3-monorepo/shared/styles/tokens'
@@ -53,7 +53,7 @@ const form = reactive({
   remark: '',
 
   // 协议
-  agreed: false
+  agreed: false,
 })
 
 // ── 自定义校验函数 ────────────────────────────────────────────
@@ -78,33 +78,33 @@ const rules = reactive<FormRules>({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 3, max: 20, message: '长度 3~20 个字符', trigger: 'blur' },
-    { pattern: /^[a-zA-Z0-9_]+$/, message: '只能包含字母、数字、下划线', trigger: 'blur' }
+    { pattern: /^[a-zA-Z0-9_]+$/, message: '只能包含字母、数字、下划线', trigger: 'blur' },
   ],
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' },
   ],
   phone: [{ validator: validatePhone, trigger: 'blur' }],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 8, message: '密码至少 8 位', trigger: 'blur' },
-    { pattern: /(?=.*[A-Za-z])(?=.*\d)/, message: '密码需包含字母和数字', trigger: 'blur' }
+    { pattern: /(?=.*[A-Za-z])(?=.*\d)/, message: '密码需包含字母和数字', trigger: 'blur' },
   ],
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },
-    { validator: validateConfirmPassword, trigger: 'blur' }
+    { validator: validateConfirmPassword, trigger: 'blur' },
   ],
   nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
   roles: [{ required: true, type: 'array', min: 1, message: '请至少选择一个角色', trigger: 'change' }],
   website: [{ type: 'url', message: '请输入有效的网址（以 http:// 或 https:// 开头）', trigger: 'blur' }],
-  agreed: [{ validator: validateAgreed, trigger: 'change' }]
+  agreed: [{ validator: validateAgreed, trigger: 'change' }],
 })
 
 async function handleSubmit() {
   await formRef.value?.validate()
   submitting.value = true
   try {
-    await new Promise(r => setTimeout(r, 800))
+    await new Promise((r) => setTimeout(r, 800))
     success('表单提交成功！')
     handleReset()
   } finally {

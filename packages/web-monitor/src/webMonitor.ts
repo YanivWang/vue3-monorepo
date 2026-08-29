@@ -83,12 +83,12 @@ function assertReportingUrls(options: WebMonitorInitOptions): void {
 
   if (useErrors && !String(options.errorReportUrl ?? '').trim()) {
     throw new Error(
-      'WebMonitor.init：启用客户端错误监控（integrations.clientErrors !== false）时须传入非空的 errorReportUrl'
+      'WebMonitor.init：启用客户端错误监控（integrations.clientErrors !== false）时须传入非空的 errorReportUrl',
     )
   }
   if (useVitals && !String(options.webVitalsReportUrl ?? '').trim()) {
     throw new Error(
-      'WebMonitor.init：启用 Web Vitals（integrations.webVitals !== false）时须传入非空的 webVitalsReportUrl'
+      'WebMonitor.init：启用 Web Vitals（integrations.webVitals !== false）时须传入非空的 webVitalsReportUrl',
     )
   }
 }
@@ -102,7 +102,7 @@ function applyRuntimeOptions(options: WebMonitorInitOptions): void {
     beforeErrorReport,
     beforeWebVitalReport,
     clientErrorDebug,
-    webVitalsDebug
+    webVitalsDebug,
   } = options
 
   configureClientErrorSdk({
@@ -110,14 +110,14 @@ function applyRuntimeOptions(options: WebMonitorInitOptions): void {
     beforeErrorReport,
     release,
     environment,
-    debug: clientErrorDebug
+    debug: clientErrorDebug,
   })
   configureWebVitalsSdk({
     webVitalsReportUrl,
     beforeWebVitalReport,
     release,
     environment,
-    debug: webVitalsDebug
+    debug: webVitalsDebug,
   })
 }
 
@@ -141,11 +141,11 @@ export const WebMonitor = {
     }
     if (useErrors) {
       setupClientErrorReporting(options.app, {
-        afterVueError: options.afterVueError
+        afterVueError: options.afterVueError,
       })
     }
   },
 
   /** 手动上报客户端错误（与 `reportClientError` 相同） */
-  reportError: reportClientError
+  reportError: reportClientError,
 } as const

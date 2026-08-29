@@ -60,6 +60,6 @@ export const useUserStore = defineStore('h5-user', () => {
     hasRole,
     setAuth,
     setUserInfo,
-    reset
+    reset,
   }
 })

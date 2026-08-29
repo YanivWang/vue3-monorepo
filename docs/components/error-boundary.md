@@ -58,7 +58,7 @@ H5 模板的错误与性能采集见 [全局错误监控](../guide/errors-and-ob
 ```ts
 import { setAdditionalClientErrorListener } from '@vue3-monorepo/web-monitor'
 
-setAdditionalClientErrorListener(payload => {
+setAdditionalClientErrorListener((payload) => {
   console.info('[extra]', payload)
 })
 ```

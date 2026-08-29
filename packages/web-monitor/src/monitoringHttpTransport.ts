@@ -20,7 +20,7 @@ export function postJsonReport(body: string, url: string): void {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body,
-    keepalive: true
+    keepalive: true,
   }).catch(() => {
     /* 静默失败，避免影响业务 */
   })

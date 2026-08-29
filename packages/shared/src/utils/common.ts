@@ -44,7 +44,19 @@ export function parseQuery(search?: string): Record<string, string> {
 export function stringifyQuery(params: Record<string, unknown>): string {
   const qs = new URLSearchParams()
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
+    if (value === undefined || value === null) return
+    // String(对象) 得到 '[object Object]'，等于把参数悄悄丢了：对象/数组按 JSON 传。
+    // 其余只接受能安全落进查询串的原始类型——用正向 typeof 判断而不是排除法，
+    // 因为 unknown 做不到「减去 function」的收窄，写成 else 分支类型仍是 unknown。
+    // 函数与 symbol 在查询串里没有意义，直接跳过。
+    if (typeof value === 'object') {
+      qs.append(key, JSON.stringify(value))
+    } else if (
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean' ||
+      typeof value === 'bigint'
+    ) {
       qs.append(key, String(value))
     }
   })
@@ -78,7 +90,7 @@ export function unique<T>(arr: T[]): T[] {
 /** 根据字段对对象数组去重 */
 export function uniqueBy<T>(arr: T[], key: keyof T): T[] {
   const seen = new Set<T[keyof T]>()
-  return arr.filter(item => {
+  return arr.filter((item) => {
     const val = item[key]
     if (seen.has(val)) return false
     seen.add(val)
@@ -89,15 +101,15 @@ export function uniqueBy<T>(arr: T[], key: keyof T): T[] {
 /** 将平铺数组转换为树形结构 */
 export function arrayToTree<T extends { id: number | string; parentId: number | string | null }>(
   list: T[],
-  rootId: number | string | null = null
+  rootId: number | string | null = null,
 ): (T & { children?: T[] })[] {
   return list
-    .filter(item => item.parentId === rootId)
-    .map(item => ({
+    .filter((item) => item.parentId === rootId)
+    .map((item) => ({
       ...item,
-      children: arrayToTree(list, item.id)
+      children: arrayToTree(list, item.id),
     }))
-    .map(item => (item.children?.length ? item : { ...item, children: undefined }))
+    .map((item) => (item.children?.length ? item : { ...item, children: undefined }))
 }
 
 // ────────────────────────────────────────────────────────────

@@ -39,8 +39,8 @@ const config: UserConfig = {
         'ci', // CI/CD 配置变更
         'chore', // 其他（不修改 src 或 test 的杂项）
         'revert', // 回滚提交
-        'wip' // 开发中（临时提交，不建议进入主干）
-      ]
+        'wip', // 开发中（临时提交，不建议进入主干）
+      ],
     ],
     'scope-enum': [
       2,
@@ -65,13 +65,13 @@ const config: UserConfig = {
         'request-h5',
         'repo',
         'deps',
-        'docker'
-      ]
+        'docker',
+      ],
     ],
     'scope-case': [0],
     'subject-case': [0],
-    'header-max-length': [2, 'always', 100]
-  }
+    'header-max-length': [2, 'always', 100],
+  },
 }
 
 export default config

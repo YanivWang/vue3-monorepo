@@ -82,7 +82,7 @@ const RESOURCE_TAG_NAMES = new Set([
   'TRACK',
   'OBJECT',
   'EMBED',
-  'IFRAME'
+  'IFRAME',
 ])
 
 function getFailedResourceUrl(el: Element): string {
@@ -102,7 +102,7 @@ function buildPayload(partial: Omit<ClientErrorPayload, 'ts' | 'mode' | 'page' |
     page: getCurrentPagePath(),
     ts: Date.now(),
     appVersion: sdkClientErrorConfig.release || undefined,
-    mode: sdkClientErrorConfig.environment ?? ''
+    mode: sdkClientErrorConfig.environment ?? '',
   }
 }
 
@@ -163,13 +163,13 @@ export function setupClientErrorReporting(app: App, options?: SetupClientErrorRe
           kind: 'resource',
           message: `Failed to load resource <${tagName}>`,
           source: resourceUrl || undefined,
-          tagName
+          tagName,
         })
         return
       }
 
       const ee = event as ErrorEvent
-      const err = ee.error
+      const err: unknown = ee.error
       const message = err instanceof Error ? err.message : ee.message || ''
       const stack = err instanceof Error ? err.stack : undefined
       reportClientError({
@@ -178,10 +178,10 @@ export function setupClientErrorReporting(app: App, options?: SetupClientErrorRe
         stack,
         source: ee.filename || undefined,
         line: ee.lineno || undefined,
-        col: ee.colno || undefined
+        col: ee.colno || undefined,
       })
     },
-    true
+    true,
   )
 
   window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {

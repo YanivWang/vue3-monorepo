@@ -10,7 +10,7 @@ const userList = [
     email: 'admin@example.com',
     phone: '13800138000',
     roles: ['admin'],
-    permissions: ['*:*:*']
+    permissions: ['*:*:*'],
   },
   {
     id: 2,
@@ -21,8 +21,8 @@ const userList = [
     email: 'editor@example.com',
     phone: '13900139000',
     roles: ['editor'],
-    permissions: ['dashboard:view', 'system:user:list', 'system:user:detail']
-  }
+    permissions: ['dashboard:view', 'system:user:list', 'system:user:detail'],
+  },
 ]
 
 export default [
@@ -30,7 +30,7 @@ export default [
     url: '/api/auth/login',
     method: 'post',
     response: ({ body }: { body: { username: string; password: string } }) => {
-      const user = userList.find(u => u.username === body.username && u.password === body.password)
+      const user = userList.find((u) => u.username === body.username && u.password === body.password)
       if (!user) {
         return { code: 401, message: '用户名或密码错误', data: null }
       }
@@ -41,15 +41,15 @@ export default [
           accessToken: `mock-access-token-${user.id}`,
           refreshToken: `mock-refresh-token-${user.id}`,
           expiresIn: 7200,
-          tokenType: 'Bearer'
-        }
+          tokenType: 'Bearer',
+        },
       }
-    }
+    },
   },
   {
     url: '/api/auth/logout',
     method: 'post',
-    response: () => ({ code: 200, message: 'success', data: null })
+    response: () => ({ code: 200, message: 'success', data: null }),
   },
   {
     url: '/api/user/info',
@@ -57,10 +57,11 @@ export default [
     response: ({ headers }: { headers: Record<string, string> }) => {
       const auth = headers['authorization'] || ''
       const userId = auth.includes('-2') ? 2 : 1
-      const user = userList.find(u => u.id === userId) ?? userList[0]
+      // userList 是模块级非空字面量，兜底项必然存在（noUncheckedIndexedAccess 下需显式表达）
+      const user = userList.find((u) => u.id === userId) ?? userList[0]!
       const { password: _p, ...info } = user
       return { code: 200, message: 'success', data: info }
-    }
+    },
   },
   {
     url: '/api/auth/refresh',
@@ -75,16 +76,16 @@ export default [
             accessToken: `mock-access-token-${userId}-refreshed`,
             refreshToken: `mock-refresh-token-${userId}`,
             expiresIn: 7200,
-            tokenType: 'Bearer'
-          }
+            tokenType: 'Bearer',
+          },
         }
       }
       return { code: 401, message: 'Refresh Token 无效', data: null }
-    }
+    },
   },
   {
     url: '/api/user/password',
     method: 'put',
-    response: () => ({ code: 200, message: '密码修改成功', data: null })
-  }
+    response: () => ({ code: 200, message: '密码修改成功', data: null }),
+  },
 ] as MockMethod[]
