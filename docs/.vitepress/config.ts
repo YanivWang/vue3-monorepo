@@ -63,6 +63,7 @@ export default defineConfig({
             { text: '脚手架一键新增业务应用', link: '/guide/adding-a-new-app' },
             { text: '代码质量与规范约束', link: '/guide/quality-gates' },
             { text: '可推广的工程化基线', link: '/guide/portable-baseline' },
+            { text: '落地基线的 Prompt 模板', link: '/guide/apply-baseline-prompt' },
             { text: '项目与目录约定', link: '/guide/project-conventions' },
             { text: '排障与 FAQ', link: '/guide/troubleshooting' },
             { text: '环境变量', link: '/guide/environment-variables' },

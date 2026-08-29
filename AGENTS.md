@@ -81,3 +81,4 @@ pnpm run verify:full   # 统一门禁，提交前跑这个；CI 跑的是同一�
 
 - [代码质量与规范约束](docs/guide/quality-gates.md) —— 每道门禁的完整说明与验证方法
 - [可推广的工程化基线](docs/guide/portable-baseline.md) —— **要把这套配置搬到别的项目时读这份**：哪些能原样抄、哪些只是骨架、哪些搬不了
+- [落地基线的 Prompt 模板](docs/guide/apply-baseline-prompt.md) —— 把基线交给 agent 去落地时的起手 prompt
