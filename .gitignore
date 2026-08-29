@@ -20,6 +20,9 @@ coverage
 
 # Editor directories and files
 .vscode/*
+# settings.json / extensions.json 例外并入库：保存自动格式化、detectIndentation
+# 这些必须是团队一致的，留在个人全局设置里只对一个人生效，别人照样漂。
+!.vscode/settings.json
 !.vscode/extensions.json
 .idea
 *.suo
