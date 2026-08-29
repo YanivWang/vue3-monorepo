@@ -37,7 +37,7 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           # 单一真源：跟 .nvmrc 走，保证本地与 CI 是同一个大版本
           node-version-file: '.nvmrc'
