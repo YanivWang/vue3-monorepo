@@ -43,3 +43,9 @@ updates:
       interval: monthly
     commit-message:
       prefix: 'ci'
+    ignore:
+      # 与上面 npm 一致：机器人只推 minor / patch，major 由人主动发起。
+      # actions 的 major 会改 inputs 与运行时（如 setup-node v4 → v7），
+      # 升级本身没问题，但值得有人看一眼 changelog 再动，而不是混在例行 PR 里。
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
