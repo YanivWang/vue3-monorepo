@@ -55,7 +55,7 @@ jobs:
       # 这里只是把报告留下来，方便 PR 上点开看是哪些文件掉的。
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/
