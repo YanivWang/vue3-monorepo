@@ -31,10 +31,12 @@
 
 | 命令                                       | 作用                                                                                                                                                                                                                                                        |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述 `vitest.workspace.ts`                                                                                                                                                                                                    |
+| `pnpm run test:run` / `pnpm run test`      | 在根执行 Vitest **单次**，使用上述根 `vitest.config.ts` 的 `test.projects`                                                                                                                                                                                  |
 | `pnpm run test:watch`                      | 交互/watch，适合 TDD                                                                                                                                                                                                                                        |
 | `pnpm run test:coverage`                   | 覆盖率，**阈值已开**（`vitest.config.ts` 的 `test.coverage.thresholds`）。数值取自接入当天实测水位，作用是**防退化**而非达标；跌破即失败，`verify:full` 与 CI 跑的都是这条                                                                                  |
 | `pnpm run admin:test` / `pnpm run h5:test` | `pnpm --filter` 在**单包目录**内执行各 app 的 `test` 脚本；配置以各应用自己的 `vitest.config.ts` 为准。若某包**未**声明 `test`，pnpm 会提示无脚本且**仍以 0 退出**，容易误以为跑过测试——现在这一类「静默通过」由 `pnpm run check:workspace` 兜住（见 §4）。 |
+
+> **覆盖率阈值只有根一份。** 各 app 的 `vitest.config.ts` 里刻意不写 `thresholds`：在 `test.projects` 下运行时，项目级 `coverage` 配置整体不生效，写了也没有任何东西执行它；而 `pnpm --filter <app> test:coverage` 又会拿它当真，于是跑出一条与本次改动无关的红。要调阈值就改根 `vitest.config.ts`。
 
 根 `verify:full` 里串联的是**根** `test:coverage`（同一批用例，额外校验覆盖率阈值）；若只关心某一 app，可在该 app 下单独跑 `admin:test` / `h5:test`。
 
@@ -42,7 +44,7 @@
 
 根 `package.json` 中**一字不差**的链为：
 
-`check:refs` → `check:request-core` → `check:workspace` → `check:audit` → `check:theme` → `typecheck` → `lint` → `lint:style` → `prettier --check .` → `test:coverage` → `build`
+`check:refs` → `check:request-core` → `check:workspace` → `check:toolchain` → `check:audit` → `check:theme` → `typecheck` → `lint` → `check:boundaries` → `lint:style` → `prettier --check .` → `test:coverage` → `build`
 
 其中 `build` 即 `admin:build` → `h5:build` → `docs:build`。
 
@@ -50,39 +52,45 @@
 
 **注意**：`build` 会构建三端，耗时较长；日常只改文档时可用 `pnpm run docs:build` 等分段命令代替，不必每次 `verify:full`。
 
-## 4. 仓库特有五项检查
+## 4. 仓库特有的七项检查
 
 实现以仓库内脚本为准，摘要如下（详见 `scripts/` 下对应脚本的文件头注释）：
 
-| 命令                          | 含义                                                                                                                                                                                                                                                                                               |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths 与 `tsconfig.json` references、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                      |
-| `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查 |
-| `pnpm run check:workspace`    | `scripts/check-workspace-scripts.mjs`：堵「门禁静默跳过」的两个洞——① 根 `typecheck` 带 `--if-present`，新包漏写 `typecheck` 脚本会被**无声跳过**；② `vitest.workspace.ts` 是显式清单，不在其中的包写了测试也**不会被 `pnpm test` 发现**。两者的失败表现都是「通过」，本脚本把它们变成显式失败      |
-| `pnpm run check:audit`        | `scripts/check-audit.mjs`：依赖安全公告的**棘轮门禁**。按 GHSA ID 记基线，基线外的一律失败；`critical` 级不入基线（`--update` 拒绝写入），必须当场处理。固定查询官方 registry（私有源/镜像没有 audit 端点）。离线时用 `SKIP_AUDIT=1` 显式跳过——查不到公告会**直接失败**，不会「查不动就当通过」    |
-| `pnpm run check:theme`        | `scripts/check-theme.mjs`：重跑 `generate:theme` 后用 `git status --porcelain` 比对 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts` 五个 AUTO-GENERATED 产物；有 diff 说明产物被手改或忘了重新生成（见 [Design Token](./design-tokens.md)）              |
+| 命令                          | 含义                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm run check:refs`         | `scripts/check-refs.js`：workspace 包数量/命名、`tsconfig.base.json` paths、根 `tsconfig.json` 的 `references`（**双向**：既校验引用的目录存在，也校验每个 workspace 都被引用到）、各包 `workspace:*` 依赖是否**能在当前 workspace 解析**等（**不是**简单的「import 路径字符串扫描」）                                                                                                                       |
+| `pnpm run check:request-core` | `scripts/check-request-core.js`：扫描 **`@vue3-monorepo/request-core`** 源码目录 `packages/request-core/src` 下 `.ts`，**禁止**出现 Element Plus / Vant 等 **UI 反馈类 API 关键字**（如 `ElMessage`、`showToast` 等），防止请求核心层与弹窗/Toast 耦合；与「npm 依赖树是否含 UI 包」不是同一类检查                                                                                                           |
+| `pnpm run check:workspace`    | `scripts/check-workspace-scripts.mjs`：堵「门禁静默跳过」的两个洞——① 根 `typecheck` 带 `--if-present`，新包漏写 `typecheck` 脚本会被**无声跳过**；② 根 `vitest.config.ts` 的 `test.projects` 是显式清单，不在其中的包写了测试也**不会被 `pnpm test` 发现**。两者的失败表现都是「通过」，本脚本把它们变成显式失败                                                                                             |
+| `pnpm run check:audit`        | `scripts/check-audit.mjs`：依赖安全公告的**棘轮门禁**。按 GHSA ID 记基线，基线外的一律失败；`critical` 级不入基线（`--update` 拒绝写入），必须当场处理。固定查询官方 registry（私有源/镜像没有 audit 端点）。离线时用 `SKIP_AUDIT=1` 显式跳过——查不到公告会**直接失败**，不会「查不动就当通过」                                                                                                              |
+| `pnpm run check:theme`        | `scripts/check-theme.mjs`：把 `_variables.scss`、`_brands.scss`、`_dark.scss`、`_dark-element.scss`、`brands.config.ts` 五个 AUTO-GENERATED 产物读进内存，重跑 `generate:theme` 后比对**生成前 vs 生成后**；有差异说明产物被手改或改了 palette 忘了重新生成（见 [Design Token](./design-tokens.md)）。刻意不与 git 比：那样任何尚未提交的合法改动都会被误报                                                  |
+| `pnpm run check:toolchain`    | `scripts/check-toolchain.mjs`：Node / pnpm 版本只允许一个真源。校验 `.nvmrc` 满足 `engines.node`、`packageManager` 满足 `engines.pnpm`、每个 Dockerfile 的 `FROM node:<x>` 与 `.nvmrc` 同大版本、Dockerfile 不另钉 pnpm 版本、workflow 用 `node-version-file` 而非硬编码。踩过的坑：`.nvmrc` 抬到 22 后 Dockerfile 仍是 `node:20`，三个镜像**全部构建不出来**，而 CI 只跑 `verify:full` 不构建镜像，一路全绿 |
+| `pnpm run check:boundaries`   | `scripts/check-import-boundaries.mjs`：给 §4.1 的边界规则写的**常驻反例**。造 13 个应当被拦的 import，确认每条都报出预期规则后删除。`import-x/no-restricted-paths` 只对**能解析到文件**的 import 生效，缺 resolver 时全部 zone 静默失效——这道门禁就是防那一种                                                                                                                                                |
 
 在改 `packages/shared` 下请求、路径、exports 时，**务必**跑通前两项；改 `theme-palette.json` 或主题产物时补跑 `check:theme`。
 
-> `.husky/pre-commit` 跑 `check:refs` + `check:request-core` + `check:workspace` + `lint-staged`（三个检查都是毫秒级的纯元数据校验）；`check:theme` 仅在 `verify:full` 与 CI 中执行。
+> `.husky/pre-commit` 跑 `check:refs` + `check:request-core` + `check:workspace` + `check:toolchain` + `lint-staged`（四个检查都是毫秒级的纯元数据校验，只读文件）；`check:theme`、`check:audit`、`check:boundaries` 要跑生成器 / 联网 / 起 eslint，仅在 `verify:full` 与 CI 中执行。
 
 ## 4.1 ESLint 里的依赖边界门禁
 
-除了上面的脚本，根 `eslint.config.mjs` 还用 `import/no-restricted-paths` 与 `no-restricted-imports` 把**分层边界**做成了 lint 错误（`pnpm run lint` 即可发现）：
+除了上面的脚本，根 `eslint.config.mjs` 还用 `import-x/no-restricted-paths` 与 `no-restricted-imports` 把**分层边界**做成了 lint 错误（`pnpm run lint` 即可发现）：
 
-| 规则                                                                             | 约束                                                            |
-| -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `components-pc` ⇄ `components-h5`（`directives-*`、`hooks-*`、`request-*` 同理） | 端侧同类型包**互相禁止** import                                 |
-| `packages/request-core` ← `shared/request-pc`、`request-h5`                      | 内核**禁止反依赖**端侧 preset                                   |
-| `shared/hooks-core` ← 任意端侧包                                                 | 通用 hooks **禁止依赖**端侧 UI 层                               |
-| `packages/shared` ← `apps/**`                                                    | 共享包**禁止反依赖**应用                                        |
-| `pc-admin-template` ⇄ `h5-template`                                              | 两端**禁止互引源码**（store / 页面不共享）                      |
-| `packages/request-core/**`                                                       | 禁止 `import` `element-plus` / `vant`                           |
-| `shared/request-pc`、`request-h5`                                                | 禁止直接 `import axios`，必须走 `@vue3-monorepo/request-core`   |
-| `shared/hooks-core/**`                                                           | 禁止 `import` `element-plus` / `vant`                           |
-| `packages/js-bridge/**`                                                          | 禁止 `import` `@vue3-monorepo/shared`（保持 bridge 无上层依赖） |
+| 规则                                                        | 约束                                                            |
+| ----------------------------------------------------------- | --------------------------------------------------------------- |
+| `*-pc`（components / directives / hooks / request）⇄ `*-h5` | 端侧**整组互斥**：pc 组任一目录都不许引 h5 组任一目录，反之亦然 |
+| `packages/request-core` ← `shared/request-pc`、`request-h5` | 内核**禁止反依赖**端侧 preset                                   |
+| `shared/hooks-core` ← 任意端侧包                            | 通用 hooks **禁止依赖**端侧 UI 层                               |
+| `packages/shared` ← `apps/**`                               | 共享包**禁止反依赖**应用                                        |
+| `pc-admin-template` ⇄ `h5-template`                         | 两端**禁止互引源码**（store / 页面不共享）                      |
+| `packages/request-core/**`                                  | 禁止 `import` `element-plus` / `vant`                           |
+| `shared/request-pc`、`request-h5`                           | 禁止直接 `import axios`，必须走 `@vue3-monorepo/request-core`   |
+| `shared/hooks-core/**`                                      | 禁止 `import` `element-plus` / `vant`                           |
+| `packages/js-bridge/**`                                     | 禁止 `import` `@vue3-monorepo/shared`（保持 bridge 无上层依赖） |
 
 也就是说，[项目与目录约定](./project-conventions.md) 与 [pnpm workspace 日常操作](./monorepo-workflow.md) 里的「强约束」不只是文字规范，越界会在 `lint` 阶段直接报错。
+
+> **`import-x/no-restricted-paths` 依赖 resolver。** 这条规则按**磁盘路径**匹配，因此只对「能解析到真实文件」的 import 生效——**解析不到的一律静默跳过，一条都不报**。默认的 node resolver 不认省略扩展名的 `.ts`、不认 `.vue`、不认 tsconfig paths，所以 `eslint.config.mjs` 里配了 `settings['import-x/resolver'].typescript`（`eslint-import-resolver-typescript`）。这不是可选依赖：去掉它，上表前五行会全部失效而 `pnpm run lint` 依然全绿。`pnpm run check:boundaries` 就是为此写的常驻反例。
+>
+> 插件用的是 **`eslint-plugin-import-x`**（规则前缀 `import-x/`）而不是 `eslint-plugin-import`：后者的 peer 至今只到 `eslint ^9`，本仓库已在 ESLint 10 上。import-x 是同一批规则的活跃维护分支。
 
 ## 4.2 类型感知 lint（type-aware linting）
 

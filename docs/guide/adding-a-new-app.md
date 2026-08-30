@@ -20,7 +20,7 @@ pnpm run create-app
 2. 改新包 `package.json` 的 `name` / `description`，替换 `vite.config.ts` 里的 `server.port`，并把 README 中的模板路径与标题换成新应用；
 3. 在根 `package.json` 追加 `<前缀>:dev`、`<前缀>:build`、`<前缀>:typecheck`、`<前缀>:test`（两种模板都带 `test` 脚本，故对称生成）；
 4. 在根 `tsconfig.json` 的 `references` 中插入应用与其 `tsconfig.node.json` 两条（插在 `{ "path": "./docs" }` 之前）；
-5. 在 `vitest.workspace.ts` 的数组首位插入新应用目录。
+5. 在根 `vitest.config.ts` 的 `test.projects` 数组首位插入新应用目录（vitest 3 起该清单取代了已弃用的 `vitest.workspace.ts`）。
 
 脚本**不会**改的：`pnpm-workspace.yaml`（`apps/pc/*`、`apps/h5/*` 已通配）、`commitlint.config.ts` 的 `scope-enum`、`docker/` 与 CI。
 
@@ -86,9 +86,11 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 
 ### 2.5 Vitest（若新应用要进根 `pnpm test`）
 
-根目录通过 `vitest.workspace.ts` 声明多 project。若新应用有单元测试且希望与根 `pnpm test` 一起跑，在 `vitest.workspace.ts` 的默认导出数组中**增加**新应用目录。
+根 `vitest.config.ts` 的 `test.projects` 是一份**显式清单**（vitest 3 起取代已弃用的 `vitest.workspace.ts`）。新应用有单元测试却不在清单里，`pnpm test` **根本不会发现**它的用例，且不报任何错——所以 `pnpm run check:workspace` 会把「有测试文件但没进 `test.projects`」判为失败。
 
 若新应用**暂无**测试工程，可暂缓；与 [代码质量与规范约束](./quality-gates.md) 中说明一致。
+
+> 覆盖率阈值只配在**根** `vitest.config.ts`。别在新应用的 `vitest.config.ts` 里写 `thresholds`：项目级 coverage 配置在 `test.projects` 下不生效，写了也没人执行。
 
 ### 2.6 开发服务器端口
 
@@ -160,8 +162,8 @@ pnpm run create-app -- --type h5 --dir h5-marketing --name @vue3-monorepo/h5-mar
 | `pnpm run create-app`（推荐）；或手工复制模板并接线、改 `package.json#name` | 业务应用必做      |
 | 根 `package.json` 根脚本、（可选）`build` 串联                              | 必做 / 看发布策略 |
 | 根 `tsconfig.json` references                                               | 必做              |
-| `pnpm run check:refs`                                                       | 必做              |
-| `vitest.workspace.ts`                                                       | 有单测时做        |
+| `pnpm run check:refs`（会校验新包已挂进根 `references`）                    | 必做              |
+| 根 `vitest.config.ts` 的 `test.projects`                                    | 有单测时做        |
 | `vite` 开发端口与文档/团队约定                                              | 必做              |
 | Docker / CI                                                                 | 按需              |
 | `commitlint` scope                                                          | 与团队统一        |

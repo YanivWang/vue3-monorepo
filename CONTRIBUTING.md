@@ -13,7 +13,7 @@
 git clone https://github.com/YanivWang/vue3-monorepo.git
 cd vue3-monorepo
 
-# 安装依赖（Node ≥22.23.2、pnpm ≥11.16.0，与根 package.json engines 一致）
+# 安装依赖（Node ≥24.20.0、pnpm ≥11.24.0，与根 package.json engines 一致）
 # 版本以 .nvmrc / packageManager 为单一真源，CI 直接读 .nvmrc
 pnpm install
 

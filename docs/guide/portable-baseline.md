@@ -115,7 +115,7 @@
 
 | 文件                   | 可复用                                                                                                        | 必须重写                                                                                  |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `eslint.config.mjs`    | flat config 骨架、插件组合顺序（`eslint-config-prettier` 放最后）、类型感知那一档的作用域写法与关闭规则的理由 | 13 条 `import/no-restricted-paths` zone 全是本仓库的具体路径，新项目按自己的分层重写整段  |
+| `eslint.config.mjs`    | flat config 骨架、插件组合顺序（`eslint-config-prettier` 放最后）、类型感知那一档的作用域写法与关闭规则的理由 | 7 条 `import-x/no-restricted-paths` zone 全是本仓库的具体路径，新项目按自己的分层重写整段 |
 | `commitlint.config.ts` | `type-enum` 可照抄                                                                                            | `scope-enum` 是目录结构的镜像，必须重写                                                   |
 | `.husky/pre-commit`    | 「毫秒级元数据校验 + lint-staged」这个结构                                                                    | 里面调的 `check:*` 全是本仓库专属脚本                                                     |
 | `.stylelintrc.json`    | `standard` + `standard-scss` + `recess-order` + `config-html/vue` 组合、BEM 的 `selector-class-pattern`       | `overrides` 里强制 `color-no-hex` 的段落，前提是你有一套设计令牌，没有就删掉              |

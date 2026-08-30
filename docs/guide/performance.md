@@ -7,7 +7,7 @@
 
 ## 生产构建（以 PC 模板为参考）
 
-- **代码分割**：路由级懒加载（`import.meta.glob` 等），业务 chunk 与 `element-plus` / `vue` / `vue-i18n` 等分块策略见各应用 `vite.config` 中 `build.rollupOptions` / `manualChunks`（与 [架构说明 — 构建优化](./architecture.md#build-optimization) 一致）。
+- **代码分割**：路由级懒加载（`import.meta.glob` 等），业务 chunk 与 `element-plus` / `vue` / `vue-i18n` 等分块策略见各应用 `vite.config` 中 `build.rollupOptions.output.codeSplitting.groups`（Vite 8 底层是 rolldown，`manualChunks` / `advancedChunks` 均已弃用；与 [架构说明 — 构建优化](./architecture.md#build-optimization) 一致）。
 - **压缩**：生产环境可启用 Gzip/Brotli，由**静态服务器或 nginx** 提供；Docker 场景见 [部署与 Docker](./deploy.md) 与 `docker/nginx`。
 - **分析**：通过各应用 `.env` 中 **`VITE_ANALYZE`**（及对应 Rollup/插件开关）在本地生成 bundle 分析报告；`VITE_SOURCEMAP` 按发布策略与合规要求开启。
 

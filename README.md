@@ -45,7 +45,7 @@
 | **可观测**                | 双端 `WebMonitor.init`（`@vue3-monorepo/web-monitor`）：`main.ts` 从 Vite 环境装配 URL / debug 等并入 init；附加上报使用 `setAdditionalClientErrorListener`（`ClientErrorPayload`）                                                                                                                                                                                                                                                                                                                                                     |
 | **脚手架**                | `create-app` 一键生成业务应用，业务与模板解耦                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | **文档体系**              | 内置 **VitePress** 文档站（可搜索、可部署），与根 README 分工；详情见下方 [文档](#文档) 与站内 [文档体系总览](docs/guide/doc-system.md)                                                                                                                                                                                                                                                                                                                                                                                                 |
-| **部署与 CI**             | Docker + Nginx 参考（含 admin / h5 / docs 等 compose 入口）；GitHub Actions 两条：`ci.yml`（PR/推送跑 `verify:full`）与文档站发布至 GitHub Pages；详见 [ci-and-automation](docs/guide/ci-and-automation.md)                                                                                                                                                                                                                                                                                                                             |
+| **部署与 CI**             | Docker + Nginx 参考（含 admin / h5 / docs 等 compose 入口）；GitHub Actions 三条：`ci.yml`（PR/推送跑 `verify:full`）、`docker-images.yml`（Dockerfile / 工具链 / 依赖变更时构建三个生产镜像）与文档站发布至 GitHub Pages；详见 [ci-and-automation](docs/guide/ci-and-automation.md)                                                                                                                                                                                                                                                    |
 
 ## 技术栈
 
@@ -57,7 +57,7 @@
 | 可视化           | ECharts、vue-echarts                                                                                                                                                                                                |
 | 错误与性能可观测 | 双端 **`WebMonitor.init`**（Core Web Vitals + 全局错误），实现见 **`@vue3-monorepo/web-monitor`**（`packages/web-monitor/src`）；各应用 **`src/main.ts`** 将 `VITE_*` 等装配后传入 init，ingest 接入方式 PC/H5 一致 |
 | 部署与自动化     | Docker、Nginx（参考）；GitHub Actions（见 `.github/workflows/`）                                                                                                                                                    |
-| 其他             | vue-i18n、Mock、JSBridge（H5）；细节与排障见文档 [全局错误与可观测](docs/guide/errors-and-observability.md)、[Web Vitals](docs/guide/web-vitals.md)                                                                 |
+| 其他             | vue-i18n、Mock（`vite-plugin-fake-server`）、JSBridge（H5）；细节与排障见文档 [全局错误与可观测](docs/guide/errors-and-observability.md)、[Web Vitals](docs/guide/web-vitals.md)                                    |
 
 ## 适用场景与 Monorepo 收益
 
@@ -77,10 +77,10 @@
 
 ## 环境要求
 
-| 依赖    | 版本                                              |
-| ------- | ------------------------------------------------- |
-| Node.js | ≥ 22.23.2（版本以 `.nvmrc` 为准，CI 读同一份）    |
-| pnpm    | ≥ 11.16.0（**仅支持 pnpm**，请勿混用 npm / yarn） |
+| 依赖    | 版本                                                                          |
+| ------- | ----------------------------------------------------------------------------- |
+| Node.js | ≥ 24.20.0（当前 Active LTS；版本以 `.nvmrc` 为准，CI 与 Dockerfile 读同一份） |
+| pnpm    | ≥ 11.24.0（**仅支持 pnpm**，请勿混用 npm / yarn）                             |
 
 ## 快速开始
 
@@ -108,7 +108,7 @@ pnpm run verify:full
 | 并行启动所有含 `dev` 脚本的包（默认 Admin / H5 / Docs；机器吃紧时可改用单端命令）                                                                                                                                      | `pnpm run dev`                                                                        |
 | 新建业务应用                                                                                                                                                                                                           | `pnpm run create-app`                                                                 |
 | TypeScript 类型检查                                                                                                                                                                                                    | `pnpm run typecheck`                                                                  |
-| 单元测试（根 Vitest workspace：模板 Admin/H5、`@vue3-monorepo/shared`、`@vue3-monorepo/js-bridge`）                                                                                                                    | `pnpm run test` 或 `pnpm run test:run`                                                |
+| 单元测试（根 `vitest.config.ts` 的 `test.projects`：模板 Admin/H5 与 shared / js-bridge / request-core / web-monitor）                                                                                                 | `pnpm run test` 或 `pnpm run test:run`                                                |
 | 顺序构建三端（admin → h5 → docs）                                                                                                                                                                                      | `pnpm run build`                                                                      |
 | 全量门禁（引用检查、`check:request-core`、`check:theme`、`@vue3-monorepo/request-core` / `@vue3-monorepo/web-monitor` / `@vue3-monorepo/js-bridge` 等大改时的门禁说明见 [quality-gates](docs/guide/quality-gates.md)） | `pnpm run verify:full`                                                                |
 | 依赖清理重装                                                                                                                                                                                                           | `pnpm run clean:install`                                                              |

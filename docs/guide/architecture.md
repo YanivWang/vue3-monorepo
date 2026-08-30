@@ -195,4 +195,4 @@ onUnmounted(() => http.cancelAllRequests())
 - **分包**：见各应用 `vite.config.ts` 的 `manualChunks`。PC 产出 `element-plus` / `vue-i18n` / `vue-vendor` / `utils`，H5 产出 `vant` / `vconsole` / `vue-i18n` / `vue-vendor` / `utils`。匹配只作用于「最后一个 `node_modules/` 之后」的包路径（仓库目录名含 `vue`，直接匹配绝对路径会把所有依赖吸进 `vue-vendor`），且更具体的判断排在 `vue` 之前。未列出的三方库（如 `echarts`）交给 Rollup 自动归入按需加载的路由 chunk
 - **压缩**：Gzip + Brotli 双格式（nginx 预读压缩文件）
 - **懒加载**：所有页面路由组件均为动态导入
-- **按需加载**：在页面/组件内显式 `import` Element Plus 与 `@element-plus/icons-vue`；Vite `manualChunks` 将 `element-plus` 等打入独立 chunk
+- **按需加载**：在页面/组件内显式 `import` Element Plus 与 `@element-plus/icons-vue`；Vite 的 `build.rollupOptions.output.codeSplitting.groups` 将 `element-plus` 等打入独立 chunk
