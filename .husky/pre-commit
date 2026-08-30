@@ -1,7 +1,9 @@
-# 三个都是毫秒级的纯元数据校验，放在 pre-commit 不影响手感：
-# - check:refs        workspace / tsconfig paths / references 是否自洽
+# 四个都是毫秒级的纯元数据校验（只读文件、不跑 eslint / tsc），放在 pre-commit 不影响手感：
+# - check:refs        workspace / tsconfig paths / 根 references 是否双向自洽
 # - check:request-core 核心包是否被 UI 依赖污染
-# - check:workspace   新包是否漏了 typecheck 脚本、漏挂 vitest.workspace.ts
-#                     （这两个洞的失败表现是「静默通过」，必须在源头拦）
-pnpm run check:refs && pnpm run check:request-core && pnpm run check:workspace
+# - check:workspace   新包是否漏了 typecheck 脚本、漏挂根 vitest.config.ts 的 test.projects
+# - check:toolchain   Node / pnpm 版本是否只有一个真源（Dockerfile、workflow 不许另立）
+# 这几个洞的失败表现都是「静默通过」，必须在源头拦。
+# check:boundaries 要起 eslint（约 1.5s），留给 verify:full 与 CI，不进 pre-commit。
+pnpm run check:refs && pnpm run check:request-core && pnpm run check:workspace && pnpm run check:toolchain
 pnpm exec lint-staged

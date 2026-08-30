@@ -9,7 +9,7 @@
  *  2) 每个 workspace 的 package.json name 必须唯一
  *  3) 每个 workspace 的 package.json name 必须与 tsconfig.base.json paths 一致（apps/*、docs 除外；packages 下各顶层 workspace 包须有映射；paths 中 @vue3-monorepo/shared/* 子路径别名不参与此条）
  *  4) tsconfig.base.json paths 目标 src/index.ts 在磁盘上必须真实存在
- *  5) 根 tsconfig.json 的 references 路径目录必须存在
+ *  5) 根 tsconfig.json 的 references 路径目录必须存在，且每个 workspace 都被 references 覆盖
  *  6) 每个包的 "workspace:*" 依赖目标必须存在于当前 workspace
  */
 
@@ -117,12 +117,34 @@ for (const [alias, targets] of Object.entries(paths)) {
   }
 }
 
-// ---------- 5) 根 tsconfig.json references 目录存在 ----------
+// ---------- 5) 根 tsconfig.json references 与 workspace 双向自洽 ----------
+// 单向校验（只看 references 指向的目录在不在）拦不住真正常见的那一种：
+// 新加了包却忘了挂进 references。根 tsconfig 是 solution 配置，漏挂的包不会报错，
+// 只是从此不参与 `tsc -b` 与 IDE 的工程引用 —— 又是一个「失败表现为通过」的洞。
 const tsconfigRoot = JSON.parse(readFileSync(join(ROOT, 'tsconfig.json'), 'utf8').replace(/\/\/.*$/gm, ''))
-for (const ref of tsconfigRoot.references ?? []) {
-  const p = join(ROOT, ref.path)
-  if (!existsSync(p)) {
-    fail(`[check-refs] tsconfig.json references 路径 ${ref.path} 不存在`)
+const refPaths = (tsconfigRoot.references ?? []).map((ref) => ref.path)
+
+for (const refPath of refPaths) {
+  if (!existsSync(join(ROOT, refPath))) {
+    fail(`[check-refs] tsconfig.json references 路径 ${refPath} 不存在`)
+  }
+}
+
+// 归一化成 'apps/pc/pc-admin-template' 这样的相对目录，便于与 workspace 目录比对
+const normalizedRefs = new Set(
+  refPaths.map((refPath) => {
+    const withoutPrefix = refPath.replace(/^\.\//, '').replace(/\/+$/, '')
+    // 指向具体 tsconfig 文件的（如 xxx/tsconfig.node.json）取其所在目录
+    return withoutPrefix.endsWith('.json') ? dirname(withoutPrefix) : withoutPrefix
+  }),
+)
+
+for (const ws of workspaces) {
+  if (!normalizedRefs.has(ws.dir)) {
+    fail(
+      `[check-refs] workspace ${ws.dir} 不在根 tsconfig.json 的 references 里 —— ` +
+        `它不会参与 tsc -b 与 IDE 的工程引用，且不会有任何报错。补一条 { "path": "./${ws.dir}" }。`,
+    )
   }
 }
 

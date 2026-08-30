@@ -3,16 +3,18 @@ import globals from 'globals'
 import prettier from 'eslint-config-prettier/flat'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
-import importPlugin from 'eslint-plugin-import'
+import importX from 'eslint-plugin-import-x'
 import vueParser from 'vue-eslint-parser'
 
-const pcFromRoots = [
+// shared 内部按「端」划分的两组目录。规则按整组互斥，而不是只挡同类型目录：
+// components-pc 引 hooks-h5 同样会把 Vant 拖进 PC 产物，同类型两两配对挡不住这种。
+const pcRoots = [
   './packages/shared/src/components-pc',
   './packages/shared/src/directives-pc',
   './packages/shared/src/hooks-pc',
   './packages/shared/src/request-pc',
 ]
-const h5FromRoots = [
+const h5Roots = [
   './packages/shared/src/components-h5',
   './packages/shared/src/directives-h5',
   './packages/shared/src/hooks-h5',
@@ -84,7 +86,16 @@ export default tseslint.config(
     extends: [...tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        // 显式列出参与的 tsconfig，而不是用 projectService 自动发现：
+        // 每个包都有「源码工程 + 测试工程」两份（见各包 tsconfig.vitest.json），
+        // 而自动发现只认最近的那个 tsconfig.json——测试文件被它 exclude 掉之后，
+        // 会以 "was not found by the project service" 整片解析失败。
+        project: [
+          'apps/*/*/tsconfig.json',
+          'apps/*/*/tsconfig.vitest.json',
+          'packages/*/tsconfig.json',
+          'packages/*/tsconfig.vitest.json',
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -118,52 +129,50 @@ export default tseslint.config(
 
   // ---------------- 依赖边界：import/no-restricted-paths ----------------
   // 严禁端侧包互引、preset 反依赖 core、通用 hooks 依赖端侧 UI、共享包反依赖 apps、两个 app 互引源码
+  //
+  // ⚠️ resolver 是这一档的前提，不是可选项：`no-restricted-paths` 只对**能解析到磁盘文件**
+  // 的 import 生效，解析不到的一律跳过且不报错。默认的 node resolver 不认省略扩展名的
+  // `.ts`、不认 `.vue`、不认 tsconfig paths / workspace 包的 exports，于是下面每一条 zone
+  // 都会静默失效——2026-08-30 实测：components-pc 里 `import '../hooks-h5/useVantMessage'`
+  // 一条错都不报。接 eslint-import-resolver-typescript 后才真正拦得住。
+  // 这条依赖不是可选项，别当成「顺手装的插件」删掉。
+  //
+  // 用 eslint-plugin-import-x 而不是 eslint-plugin-import：后者的 peer 至今只到
+  // eslint ^9，在 ESLint 10 上直接 peer 冲突；import-x 是同一批规则的活跃维护分支。
+  // 规则前缀因此是 `import-x/`。
+  // 常驻反例见 scripts/check-import-boundaries.mjs（verify:full 会跑），resolver 一掉就红。
   {
-    plugins: { import: importPlugin },
+    plugins: { 'import-x': importX },
+    settings: {
+      'import-x/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          // .vue 不在 resolver 默认扩展名里，不加则组件间的跨端引用照样解析不到
+          extensions: ['.ts', '.tsx', '.d.ts', '.vue', '.js', '.jsx', '.json', '.node'],
+          // 各 app / 包自己的 tsconfig 才有 `@/` 之类的 paths；根 tsconfig 是 solution
+          // 配置，只有 references 没有 paths，单列它解析不到别名
+          project: ['tsconfig.base.json', 'apps/*/*/tsconfig.json', 'packages/*/tsconfig.json', 'docs/tsconfig.json'],
+          // 上面是多 project，resolver 默认会每次 lint 都提示「考虑合并成单个 tsconfig」。
+          // 本仓库就是 solution 结构，提示不适用，关掉以免淹没真正的报错。
+          noWarnOnMultipleProjects: true,
+        },
+      },
+    },
     rules: {
-      'import/no-restricted-paths': [
+      'import-x/no-restricted-paths': [
         'error',
         {
           zones: [
+            // 端侧整组互斥：pc 组任一目录都不许引 h5 组任一目录，反之亦然
             {
-              target: './packages/shared/src/components-pc',
-              from: './packages/shared/src/components-h5',
-              message: 'PC 包禁止引 H5 同类型包',
+              target: pcRoots,
+              from: h5Roots,
+              message: 'PC 端包禁止引 H5 端包（会把 Vant 等 H5 依赖拖进 PC 产物）',
             },
             {
-              target: './packages/shared/src/components-h5',
-              from: './packages/shared/src/components-pc',
-              message: 'H5 包禁止引 PC 同类型包',
-            },
-            {
-              target: './packages/shared/src/directives-pc',
-              from: './packages/shared/src/directives-h5',
-              message: 'PC 包禁止引 H5 同类型包',
-            },
-            {
-              target: './packages/shared/src/directives-h5',
-              from: './packages/shared/src/directives-pc',
-              message: 'H5 包禁止引 PC 同类型包',
-            },
-            {
-              target: './packages/shared/src/hooks-pc',
-              from: './packages/shared/src/hooks-h5',
-              message: 'PC 包禁止引 H5 同类型包',
-            },
-            {
-              target: './packages/shared/src/hooks-h5',
-              from: './packages/shared/src/hooks-pc',
-              message: 'H5 包禁止引 PC 同类型包',
-            },
-            {
-              target: './packages/shared/src/request-pc',
-              from: './packages/shared/src/request-h5',
-              message: 'PC 包禁止引 H5 同类型包',
-            },
-            {
-              target: './packages/shared/src/request-h5',
-              from: './packages/shared/src/request-pc',
-              message: 'H5 包禁止引 PC 同类型包',
+              target: h5Roots,
+              from: pcRoots,
+              message: 'H5 端包禁止引 PC 端包（会把 Element Plus 等 PC 依赖拖进 H5 产物）',
             },
             {
               target: './packages/request-core',
@@ -172,7 +181,7 @@ export default tseslint.config(
             },
             {
               target: './packages/shared/src/hooks-core',
-              from: [...pcFromRoots, ...h5FromRoots],
+              from: [...pcRoots, ...h5Roots],
               message: '通用 hooks 禁止依赖端侧 UI 包',
             },
             {
@@ -196,9 +205,13 @@ export default tseslint.config(
     },
   },
 
+  // 下面四档按「模块名」限制 import。作用域都写成 `**/*.{ts,vue}`：
+  // 这些目录今天确实只有 .ts，但只写 .ts 的话，哪天有人往里加一个 .vue，
+  // 规则会**静默地不覆盖它**——边界规则最不该出现的失效方式。
+  //
   // ---------------- shared 内 request-pc / request-h5 预设禁止直接 import axios ----------------
   {
-    files: ['packages/shared/src/request-pc/**/*.ts', 'packages/shared/src/request-h5/**/*.ts'],
+    files: ['packages/shared/src/request-pc/**/*.{ts,vue}', 'packages/shared/src/request-h5/**/*.{ts,vue}'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -216,7 +229,7 @@ export default tseslint.config(
 
   // ---------------- core request 禁止 import 任何 UI 库 ----------------
   {
-    files: ['packages/request-core/**/*.ts'],
+    files: ['packages/request-core/**/*.{ts,vue}'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -234,7 +247,7 @@ export default tseslint.config(
 
   // ---------------- js-bridge 禁止依赖 shared ----------------
   {
-    files: ['packages/js-bridge/**/*.ts'],
+    files: ['packages/js-bridge/**/*.{ts,vue}'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -252,7 +265,7 @@ export default tseslint.config(
 
   // ---------------- 通用 hooks 禁止 import 端侧 UI ----------------
   {
-    files: ['packages/shared/src/hooks-core/**/*.ts'],
+    files: ['packages/shared/src/hooks-core/**/*.{ts,vue}'],
     rules: {
       'no-restricted-imports': [
         'error',

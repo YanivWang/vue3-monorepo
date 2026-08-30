@@ -2,7 +2,7 @@
 // @ts-check
 
 /**
- * check-workspace-scripts: 堵住「门禁静默跳过」的两个洞
+ * check-workspace-scripts: 堵住「门禁静默跳过」的三个洞
  *
  * ## 为什么需要它
  *
@@ -11,9 +11,12 @@
  *    门禁会安安静静地不检查它，输出里连一行提示都没有。
  * 2. 根 `vitest.config.ts` 的 `test.projects` 是一份**显式清单**。不在清单里的包，
  *    `pnpm test` 不会发现它的测试文件，同样没有任何报错——测试写了等于没写。
+ * 3. 各包主 tsconfig 把 `*.spec.ts` 排除在外（源码工程不该拿到 Node 全局），
+ *    测试文件改由 `tsconfig.vitest.json` 负责。少了那份配置、或 typecheck 脚本没跑它，
+ *    测试代码就一行类型都不检查——还是不报错。
  *
- * 这两个洞的共性是「失败时表现为通过」，比直接报错危险得多。本脚本把它们变成
- * 显式失败：新增包时要么补上脚本/清单，要么在这里被拦住。
+ * 三个洞的共性是「失败时表现为通过」，比直接报错危险得多。本脚本把它们变成
+ * 显式失败：新增包时要么补上脚本/清单/配置，要么在这里被拦住。
  *
  * ## 校验项（任一失败即 exit 1）
  *
@@ -21,6 +24,11 @@
  *  2) 含 *.spec.ts / *.test.ts 的包必须声明 `test` 脚本
  *  3) 含测试文件的包必须出现在 vitest.config.ts 的 test.projects 里
  *  4) test.projects 里列出的路径必须真实存在且是 workspace 包
+ *  5) 含测试文件的包必须有 tsconfig.vitest.json，且 typecheck 脚本真的跑它
+ *
+ * 第 5 条同样是在堵静默洞：各包主 tsconfig 把 *.spec.ts 排除在外（源码工程不该拿到
+ * Node 全局），测试文件因此只由 tsconfig.vitest.json 负责。少了它、或者有文件但
+ * typecheck 脚本没跑，测试代码就一行类型都不检查，而且不会有任何报错。
  */
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
@@ -120,6 +128,19 @@ for (const ws of workspaces) {
     fail(
       `${label} 有测试文件，但不在 vitest.config.ts 的 test.projects 里 —— ` +
         `\`pnpm test\` 根本不会跑它，且不会报错。把 './${ws.dir}' 加进去。`,
+    )
+  }
+
+  const vitestTsconfig = join(ws.path, 'tsconfig.vitest.json')
+  if (!existsSync(vitestTsconfig)) {
+    fail(
+      `${label} 有测试文件但缺少 tsconfig.vitest.json。主 tsconfig 把 *.spec.ts 排除在外了，` +
+        `没有这份配置，测试代码不会被任何工程做类型检查（而且不报错）。照抄同类包的那一份即可。`,
+    )
+  } else if (!String(scripts.typecheck ?? '').includes('tsconfig.vitest.json')) {
+    fail(
+      `${label} 有 tsconfig.vitest.json，但 typecheck 脚本没跑它：${JSON.stringify(scripts.typecheck)}。` +
+        `补成 "... -p tsconfig.json && ... -p tsconfig.vitest.json"。`,
     )
   }
 }

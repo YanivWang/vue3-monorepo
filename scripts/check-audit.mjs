@@ -45,7 +45,8 @@ if (process.env.SKIP_AUDIT === '1') {
 }
 
 // ── 跑 pnpm audit ────────────────────────────────────────────────────
-let raw = ''
+/** @type {string} */
+let raw
 try {
   raw = execFileSync('pnpm', ['audit', '--audit-level', 'high', '--registry', REGISTRY, '--json'], {
     cwd: resolve(scriptDir, '..'),
