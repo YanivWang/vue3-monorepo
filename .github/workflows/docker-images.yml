@@ -54,15 +54,15 @@ jobs:
         image: [admin, h5, docs]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       # 只构建、不推送：这里要回答的是「还能不能 build 出来」，
       # 推送镜像属于发布流程，应该由带凭据的独立工作流负责。
       - name: Build ${{ matrix.image }} image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: docker/images/${{ matrix.image }}/Dockerfile
