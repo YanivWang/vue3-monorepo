@@ -30,16 +30,21 @@ export default defineConfig({
       // 只统计真正参与运行时的源码：构建脚本、mock、类型声明、入口 barrel 不计入
       include: ['apps/*/*/src/**/*.{ts,vue}', 'packages/*/src/**/*.{ts,vue}'],
       exclude: ['**/*.spec.ts', '**/*.test.ts', '**/*.d.ts', '**/types/**', '**/mock/**', '**/index.ts'],
-      // 2026-08-29 补完 shared/utils 单测后实测（vitest 3 口径）：
-      //   stmts 18.89 / branch 79.26 / funcs 52.73 / lines 18.89
-      // 向下取整作为阈值，只上不下。行覆盖率仍被大量未测的 .vue 视图拖着，
-      // 但函数与分支覆盖已经有实际约束力。补了测试就跑 pnpm run test:coverage
-      // 看新水位，再把下面的数字往上抬。
+      // 2026-08-30 升级到 vitest 4 后实测：
+      //   stmts 12.34 / branch 10.15 / funcs 10.58 / lines 12.94
+      //
+      // ⚠️ 这组数比 vitest 3 时代（18.89 / 79.26 / 52.73 / 18.89）低很多，但**测试一条没少**
+      // （105 个用例全绿）。变的是量法：vitest 3 的 v8 provider 对「从未被加载过的文件」
+      // 只能报 0% 行 + 100% 分支/函数——那 79% 的分支覆盖率是虚的。vitest 4 换成
+      // ast-v8-to-istanbul，未加载文件的分支与函数被如实计为 0，数字才第一次可信。
+      //
+      // 所以这不是放宽阈值，是换了尺子后重新取水位。仍然是棘轮：只上不下，
+      // 补了测试就跑 pnpm run test:coverage 看新水位再往上抬。
       thresholds: {
-        lines: 18,
-        statements: 18,
-        functions: 52,
-        branches: 79,
+        lines: 12,
+        statements: 12,
+        functions: 10,
+        branches: 10,
       },
     },
   },

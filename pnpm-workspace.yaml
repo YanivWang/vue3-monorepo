@@ -23,82 +23,154 @@ allowBuilds:
   core-js: false
   # 有预编译产物；不跑构建脚本时 chokidar 回落到轮询，仅影响 dev 体验
   '@parcel/watcher': false
+  # eslint-import-resolver-typescript 的原生解析器。它的 postinstall（napi-postinstall）
+  # 只是给「optionalDependencies 装不对平台包」的包管理器兜底；pnpm 走 os/cpu 字段能
+  # 直接装对 @unrs/resolver-binding-*，本仓库也是 pnpm-only（preinstall 挂了 only-allow）。
+  # 实测不跑该脚本，resolver 照常工作。
+  # 注意必须显式写一条：pnpm 11 对「有构建脚本但未表态」的依赖会以 ERR_PNPM_IGNORED_BUILDS
+  # 非零退出，CI 的 `pnpm install --frozen-lockfile` 会直接红。
+  unrs-resolver: false
 
 # ---------- catalog（全仓锁版本，单点维护） ----------
 # 各包在 package.json 里用 "vue": "catalog:" 引用，版本以此处为准。
+# 基线：跟随各生态的**当前稳定大版本**；刻意落后的只有下面写了理由的那几条。
 catalog:
   # ---------- 运行时（两端共享） ----------
-  vue: ^3.4.31
-  vue-router: ^4.3.3
-  pinia: ^2.1.7
-  pinia-plugin-persistedstate: ^3.2.3
-  # 下限锁在 1.18.0：1.18.0 以下有 7 条 high 级公告（含 config.proxy 的
-  # 原型污染 MITM），axios 是生产依赖，不接受基线豁免
-  axios: ^1.18.0
-  vue-i18n: ^9.14.4
-  '@vueuse/core': ^10.11.0
-  dayjs: ^1.11.11
-  lodash-es: ^4.17.21
-  js-cookie: ^3.0.5
+  vue: ^3.5.42
+  vue-router: ^5.3.0
+  pinia: ^4.0.3
+  pinia-plugin-persistedstate: ^4.7.1
+  axios: ^1.20.0
+  vue-i18n: ^11.4.10
+  '@vueuse/core': ^14.4.0
+  dayjs: ^1.11.23
+  lodash-es: ^4.18.1
+  js-cookie: ^3.0.8
   nprogress: ^0.2.0
-  echarts: ^6.0.0
-  vue-echarts: ^8.0.1
-  web-vitals: ^5.2.0
+  echarts: ^6.1.0
+  vue-echarts: ^8.2.0
+  web-vitals: ^6.2.1
   # ---------- 构建工具 ----------
-  vite: ^5.3.3
-  typescript: ~5.5.3
-  vue-tsc: ^2.0.26
-  '@vitejs/plugin-vue': ^5.0.5
-  vite-tsconfig-paths: ^5.0.0
-  sass: ^1.77.6
+  vite: ^8.2.2
+  # 刻意不上 TypeScript 7：typescript-eslint 8.x（唯一的稳定线，尚无 v9）的 peer 是
+  # `typescript >=4.8.4 <6.1.0`，装 TS 7 会让**类型感知 lint 整档失效**。
+  # TS 7 是 Go 重写的原生编译器，工具链还没跟上，等 typescript-eslint 支持后再动。
+  # 用 ~ 锁小版本：编译器的 minor 会引入新报错，升级要走 PR 而不是靠 ^ 悄悄带上来。
+  typescript: ~6.0.3
+  vue-tsc: ^3.3.11
+  '@vitejs/plugin-vue': ^6.0.8
+  sass: ^1.103.1
   # ---------- PC UI（Element Plus 生态） ----------
-  element-plus: ^2.7.6
-  '@element-plus/icons-vue': ^2.3.1
+  element-plus: ^2.14.5
+  '@element-plus/icons-vue': ^2.3.2
   # ---------- H5 UI（Vant 4 生态） ----------
-  vant: ^4.9.0
-  postcss-mobile-forever: ^4.0.0
-  vconsole: ^3.15.0
+  # 精确锁 4.10.0：上游 4.10.1 是一次**发布事故**，package.json 里把
+  # `@vant/use` / `@vant/popperjs` 留成了 `workspace:^`，在 vant 自己的 monorepo
+  # 之外根本装不上（ERR_PNPM_WORKSPACE_PKG_NOT_FOUND）。等上游发出修好的版本再放开 ^。
+  vant: 4.10.0
+  postcss-mobile-forever: ^5.0.0
+  vconsole: ^3.15.1
   # ---------- mock / 压缩 / 可视化 ----------
-  vite-plugin-mock: ^3.0.2
+  # 用 vite-plugin-fake-server 而不是 vite-plugin-mock：后者把 mockjs 列为 peer，
+  # 而 mockjs 早已停更、带一条**没有修复版本**的原型污染公告（GHSA-mh8j-9jvh-gjf6）。
+  # 本仓库的 mock 文件从来没用过 mockjs 的模板语法，换掉零成本；
+  # fake-server 在维护中，依赖也更新（chokidar 5 / esbuild 0.27 / path-to-regexp 8）。
+  vite-plugin-fake-server: ^2.2.4
   vite-plugin-compression2: ^2.5.3
-  # v7 起依赖 rollup@4.60+ 且要求 Node >=22。基线已提到 Node 22（见 .nvmrc / engines），
-  # 这条限制不再成立，保持 v6 只是没做升级验证——可作为独立改动上 v7。
-  rollup-plugin-visualizer: ^6.0.11
+  rollup-plugin-visualizer: ^7.1.1
   # ---------- 工程化 ----------
-  eslint: ^9.39.4
-  '@eslint/js': ^9.39.4
-  typescript-eslint: ^8.59.0
-  eslint-plugin-vue: ^10.9.0
-  eslint-plugin-import: ^2.32.0
+  eslint: ^10.9.1
+  '@eslint/js': ^10.0.1
+  typescript-eslint: ^8.68.0
+  eslint-plugin-vue: ^10.10.0
+  # 用 import-x 而不是 eslint-plugin-import：后者的 peer 至今只到 eslint ^9，
+  # 上 ESLint 10 会直接 peer 冲突。import-x 是同一批规则的活跃维护分支，
+  # 面向 flat config + TypeScript，也是 eslint-import-resolver-typescript 明确支持的对象。
+  eslint-plugin-import-x: ^4.17.1
+  # 没有它，import-x 解析不了 .ts/.vue/tsconfig paths，import-x/no-restricted-paths
+  # 会把「解析不到的 import」直接跳过——架构边界规则于是全部静默失效
+  eslint-import-resolver-typescript: ^4.4.5
   eslint-config-prettier: ^10.1.8
-  vue-eslint-parser: ^10.4.0
-  globals: ^17.5.0
-  prettier: ^3.8.3
-  stylelint: ^17.9.0
-  stylelint-config-html: ^1.1.0
-  stylelint-config-recess-order: ^7.7.0
+  vue-eslint-parser: ^10.4.1
+  globals: ^17.11.0
+  prettier: ^3.9.6
+  stylelint: ^17.14.1
+  stylelint-config-html: ^2.0.0
+  stylelint-config-recess-order: ^7.8.0
   stylelint-config-standard: ^40.0.0
   stylelint-config-standard-scss: ^17.0.0
   stylelint-order: ^8.1.1
-  stylelint-scss: ^6.14.0
-  postcss-html: ^1.8.1
-  '@commitlint/cli': ^20.5.0
-  '@commitlint/config-conventional': ^20.5.0
-  '@commitlint/types': ^20.5.0
+  stylelint-scss: ^7.2.0
+  postcss-html: ^2.0.0
+  '@commitlint/cli': ^21.2.2
+  '@commitlint/config-conventional': ^21.2.2
+  '@commitlint/types': ^21.2.0
   husky: ^9.1.7
-  lint-staged: ^16.4.0
+  lint-staged: ^17.4.1
   # ---------- 测试 ----------
-  vitest: ^3.2.6
-  '@vitest/coverage-v8': ^3.2.6
-  '@vue/test-utils': ^2.4.6
-  happy-dom: ^20.9.0
+  vitest: ^4.1.11
+  '@vitest/coverage-v8': ^4.1.11
+  '@vue/test-utils': ^2.5.0
+  happy-dom: ^20.12.0
   # ---------- 文档站 ----------
+  # VitePress 2 目前只有 alpha（2.0.0-alpha.x），稳定线仍是 1.6.x
   vitepress: ^1.6.4
   # ---------- OpenAPI ----------
   openapi-typescript: ^7.13.0
-  tsx: ^4.21.0
+  tsx: ^4.23.12
+  # create-app.mjs 的交互式问答
+  prompts: ^2.4.2
   # ---------- 类型声明 ----------
-  '@types/node': ^20.14.9
+  # 跟 .nvmrc / engines 的 Node 大版本走（24 LTS），**不是**跟 npm 上的 latest 走：
+  # @types/node 的大版本对应 Node 运行时大版本，装 26 会让 24 里还不存在的 API
+  # 在类型上看起来可用。
+  '@types/node': ^24.13.3
   '@types/js-cookie': ^3.0.6
   '@types/lodash-es': ^4.17.12
   '@types/nprogress': ^0.2.3
+
+# ---------- 传递依赖的安全修复（overrides） ----------
+# 这些包都不是本仓库直接依赖，而是 eslint / stylelint / commitlint / sass 等的
+# 下游。上游还没把 range 抬上去，但补丁版本已经发布——用 overrides 顶上去，
+# 是让 `pnpm run check:audit` 真正归零的唯一手段（把它们写进基线只是把问题藏起来）。
+# 每加一条都写清楚「为什么」，删的时候才知道能不能删：上游 range 覆盖到补丁版本后，
+# 对应条目就可以移除，`check:audit` 会继续盯着。
+overrides:
+  # GHSA-3jxr / mh99 / rgw5-rvv9-x895：多条 DoS（指数展开、无界数组、OOM）
+  # minimatch 各大版本各带一条依赖线，按 major 分别顶到已修复版本
+  brace-expansion@1: ^1.1.18
+  brace-expansion@2: ^2.1.4
+  brace-expansion@>=3: ^5.0.9
+  # GHSA-52cp / 5p4m：YAML merge key 与 !!omap 的二次方 CPU 消耗
+  js-yaml@4: ^4.3.2
+  # GHSA-4c8g / 7p8r / q3j6 / v2hh / v39h：一连串 host confusion / 路径穿越
+  fast-uri@3: ^3.1.6
+  # GHSA-v56q / xvcm：List 32 位 trie 溢出与 Map/Set 哈希碰撞 DoS（sass 的依赖）
+  immutable@5: ^5.1.9
+  # GHSA-r28c：sourceMappingURL 自动加载导致任意 .map 文件泄露
+  postcss@8: ^8.5.26
+  # GHSA-fx2h：Windows 备用路径绕过 server.fs.deny。
+  # 只顶文档站这一条线：vitepress 1.6.x 的 dep range 是 ^5.4.14，而修复只在 6.4.3+。
+  # 应用侧已经是 Vite 8，不受影响。
+  vitepress>vite: ^6.4.3
+
+# ---------- peer 依赖规则 ----------
+peerDependencyRules:
+  ignoreMissing:
+    # eslint-import-resolver-typescript 同时声明了 eslint-plugin-import 与
+    # eslint-plugin-import-x 两个 peer（用哪个由使用方决定）。本仓库用 import-x，
+    # 不声明这条的话 auto-install-peers 会把已经不用的 eslint-plugin-import 整棵树装回来。
+    - eslint-plugin-import
+
+# ---------- 供应链：新发布的版本先冷却一段时间再用 ----------
+# pnpm 11 内建能力，默认就是 1440（24 小时）。这里显式写出来，是因为它属于
+# 「不写也在生效、但没人知道它在」的设置：被投毒的包往往在发布后数小时内就被撤下，
+# 冷却期能把大部分这类事件挡在安装之外。
+minimumReleaseAge: 1440
+# 下面这份清单由 pnpm 在安装时自动追加：某个版本还没过冷却期、但本次解析确实用了它。
+# 它是**审计线索**，不是配置——review 时看到有新行，就意味着这次升级引入了一个
+# 发布不足 24 小时的版本，值得多看一眼。
+# 想让这种情况从「记录一笔」变成「必须显式确认」，把 minimumReleaseAgeStrict 设为 true。
+minimumReleaseAgeExclude:
+  - happy-dom@20.12.0
+  - vue-echarts@8.2.0

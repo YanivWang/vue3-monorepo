@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, useTemplateRef } from 'vue'
 import { ElCard, ElCol, ElRow } from 'element-plus'
 import { useECharts } from '@/composables/useECharts'
 
-const { chartRef: lineRef, setOption: setLineOption } = useECharts()
-const { chartRef: barRef, setOption: setBarOption } = useECharts()
-const { chartRef: pieRef, setOption: setPieOption } = useECharts()
-const { chartRef: radarRef, setOption: setRadarOption } = useECharts()
+// Vue 3.5+ 的模板引用写法：useTemplateRef('名字') 对应模板里的 ref="名字"。
+// 不用「声明同名 ref 让它被隐式填充」那套——那种写法下变量在 script 里没有任何
+// 显式使用，vue-tsc 3 会按 noUnusedLocals 判它未使用。
+const lineEl = useTemplateRef<HTMLElement>('lineEl')
+const barEl = useTemplateRef<HTMLElement>('barEl')
+const pieEl = useTemplateRef<HTMLElement>('pieEl')
+const radarEl = useTemplateRef<HTMLElement>('radarEl')
+
+const { setOption: setLineOption } = useECharts(lineEl)
+const { setOption: setBarOption } = useECharts(barEl)
+const { setOption: setPieOption } = useECharts(pieEl)
+const { setOption: setRadarOption } = useECharts(radarEl)
 
 onMounted(async () => {
-  // nextTick 确保 useECharts 内部的 onMounted 已全部执行完毕，DOM 尺寸稳定
+  // nextTick 确保容器元素已挂载、尺寸稳定
   await nextTick()
 
   // ── 折线图 ────────────────────────────────────────────────
@@ -127,7 +135,7 @@ onMounted(async () => {
           <template #header>
             <span>折线图 — 访问趋势</span>
           </template>
-          <div ref="lineRef" class="chart" />
+          <div ref="lineEl" class="chart" />
         </el-card>
       </el-col>
 
@@ -137,7 +145,7 @@ onMounted(async () => {
           <template #header>
             <span>柱状图 — 周流量分布</span>
           </template>
-          <div ref="barRef" class="chart" />
+          <div ref="barEl" class="chart" />
         </el-card>
       </el-col>
 
@@ -147,7 +155,7 @@ onMounted(async () => {
           <template #header>
             <span>饼图 — 流量来源</span>
           </template>
-          <div ref="pieRef" class="chart" />
+          <div ref="pieEl" class="chart" />
         </el-card>
       </el-col>
 
@@ -157,7 +165,7 @@ onMounted(async () => {
           <template #header>
             <span>雷达图 — 部门预算对比</span>
           </template>
-          <div ref="radarRef" class="chart" />
+          <div ref="radarEl" class="chart" />
         </el-card>
       </el-col>
     </el-row>

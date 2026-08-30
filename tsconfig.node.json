@@ -10,7 +10,6 @@
   "include": [
     "vite.config.ts",
     "vitest.config.ts",
-    "vitest.workspace.ts",
     "commitlint.config.ts",
     "eslint.config.mjs",
     "prettier.config.mjs",

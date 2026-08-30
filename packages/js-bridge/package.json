@@ -17,14 +17,13 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.vitest.json",
     "test": "vitest run -c vitest.config.ts",
     "test:watch": "vitest -c vitest.config.ts"
   },
   "devDependencies": {
     "typescript": "catalog:",
     "vite": "catalog:",
-    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:",
     "happy-dom": "catalog:"
   }

@@ -18,24 +18,28 @@ describe('isSuccessPayload', () => {
 })
 
 describe('retryDelay', () => {
-  it('按 2^(n-1) 指数退避，且首次重试就等一个 baseDelay', async () => {
+  // 用 vitest 的假定时器推进时间，而不是 spy 掉全局 setTimeout：
+  // 后者要跟 DOM / Node 两套 setTimeout 类型声明较劲，而且测的是「调用参数」
+  // 而非「真的等了这么久」。这里断言的是「差 1ms 不 resolve、到点才 resolve」。
+  const cases = [
+    { times: 1, baseDelay: 1000, expected: 1000 },
+    { times: 2, baseDelay: 1000, expected: 2000 },
+    { times: 3, baseDelay: 1000, expected: 4000 },
+    { times: 1, baseDelay: 250, expected: 250 },
+  ]
+
+  it.each(cases)('第 $times 次重试、base=$baseDelay 时等 $expected ms', async ({ times, baseDelay, expected }) => {
     vi.useFakeTimers()
     try {
-      const seen: number[] = []
-      vi.spyOn(globalThis, 'setTimeout').mockImplementation((fn: () => void, ms?: number) => {
-        seen.push(ms ?? 0)
-        fn()
-        return 0 as unknown as ReturnType<typeof setTimeout>
-      })
+      const settled = vi.fn()
+      void retryDelay(times, baseDelay).then(settled)
 
-      await retryDelay(1, 1000)
-      await retryDelay(2, 1000)
-      await retryDelay(3, 1000)
-      await retryDelay(1, 250)
+      await vi.advanceTimersByTimeAsync(expected - 1)
+      expect(settled).not.toHaveBeenCalled()
 
-      expect(seen).toEqual([1000, 2000, 4000, 250])
+      await vi.advanceTimersByTimeAsync(1)
+      expect(settled).toHaveBeenCalledOnce()
     } finally {
-      vi.restoreAllMocks()
       vi.useRealTimers()
     }
   })

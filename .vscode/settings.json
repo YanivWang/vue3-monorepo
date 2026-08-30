@@ -51,8 +51,10 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "non-relative",
 
-  // ── Volar（Vue 官方 IDE 支持）────────────────────────────────
-  "vue.server.hybridMode": true,
+  // ── Volar / Vue - Official ───────────────────────────────────
+  // 这里刻意不配 `vue.server.hybridMode`：那是 Volar 2.x 的过渡开关，
+  // Volar 3（vue-tsc 3 同源）之后 hybrid 已是唯一模式，选项本身被移除了。
+  // 留着一个已不存在的键，只会让人以为它还在起作用。
 
   // ── 搜索/文件排除 ─────────────────────────────────────────────
   "search.exclude": {
@@ -71,8 +73,9 @@
   "git.enableSmartCommit": true,
   "git.autofetch": true,
 
-  // ── 路径补全（配合 @/ 别名）──────────────────────────────────
-  "path-intellisense.mappings": {
-    "@": "${workspaceFolder}/src"
-  }
+  // ── 路径补全 ─────────────────────────────────────────────────
+  // 不给 @ 配 mapping：本仓库的 @ 是**每个 app 各自的** src（见各 app vite.config.ts
+  // 与 tsconfig 的 paths），仓库根下并没有 src。写成 ${workspaceFolder}/src 只会补出
+  // 一堆不存在的路径。跨包引用请走 @vue3-monorepo/* —— 那条由 TS 的 paths 提供补全。
+  "path-intellisense.mappings": {}
 }

@@ -92,8 +92,8 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "lint": "eslint src --ext .ts,.vue",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json && vue-tsc --noEmit -p tsconfig.vitest.json",
+    "lint": "eslint src",
     "test": "vitest run -c vitest.config.ts",
     "test:watch": "vitest -c vitest.config.ts"
   },
@@ -141,7 +141,6 @@
     "typescript": "catalog:",
     "vant": "catalog:",
     "vite": "catalog:",
-    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:",
     "vconsole": "catalog:",
     "vue": "catalog:",

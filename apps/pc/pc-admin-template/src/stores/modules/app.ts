@@ -124,7 +124,8 @@ export const useAppStore = defineStore(
   },
   {
     persist: {
-      paths: ['sidebarCollapsed', 'themeMode', 'brand', 'language'],
+      // v4 起 `paths` 改名为 `pick`（另有对称的 `omit`），语义不变
+      pick: ['sidebarCollapsed', 'themeMode', 'brand', 'language'],
     },
   },
 )

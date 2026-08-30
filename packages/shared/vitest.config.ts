@@ -1,9 +1,11 @@
 import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [vue(), tsconfigPaths({ loose: true })],
+  plugins: [vue()],
+  // Vite 8 起原生解析 tsconfig 的 paths，vite-tsconfig-paths 插件已无必要。
+  // 别名因此只有 tsconfig 一个真源：@/* 与 @vue3-monorepo/* 都从那里来。
+  resolve: { tsconfigPaths: true },
   test: {
     name: 'shared',
     environment: 'happy-dom',

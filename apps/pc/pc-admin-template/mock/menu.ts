@@ -1,4 +1,4 @@
-import type { MockMethod } from 'vite-plugin-mock'
+import { defineFakeRoute } from 'vite-plugin-fake-server'
 import type { MenuRoute } from '@vue3-monorepo/shared/types'
 
 /** admin 拥有全部菜单 */
@@ -228,12 +228,12 @@ const editorMenus: MenuRoute[] = [
   },
 ]
 
-export default [
+export default defineFakeRoute([
   {
     url: '/api/menu/routes',
     method: 'get',
-    response: ({ headers }: { headers: Record<string, string> }) => {
-      const auth = headers['authorization'] || ''
+    response: ({ headers }) => {
+      const auth = headers.authorization ?? ''
       const isAdmin = !auth.includes('-2')
       return {
         code: 200,
@@ -242,4 +242,4 @@ export default [
       }
     },
   },
-] as MockMethod[]
+])

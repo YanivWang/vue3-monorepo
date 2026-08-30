@@ -1,0 +1,31 @@
+// 测试代码的类型检查工程（与 create-vue 脚手架同名同职责）。
+//
+// 为什么要单独一份：源码和测试的运行环境不同。
+//   - 源码是浏览器 / 库代码，主工程的 `types` 刻意收紧，不该拿到 Node 全局；
+//   - 测试跑在 Node 上的 vitest 里，用 `process`、`node:*` 是正当的。
+// 合成一个工程就只能二选一：要么测试报「找不到 process」，要么源码悄悄用上 Node API
+// 也没人拦。分开之后两边各自成立，`typecheck` 脚本把两个工程都跑一遍。
+//
+// include 是「主工程的全部 + 测试文件」，而不是只有测试文件：
+// `declare module` 增强（vue-router 的 RouteMeta、pinia 插件的 persist 等）只在
+// **声明它的文件进入该工程**时才生效。只收测试文件的话，测试里 import 到的 store
+// 会突然报「persist 不存在」「meta.title 是 unknown」——排查起来极其费时。
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "types": ["vite/client", "element-plus/global", "node"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "mock/**/*.ts",
+    "scripts/**/*.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ],
+  "exclude": ["node_modules", "dist", "coverage"]
+}

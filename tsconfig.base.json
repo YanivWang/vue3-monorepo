@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    // 与各 tsconfig 的 lib（ES2023）保持同一档：target 只影响「哪些语法算合法、
+    // 哪些内置 API 有类型」，实际降级由 Vite 按 build.target 处理。
+    // 之前 target ES2020 配 lib ES2023 是自相矛盾的：类型上给了 ES2023 的 API，
+    // 语法上又按 ES2020 校验。
+    "target": "ES2023",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,

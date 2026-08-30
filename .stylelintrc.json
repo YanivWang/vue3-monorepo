@@ -8,7 +8,6 @@
   "plugins": ["stylelint-scss", "stylelint-order"],
   "rules": {
     "no-descending-specificity": null,
-    "scss/at-import-partial-extension": null,
     "scss/no-global-function-names": null,
     "import-notation": null,
     "alpha-value-notation": null,

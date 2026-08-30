@@ -1,4 +1,4 @@
-import type { MockMethod } from 'vite-plugin-mock'
+import { defineFakeRoute } from 'vite-plugin-fake-server'
 
 const userList = [
   {
@@ -25,12 +25,14 @@ const userList = [
   },
 ]
 
-export default [
+export default defineFakeRoute([
   {
     url: '/api/auth/login',
     method: 'post',
-    response: ({ body }: { body: { username: string; password: string } }) => {
-      const user = userList.find((u) => u.username === body.username && u.password === body.password)
+    // 请求体来自网络，在边界处断言一次即可
+    response: ({ body }) => {
+      const { username, password } = body as { username: string; password: string }
+      const user = userList.find((u) => u.username === username && u.password === password)
       if (!user) {
         return { code: 401, message: '用户名或密码错误', data: null }
       }
@@ -54,8 +56,8 @@ export default [
   {
     url: '/api/user/info',
     method: 'get',
-    response: ({ headers }: { headers: Record<string, string> }) => {
-      const auth = headers['authorization'] || ''
+    response: ({ headers }) => {
+      const auth = headers.authorization ?? ''
       const userId = auth.includes('-2') ? 2 : 1
       // userList 是模块级非空字面量，兜底项必然存在（noUncheckedIndexedAccess 下需显式表达）
       const user = userList.find((u) => u.id === userId) ?? userList[0]!
@@ -66,9 +68,10 @@ export default [
   {
     url: '/api/auth/refresh',
     method: 'post',
-    response: ({ body }: { body: { refreshToken: string } }) => {
-      if (body.refreshToken?.startsWith('mock-refresh-token-')) {
-        const userId = body.refreshToken.replace('mock-refresh-token-', '')
+    response: ({ body }) => {
+      const { refreshToken } = body as { refreshToken?: string }
+      if (refreshToken?.startsWith('mock-refresh-token-')) {
+        const userId = refreshToken.replace('mock-refresh-token-', '')
         return {
           code: 200,
           message: 'success',
@@ -88,4 +91,4 @@ export default [
     method: 'put',
     response: () => ({ code: 200, message: '密码修改成功', data: null }),
   },
-] as MockMethod[]
+])

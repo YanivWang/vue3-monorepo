@@ -1,4 +1,4 @@
-import type { MockMethod } from 'vite-plugin-mock'
+import type { FakeRoute } from 'vite-plugin-fake-server'
 import { mockOnlyBrowser, ok, fail } from './_utils'
 
 interface ListQuery {
@@ -68,24 +68,28 @@ export default mockOnlyBrowser([
   {
     url: '/api/list',
     method: 'get',
-    response: ({ query }: { query: ListQuery }) => {
-      const pageNum = Number(query?.pageNum ?? 1)
-      const pageSize = Number(query?.pageSize ?? 10)
-      const filtered = filterItems(query)
+    // query / body / params 在 ProcessedRequest 里都是松散类型（值来自网络），
+    // 在边界处断言一次即可，下面就能按业务形状用
+    response: ({ query }) => {
+      const q = query as ListQuery
+      const pageNum = Number(q.pageNum ?? 1)
+      const pageSize = Number(q.pageSize ?? 10)
+      const filtered = filterItems(q)
       return ok(paginate(filtered, pageNum, pageSize))
     },
   },
   {
     url: '/api/list',
     method: 'post',
-    response: ({ body }: { body: CreateBody }) => {
-      if (!body?.title?.trim()) return fail(400, '标题不能为空')
+    response: ({ body }) => {
+      const input = body as CreateBody
+      if (!input.title?.trim()) return fail(400, '标题不能为空')
       const id = nextId++
       const item: DemoItem = {
         id,
-        title: body.title.trim(),
-        summary: (body.summary ?? '').trim() || '—',
-        cover: body.cover?.trim() || `https://picsum.photos/seed/h5-new-${id}/200/120`,
+        title: input.title.trim(),
+        summary: (input.summary ?? '').trim() || '—',
+        cover: input.cover?.trim() || `https://picsum.photos/seed/h5-new-${id}/200/120`,
         createdAt: new Date().toISOString(),
       }
       store.unshift(item)
@@ -95,8 +99,8 @@ export default mockOnlyBrowser([
   {
     url: '/api/list/:id',
     method: 'get',
-    response: (opt: { query: ListQuery; params: { id: string } }) => {
-      const id = Number(opt.params?.id)
+    response: ({ params }) => {
+      const id = Number(params.id)
       const item = store.find((x) => x.id === id)
       if (!item) return fail(404, '记录不存在')
       return ok(item)
@@ -105,17 +109,17 @@ export default mockOnlyBrowser([
   {
     url: '/api/list/:id',
     method: 'put',
-    response: (opt: { body: UpdateBody; params: { id: string } }) => {
-      const id = Number(opt.params?.id)
+    response: ({ body, params }) => {
+      const id = Number(params.id)
       const idx = store.findIndex((x) => x.id === id)
       if (idx < 0) return fail(404, '记录不存在')
       const prev = store[idx]!
-      const body = opt.body ?? {}
+      const input = body as UpdateBody
       const next: DemoItem = {
         ...prev,
-        title: body.title?.trim() ?? prev.title,
-        summary: body.summary?.trim() ?? prev.summary,
-        cover: body.cover?.trim() || prev.cover,
+        title: input.title?.trim() ?? prev.title,
+        summary: input.summary?.trim() ?? prev.summary,
+        cover: input.cover?.trim() || prev.cover,
       }
       store[idx] = next
       return ok(next)
@@ -124,12 +128,12 @@ export default mockOnlyBrowser([
   {
     url: '/api/list/:id',
     method: 'delete',
-    response: (opt: { params: { id: string } }) => {
-      const id = Number(opt.params?.id)
+    response: ({ params }) => {
+      const id = Number(params.id)
       const idx = store.findIndex((x) => x.id === id)
       if (idx < 0) return fail(404, '记录不存在')
       store.splice(idx, 1)
       return ok({ id })
     },
   },
-] satisfies MockMethod[])
+] satisfies FakeRoute[])

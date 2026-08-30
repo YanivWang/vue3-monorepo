@@ -21,7 +21,7 @@ const smsForm = ref({ phone: '', code: '' })
 const smsGate = useSmsCodeGate(60)
 const smsRemaining = smsGate.remaining
 
-/** 与 `mock/user.ts` 一致；仅开发 + 启用 vite-plugin-mock 时展示 */
+/** 与 `mock/user.ts` 一致；仅开发 + 启用 vite-plugin-fake-server 时展示 */
 const showMockHint = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'
 
 const hostLabel = computed(() => {

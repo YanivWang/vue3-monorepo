@@ -6,10 +6,10 @@
   "description": "H5 移动端应用（Vant 4 + 多宿主 Bridge）",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
-    "build:dev": "vue-tsc --noEmit -p tsconfig.json && vite build --mode development",
+    "build": "pnpm run typecheck && vite build",
+    "build:dev": "pnpm run typecheck && vite build --mode development",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json && vue-tsc --noEmit -p tsconfig.vitest.json",
     "lint": "eslint \"src/**/*.{ts,vue}\" --max-warnings 0",
     "lint:fix": "eslint \"src/**/*.{ts,vue}\" --fix",
     "lint:style": "stylelint \"src/**/*.{scss,vue,css}\"",
@@ -46,8 +46,7 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-compression2": "catalog:",
-    "vite-plugin-mock": "catalog:",
-    "vite-tsconfig-paths": "catalog:",
+    "vite-plugin-fake-server": "catalog:",
     "vitest": "catalog:",
     "vue-tsc": "catalog:"
   }

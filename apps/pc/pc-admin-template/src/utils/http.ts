@@ -1,6 +1,6 @@
 import { createPcHttp } from '@vue3-monorepo/shared/request-pc'
 
-// DEV + mock：同源 /api，经 devServer 走 vite-plugin-mock；否则直连 VITE_API_BASE_URL（未起服务会报网络异常）
+// DEV + mock：同源 /api，经 devServer 走 vite-plugin-fake-server；否则直连 VITE_API_BASE_URL（未起服务会报网络异常）
 const baseURL = (() => {
   const useDevMock = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'
   const root = useDevMock ? '' : (import.meta.env.VITE_API_BASE_URL ?? '')

@@ -9,9 +9,6 @@
     "types": ["vite/client", "element-plus/global"],
     "noEmit": true
   },
-  "vueCompilerOptions": {
-    "target": 3.4
-  },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "mock/**/*.ts", "scripts/**/*.ts"],
-  "exclude": ["node_modules", "dist", "coverage"]
+  "exclude": ["node_modules", "dist", "coverage", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }
