@@ -1,9 +1,13 @@
 # 全仓质量门禁：PR 与 main/master 推送上跑一次 `verify:full`。
 #
-# 为什么是一个 job 跑全部：本仓库 `verify:full` 全量约 30s（引用检查 → 类型 →
-# lint → stylelint → prettier → 测试+覆盖率 → admin/h5/docs 三个构建）。拆成多
-# job 省下的墙钟时间还不如各自 `pnpm install` 的开销，反而让「哪一步红了」要
-# 跨 job 找。等它涨到分钟级再拆。
+# 为什么是一个 job 跑全部：本仓库 `verify:full` 全量约 45s（元数据检查 → 工具链
+# 一致性 → 依赖公告 → 主题产物 → 类型 → lint → 架构边界反例 → stylelint →
+# prettier → 测试+覆盖率 → admin/h5/docs 三个构建）。拆成多 job 省下的墙钟时间
+# 还不如各自 `pnpm install` 的开销，反而让「哪一步红了」要跨 job 找。
+# 等它涨到分钟级再拆。
+#
+# 注意 CI **不构建 docker 镜像**：镜像里的 Node / pnpm 版本由 check:toolchain
+# 与 .nvmrc / packageManager 对齐来保证（这正是镜像上次悄悄坏掉的原因）。
 #
 # 这个仓库在此之前只有文档站发布工作流，typecheck / 测试 / 架构边界规则全靠本地
 # 自觉——配置很完备，但没有任何东西在合并前强制执行它们。

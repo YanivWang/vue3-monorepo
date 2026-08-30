@@ -1,6 +1,16 @@
 # 依赖更新：catalog 把版本锁死在 pnpm-workspace.yaml 一处，锁得住漂移，
 # 但锁不住「一直旧下去」。dependabot 负责把升级变成可 review 的 PR，
 # 而 PR 会跑 ci.yml 的 verify:full——升级有没有把仓库跑挂，机器先告诉你。
+#
+# ⚠️ 这里**不再**整体 ignore major。之前配的是「所有依赖忽略 major，交给人主动发起」，
+# 听起来稳，实际结果是没有人会主动发起：一次盘点时 vite 落后 3 个大版本、
+# TypeScript 落后 1 个、pinia 落后 2 个、eslint 落后 1 个，而工具链那一半却是最新的
+# ——因为只有它们的 minor 一直在被机器人推。ignore major 不会让升级变安全，
+# 只会让它攒到「一次升一堆、谁也不敢合」的程度。
+#
+# 现在的做法：major 照样开 PR，但**单独分组**，与 minor/patch 的例行 PR 分开，
+# 让人一眼看出「这条要读 changelog」。破坏性变更由 CI（verify:full + Docker 镜像构建）
+# 与 review 一起兜，而不是靠不升级来回避。
 version: 2
 updates:
   - package-ecosystem: npm
@@ -10,31 +20,73 @@ updates:
       day: monday
       time: '09:00'
       timezone: Asia/Shanghai
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
     commit-message:
       # 与 commitlint 的 type-enum / scope-enum 对齐，否则 PR 的提交信息过不了门禁
       prefix: 'chore(deps)'
       prefix-development: 'chore(deps)'
     groups:
-      # 分组降噪：工程化工具链一起升，业务运行时依赖单独看
+      # ---- minor / patch：例行升级，可以攒成一个 PR 一起合 ----
       tooling:
+        update-types: ['minor', 'patch']
         patterns:
           - 'eslint*'
           - '@eslint/*'
           - 'typescript-eslint'
           - 'prettier'
           - 'stylelint*'
+          - 'postcss-html'
           - 'vitest'
           - '@vitest/*'
+          - 'happy-dom'
+          - '@vue/test-utils'
           - 'husky'
           - 'lint-staged'
           - '@commitlint/*'
       types:
+        update-types: ['minor', 'patch']
         patterns:
           - '@types/*'
+      runtime:
+        update-types: ['minor', 'patch']
+        patterns:
+          - 'vue'
+          - 'vue-router'
+          - 'pinia*'
+          - 'vue-i18n'
+          - '@vueuse/*'
+          - 'element-plus'
+          - '@element-plus/*'
+          - 'vant'
+          - 'axios'
+          - 'echarts'
+          - 'vue-echarts'
+          - 'dayjs'
+          - 'lodash-es'
+      build:
+        update-types: ['minor', 'patch']
+        patterns:
+          - 'vite'
+          - 'vite-*'
+          - '@vitejs/*'
+          - 'rollup-*'
+          - 'sass'
+          - 'typescript'
+          - 'vue-tsc'
+          - 'vitepress'
+      # ---- major：单独一组，看到就知道要读 changelog ----
+      major-updates:
+        update-types: ['major']
+        patterns:
+          - '*'
     ignore:
-      # 主版本升级往往含破坏性变更，交给人主动发起，不由机器人推
-      - dependency-name: '*'
+      # @types/node 的大版本对应 Node 运行时大版本，必须跟着 .nvmrc 走，
+      # 不能被机器人推到比运行时更新的大版本上（见 pnpm-workspace.yaml 的说明）。
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 的大版本由 typescript-eslint 的 peer 范围卡着（当前 <6.1.0），
+      # 机器人推上去只会让类型感知 lint 整档失效，解除条件写在 catalog 注释里。
+      - dependency-name: 'typescript'
         update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
@@ -43,9 +95,7 @@ updates:
       interval: monthly
     commit-message:
       prefix: 'ci'
-    ignore:
-      # 与上面 npm 一致：机器人只推 minor / patch，major 由人主动发起。
-      # actions 的 major 会改 inputs 与运行时（如 setup-node v4 → v7），
-      # 升级本身没问题，但值得有人看一眼 changelog 再动，而不是混在例行 PR 里。
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
+    groups:
+      actions:
+        patterns:
+          - '*'

@@ -1,0 +1,71 @@
+# 生产镜像构建校验：admin / h5 / docs 三个 Dockerfile 能不能真的 build 出来。
+#
+# 为什么单独一条工作流、而不是塞进 ci.yml：
+# 镜像里要完整 `pnpm install` 一遍再构建三次，比 verify:full 慢一个量级，
+# 挂在每个 PR 上不划算。而它真正会坏的原因很集中——工具链版本、依赖、Dockerfile
+# 本身——所以按 paths 触发即可。
+#
+# 这条工作流的由来：`.nvmrc` 从 Node 20 抬到 22 时，三个 Dockerfile 还停在
+# `node:20-alpine` + `corepack prepare pnpm@10`，三个镜像**全部构建不出来**，
+# 而当时 CI 只跑 verify:full（不碰 docker），一路全绿。
+# 版本漂移这一类现在由 `pnpm run check:toolchain` 在 verify:full 里当场拦下；
+# 这条工作流负责剩下的那半——Dockerfile 自己写错、依赖在镜像环境里装不上。
+
+name: Docker Images
+
+# 两处 paths 是手抄的重复——GitHub Actions 的 workflow 解析器不支持 YAML 锚点（&/*），
+# 写了会被当成语法错误或静默失效。改动其中一处时记得同步另一处。
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docker/**'
+      - '.dockerignore'
+      - '.nvmrc'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/docker-images.yml'
+  pull_request:
+    paths:
+      - 'docker/**'
+      - '.dockerignore'
+      - '.nvmrc'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/docker-images.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: docker-images-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [admin, h5, docs]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 只构建、不推送：这里要回答的是「还能不能 build 出来」，
+      # 推送镜像属于发布流程，应该由带凭据的独立工作流负责。
+      - name: Build ${{ matrix.image }} image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/images/${{ matrix.image }}/Dockerfile
+          push: false
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
