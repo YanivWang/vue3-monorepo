@@ -116,7 +116,7 @@ catalog:
   vitepress: ^1.6.4
   # ---------- OpenAPI ----------
   openapi-typescript: ^7.13.0
-  tsx: ^4.23.12
+  tsx: ^4.23.13
   # create-app.mjs 的交互式问答
   prompts: ^2.4.2
   # ---------- 类型声明 ----------
