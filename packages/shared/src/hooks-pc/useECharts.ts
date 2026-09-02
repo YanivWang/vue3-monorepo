@@ -42,8 +42,26 @@ export function useECharts(target: UseEChartsTarget, options: UseEChartsOptions 
   let instance: echarts.ECharts | null = null
   let resizeObserver: ResizeObserver | null = null
 
+  /**
+   * 最近一次 option。实例会在三处被拆掉重建——容器出现/更换/重新挂载、暗黑模式切换、
+   * 调用方手动 dispose——不记着它，这三种情况下图表都会变空白。
+   *
+   * 它同时兜住另一半：容器还没出现时调用 setOption（在 `onMounted` 里直接调、或容器
+   * 挂在 v-if 后面）此刻没有实例可写，先记在这里，等 init() 时重放。
+   *
+   * 实例活着的时候不往这里同步——ECharts 自己就是真源，每次 setOption 都
+   * getOption() 一遍要深拷贝整份内部状态，频繁刷新的图表上是白付的开销。
+   * 只在拆实例前 captureOption() 快照一次即可。
+   */
+  let lastOption: EChartsOption | null = null
+
   function getTheme() {
     return toValue(isDark) ? 'dark' : undefined
+  }
+
+  /** 拆实例前把内容快照下来：getOption() 拿到的是 ECharts 合并后的完整状态 */
+  function captureOption() {
+    if (instance) lastOption = instance.getOption() as EChartsOption
   }
 
   // 返回新实例而不是只赋值：调用方拿返回值继续用，省得 TS 因为「闭包里赋的值看不见」
@@ -51,14 +69,24 @@ export function useECharts(target: UseEChartsTarget, options: UseEChartsOptions 
   function init(): echarts.ECharts | null {
     const el = toValue(target)
     if (!el) return null
+    captureOption()
     instance?.dispose()
     instance = echarts.init(el, getTheme(), { renderer })
+    // 重放用 notMerge：lastOption 要么是上一个实例的完整快照，要么是容器就位前挂起的
+    // 那次调用，两种都该整份铺上去，而不是往空实例上做增量合并
+    if (lastOption) instance.setOption(lastOption, { notMerge: true })
     return instance
   }
 
   function setOption(option: EChartsOption, notMerge = false) {
     if (!instance) init()
-    instance?.setOption(option, { notMerge })
+    if (instance) {
+      instance.setOption(option, { notMerge })
+      return
+    }
+    // 容器仍未出现：挂起，等容器 watch 建实例时由 init() 重放。
+    // 直接丢掉的话调用方没有任何提示，只看到图表一直空白。
+    lastOption = notMerge || !lastOption ? option : { ...lastOption, ...option }
   }
 
   function resize() {
@@ -68,6 +96,7 @@ export function useECharts(target: UseEChartsTarget, options: UseEChartsOptions 
   function dispose() {
     resizeObserver?.disconnect()
     resizeObserver = null
+    captureOption()
     instance?.dispose()
     instance = null
   }
@@ -90,14 +119,11 @@ export function useECharts(target: UseEChartsTarget, options: UseEChartsOptions 
     watch(
       () => toValue(isDark),
       async () => {
+        // 主题只能在 init 时传，所以切换暗黑模式要整个重建实例。
+        // option 的搬运由 init() 负责（captureOption → 重建 → 重放），这里不再自己搬：
+        // 两处各写一套的时候，容器那条路径上就漏掉了，图表切完主题会变空白。
         await nextTick()
-        if (!toValue(target)) return
-        // 主题只能在 init 时传，所以切换暗黑模式要重建实例并把 option 搬过去
-        const option = instance?.getOption()
-        instance?.dispose()
-        instance = null
-        const next = init()
-        if (option) next?.setOption(option as EChartsOption)
+        init()
       },
     )
   }
