@@ -48,7 +48,6 @@ catalog:
   js-cookie: ^3.0.8
   nprogress: ^0.2.0
   echarts: ^6.1.0
-  vue-echarts: ^8.2.0
   web-vitals: ^6.2.1
   # ---------- 构建工具 ----------
   vite: ^8.2.2
@@ -121,10 +120,10 @@ catalog:
   # create-app.mjs 的交互式问答
   prompts: ^2.4.2
   # ---------- 类型声明 ----------
-  # 跟 .nvmrc / engines 的 Node 大版本走（24 LTS），**不是**跟 npm 上的 latest 走：
-  # @types/node 的大版本对应 Node 运行时大版本，装 26 会让 24 里还不存在的 API
+  # 跟 .nvmrc / engines 的 Node 大版本走（22），**不是**跟 npm 上的 latest 走：
+  # @types/node 的大版本对应 Node 运行时大版本，装 24/26 会让 22 里还不存在的 API
   # 在类型上看起来可用。
-  '@types/node': ^24.13.3
+  '@types/node': ^22.20.1
   '@types/js-cookie': ^3.0.6
   '@types/lodash-es': ^4.17.12
   '@types/nprogress': ^0.2.3
@@ -173,4 +172,3 @@ minimumReleaseAge: 1440
 # 想让这种情况从「记录一笔」变成「必须显式确认」，把 minimumReleaseAgeStrict 设为 true。
 minimumReleaseAgeExclude:
   - happy-dom@20.12.0
-  - vue-echarts@8.2.0

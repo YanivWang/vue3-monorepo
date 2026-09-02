@@ -34,7 +34,6 @@
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
     "vue": "catalog:",
-    "vue-echarts": "catalog:",
     "vue-i18n": "catalog:",
     "vue-router": "catalog:"
   },

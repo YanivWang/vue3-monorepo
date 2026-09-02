@@ -16,7 +16,10 @@ pnpm run verify:full   # 统一门禁，提交前跑这个；CI 跑的是同一�
 
 ## 环境硬约束
 
-- Node 与 pnpm 版本以 `.nvmrc`（24.20.0，当前 Active LTS）与 `packageManager`（pnpm 11.24.0）为**单一真源**，CI 用 `node-version-file` 读同一份，Dockerfile 只写 `FROM node:24-alpine` + `corepack enable`（不钉 pnpm 版本）。改版本时 `.nvmrc` / `engines` / `packageManager` / Dockerfile 一起动，`check:toolchain` 会拦漂移。
+- Node 与 pnpm 版本以 `.nvmrc`（22.23.2）与 `packageManager`（pnpm 11.24.0）为**单一真源**，CI 用 `node-version-file` 读同一份，Dockerfile 只写 `FROM node:22-alpine` + `corepack enable`（不钉 pnpm 版本）。改版本时 `.nvmrc` / `engines` / `packageManager` / `@types/node` / Dockerfile 一起动，`check:toolchain` 会拦漂移。
+- **Node 停在 22 是刻意的，不是漂移。** 当前 Active LTS 是 24，22 已进入 Maintenance LTS（支持到 2027-04）——这条是团队运行环境决定的，不走「跟随当前大版本」那条通则。
+  下限必须写 `22.23.2` 而不是 `22`：依赖里已经有钉到 22.22.x 的（`lint-staged` 要 `>=22.22.1`，`abbrev` / `nopt` 要 `^22.22.2`），写宽了 `engine-strict` 就拦不住装在 22.12 上却跑不起来的情况。
+  升级窗口：22 的 EOL（2027-04）之前必须迁到 24 或更高，届时 `.nvmrc` / `engines` / `@types/node` / Dockerfile 一起动。
 - `preinstall` 挂了 `only-allow pnpm`，`.npmrc` 开了 `engine-strict`。不要用 npm / yarn。
 - 依赖的 postinstall 默认被拦截，放行清单在 `pnpm-workspace.yaml` 的 `allowBuilds`（pnpm 11 的名字，10 时叫 `onlyBuiltDependencies`）。新增需要构建脚本的依赖时要显式加进去。
 - 依赖版本统一走 `pnpm-workspace.yaml` 的 `catalog:`，各包写 `"vue": "catalog:"`。**不要在子包 package.json 里写死版本号。**

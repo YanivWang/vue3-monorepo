@@ -3,10 +3,10 @@
 # 产物目录：docs/.vitepress/dist
 # Compose：见 docker/docker-compose.yaml
 
-# Node 大版本跟 .nvmrc 走（24，当前 Active LTS "Krypton"）：根 package.json 的 engines 要求 node >=24.20.0，
+# Node 大版本跟 .nvmrc 走（22 "Jod"，Maintenance LTS，支持到 2027-04）：根 package.json 的 engines 要求 node >=22.23.2，
 # 且 .npmrc 开了 engine-strict —— 大版本对不上时 pnpm 会直接拒绝安装。
 # scripts/check-toolchain.mjs 会校验这一行与 .nvmrc 是同一个大版本。
-FROM node:24-alpine AS builder
+FROM node:22-alpine AS builder
 
 # 只 enable，不写死版本：pnpm 版本由根 package.json 的 packageManager 字段决定，
 # 与 CI 的 pnpm/action-setup（同样不传 version）保持同一个真源。
