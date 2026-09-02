@@ -24,9 +24,10 @@
  *
  * ## 为什么走 ESLint 的 Node API 而不是命令行
  *
- * 探针都落在 `src/**` 下，命令行跑会连带启动类型感知那一档（projectService），
- * 单是加载 TS 工程就要十几秒。边界规则本身完全不需要类型信息，所以这里复用
- * **同一份 eslint.config.mjs**、只把类型感知那几条摘掉再跑（见 withoutTypeAware）。
+ * 探针都落在 `src/**` 下，命令行跑会连带启动类型感知那一档（parserOptions.project），
+ * 单是加载 TS 工程就要十几秒（实测 10.3s → 摘掉后 1.3s）。边界规则本身完全不需要
+ * 类型信息，所以这里复用**同一份 eslint.config.mjs**、只把类型感知那几条摘掉再跑
+ * （见 withoutTypeAware）。
  * 关键是配置仍来自真实配置文件——照抄一份规则去测，测的就不是生产配置了。
  *
  * ## 用法
@@ -68,9 +69,20 @@ const CASES = [
     rule: 'import-x/no-restricted-paths',
   },
   {
-    desc: 'PC 端包引 H5 端组件（.vue，走 resolver 的 .vue 扩展名）',
+    desc: 'PC 端包引 H5 端组件（显式写出 .vue 路径）',
     file: `packages/shared/src/components-pc/${PROBE}vue.ts`,
     code: `import '../components-h5/NavBar/index.vue'\n`,
+    rule: 'import-x/no-restricted-paths',
+  },
+  {
+    // ⚠️ 这条盯的是 resolver 的 `extensions` 里那个 '.vue'，上面那条盯不住：
+    // 显式写出 `/index.vue` 时 resolver 不需要靠扩展名列表就能解析，
+    // 把 '.vue' 从 extensions 删掉照样是绿的（实测如此）。
+    // 省略扩展名才真正走 extensions —— 删掉 '.vue' 后这条 import 解析不到，
+    // no-restricted-paths 于是静默跳过，一条错都不报。
+    desc: 'PC 端包引 H5 端组件（省略扩展名，真正依赖 resolver 的 .vue 扩展名）',
+    file: `packages/shared/src/components-pc/${PROBE}vue-ext.ts`,
+    code: `import '../components-h5/NavBar'\n`,
     rule: 'import-x/no-restricted-paths',
   },
   {
@@ -143,13 +155,27 @@ const CASES = [
 
 /**
  * 从真实配置里摘掉类型感知那一档：
- *  - 带 `parserOptions.projectService` 的那条会拉起 TS 工程（慢的就是它）
- *  - `recommended-type-checked` 的规则没有类型信息会直接报错
- * 其余（含边界规则本身）原样保留。
+ *  - `recommended-type-checked` 的规则没有类型信息会直接报错，整条丢掉；
+ *  - 拉起 TS 工程的是 `parserOptions` 里的 `project` / `projectService`，
+ *    把这两个键摘掉即可，配置对象本身要留着（它还带着几条 `off` 规则）。
+ *
+ * 注意这里**不能**按「配置对象带没带某个键」去 filter 整条：
+ * 本仓库用的是 `project`，而按 `projectService` 过滤的写法谁也匹配不上——
+ * 结果是探针照样把整个 TS 工程拉起来（实测 10.3s vs 0.2s），
+ * 而文件头还写着「已经摘掉了」。改成 map + 只删这两个键，两种写法都盖得住。
  */
-const withoutTypeAware = baseConfig.filter(
-  (c) => !c?.languageOptions?.parserOptions?.projectService && c?.name !== 'typescript-eslint/recommended-type-checked',
-)
+const stripTypeAwareParserOptions = (/** @type {Record<string, any>} */ config) => {
+  const parserOptions = config?.languageOptions?.parserOptions
+  if (!parserOptions?.project && !parserOptions?.projectService) return config
+  const rest = { ...parserOptions }
+  delete rest.project
+  delete rest.projectService
+  return { ...config, languageOptions: { ...config.languageOptions, parserOptions: rest } }
+}
+
+const withoutTypeAware = baseConfig
+  .filter((c) => !String(c?.name ?? '').includes('type-checked'))
+  .map(stripTypeAwareParserOptions)
 
 const cleanup = () => {
   for (const c of CASES) rmSync(join(ROOT, c.file), { force: true })

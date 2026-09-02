@@ -93,7 +93,7 @@
   },
   "scripts": {
     "typecheck": "vue-tsc --noEmit -p tsconfig.json && vue-tsc --noEmit -p tsconfig.vitest.json",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings 0",
     "test": "vitest run -c vitest.config.ts",
     "test:watch": "vitest -c vitest.config.ts"
   },

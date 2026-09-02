@@ -28,7 +28,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "lint:style": "stylelint '{apps,docs,packages}/**/*.{scss,vue,css}'",
     "lint:style:fix": "stylelint '{apps,docs,packages}/**/*.{scss,vue,css}' --fix",
