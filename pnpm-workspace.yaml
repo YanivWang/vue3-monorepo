@@ -58,7 +58,7 @@ catalog:
   typescript: ~6.0.3
   vue-tsc: ^3.3.11
   '@vitejs/plugin-vue': ^6.0.8
-  sass: ^1.103.1
+  sass: ^1.104.0
   # ---------- PC UI（Element Plus 生态） ----------
   element-plus: ^2.14.5
   '@element-plus/icons-vue': ^2.3.2
