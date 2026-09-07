@@ -80,7 +80,7 @@ catalog:
   # ---------- 工程化 ----------
   eslint: ^10.9.1
   '@eslint/js': ^10.0.1
-  typescript-eslint: ^8.68.0
+  typescript-eslint: ^8.69.0
   eslint-plugin-vue: ^10.10.0
   # 用 import-x 而不是 eslint-plugin-import：后者的 peer 至今只到 eslint ^9，
   # 上 ESLint 10 会直接 peer 冲突。import-x 是同一批规则的活跃维护分支，
@@ -110,7 +110,7 @@ catalog:
   vitest: ^4.1.11
   '@vitest/coverage-v8': ^4.1.11
   '@vue/test-utils': ^2.5.0
-  happy-dom: ^20.12.0
+  happy-dom: ^20.14.0
   # ---------- 文档站 ----------
   # VitePress 2 目前只有 alpha（2.0.0-alpha.x），稳定线仍是 1.6.x
   vitepress: ^1.6.4
