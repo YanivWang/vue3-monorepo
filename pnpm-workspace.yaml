@@ -50,7 +50,7 @@ catalog:
   echarts: ^6.1.0
   web-vitals: ^6.2.1
   # ---------- 构建工具 ----------
-  vite: ^8.2.2
+  vite: ^8.3.0
   # 刻意不上 TypeScript 7：typescript-eslint 8.x（唯一的稳定线，尚无 v9）的 peer 是
   # `typescript >=4.8.4 <6.1.0`，装 TS 7 会让**类型感知 lint 整档失效**。
   # TS 7 是 Go 重写的原生编译器，工具链还没跟上，等 typescript-eslint 支持后再动。
@@ -107,8 +107,8 @@ catalog:
   husky: ^9.1.7
   lint-staged: ^17.4.1
   # ---------- 测试 ----------
-  vitest: ^4.1.11
-  '@vitest/coverage-v8': ^4.1.11
+  vitest: ^5.0.0
+  '@vitest/coverage-v8': ^5.0.0
   '@vue/test-utils': ^2.5.0
   happy-dom: ^20.12.0
   # ---------- 文档站 ----------
