@@ -50,15 +50,15 @@ catalog:
   echarts: ^6.1.0
   web-vitals: ^6.2.1
   # ---------- 构建工具 ----------
-  vite: ^8.2.2
+  vite: ^8.3.0
   # 刻意不上 TypeScript 7：typescript-eslint 8.x（唯一的稳定线，尚无 v9）的 peer 是
   # `typescript >=4.8.4 <6.1.0`，装 TS 7 会让**类型感知 lint 整档失效**。
   # TS 7 是 Go 重写的原生编译器，工具链还没跟上，等 typescript-eslint 支持后再动。
   # 用 ~ 锁小版本：编译器的 minor 会引入新报错，升级要走 PR 而不是靠 ^ 悄悄带上来。
   typescript: ~6.0.3
   vue-tsc: ^3.3.11
-  '@vitejs/plugin-vue': ^6.0.8
-  sass: ^1.103.1
+  '@vitejs/plugin-vue': ^6.0.9
+  sass: ^1.104.1
   # ---------- PC UI（Element Plus 生态） ----------
   element-plus: ^2.14.5
   '@element-plus/icons-vue': ^2.3.2
