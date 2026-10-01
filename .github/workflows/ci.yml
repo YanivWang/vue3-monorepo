@@ -36,14 +36,14 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 不显式写 version，与根 package.json 的 packageManager 字段一致，避免 ERR_PNPM_BAD_PM_VERSION
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           # 单一真源：跟 .nvmrc 走，保证本地与 CI 是同一个大版本
           node-version-file: '.nvmrc'
@@ -59,7 +59,7 @@ jobs:
       # 这里只是把报告留下来，方便 PR 上点开看是哪些文件掉的。
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/
